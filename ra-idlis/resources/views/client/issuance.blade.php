@@ -8,7 +8,7 @@
 		      		<div class="container" style="padding: 2% 2% 2% 2%;">
 						<div class="row">
 							<div class="col-lg-12" style="position:absolute;">
-								<img src="{{asset('img/doh2.png')}}" style="height: auto; width:100px;">
+								<img src="{{asset('ra-idlis/public/img/doh2.png')}}" style="height: auto; width:100px;">
 							</div>
 							<div class="col-lg-12 text-center">
 								
@@ -49,7 +49,7 @@
 		          	<div class="col-md-4">Francisco T. Duque III
 							Secretary of Health
 					</div>
-		          	<div class="col-md-6"> <img class="float-right" src="{{asset('img/qr.png')}}" style="width:120px" alt="QR Code"></div>
+		          	<div class="col-md-6"> <img class="float-right" src="{{asset('ra-idlis/public/img/qr.png')}}" style="width:120px" alt="QR Code"></div>
 		          	</div>
 		        </div> 
 		        

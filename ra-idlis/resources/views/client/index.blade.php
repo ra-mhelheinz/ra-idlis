@@ -57,7 +57,7 @@
 @section('content')
 @include('client.nav')
 
-  <div class="modal fade" id="myModal" >
+  <div class="modal fadeInUpBig animated" id="myModal" >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="border-radius: 0;">        
         <!-- Modal body -->
@@ -76,14 +76,14 @@
 <script type="text/javascript">
   $('#myModal').modal('toggle');
   $('#yes').on('click', function(){
-    $('#myModal').modal('hide');
-    $('#myModal2').modal('show');
+    $('#myModal').modal('toggle');
+    $('#myModal2').modal('show').delay(3000);
   });
   // alert();
 </script>
 <div class="modal" id="myModal2">
   <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content" style="border-radius: 0;background: transparent;border: 0 !important;">
+    <div class="modal-content zoomIn animated" style="border-radius: 0;background: transparent;border: 0 !important;">
 
       <!-- Modal Header -->
 <!--       <div class="modal-header">
@@ -176,7 +176,7 @@ function next()
         <section id="services">
       <div class="container">
         <div class="row">
-          <div class="col-lg-6 slideInLeft animated">
+          <div class="col-lg-6">
             <div class="box wow fadeInLeft" id="textSample">
               <div class="icon"><i class="fa fa-edit"></i></div>
               <h4 class="title"><a href="{{asset('apply')}}">Step 1. Apply</a></h4>
@@ -184,7 +184,7 @@ function next()
             </div>
           </div>
 
-          <div class="col-lg-6 slideInRight animated">
+          <div class="col-lg-6">
             <div class="box wow fadeInRight">
               <div class="icon"><i class="fa fa-check"></i></div>
               <h4 class="title"><a href="{{asset('evaluate')}}">Step 2. Evaluate</a></h4>
@@ -193,7 +193,7 @@ function next()
             </div>
           </div>
 
-          <div class="col-lg-6 slideInLeft animated">
+          <div class="col-lg-6">
             <div class="box wow fadeInLeft" data-wow-delay="0.2s">
               <div class="icon"><i class="fa fa-search"></i></div>
               <h4 class="title"><a href="{{asset('inspection')}}">Step 3. Inspection</a></h4>
@@ -201,7 +201,7 @@ function next()
             </div>
           </div>
 
-          <div class="col-lg-6 slideInRight animated">
+          <div class="col-lg-6">
             <div class="box wow fadeInRight" data-wow-delay="0.2s">
               <div class="icon"><i class="fa fa-print"></i></div>
               <h4 class="title"><a href="{{asset('issuance')}}">Step 4. Issuance</a></h4>
