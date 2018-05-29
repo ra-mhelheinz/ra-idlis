@@ -2,6 +2,11 @@
 @section('style')
  <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/service.css')}}">
 @endsection
+  <!-- Start WOWSlider.com HEAD section -->
+<link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/engine1/style.css')}}" />
+<script type="text/javascript" src="{{asset('ra-idlis/public/engine1/jquery.js')}}"></script>
+<!-- End WOWSlider.com HEAD section -->
+
 <style type="text/css">
     .carousel-inner img {
       width: 100%;
@@ -57,7 +62,7 @@
 @section('content')
 @include('client.nav')
 
-  <div class="modal fadeInUpBig animated" id="myModal" >
+  <div class="modal fadeInUpBig animated" id="myModal" style="  position: fixed;" >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="border-radius: 0;">        
         <!-- Modal body -->
@@ -94,21 +99,42 @@
       <!-- Modal body -->
       <div class="modal-body">
         <div class="guide" style="  width: 100%;">
-        <img src="{{asset('ra-idlis/public/img/slider/slide1.JPG')}}" style="width: 100%;height: 400px;">
+<!-- Start WOWSlider.com BODY section -->
+<div id="wowslider-container1">
+<div class="ws_images"><ul>
+    <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_1.png')}}" alt="Step 1. Apply " title="Step 1. Apply" id="wows1_0"/><p id="wows1_0"/>If you are using this for the first time, click on the Apply and fill out the form. </p></li>
+    <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_2.png')}}" alt="Step 1. Apply " title=" " id="wows1_1"/><p id="wows1_1"/>After clicking apply this form will appear, you must fill up this form yourself.</p></li>
+    <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_3.png')}}" alt="Step 1. Apply " title="" id="wows1_2"/><p id="wows1_1" />After filling up those form, Upload your attachments or the required requirements by clicking the UPLOAD button.</p></li>
+    <li><p id="wows1_1"/ >After Uploading attachments. Click on SUBMIT button to submit information.</p><img src="{{asset('ra-idlis/public/img/steps/client/Steps_4.png')}}" alt="Step 1. Apply " title="" id="wows1_3"/></li>
+    <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_5.png')}}" alt="Step 1. Apply " title="" id="wows1_4"/><p id="wows1_1"/>After clicking apply this form will appear, you must fill up this forms yourself.</p></li>
+    <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_6.png')}}" alt="Steps 2. Evaluate" title="Steps 2. Evaluate" id="wows1_5"/></li>
+    <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_7.png')}}" alt="Step 2. Evaluate" title="Step 2. Evaluate" id="wows1_6"/></li>
+    <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_8.png')}}" alt="Step 3. Inspection" title="Step 3. Inspection" id="wows1_7"/></li>
+    <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_9.png')}}" alt="Step 3. Inspection" title="Step 3. Inspection" id="wows1_8"/></li>
+    <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_10.png')}}" alt="Step 3. Inspection" title="Step 3. Inspection" id="wows1_9"/></li>
+    <li><a href="#"><img src="{{asset('ra-idlis/public/img/steps/client/Steps_11.png')}}" alt="css image gallery" title="Step 4. Issuance" id="wows1_10"/></a></li>
+    <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_12.png')}}" alt="Step 4. Issuance" title="Step 4. Issuance" id="wows1_11"/></li>
+  </ul></div>
+  <div class="ws_bullets"><div>
+    <a href="#" title="Step 1. Apply "><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_1.png')}}" alt="Step 1. Apply "/>1</span></a>
+    <a href="#" title="Step 1. Apply "><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_2.png')}}" alt="Step 1. Apply "/>2</span></a>
+    <a href="#" title="Step 1. Apply "><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_3.png')}}" alt="Step 1. Apply "/>3</span></a>
+    <a href="#" title="Step 1. Apply "><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_4.png')}}" alt="Step 1. Apply "/>4</span></a>
+    <a href="#" title="Step 1. Apply "><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_5.png')}}" alt="Step 1. Apply "/>5</span></a>
+    <a href="#" title="Steps 2. Evaluate"><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_6.png')}}" alt="Steps 2. Evaluate"/>6</span></a>
+    <a href="#" title="Step 2. Evaluate"><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_7.png')}}" alt="Step 2. Evaluate"/>7</span></a>
+    <a href="#" title="Step 3. Inspection"><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_8.png')}}" alt="Step 3. Inspection"/>8</span></a>
+    <a href="#" title="Step 3. Inspection"><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_9.png')}}" alt="Step 3. Inspection"/>9</span></a>
+    <a href="#" title="Step 3. Inspection"><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_10.png')}}" alt="Step 3. Inspection"/>10</span></a>
+    <a href="#" title="Step 4. Issuance"><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_11.png')}}" alt="Step 4. Issuance"/>11</span></a>
+    <a href="#" title="Step 4. Issuance"><span><img src="{{asset('ra-idlis/public/img/steps/client/Steps_12.png')}}" alt="Step 4. Issuance"/>12</span></a>
+  </div></div>
+<div class="ws_shadow"></div>
+<script type="text/javascript" src="{{asset('ra-idlis/public/engine1/wowslider.js')}}"></script>
+<script type="text/javascript" src="{{asset('ra-idlis/public/engine1/script.js')}}"></script>
+</div>  
       </div>
 
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer" style="border-top: 0 !important;">
-        <table style="width: 100%;">
-          <td style="width: 50%;" class="text-right">
-        <a href="#" class="btn btn-primary" style="border-radius: 0 !important">&laquo; Previous</a>
-        </td>
-        <td style="width: 50%;">
-        <a href="#" class="btn btn-primary" style="border-radius: 0 !important">Next &raquo;</a>
-        </td>
-        </table>
       </div>
 
     </div>
