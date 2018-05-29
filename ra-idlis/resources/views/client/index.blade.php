@@ -24,17 +24,50 @@
     from {left: 0px;}
     to {left: 270px;}
 }*/
+.btn-defaults,.btn-primarys {
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    color: #424242;
+    background-color: #FFF;
+    text-align: center;
+    height: 36px;
+    line-height: 36px;
+    outline: 0;
+    padding: 0 2rem; 
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    letter-spacing: .5px;
+    transition: .2s ease-out;
+}
+.btn-defaults:hover{
+  background-color: #FFF;
+  box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+}
+.btn-primarys {
+  color: #FFF;
+  background-color: #2980B9;
+}
+.btn-primarys:hover{
+  background-color: #2980B9;
+  box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+}
 </style>
 @section('content')
 @include('client.nav')
 
-  <div class="modal fade" id="myModal">
+  <div class="modal fade" id="myModal" >
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">        
+      <div class="modal-content" style="border-radius: 0;">        
         <!-- Modal body -->
         <div class="modal-body">
-          Need a guide for first-time visitors?
-          <button class="btn btn-outline-success">Yes</button><button class="btn btn-outline-danger" data-dismiss="modal">No</button>
+          <table>
+              <td>Need a guide for first-time visitors?</td>
+              <td><button class="btn-primarys" data-toggle="modal" id="yes">Yes</button></td>
+              <td><button class="btn-defaults" data-dismiss="modal" aria-hidden="true">No</button></td>
+          </table>
+
         </div>
         
       </div>
@@ -42,7 +75,89 @@
   </div>
 <script type="text/javascript">
   $('#myModal').modal('toggle');
+  $('#yes').on('click', function(){
+    $('#myModal').modal('hide');
+    $('#myModal2').modal('show');
+  });
   // alert();
+</script>
+<div class="modal" id="myModal2">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 0;background: transparent;border: 0 !important;">
+
+      <!-- Modal Header -->
+<!--       <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div> -->
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="guide" style="  width: 100%;">
+        <img src="{{asset('ra-idlis/public/img/slider/slide1.JPG')}}" style="width: 100%;height: 400px;">
+      </div>
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer" style="border-top: 0 !important;">
+        <table style="width: 100%;">
+          <td style="width: 50%;" class="text-right">
+        <a href="#" class="btn btn-primary" style="border-radius: 0 !important">&laquo; Previous</a>
+        </td>
+        <td style="width: 50%;">
+        <a href="#" class="btn btn-primary" style="border-radius: 0 !important">Next &raquo;</a>
+        </td>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+ $( "#prev_image" ).click(function(){
+  prev();
+ });
+ $( "#next_image" ).click(function(){
+  next();
+ });
+});
+
+// Write all the names of images in slideshow
+var images = [ "image1" , "image2" , "image3" , "image4" ];
+
+function prev()
+{
+ $( '#slideshow_image' ).fadeOut(300,function()
+ {
+  var prev_val = document.getElementById( "img_no" ).value;
+  var prev_val = Number(prev_val) - 1;
+  if(prev_val< = -1)
+  {
+   prev_val = images.length - 1;
+  }
+  $( '#slideshow_image' ).attr( 'src' , 'images/'+images[prev_val]+'.jpg' );
+  document.getElementById( "img_no" ).value = prev_val;
+ });
+ $( '#slideshow_image' ).fadeIn(1000);
+}
+
+function next()
+{
+ $( '#slideshow_image' ).fadeOut(300,function()
+ {
+  var next_val = document.getElementById( "img_no" ).value;
+  var next_val = Number(next_val)+1;
+  if(next_val >= images.length)
+  {
+   next_val = 0;
+  }
+  $( '#slideshow_image' ).attr( 'src' , 'images/'+images[next_val]+'.jpg' );
+  document.getElementById( "img_no" ).value = next_val;
+ });
+ $( '#slideshow_image' ).fadeIn(1000);
+}
 </script>
 <div class="container-fluid"> 
     <div class="row" style="z-index:1;">
@@ -61,7 +176,7 @@
         <section id="services">
       <div class="container">
         <div class="row">
-          <div class="col-lg-6  animated">
+          <div class="col-lg-6 slideInLeft animated">
             <div class="box wow fadeInLeft" id="textSample">
               <div class="icon"><i class="fa fa-edit"></i></div>
               <h4 class="title"><a href="{{asset('apply')}}">Step 1. Apply</a></h4>
