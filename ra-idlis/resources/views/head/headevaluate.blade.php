@@ -263,7 +263,7 @@
           <div class="col-sm-6" >
               <label>Recommended for Inspection?</label>
               <!-- data-toggle="modal" data-target="#exampleModalCenter" -->
-        <a href="{{asset('/dashboard/evaluate/orderofpayment')}}" style="text-decoration: none" data-toggle="modal" data-target="#modalins"><button class="btn btn-outline-success">Yes</button></a>
+        <a href="#" style="text-decoration: none" data-toggle="modal" data-target="#modalins"><button class="btn btn-outline-success">Yes</button></a>
         <button class="btn btn-outline-danger">No</button>
           </div>  
           <div class="col-sm-6">
@@ -277,4 +277,38 @@
     </div>
         </div>
     </div>
+    <div class="modal fade" id="modalins" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+       <h5 class="showHospit" style="display: none">Since YES you will proceed to Order of Payment.</h5>
+       <h5 class="showConfirm">Are you sure you want to confirm?</h5>
+       <ul class="showHospit" style="display:none">
+          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment')}}">Hospital Based Private</a></ol>
+          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment2')}}">Hospital Based Government</a></ol>
+          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment3')}}">Non-Hospital based other Health Facilities</a></ol>
+          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment4')}}">Certificate of Need/Permit to Construct </a></ol>
+          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment5')}}">Dental Laboratory</a></ol>
+          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment6')}}">Non-Hospital Based with Ancillary</a></ol>
+       </ul>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-primary showConfirm" onclick="showNow()">Yes</button>
+        <button type="button" class="btn btn-danger showConfirm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-warning showHospit" style="display:none" onclick="showNow2()">Cancel</button>
+
+      </div>
+      <script type="text/javascript">
+        function showNow(){
+          $('.showHospit').show();
+          $('.showConfirm').hide();
+        }
+        function showNow2(){
+          $('.showConfirm').show();
+          $('.showHospit').hide();
+        }
+      </script>
+    </div>
+  </div>
+</div>
 @endsection
