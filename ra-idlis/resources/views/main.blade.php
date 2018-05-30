@@ -15,6 +15,7 @@
 <!-- <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/jquery.js')}}"></script> -->
 <!-- End WOWSlider.com HEAD section -->
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/animate.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/parsley.css')}}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js"></script>
 	 @yield('style')
 	<style type="text/css">
