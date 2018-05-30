@@ -1,6 +1,14 @@
 @extends('main')
 @section('content')
 @include('client.nav')
+<style type="text/css">
+	table.attachments > tr{
+		width: 50%;
+			}
+			table.attachments > td {
+				padding: 1em;
+			}
+</style>
 	<div class="container jumbotron" style="margin-top: 2em;">
 		<div class="jumbotron container" style="background-color: #fff;box-shadow: 10px 10px 15px rgba(73, 78, 92, 0.1);">
 			<h4 style="border-bottom: 1px solid green;padding-bottom: 9px;position: relative;"><strong>Apply</strong><span style=" background: lightgreen none repeat scroll 0 0;bottom: -2px;height: 3px;left: 0;position: absolute;width: 75px;"></span></h4>
@@ -98,8 +106,8 @@
 		<hr style="color:green;">
 		<div class="container" >
 		<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show Attachments to be Uploaded</div>
-		<div id="panel" style="display: none;">
-			<ul class="list-group">
+		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;">
+			<!-- <ul class="list-group">
 			  <li class="list-group-item all">Acknowledgement (Notarized) 
 			  	<span style="float:right">
 			  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
@@ -152,7 +160,48 @@
 				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
 				  </span>
 			  	</li>
-			</ul>
+			</ul> -->
+			<table class="attachments table" style="width: 100%;">
+				<tr>
+					<td>Acknowledgement (Notarized) </td>
+					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>List of Personnel (with proof of qualification)</td>
+					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>List of Equipments</td>
+					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>List of Ancillary Services (if applicable)</td>
+					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>Application Form (Medical X-ray)</td>
+					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>Application Form (Hospital Pharmacy)</td>
+					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>Geographic Form (Location Map of the Facility)</td>
+					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>Photographs of exterior and interior of the Health Facility</td>
+					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="text-center"><button class="btn btn-outline-success"  data-toggle="modal" data-target="#exampleModalCenter">Submit</button></td>
+				</tr>
+				<tr>
+					<td>Copy of OR for Application fee</td>
+					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+			</table>
 		</div>
 		</div>
 	</div>

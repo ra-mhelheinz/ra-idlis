@@ -1,12 +1,12 @@
-@extends('template.master')
-@include('template.logo')
+@extends('main')
 @section('content')
+@include('client.nav')
 <div class="container-fluid">
        <div class="card" style="margin: 0 0 5em 0;">
                 <div class="card-header bg-white font-weight-bold">
                     <table style="width:100%;">
                       <tr>
-                        <th style="width:10%"><img src="{{asset('ra-idlis/public/img/DOH.png')}}" style="height: auto; width:100px;"></th>
+                        <th style="width:10%"><img src="{{asset('ra-idlis/public/img/doh2.png')}}" style="height: auto; width:100px;"></th>
                         <th class="text-center" style="width:80%">
                           <h6>Republic of the Philippines</h6>
                           <h6>DEPARTMENT OF HEALTH</h6>

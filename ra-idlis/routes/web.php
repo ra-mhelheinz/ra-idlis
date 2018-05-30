@@ -17,7 +17,7 @@ Route::match(['get', 'post'], '/register', 'ClientController@registerclient');
 Route::get('/home', 'ClientController@home');
 Route::get('/apply', 'ClientController@apply');
 Route::get('/evaluate', 'ClientController@evaluate');
-Route::get('/orderofpayment', 'ClientController@orderofpaymentc');
+Route::get('/orderofpaymentc', 'ClientController@orderofpaymentc');
 Route::get('/inspection', 'ClientController@inspection');
 Route::get('/inspection2', 'ClientController@inspection2');
 Route::get('/inspection3', 'ClientController@inspection3');
