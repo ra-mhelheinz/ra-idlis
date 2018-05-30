@@ -29,42 +29,14 @@
     from {left: 0px;}
     to {left: 270px;}
 }*/
-.btn-defaults,.btn-primarys {
-    border: none;
-    border-radius: 2px;
-    display: inline-block;
-    color: #424242;
-    background-color: #FFF;
-    text-align: center;
-    height: 36px;
-    line-height: 36px;
-    outline: 0;
-    padding: 0 2rem; 
-    vertical-align: middle;
-    -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-    letter-spacing: .5px;
-    transition: .2s ease-out;
-}
-.btn-defaults:hover{
-  background-color: #FFF;
-  box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
-}
-.btn-primarys {
-  color: #FFF;
-  background-color: #2980B9;
-}
-.btn-primarys:hover{
-  background-color: #2980B9;
-  box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
-}
+
 </style>
 @section('content')
 @include('client.nav')
 
   <div class="modal fadeInUpBig animated" id="myModal" style="  position: fixed;" >
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content" style="border-radius: 0;border: 3px solid #84bd82;">        
+      <div class="modal-content">        
         <!-- Modal body -->
         <div class="modal-body">
           <table>
@@ -100,7 +72,7 @@
       <div class="modal-body">
         <div class="guide" style="  width: 100%;">
 <!-- Start WOWSlider.com BODY section -->
-<div id="wowslider-container1" style="border: 3px solid #84bd82;">
+<div id="wowslider-container1">
 <div class="ws_images"><ul>
     <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_1.png')}}" alt="Step 1. Apply " title="Step 1. Apply" id="wows1_0"/><p id="wows1_0"/>If you are using this for the first time, click on the Apply and fill out the form. </p></li>
     <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_2.png')}}" alt="Step 1. Apply " title=" " id="wows1_1"/><p id="wows1_1"/>After clicking apply this form will appear, you must fill up this form yourself.</p></li>

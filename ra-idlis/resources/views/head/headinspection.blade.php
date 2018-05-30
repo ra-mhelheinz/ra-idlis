@@ -15,9 +15,9 @@
         <font size="24px">Assessment Tool</font>
         <span style="float:right">
           <div class="btn-group">
-            <a href="#"><button type="button"  class="btn btn-primary active">Part I</button></a>
-            <a href="{{asset('/headinspection2')}}"><button type="button"  class="btn btn-primary">Part II</button></a>
-            <a href="{{asset('/headinspection3')}}"><button type="button"  class="btn btn-primary">Part III</button></a>
+            <a href="#"><button type="button"  class="btn-primarys active">Part I</button></a>
+            <a href="{{asset('/headinspection2')}}"><button type="button"  class="btn-primarys">Part II</button></a>
+            <a href="{{asset('/headinspection3')}}"><button type="button"  class="btn-primarys">Part III</button></a>
           </div>
         </span>
       </div>

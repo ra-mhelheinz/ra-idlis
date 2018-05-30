@@ -32,7 +32,7 @@
               </td>
               <td>
                 <center>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn-primarys">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                 </center>
@@ -58,7 +58,7 @@
               </td>
               <td>
                 <center>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn-primarys">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                 </center>
@@ -84,7 +84,7 @@
               </td>
               <td>
                 <center>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn-primarys">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                 </center>
@@ -110,7 +110,7 @@
               </td>
               <td>
                 <center>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn-primarys">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                 </center>
@@ -136,7 +136,7 @@
               </td>
               <td>
                 <center>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn-primarys">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                 </center>
@@ -162,7 +162,7 @@
               </td>
               <td>
                 <center>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn-primarys">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                 </center>
@@ -188,7 +188,7 @@
               </td>
               <td>
                 <center>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn-primarys">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                 </center>
@@ -214,7 +214,7 @@
               </td>
               <td>
                 <center>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn-primarys">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                 </center>
@@ -240,7 +240,7 @@
               </td>
               <td>
                 <center>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn-primarys">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                 </center>
@@ -263,8 +263,8 @@
           <div class="col-sm-6" >
               <label>Recommended for Inspection?</label>
               <!-- data-toggle="modal" data-target="#exampleModalCenter" -->
-        <a href="#" style="text-decoration: none" data-toggle="modal" data-target="#modalins"><button class="btn btn-outline-success">Yes</button></a>
-        <button class="btn btn-outline-danger">No</button>
+        <a href="#" data-toggle="modal" data-target="#modalins"><button class="btn-primarys">Yes</button></a>
+        <button class="btn-defaults">No</button>
           </div>  
           <div class="col-sm-6">
             <span>
@@ -281,9 +281,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
-       <h5 class="showHospit" style="display: none">Since YES you will proceed to Order of Payment.</h5>
-       <h5 class="showConfirm">Are you sure you want to confirm?</h5>
-       <ul class="showHospit" style="display:none">
+                <table  class="showConfirm">
+                <td><h5>Are you sure you want to confirm?</h5></td>
+                <td><button type="button" class="btn-primarys showConfirm" onclick="showNow()">Yes</button></td>
+                <td><button type="button" class="btn-defaults showConfirm" data-dismiss="modal">No</button></td>
+               </table>
+       <div class="showHospit" style="display: none"><h5>Since YES you will proceed to Order of Payment.</h5>
+        <ul>
           <ol><a href="{{asset('/dashboard/evaluate/orderofpayment')}}">Hospital Based Private</a></ol>
           <ol><a href="{{asset('/dashboard/evaluate/orderofpayment2')}}">Hospital Based Government</a></ol>
           <ol><a href="{{asset('/dashboard/evaluate/orderofpayment3')}}">Non-Hospital based other Health Facilities</a></ol>
@@ -291,12 +295,9 @@
           <ol><a href="{{asset('/dashboard/evaluate/orderofpayment5')}}">Dental Laboratory</a></ol>
           <ol><a href="{{asset('/dashboard/evaluate/orderofpayment6')}}">Non-Hospital Based with Ancillary</a></ol>
        </ul>
-      </div>
-      <div class="modal-footer">
-         <button type="button" class="btn btn-primary showConfirm" onclick="showNow()">Yes</button>
-        <button type="button" class="btn btn-danger showConfirm" data-dismiss="modal">No</button>
-        <button type="button" class="btn btn-warning showHospit" style="display:none" onclick="showNow2()">Cancel</button>
-
+       <div class="text-center"><button type="button" class="btn btn-warning showHospit" data-dismiss="modal" style="display:none" onclick="showNow2()">Cancel</button></div>
+       </div>
+               
       </div>
       <script type="text/javascript">
         function showNow(){

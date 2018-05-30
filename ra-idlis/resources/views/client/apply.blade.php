@@ -164,42 +164,42 @@
 			<table class="attachments table" style="width: 100%;">
 				<tr>
 					<td>Acknowledgement (Notarized) </td>
-					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
 					<td>List of Personnel (with proof of qualification)</td>
-					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
 					<td>List of Equipments</td>
-					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
 					<td>List of Ancillary Services (if applicable)</td>
-					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
 					<td>Application Form (Medical X-ray)</td>
-					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
 					<td>Application Form (Hospital Pharmacy)</td>
-					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
 					<td>Geographic Form (Location Map of the Facility)</td>
-					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
 					<td>Photographs of exterior and interior of the Health Facility</td>
-					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
-					<td colspan="2" class="text-center"><button class="btn btn-outline-success"  data-toggle="modal" data-target="#exampleModalCenter">Submit</button></td>
+					<td colspan="2" class="text-center"><button style="background-color: #228B22 !important" class="btn-primarys"  data-toggle="modal" data-target="#exampleModalCenter">Submit</button></td>
 				</tr>
 				<tr>
 					<td>Copy of OR for Application fee</td>
-					<td><button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 			</table>
 		</div>
