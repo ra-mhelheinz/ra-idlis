@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Hash;
+use DB;
 class ClientController extends Controller
 {
     public function clientlogin(Request $request){
   		if($request->isMethod('get')){
-   			return view('client.login');
+            $regions = DB::table('region')->get();
+   			return view('client.login',['regions' => $regions]);
    		} 
         if($request->isMethod('post')){
             // $uname=$request->input('uname');

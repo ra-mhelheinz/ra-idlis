@@ -106,8 +106,9 @@
 			</div><!--.login-tab-content-->
 			<div id="signup-tab-content" >
 				<form class="signup-form" action="{{asset('/register')}}" method="post">
+				<input type="hidden" name="_token" id="reg_csrf-token" value="{{ Session::token() }}" />
 			{{ csrf_field() }}
-			<div class="col-sm-12" style="dispplay :none">
+			<div class="col-sm-12" style="display :none">
 				@if (session()->has('reg_notif_success'))
 					<div class="alert alert-success alert-dismissible fade show" role="alert">
 					  <strong><i class="fas fa-check"></i></strong> {{ session()->get('reg_notif_success') }}
@@ -156,30 +157,16 @@
 						<h5>Address</h5>
 					</div>			
 					<div class="col-sm-6" style="margin:0 0 .8em 0;">
-					<select onchange="RegioN();" id="region" name="region" class="form-control">
-						<option>Select Region</option>
-						<option>NCR</option>
-						<option>CAR</option>
-						<option>Region I</option>
-						<option>Region II</option>
-						<option>Region III</option>
-						<option>Region IV-A</option>
-						<option>Region IV-B</option>
-						<option>Region V</option>
-						<option>Region VI</option>
-						<option>Region VII</option>
-						<option>Region VIII</option>
-						<option>Region IX</option>
-						<option>Region X</option>
-						<option>Region XI</option>
-						<option>Region XII</option>
-						<option>Region XIII</option>
-						<option>ARMM</option>
+					<select id="selectRegion4CM" name="region" class="form-control" required>
+						<option value="0">Select Region</option>
+						@foreach ($regions as $region)
+							<option value="{{$region->reg_id}}">{{$region->reg_name}}</option>
+						@endforeach
 					</select>
 					</div>
 					<div class="col-sm-6" style="margin:0 0 .8em 0;">
-					<select id="anotherClassSelector" class="form-control" name="province" onchange="ProvincE();">
-						<option>Province</option>
+					<select id="selectProvince4Cm" class="form-control" name="province">
+						<option value="0">Province</option>
 					</select>
 					</div>
 				<div class="col-sm-6">
@@ -231,55 +218,25 @@
 </div>
 </header>
 <script type="text/javascript">
-	function RegioN(){	
-			// document.getElementById('regionSelector').options[document.getElementById('regionSelector').selectedIndex].id
-			hideUnhideClassType(document.getElementById('region').selectedIndex);		
-		}
-		function hideUnhideClassType(region){
-			var arr = {
-						0: "Province",
-						1: "Province, Metro Manila", // NCR
-						2: "Province, Abra, Apayao, Benguet, Ifugao, Kalinga, Mountain Province", // CAR
-						3: "Province, Ilocos Norte, Ilocos Sur, La Union, Pangasinan", // Region 1
-						4: "Province, Batanes, Cagayan, Isabela, Nueva Vizcaya, Quirino", // Region 2
-						5: "Province, Aurora, Bataan, Bulacan, Nueva Ecija, Pampanga, Tarlac, Zambales", // Region 3
-						6: "Province, Batangas, Cavite, Laguna, Quezon, Rizal", // Region 4-A
-						7: "Province, Marinduque, Occidental Mindoro, Oriental Mindoro, Palawan, Romblon", // Region 4-B
-						8: "Province, Albay, Camarines Norte, Camarines Sur, Catanduanes, Masbate, Sorsogon", // Region 5
-						9: "Province, Aklan, Antique, Capiz, Iloilo, Guimaras, Negros Occidental", // Region 6
-						10: "Province, Bohol, Cebu, Negros Oriental, Siquijor", // Region 7
-						11: "Province, Biliran, Eastern Samar, Leyte, Nothern Samar, Samar (Western Samar), Southern Leyte", // Region 8 
-						12: "Province, Zamboanga del Norte, Zamboanga del Sur, Zamboanga Sibugay", // Region 9 
-						13: "Province, Bukidnon, Camiguin, Lanao del Norte, Misamis Occidental, Misamis Oriental", // Region 10
-						14: "Province, Compostela Valley, Davao del Norte, Davao del Sur, Davao Occidental, Davao Oriental", // Region 11
-						15: "Province, Cotabato (North Cotabato), South Cotabato, Sultan Kudarat, Sarangani", // Region 12
-						16: "Province, Agusan del Norte, Agusan del Sur, Surigao del Norte, Surigao del Sur, Dinagat Islands", // Region 13
-						17: "Province, Basilan, Lanao del Sur, Maguindanao, Sulu, Tawi-Tawi" // ARMM
-				};
-			if (region === 0 || region === null) {
-				document.getElementById('anotherClassSelector').innerHTML = '<option>'+arr[region]+'</option>'
-			} else {
-				var anotherArr = arr[region].split(", ");
-				document.getElementById('anotherClassSelector').innerHTML = '';
-					for(var i = 0; i < anotherArr.length; i++) {
-						document.getElementById('anotherClassSelector').innerHTML += '<option>'+anotherArr[i]+'</option>';
-					}
-			}
-		}
-	function ProvincE(){
-		var getProvince = $('#anotherClassSelector').children(":selected").val();
-		getCityMunipal(getProvince);
-	}
-	function getCityMunipal(getProvince){
-		var arr = {
-					'Abra' : "City/Municipality Name, Bangued, Boliney, Bucay, Bucloc, Daguioman, Danglas, Dolores, La Paz, Lacub, Lagangilang, Lagayan, Langiden, Licuan, Luba, Malibcong"
-				  };
-		var anotherArr = arr[getProvince].split(", ");
-		document.getElementById('CityMunicpalSelector').innerHTML = '';
-					for(var i = 0; i < anotherArr.length; i++) {
-						document.getElementById('CityMunicpalSelector').innerHTML += '<option>'+anotherArr[i]+'</option>';
-					}
-	}
+	  $("#selectRegion4CM").change(function(){
+      	var region_id = $(this).val();
+      	var token = $("#reg_csrf-token").val();
+      	// alert(token);
+      $.ajax({
+          url: " {{asset('/ph/get_province')}}",
+          method: 'POST',
+          data: {reg_id:region_id, _token:token},
+          success: function(data) {
+          	var x = data.provinces;
+          	$('#selectProvince4Cm').empty();
+          	for (var i = 0; i < x.length; i++) {
+          		$('#selectProvince4Cm').append(
+          				'<option value="'+x[i].pro_id+'">'+x[i].pro_name +'</option>'
+          			);
+          	}
+          }
+      });
+  });
 	function checkPass(){
 		var pass1 = $("#pass1").val();
 		var pass2 = $("#pass2").val();
