@@ -42,3 +42,5 @@ Route::get('/headevaluate', 'headController@headevaluate');
 Route::get('/headinspection', 'headController@headinspection');
 Route::get('/headinspection2', 'headController@headinspection2');
 Route::get('/headinspection3', 'headController@headinspection3');
+// -----------------------------------------------
+Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
