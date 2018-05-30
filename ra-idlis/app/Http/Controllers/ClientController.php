@@ -68,5 +68,10 @@ class ClientController extends Controller
     		return view('client.issuance');
     	}
     }
+    public function orderofpaymentc(Request $request){
+        if($request->isMethod('get')){
+            return view('client.orderofpaymentc');
+        }
+    }
 
 }

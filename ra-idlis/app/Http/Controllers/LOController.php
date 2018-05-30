@@ -41,4 +41,34 @@ class LOController extends Controller
             return view('LO.LOinspection3');
          }
    }
+   public function LOorderofpayment(Request $request){
+      if($request->isMethod('get')){
+            return view('LO.LOorderofpayment');
+         }
+   }
+   public function LOorderofpayment2(Request $request){
+      if($request->isMethod('get')){
+            return view('LO.LOorderofpayment2');
+         }
+   }
+   public function LOorderofpayment3(Request $request){
+      if($request->isMethod('get')){
+            return view('LO.LOorderofpayment3');
+         }
+   }
+   public function LOorderofpayment4(Request $request){
+      if($request->isMethod('get')){
+            return view('LO.LOorderofpayment4');
+         }
+   }
+   public function LOorderofpayment5(Request $request){
+      if($request->isMethod('get')){
+            return view('LO.LOorderofpayment5');
+         }
+   }
+   public function LOorderofpayment6(Request $request){
+      if($request->isMethod('get')){
+            return view('LO.LOorderofpayment6');
+         }
+   }
 }
