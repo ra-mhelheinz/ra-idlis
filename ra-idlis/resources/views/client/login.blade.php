@@ -107,7 +107,6 @@
 			<div id="signup-tab-content" >
 				<form class="signup-form" action="{{asset('/register')}}" method="post">
 				<input type="hidden" name="_token" id="reg_csrf-token" value="{{ Session::token() }}" />
-			{{ csrf_field() }}
 			<div class="col-sm-12" style="display :none">
 				@if (session()->has('reg_notif_success'))
 					<div class="alert alert-success alert-dismissible fade show" role="alert">

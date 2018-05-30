@@ -33,8 +33,23 @@ class ClientController extends Controller
     		return view('client.register');
     	}
         if($request->isMethod('post')){
-            return view('client.login');
-        }    }
+          $data['facility_name'] = $request->input('facility_name');
+          $data['region'] = $request->input('region');
+          $data['province'] = $request->input('province');
+          $data['brgy'] = $request->input('brgy');
+          $data['street'] = $request->input('street');
+          $data['city_muni'] = $request->input('city_muni');
+          $data['zip'] = $request->input('zipcode');
+          $data['authorized'] = $request->input('auth_name');
+          $data['uname'] = $request->input('uname');
+          $data['pass'] = Hash::make($request->input('pass2'));
+          $data['email'] = $request->input('email');
+          $data['contact_p'] = $request->input('contact_p');
+          return 'test';
+          // return print_r($data);
+            // return view('client.login');
+        }    
+    }
     public function home(Request $request){
     	if($request->isMethod('get')){
     		return view('client.index');
