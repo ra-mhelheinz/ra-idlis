@@ -33,6 +33,7 @@ class ClientController extends Controller
     		return view('client.register');
     	}
         if($request->isMethod('post')){
+
           $data['facility_name'] = $request->input('facility_name');
           $data['region'] = $request->input('region');
           $data['province'] = $request->input('province');
@@ -45,7 +46,47 @@ class ClientController extends Controller
           $data['pass'] = Hash::make($request->input('pass2'));
           $data['email'] = $request->input('email');
           $data['contact_p'] = $request->input('contact_p');
-          return 'test';
+          $checkUser = DB::table('x08')->where('u_uname', $data['uname'])->exists();
+          if ($checkUser == true) {
+              return back();
+              // return 'Test';
+          } else {
+            // DB::table('x08')->insert(
+            //     [
+            //         'u_uname' => $data['uname'],
+            //         'u_pass' => $data['pass'],
+            //         'grp_id' => 5,
+            //     ]
+            // );
+                return 'check';
+            // return back();
+          }
+            //DB::getPdo()->lastInsertId();
+            //   DB::table('accounts')->insert(
+            //     ['facility_name' => $data['facility_name'],
+            //     'region' => $data['region'],
+            //     'province' => $data['province'],
+            //     'brgy' => $data['brgy'],
+            //     'street' => $data['street'],
+            //     'city_mun' => $data['city_muni'],
+            //     'zip' => $data['zip'],
+            //     'authorized' => $data['authorized'],
+            //     'username' => $data['uname'],
+            //     'password' => $data['pass'],
+            //     'email' => $data['email'],
+            //     'contact_p' => $data['contact_p'],
+            //     ]
+            // );
+          // DB::table('x08')->insert(
+          //       [
+          //           'u_uname' => $data['uname'],
+          //           'u_pass' => $data['pass']
+          //       ]
+          //   );
+          // $lastInserted = DB::getPdo()->lastInsertId();
+          
+          // return print_r($checkUser);
+          // return 'test';
           // return print_r($data);
             // return view('client.login');
         }    

@@ -77,7 +77,7 @@
 
 		<div class="tabss-content" >
 			<div id="login-tab-content" class="active">
-				<form class="login-form needs-validation" action="{{asset('/')}}" method="post" novalidate>
+				<form class="login-form" action="{{asset('/')}}" method="post" novalidate data-parsley-validate>
 					{{ csrf_field()}}
 					@if (session()->has('client_login'))
 					<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -87,14 +87,14 @@
 					  </button>
 					</div>
 					@endif
-					<input type="text" class="input form-control" name="uname" autocomplete="on" placeholder="Username" value="{{ old('uname')}}">
+					<input type="text" style="margin: 0 0 .8em 0;" class="input form-control" name="uname" autocomplete="on" placeholder="Username" value="{{ old('uname')}}">
 					<div class="valid-feedback">
 				        Looks good!
 				     </div>
 				     <div class="invalid-feedback">
 			          Please choose a username.
 			        </div>
-					<input type="password" class="input form-control" name="pass" autocomplete="on" placeholder="Password">
+					<input type="password" style="margin: 0 0 .8em 0;" class="input form-control" name="pass" autocomplete="on" placeholder="Password">
 					<input type="checkbox" class="checkbox 	" id="remember_me">
 					<label for="remember_me">Remember me</label>
 
@@ -105,7 +105,7 @@
 				</div>
 			</div><!--.login-tab-content-->
 			<div id="signup-tab-content" >
-				<form class="signup-form" action="{{asset('/register')}}" method="post">
+				<form class="signup-form" action="{{asset('/register')}}" method="post" data-parsley-validate="">
 				<input type="hidden" name="_token" id="reg_csrf-token" value="{{ Session::token() }}" />
 			<div class="col-sm-12" style="display :none">
 				@if (session()->has('reg_notif_success'))
@@ -146,60 +146,60 @@
 						</div>
 					</div>	
 					<div class="row">
-						<div class="col-sm-12">
-							<input type="text" class="input form-control" autocomplete="off" name="facility_name" placeholder="Name of Facility (Complete Name)" required>
+						<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+							<input type="text" class="input form-control" autocomplete="off" name="facility_name" placeholder="Name of Facility (Complete Name)" data-parsley-required-message="<strong>*</strong>Facility name <strong>Required</strong>"  value="{{ old('facility_name') }}" required="">
 						</div>
 
 					<hr>
 					
-					<div class="col-sm-12">
+					<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 						<h5>Address</h5>
 					</div>			
-					<div class="col-sm-6" style="margin:0 0 .8em 0;">
-					<select id="selectRegion4CM" name="region" class="form-control" required>
-						<option value="0">Select Region</option>
+					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
+					<select id="selectRegion4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Region <strong>Required</strong>" required="">
+						<option value="">Select Region</option>
 						@foreach ($regions as $region)
 							<option value="{{$region->reg_id}}">{{$region->reg_name}}</option>
 						@endforeach
 					</select>
 					</div>
-					<div class="col-sm-6" style="margin:0 0 .8em 0;">
-					<select id="selectProvince4Cm" class="form-control" name="province">
-						<option value="0">Province</option>
+					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
+					<select id="selectProvince4Cm" data-parsley-required-message="<strong>*</strong>Province <strong>Required</strong>" class="form-control" name="province"  required="">
+						<option value="">Province</option>
 					</select>
 					</div>
-				<div class="col-sm-6">
-					<input type="text" class="input form-control" name="brgy" autocomplete="off" placeholder="Brgy. Name" required>
+				<div class="col-sm-6" style="margin: 0 0 .8em 0;">
+					<input type="text" class="input form-control" name="brgy" autocomplete="off" placeholder="Brgy. Name" data-parsley-required-message="<strong>*</strong>Barangay name <strong>Required</strong>" required="">
 				</div>
-					<div class="col-sm-6">
-					<input type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name" required>
+					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
+					<input type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name"   data-parsley-required-message="<strong>*</strong>Street Name <strong>Required</strong>" required="">
 				</div>
-				<div class="col-sm-8">
+				<div class="col-sm-8" style="margin: 0 0 .8em 0;">
 					<!-- <select  id="CityMunicpalSelector" class="form-control">
 						<option>City/Municipality Name</option>
 					</select> -->
-					<input type="text" class="input form-control" name="city_muni" autocomplete="off" placeholder="City/Municipality Name" required>
+					<input type="text" class="input form-control" name="city_muni" autocomplete="off" placeholder="City/Municipality Name" data-parsley-required-message="<strong>*</strong>City/Municipal Name <strong>Required</strong>" required="">
 				</div>
-					<div class="col-sm-4">
-					<input type="text" class="input form-control" name="zipcode" autocomplete="off" placeholder="Zip Code" required>
+				<div class="col-sm-4" style="margin: 0 0 .8em 0;">
+					<input type="text" class="input form-control" name="zipcode" autocomplete="off" placeholder="Zip Code"  required=""  data-parsley-type="digits" data-parsley-maxlength="4" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>">
 				</div>
-					<div class="col-sm-12">
-					<input type="text" class="input form-control" name="auth_name" autocomplete="off" placeholder="Authorized Signature" required>
+				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+					<input type="text" class="input form-control" name="auth_name" autocomplete="off" placeholder="Authorized Signature" data-parsley-required-message="<strong>*</strong>Authorized Signature <strong>Required</strong>"  required="">
 				</div>
-				<div class="col-sm-12">
-					<input type="text" class="input form-control" name="uname" autocomplete="off" placeholder="Username" required>
+				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+					<input type="text" class="input form-control" name="uname" autocomplete="off" placeholder="Username" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" required="">
 				</div>
-				<div class="col-sm-12">
-					<input onkeyup="checkPass();" type="password" class="input form-control" id="pass1" name="pass1" autocomplete="off" placeholder="Password"  required>
+				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+					<input type="password" class="input form-control" id="pass1" data-parsley-equalto="#pass1" name="pass2" autocomplete="off" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Password</strong>" placeholder="Password"  required="">
 				</div>
-				<div class="col-sm-12">
-					<input onkeyup="checkPass();" type="password" class="input form-control" id="pass2" name="pass2" autocomplete="off"   placeholder="Retype Password" required>
+				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+					<input  type="password" class="input form-control" id="pass2" name="pass2" autocomplete="off"   placeholder="Retype Password" data-parsley-equalto="#pass1" data-parsley-required-message="<strong>*</strong>Retype Password <strong>Required</strong>" required="">
 				</div>
-				<div class="col-sm-12">
-					<input type="email" class="input form-control" name="email" autocomplete="off" placeholder="Email Address" required>
+				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+					<input type="email" data-parsley-required-message="<strong>*</strong>Email Address <strong>Required</strong>" class="input form-control" name="email" autocomplete="off" placeholder="Email Address"  required="">
 				</div>
-				<div class="col-sm-12">
-					<input type="text" class="input form-control" name="contact_p" autocomplete="off" placeholder="Contact Person" required>
+				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+					<input type="text" data-parsley-required-message="<strong>*</strong>Contact Person <strong>Required</strong>" class="input form-control" name="contact_p" autocomplete="off" placeholder="Contact Person"  required="">
 				</div>
 					</div>
 				<div class="help-text">
@@ -217,6 +217,15 @@
 </div>
 </header>
 <script type="text/javascript">
+	  function register(){
+	  	var facility_name = $("input[name=facility_name]").val();
+	  	if (facility_name == "test") {
+	  		return true;
+	  	} else {
+	  		alert('Error');
+	  		return false;
+	  	}
+	  }
 	  $("#selectRegion4CM").change(function(){
       	var region_id = $(this).val();
       	var token = $("#reg_csrf-token").val();
@@ -228,6 +237,13 @@
           success: function(data) {
           	var x = data.provinces;
           	$('#selectProvince4Cm').empty();
+          	$('#selectProvince4Cm').append('<option value="">Province</option>');          	
+          	var valX = $('#selectProvince4Cm').val();
+          	if (valX == "0") {
+          		$('#selectProvince4Cm').addClass('parsley-error');
+          	} else {
+          		$('#selectProvince4Cm').removeClass('parsley-success');
+          	}
           	for (var i = 0; i < x.length; i++) {
           		$('#selectProvince4Cm').append(
           				'<option value="'+x[i].pro_id+'">'+x[i].pro_name +'</option>'
