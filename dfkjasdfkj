@@ -1,0 +1,103 @@
+[33mcommit b9b3575f9bff817fb232cc947503c3cb85b24723[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Merge: 4da41ad 7a11250
+Author: unknown <you@example.com>
+Date:   Thu May 31 00:15:25 2018 +0800
+
+    Merge
+
+[33mcommit 4da41ad113d5e8e67cdb611946248187ff158ec0[m
+Author: unknown <you@example.com>
+Date:   Thu May 31 00:08:49 2018 +0800
+
+    Update index
+
+[33mcommit 7a1125091d61014459b454e9c3957aacadbaa545[m
+Author: Mhel Heinz Debalucos <killerswar2@github.com>
+Date:   Thu May 31 00:06:28 2018 +0800
+
+    Added Validation in Registration
+
+[33mcommit 5627231348a8916881076074472760511cd723fb[m
+Author: Mhel Heinz Debalucos <killerswar2@github.com>
+Date:   Wed May 30 17:42:55 2018 +0800
+
+    Added Backend for registration
+
+[33mcommit bc67282245d4f142fb9e3c931823154112f4fe45[m
+Merge: ce8bdb4 5c0e499
+Author: unknown <you@example.com>
+Date:   Wed May 30 17:37:55 2018 +0800
+
+    Added region and province via database
+
+[33mcommit ce8bdb468d9e351d68d3d8833caa67e8fd0240a6[m
+Author: unknown <you@example.com>
+Date:   Wed May 30 17:24:56 2018 +0800
+
+    Updating orderofpayment from client
+
+[33mcommit 5c0e49968af914512c6c458e92dd5832744009be[m
+Author: Mhel Heinz Debalucos <killerswar2@github.com>
+Date:   Wed May 30 15:10:57 2018 +0800
+
+    Added Database Driven Region and Provinces
+
+[33mcommit 011c18c0801445a38ac7a6e31dff1ae0ae447ede[m
+Author: unknown <you@example.com>
+Date:   Wed May 30 14:45:49 2018 +0800
+
+    fix respnsive
+
+[33mcommit 979d3440fea0f531bd2087a82bc8dd6cf1d4becc[m
+Author: unknown <you@example.com>
+Date:   Wed May 30 11:52:51 2018 +0800
+
+    Add Payments
+
+[33mcommit af6fc768ee3ffe08daddec4716b394ffdf949f2a[m
+Author: unknown <you@example.com>
+Date:   Wed May 30 11:32:38 2018 +0800
+
+    update evaluate
+
+[33mcommit ad160752dddc93453d80e647adb515a3e5aeb9a7[m
+Author: Mhel Heinz Debalucos <killerswar2@github.com>
+Date:   Wed May 30 11:31:02 2018 +0800
+
+    Added Modal in Recommended for Inspection
+
+[33mcommit 087fb7fd3ce822d7481e3d63ffe3e6c43b86f0b5[m
+Author: unknown <you@example.com>
+Date:   Tue May 29 19:58:44 2018 +0800
+
+    Adding step by step image in client's view
+
+[33mcommit 688d7681569105c6a5325771a7cad175dcc2a426[m
+Author: Mhel Heinz Debalucos <killerswar2@github.com>
+Date:   Tue May 29 16:17:11 2018 +0800
+
+    Client Steps Pictures
+
+[33mcommit 26db1a0bbce4ab6029b39a3ed7226779a37a1351[m
+Author: unknown <you@example.com>
+Date:   Tue May 29 16:08:23 2018 +0800
+
+    Update index and issuance
+
+[33mcommit 19af5bfa8a01eb8feef05c7af6575d6b75faec18[m
+Author: unknown <you@example.com>
+Date:   Tue May 29 11:04:15 2018 +0800
+
+    Moddified index
+
+[33mcommit fc93ed8421005d41de2060023e89b97f9267991c[m
+Author: unknown <you@example.com>
+Date:   Mon May 28 19:50:49 2018 +0800
+
+    Update2
+
+[33mcommit 4d183a785337293c2f36529df3023fffb7179353[m
+Author: unknown <you@example.com>
+Date:   Mon May 28 19:47:37 2018 +0800
+
+    Updated

@@ -5,30 +5,50 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav">
             <li class="nav-item active">
               <a class="nav-link" href="#">Home
               </a>
             </li>
              <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-             <li class="nav-item">
-              <a class="nav-link" href="#">About DOH</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
-              <li class="nav-item dropdown">
-             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="fas fa-user-circle"></span>&nbsp;
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
-          <a class="dropdown-item" href="#">Logout</a>
-        </div>
+              <a class="nav-link" href="#">About</a>
             </li>
           </ul>
+        <ul class="navbar-nav ml-auto">
+               <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         <i class="fa fa-user-circle"></i>Account
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+         <div class="navbar-login">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p class="text-center">
+                                            <span class="fa fa-user icon-size"></span>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <p class="text-left"><strong>Nombre Apellido</strong></p>
+                                        <p class="text-left small">correoElectronico@email.com</p>
+                                        <p class="text-left">
+                                            <button href="#" class="btn-primarys btn-block btn-sm">View Profile</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="navbar-login navbar-login-session">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p>
+                                            <button href="#" class="btn-defaults btn-block btn-sm" style="background-color: #dc3545 ;color: #fff;">Logout</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+        </div>
+      </li>
+            </ul>
+              
         </div>
       </div>
     </nav>
@@ -62,3 +82,23 @@
  
 }
 </style> -->
+<style type="text/css">
+    .navbar-login
+{
+    width: 305px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.navbar-login-session
+{
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.icon-size
+{
+    font-size: 87px;
+}
+</style>

@@ -2,12 +2,19 @@
 @section('style')
  <link rel="stylesheet" type="text/css" href="ra-idlis/public/css/login.css">
 @endsection
+<style type="text/css">
+	@media only screen and (max-width: 770px){
+		.col-lg-7{
+			display: none;
+		}
+	}
+</style>
 @section('content')
 <header>
 	<div class="jumbotron" style="padding: 0 !important;border-radius:0;background-color: #fff !important;margin-bottom: 0;">
 		<div class="container">
 		<div class="row">
-			<div class="col-md-7" style="margin: 3em auto">
+			<div class="col-lg-7" style="margin: 3em auto">
 				<h3>DOH Licensing Process</h3>
 				<br>
 				<div class="row">
@@ -30,7 +37,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-5">
+			<div class="col-lg-5">
  				<!-- <div class="form-wrapss" style="width: 420px !important;">
  				<div class="text-center" style="background-color: #e6e7e8;">
 					<h3 style="padding: 20px;">Login</h3>
