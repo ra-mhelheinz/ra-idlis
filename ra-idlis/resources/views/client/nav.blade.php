@@ -19,7 +19,7 @@
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <i class="fa fa-user-circle"></i>Account
         </a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown">
          <div class="navbar-login">
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -40,7 +40,7 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <p>
-                                            <button href="#" class="btn-defaults btn-block btn-sm" style="background-color: #dc3545 ;color: #fff;">Logout</button>
+                                            <button href="#" class="btn-defaults btn-block btn-sm">Logout</button>
                                         </p>
                                     </div>
                                 </div>

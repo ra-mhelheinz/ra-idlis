@@ -6,35 +6,9 @@
 <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/engine1/style.css')}}" />
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/jquery.js')}}"></script>
 <!-- End WOWSlider.com HEAD section -->
-
-<style type="text/css">
-    .carousel-inner img {
-      width: 100%;
-      height: 50%;
-  }
-/*  .divani {
-    margin-top: 5%;
-   z-index: 2;
-    position: absolute;
-    animation: mymove 3s;
-    animation-iteration-count: 1;
-        animation-fill-mode: forwards;
-}
-@-webkit-keyframes mymove {
-    from {left: 0px;}
-    to {left: 270px;}
-}
-
-@keyframes mymove {
-    from {left: 0px;}
-    to {left: 270px;}
-}*/
-
-</style>
 @section('content')
 @include('client.nav')
-
-  <div class="modal fadeInUpBig animated" id="myModal" style="  position: fixed;" >
+  <div class="modal fadeInUpBig animated" id="myModal">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">        
         <!-- Modal body -->
@@ -60,7 +34,7 @@
 </script>
 <div class="modal" id="myModal2">
   <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content zoomIn animated" style="border-radius: 0;background: transparent;border: 0 !important;">
+    <div class="modal-content zoomIn animated" style="">
 
       <!-- Modal Header -->
 <!--       <div class="modal-header">
@@ -70,7 +44,6 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        <div class="guide" style="  width: 100%;">
 <!-- Start WOWSlider.com BODY section -->
 <div id="wowslider-container1">
 <div class="ws_images"><ul>
@@ -105,8 +78,6 @@
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/wowslider.js')}}"></script>
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/script.js')}}"></script>
 </div>  
-      </div>
-
       </div>
 
     </div>
@@ -158,7 +129,7 @@ function next()
 }
 </script>
 <div class="container-fluid"> 
-    <div class="row" style="z-index:1;">
+    <div class="row">
       <div class="col-sm-12">
     <!--     <div id="mainMouse" class="divani" onclick="asdf()"> <img id="asdf1" src="https://upload.wikimedia.org/wikipedia/commons/3/39/Pointing_hand_cursor_vector.svg" class="img" style="width:45px;" hidden> <img id="asdf2" src="http://www.pngmart.com/files/3/Cursor-Arrow-PNG-Picture.png" style="width:15px;" class="img2"> </div>
         <script type="text/javascript">
@@ -174,7 +145,21 @@ function next()
         <section id="services">
       <div class="container">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-sm-4 col-md-4 col-lg-4">
+             <div class="card">
+            <h5 class="card-header">Announcements</h5>
+            <div class="card-body">
+              <form>
+                <div class="form-group">
+                  <img src="https://i0.wp.com/rmn.ph/wp-content/uploads/2017/07/Bakuna-.jpg?resize=696%2C365&ssl=1">
+                  <p>sample text sample text</p>
+                </div>
+              </form>
+            </div>
+          </div>
+          </div>
+          <div  class="col-sm-8 col-md-8 col-lg-8">
+          <div class="col-lg-12">
             <div class="box wow fadeInLeft" id="textSample">
               <div class="icon"><i class="fa fa-edit"></i></div>
               <h4 class="title"><a href="{{asset('apply')}}">Step 1. Apply</a></h4>
@@ -182,7 +167,7 @@ function next()
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-12">
             <div class="box wow fadeInRight">
               <div class="icon"><i class="fa fa-check"></i></div>
               <h4 class="title"><a href="{{asset('evaluate')}}">Step 2. Evaluate</a></h4>
@@ -191,7 +176,7 @@ function next()
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-12">
             <div class="box wow fadeInLeft" data-wow-delay="0.2s">
               <div class="icon"><i class="fa fa-search"></i></div>
               <h4 class="title"><a href="{{asset('inspection')}}">Step 3. Inspection</a></h4>
@@ -199,7 +184,7 @@ function next()
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-12">
             <div class="box wow fadeInRight" data-wow-delay="0.2s">
               <div class="icon"><i class="fa fa-print"></i></div>
               <h4 class="title"><a href="{{asset('issuance')}}">Step 4. Issuance</a></h4>
@@ -207,7 +192,7 @@ function next()
               <p>Issuance Status:<font style="color:orange;">PENDING</font> </p>
             </div>
           </div>
-
+          </div>
         </div>
 
       </div>
@@ -293,21 +278,14 @@ function next()
       <div class="col-sm-2"></div>
   </div>
  <center><hr style="width:75%;"></center>
-      <div class="container" style="width:30%;">
-    <div class="row">
-      <div class="col-md-3">
-        <img src="{{asset('ra-idlis/public/img/nosmoking.png')}}" width="50" height="60">
-      </div>
-      <div class="col-md-3">
-         <img src="{{asset('ra-idlis/public/img/nogift.PNG')}}"  width="50" height="60">
-      </div>
-      <div class="col-md-3">
-        <img src="{{asset('ra-idlis/public/img/fix.PNG')}}"  width="50" height="60">
-      </div>
-      <div class="col-md-3">
-         <img src="{{asset('ra-idlis/public/img/nobreak.jpg')}}"  width="125" height="60">
-      </div>
-    </div>
-    </div>
+    <table class="text-center">
+        <td><img src="{{asset('ra-idlis/public/img/nosmoking.png')}}" width="50" height="60"></td>
+
+        <td><img src="{{asset('ra-idlis/public/img/nogift.PNG')}}"  width="50" height="60"></td> 
+
+        <td><img src="{{asset('ra-idlis/public/img/fix.PNG')}}"  width="50" height="60"></td>
+
+        <td><img src="{{asset('ra-idlis/public/img/nobreak.jpg')}}"  width="125" height="60"></td> 
+    </table>
   </div>
 @endsection
