@@ -9,7 +9,7 @@ class ClientController extends Controller
 {
     public function clientlogin(Request $request){
   		if($request->isMethod('get')){
-            $regions = DB::table('region')->get();
+        $regions = DB::table('region')->get();
    			return view('client.login',['regions' => $regions]);
    		} 
         if($request->isMethod('post')){
@@ -33,33 +33,50 @@ class ClientController extends Controller
     		return view('client.register');
     	}
         if($request->isMethod('post')){
-
-          $data['facility_name'] = $request->input('facility_name');
-          $data['region'] = $request->input('region');
-          $data['province'] = $request->input('province');
-          $data['brgy'] = $request->input('brgy');
-          $data['street'] = $request->input('street');
-          $data['city_muni'] = $request->input('city_muni');
-          $data['zip'] = $request->input('zipcode');
-          $data['authorized'] = $request->input('auth_name');
-          $data['uname'] = $request->input('uname');
-          $data['pass'] = Hash::make($request->input('pass2'));
-          $data['email'] = $request->input('email');
-          $data['contact_p'] = $request->input('contact_p');
-          $checkUser = DB::table('x08')->where('u_uname', $data['uname'])->exists();
+          $data['facility_name'] = $request->facility_name;
+          $data['region'] = $request->region;
+          $data['province'] = $request->province;
+          $data['brgy'] = $request->brgy;
+          $data['street'] = $request->street;
+          $data['city_muni'] = $request->city_muni;
+          $data['zip'] = $request->zipcode;
+          $data['authorized'] = $request->auth_name;
+          $data['uname'] = $request->uname;
+          $data['pass'] = Hash::make($request->pass2);
+          $data['email'] = $request->email;
+          $data['contact_p'] = $request->contact_p;
+          $checkUser = DB::table('x08')
+                        ->where('u_uname', '=' ,$data['uname'])
+                        ->where('grp_id' , '=' , '5')
+                        ->exists();
           if ($checkUser == true) {
-              return back();
-              // return 'Test';
+              return 'same';
           } else {
-            // DB::table('x08')->insert(
-            //     [
-            //         'u_uname' => $data['uname'],
-            //         'u_pass' => $data['pass'],
-            //         'grp_id' => 5,
-            //     ]
-            // );
-                return 'check';
-            // return back();
+            DB::table('x08')->insert(
+                [
+                    'u_uname' => $data['uname'],
+                    'u_pass' => $data['pass'],
+                    'grp_id' => 5,
+                ]
+            );
+            $lastID = DB::getPdo()->lastInsertId();
+            DB::table('client_meta')->insert(
+              [
+                'u_id' => $lastID,
+                'cm_faname' => $data['facility_name'],
+                'reg_id' => $data['region'],
+                'pro_id' => $data['province'],
+                'cm_brgy' => $data['brgy'],
+                'cm_str' => $data['street'],
+                'cm_ctmuni' => $data['city_muni'],
+                'cm_zip' => $data['zip'],
+                'cm_contp' => $data['contact_p'],
+                'cm_auth' => $data['authorized'],
+              ]
+            );
+            // return response()->json(['test'=>$data]);
+            // return "Check";
+            return 'done';
           }
             //DB::getPdo()->lastInsertId();
             //   DB::table('accounts')->insert(

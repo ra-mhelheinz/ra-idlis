@@ -105,7 +105,11 @@
 				</div>
 			</div><!--.login-tab-content-->
 			<div id="signup-tab-content" >
-				<form class="signup-form" action="{{asset('/register')}}" method="post" data-parsley-validate="">
+
+			<!-- REGISTRATION FORM -->
+
+		<form id="rform" class="signup-form" data-parsley-validate>
+			<!-- action="{{asset('/register')}}" method="post"  -->
 				<input type="hidden" name="_token" id="reg_csrf-token" value="{{ Session::token() }}" />
 			<div class="col-sm-12" style="display :none">
 				@if (session()->has('reg_notif_success'))
@@ -187,13 +191,14 @@
 					<input type="text" class="input form-control" name="auth_name" autocomplete="off" placeholder="Authorized Signature" data-parsley-required-message="<strong>*</strong>Authorized Signature <strong>Required</strong>"  required="">
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
-					<input type="text" class="input form-control" name="uname" autocomplete="off" placeholder="Username" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" required="">
+					<input type="text" class="input form-control" name="reg_uname" autocomplete="off" placeholder="Username" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" required="">
+
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
-					<input type="password" class="input form-control" id="pass1" data-parsley-equalto="#pass1" name="pass2" autocomplete="off" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Password</strong>" placeholder="Password"  required="">
+					<input type="password" data-parsley-trigger="change" class="input form-control" id="pass1" data-parsley-equalto="#pass1" name="pass2" autocomplete="off" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Password</strong>" placeholder="Password"  required="">
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
-					<input  type="password" class="input form-control" id="pass2" name="pass2" autocomplete="off"   placeholder="Retype Password" data-parsley-equalto="#pass1" data-parsley-required-message="<strong>*</strong>Retype Password <strong>Required</strong>" required="">
+					<input  type="password" data-parsley-trigger="change" class="input form-control" id="pass2" name="pass2" autocomplete="off"   placeholder="Retype Password" data-parsley-equalto="#pass1" data-parsley-required-message="<strong>*</strong>Retype Password <strong>Required</strong>" required="">
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="email" data-parsley-required-message="<strong>*</strong>Email Address <strong>Required</strong>" class="input form-control" name="email" autocomplete="off" placeholder="Email Address"  required="">
@@ -206,7 +211,7 @@
 					<p>By signing up, you agree to our</p>
 					<p><a href="#" data-toggle="modal" data-target="#exampleModalLong">Terms of service</a></p>
 				</div><!--.help-text-->	
-					<button type="submit" class="button" value="Sign Up">Sign Up</button>
+					<button  type="submit" class="button" value="Sign Up">Sign Up</button>
 					</form>
 			</div><!--.signup-tab-content-->
 		</div><!--.tabs-content-->
@@ -217,14 +222,61 @@
 </div>
 </header>
 <script type="text/javascript">
+		 $(document).ready(function() {
+	        $("#rform").on('submit', function(e){
+	            e.preventDefault();
+	            var form = $(this);
+	            form.parsley().validate();
+	            if (form.parsley().isValid()){
+	                var token = $("#reg_csrf-token").val();
+	                var facility_name = $('input[name="facility_name"]').val();
+	                var region = $('select[name="region"').val();
+	                var province = $('select[name="province"]').val();
+	                var brgy = $('input[name="brgy"]').val();
+	                var strt = $('input[name="street"]').val();
+	                var ctmuni = $('input[name="city_muni"]').val();
+	                var zipcode = $('input[name="zipcode"]').val();
+	                var auth_name = $('input[name="auth_name"]').val();
+	                var uname = $('input[name="reg_uname"]').val();
+	                var pass2 = $('input[name="pass2"]').val();
+	                var email = $('input[name="email"]').val();
+	                var contact_p = $('input[name="contact_p"]').val();
+	               $.ajax({
+			          url: " {{asset('/register')}}",
+			          method: 'POST',
+			          data: {
+			          	_token : token,
+			          	facility_name : facility_name,
+			          	region : region,
+			          	province : province,
+			          	brgy : brgy,
+			          	street : strt,
+			          	city_muni : ctmuni,
+			          	zipcode : zipcode,
+			          	auth_name : auth_name,
+			          	uname : uname,
+			          	pass2 : pass2,
+			          	email : email,
+			          	contact_p : contact_p,
+			          },
+			          success: function(data) {
+			          	if (data == 'same') {
+			          		// $('input[name="reg_uname"]').removeClass('parsley-success');
+			          		// $('input[name="reg_uname"]').addClass('parsley-error');
+			          		// $('input[name="reg_uname"]').focus();
+			          		// alert('Username has been taken');
+			          		$('input[name="reg_uname"]').parsley({ errorMessage: "Username already used" });
+			          	} else {
+			          		window.location.href = "{{asset('/')}}";
+			          	}
+			          }
+			      });
+	            }
+	        });
+	    });
 	  function register(){
-	  	var facility_name = $("input[name=facility_name]").val();
-	  	if (facility_name == "test") {
-	  		return true;
-	  	} else {
-	  		alert('Error');
-	  		return false;
-	  	}
+	  	alert();
+	  	return false;
 	  }
 	  $("#selectRegion4CM").change(function(){
       	var region_id = $(this).val();
