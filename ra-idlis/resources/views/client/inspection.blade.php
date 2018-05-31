@@ -10,8 +10,8 @@
 				<span style="float:right">
 					<div class="btn-group">
 					  <a href="#"><button type="button"  class="btn-primarys active">Part I</button></a>
-					  <a href="{{asset('inspection2')}}"><button type="button"  class="btn-primarys">Part II</button></a>
-					  <a href="{{asset('inspection3')}}"><button type="button"  class="btn-primarys">Part III</button></a>
+					  <a href="{{asset('client/inspection2')}}"><button type="button"  class="btn-primarys">Part II</button></a>
+					  <a href="{{asset('client/inspection3')}}"><button type="button"  class="btn-primarys">Part III</button></a>
 					</div>
 				</span>
 			</div>

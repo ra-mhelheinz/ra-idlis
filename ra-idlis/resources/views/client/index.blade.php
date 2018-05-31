@@ -162,7 +162,7 @@ function next()
           <div class="col-lg-12">
             <div class="box wow fadeInLeft" id="textSample">
               <div class="icon"><i class="fa fa-edit"></i></div>
-              <h4 class="title"><a href="{{asset('apply')}}">Step 1. Apply</a></h4>
+              <h4 class="title"><a href="{{asset('client/apply')}}">Step 1. Apply</a></h4>
               <p class="description">Fill-in application form and submit requirements online.</p>
             </div>
           </div>
@@ -170,7 +170,7 @@ function next()
           <div class="col-lg-12">
             <div class="box wow fadeInRight">
               <div class="icon"><i class="fa fa-check"></i></div>
-              <h4 class="title"><a href="{{asset('evaluate')}}">Step 2. Evaluate</a></h4>
+              <h4 class="title"><a href="{{asset('client/evaluate')}}">Step 2. Evaluate</a></h4>
               <p class="description">DOH will evaluate your submitted documents and notify your schedule of inspection.</p>
               <p><a href="{{asset('evaluate')}}">View your evaluation status</a></p>
             </div>
@@ -179,7 +179,7 @@ function next()
           <div class="col-lg-12">
             <div class="box wow fadeInLeft" data-wow-delay="0.2s">
               <div class="icon"><i class="fa fa-search"></i></div>
-              <h4 class="title"><a href="{{asset('inspection')}}">Step 3. Inspection</a></h4>
+              <h4 class="title"><a href="{{asset('client/inspection')}}">Step 3. Inspection</a></h4>
               <p class="description">DOH will conduct inspection and notify the status of your application.</p>
             </div>
           </div>
@@ -187,7 +187,7 @@ function next()
           <div class="col-lg-12">
             <div class="box wow fadeInRight" data-wow-delay="0.2s">
               <div class="icon"><i class="fa fa-print"></i></div>
-              <h4 class="title"><a href="{{asset('issuance')}}">Step 4. Issuance</a></h4>
+              <h4 class="title"><a href="{{asset('client/issuance')}}">Step 4. Issuance</a></h4>
               <p class="description">You can now print your application online.</p>
               <p>Issuance Status:<font style="color:orange;">PENDING</font> </p>
             </div>
