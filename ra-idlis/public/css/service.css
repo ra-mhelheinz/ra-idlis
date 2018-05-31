@@ -8,10 +8,7 @@
     width: 100%;
     height: auto;
   }
-#steps{
-    border-radius: 0;background: transparent;border: 0 !important;
-}
-  .card-body{
+    .card-body{
     height: 500px;
   }
   #services {
