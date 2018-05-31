@@ -8,8 +8,8 @@
     width: 100%;
     height: auto;
   }
-#myModal2 > div.modal-content{
-  border-radius: 0;background: transparent;border: 0 !important;
+#steps{
+    border-radius: 0;background: transparent;border: 0 !important;
 }
   .card-body{
     height: 500px;
