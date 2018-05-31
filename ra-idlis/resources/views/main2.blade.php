@@ -13,7 +13,7 @@
     @yield('style')
 </head>
 <body class="bg-light">
-    @include('LO.nav')
+    @include('doh.nav')
     @yield('content')
 <script src="{{asset('ra-idlis/public/js/bootadmin.min.js')}}"></script>
 </body>

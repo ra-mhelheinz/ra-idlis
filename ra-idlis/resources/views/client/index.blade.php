@@ -34,7 +34,7 @@
 </script>
 <div class="modal" id="myModal2">
   <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content zoomIn animated">
+    <div class="modal-content zoomIn animated" id="steps">
 
       <!-- Modal Header -->
 <!--       <div class="modal-header">
@@ -278,14 +278,14 @@ function next()
       <div class="col-sm-2"></div>
   </div>
  <center><hr style="width:75%;"></center>
-    <table class="text-center">
-        <td><img src="{{asset('ra-idlis/public/img/nosmoking.png')}}" width="50" height="60"></td>
+    <table class="text-center tableimg">
+        <td class="td"><img src="{{asset('ra-idlis/public/img/nosmoking.png')}}" width="50" height="60"></td>
 
-        <td><img src="{{asset('ra-idlis/public/img/nogift.PNG')}}"  width="50" height="60"></td> 
+        <td class="td"><img src="{{asset('ra-idlis/public/img/nogift.PNG')}}"  width="50" height="60"></td> 
 
-        <td><img src="{{asset('ra-idlis/public/img/fix.PNG')}}"  width="50" height="60"></td>
+        <td class="td"><img src="{{asset('ra-idlis/public/img/fix.PNG')}}"  width="50" height="60"></td>
 
-        <td><img src="{{asset('ra-idlis/public/img/nobreak.jpg')}}"  width="125" height="60"></td> 
+        <td class="td"><img src="{{asset('ra-idlis/public/img/nobreak.jpg')}}"  width="125" height="60"></td> 
     </table>
   </div>
 @endsection

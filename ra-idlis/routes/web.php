@@ -14,14 +14,14 @@
 
 Route::match(['get', 'post'], '/', 'ClientController@clientlogin');
 Route::match(['get', 'post'], '/register', 'ClientController@registerclient');
-Route::get('/home', 'ClientController@home');
-Route::get('/apply', 'ClientController@apply');
-Route::get('/evaluate', 'ClientController@evaluate');
-Route::get('/orderofpaymentc', 'ClientController@orderofpaymentc');
-Route::get('/inspection', 'ClientController@inspection');
-Route::get('/inspection2', 'ClientController@inspection2');
-Route::get('/inspection3', 'ClientController@inspection3');
-Route::get('/issuance', 'ClientController@issuance');
+Route::get('client/home', 'ClientController@home');
+Route::get('client/apply', 'ClientController@apply');
+Route::get('client/evaluate', 'ClientController@evaluate');
+Route::get('client/orderofpaymentc', 'ClientController@orderofpaymentc');
+Route::get('client/inspection', 'ClientController@inspection');
+Route::get('client/inspection2', 'ClientController@inspection2');
+Route::get('client/inspection3', 'ClientController@inspection3');
+Route::get('client/issuance', 'ClientController@issuance');
 Route::match(['get', 'post'], '/employeelogin', 'LOController@employeelogin');
 Route::get('/LOdashboard', 'LOController@LOdashboard');
 Route::get('/LOprocess', 'LOController@LOprocess');
@@ -48,5 +48,6 @@ Route::get('/headorderofpayment6', 'headController@headorderofpayment6');
 Route::get('/headinspection', 'headController@headinspection');
 Route::get('/headinspection2', 'headController@headinspection2');
 Route::get('/headinspection3', 'headController@headinspection3');
+Route::get('/dashboard', 'DOHController@dashboard');
 // -----------------------------------------------
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
