@@ -34,7 +34,7 @@
 </script>
 <div class="modal" id="myModal2">
   <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content zoomIn animated" style="">
+    <div class="modal-content zoomIn animated">
 
       <!-- Modal Header -->
 <!--       <div class="modal-header">
