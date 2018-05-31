@@ -13,19 +13,27 @@ class ClientController extends Controller
    			return view('client.login',['regions' => $regions]);
    		} 
         if($request->isMethod('post')){
-            // $uname=$request->input('uname');
-            // $pass= $request->input('pass');
-            // $pass = Hash::check('pass', $pass);
-            // $data = DB::select('select * from accounts where username=? and password=? limit 1', [$uname, $pass])->first();
-            // if (count($data)){
-            //     session()->put('current_user',$data);
-            //     return redirect('/home');
-            // }
-            //  else{
-            //     session()->flash('client_login','Invalid Username/Password');
-            //     return back();
-            //  }
-            return view('client.login');
+            $uname=$request->input('log_uname');
+            $pass= $request->input('log_pass');
+            $pass = Hash::check('pass', $pass);
+            $data = DB::table('x08')
+                    ->where([ ['u_uname', '=', $uname], ['u_pass', '=', $pass], ['grp_id', '=', '5'] ])
+                    ->first();
+            if (count($data)){
+                $clientUser  = DB::table('x08')
+                                ->join('client_meta', 'x08.u_id', '=', 'client_meta.u_id')
+                                ->join('region', 'client_meta.reg_id', '=', 'region.reg_id')
+                                ->join('province', 'client_meta.pro_id', '=', 'province.pro_id')
+                                ->select('x08.u_id', 'client_meta.*', 'region.reg_name', 'province.pro_name')
+                                ->first()
+                                ;
+                session()->put('client_data',$data);
+                return redirect('/home');
+            }
+             else{
+                session()->flash('client_login','Invalid Username/Password');
+                return back();
+             }
         }
     }
     public function registerclient(Request $request){
@@ -71,6 +79,7 @@ class ClientController extends Controller
                 'cm_ctmuni' => $data['city_muni'],
                 'cm_zip' => $data['zip'],
                 'cm_contp' => $data['contact_p'],
+                'cm_email' => $data['email'],
                 'cm_auth' => $data['authorized'],
               ]
             );
@@ -78,34 +87,6 @@ class ClientController extends Controller
             // return "Check";
             return 'done';
           }
-            //DB::getPdo()->lastInsertId();
-            //   DB::table('accounts')->insert(
-            //     ['facility_name' => $data['facility_name'],
-            //     'region' => $data['region'],
-            //     'province' => $data['province'],
-            //     'brgy' => $data['brgy'],
-            //     'street' => $data['street'],
-            //     'city_mun' => $data['city_muni'],
-            //     'zip' => $data['zip'],
-            //     'authorized' => $data['authorized'],
-            //     'username' => $data['uname'],
-            //     'password' => $data['pass'],
-            //     'email' => $data['email'],
-            //     'contact_p' => $data['contact_p'],
-            //     ]
-            // );
-          // DB::table('x08')->insert(
-          //       [
-          //           'u_uname' => $data['uname'],
-          //           'u_pass' => $data['pass']
-          //       ]
-          //   );
-          // $lastInserted = DB::getPdo()->lastInsertId();
-          
-          // return print_r($checkUser);
-          // return 'test';
-          // return print_r($data);
-            // return view('client.login');
         }    
     }
     public function home(Request $request){

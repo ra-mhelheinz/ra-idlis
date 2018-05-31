@@ -38,53 +38,14 @@
 				</div>
 			</div>
 			<div class="col-lg-5">
- 				<!-- <div class="form-wrapss" style="width: 420px !important;">
- 				<div class="text-center" style="background-color: #e6e7e8;">
-					<h3 style="padding: 20px;">Login</h3>
-				</div>
- 					<div class="tabss-content">
- 
-
-			<div id="login-tab-content" class="active">
-				<form class="login-form needs-validation" action="{{asset('/')}}" method="post" novalidate>
-					{{ csrf_field()}}
-					@if (session()->has('client_login'))
-					<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('client_login')}}
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					    <span aria-hidden="true">&times;</span>
-					  </button>
-					</div>
-					@endif
-					<input type="text" class="input form-control" name="uname" autocomplete="on" placeholder="Username" value="{{ old('uname')}}">
-					<div class="valid-feedback">
-				        Looks good!
-				     </div>
-				     <div class="invalid-feedback">
-			          Please choose a username.
-			        </div>
-					<input type="password" class="input form-control" name="pass" autocomplete="on" placeholder="Password">
-					<input type="checkbox" class="checkbox 	" id="remember_me">
-					<label for="remember_me">Remember me</label>
-
-					<button type="submit" name="button" class="button" value="Login">Login</button>
-				</form>.login-form
-				<div class="help-text">
-					<p>Not a member yet?<a href="{{asset('register')}}">&nbsp;Register now</a></p>
-					<p><a href="{{asset('employeelogin')}}">DOH employee login</a></p>
-				</div>.help-text
-			</div>.login-tab-content
-		</div>.tabs-content
-	</div>.form-wrap -->
 	<div class="form-wrapss">
 		<div class="tabss">
 			<h3 class="login-tab"><a class="active" href="#login-tab-content">Login</a></h3>
 			<h3 class="signup-tab"><a  href="#signup-tab-content">Sign Up</a></h3>
 		</div><!--.tabs-->
-
 		<div class="tabss-content" >
 			<div id="login-tab-content" class="active">
-				<form class="login-form" action="{{asset('/')}}" method="post" novalidate data-parsley-validate>
+				<form class="login-form" action="{{asset('/')}}" method="post" data-parsley-validate>
 					{{ csrf_field()}}
 					@if (session()->has('client_login'))
 					<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -94,17 +55,11 @@
 					  </button>
 					</div>
 					@endif
-					<input type="text" style="margin: 0 0 .8em 0;" class="input form-control" name="uname" autocomplete="on" placeholder="Username" value="{{ old('uname')}}">
-					<div class="valid-feedback">
-				        Looks good!
-				     </div>
-				     <div class="invalid-feedback">
-			          Please choose a username.
-			        </div>
-					<input type="password" style="margin: 0 0 .8em 0;" class="input form-control" name="pass" autocomplete="on" placeholder="Password">
-					<input type="checkbox" class="checkbox 	" id="remember_me">
+					<input type="text" style="margin: 0 0 .8em 0;" class="input form-control" name="log_uname" autocomplete="off" placeholder="Username" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" value="{{ old('log_uname')}}" required="">
+					<input type="password" style="margin: 0 0 .8em 0;" class="input form-control" name="log_pass" autocomplete="off" placeholder="Password" data-parsley-required-message="<strong>*</strong>Password <strong>Required</strong>" required="">
+					<input type="checkbox" class="checkbox" id="remember_me">
 					<label for="remember_me">Remember me</label>
-
+					
 					<button type="submit" name="button" class="button" value="Login">Login</button>
 				</form>
 				<div class="help-text text-center" style="margin-top: 10px;">
