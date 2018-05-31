@@ -28,8 +28,8 @@
                                         </p>
                                     </div>
                                     <div class="col-lg-8">
-                                        <p class="text-left"><strong>Nombre Apellido</strong></p>
-                                        <p class="text-left small">correoElectronico@email.com</p>
+                                        <p class="text-left"><strong>Juan Dela Cruz</strong></p>
+                                        <p class="text-left small">juan@email.com</p>
                                         <p class="text-left">
                                             <button href="#" class="btn-primarys btn-block btn-sm">View Profile</button>
                                         </p>
@@ -85,7 +85,7 @@
 <style type="text/css">
     .navbar-login
 {
-    width: 305px;
+    width: 300px;
     padding: 10px;
     padding-bottom: 0px;
 }
@@ -100,5 +100,10 @@
 .icon-size
 {
     font-size: 87px;
+}
+.navbar{
+    font-size: 0.765625rem;
+    text-transform: uppercase;
+    padding: 1.5rem 1rem;
 }
 </style>

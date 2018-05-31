@@ -41,4 +41,34 @@ class headController extends Controller
             return view('head.headinspection3');
         }
     }
+    public function headorderofpayment(Request $request){
+        if ($request->isMethod('get')) {
+            return view('head.headorderofpayment');
+        }
+    }
+    public function headorderofpayment2(Request $request){
+        if ($request->isMethod('get')) {
+            return view('head.headorderofpayment2');
+        }
+    }
+    public function headorderofpayment3(Request $request){
+        if ($request->isMethod('get')) {
+            return view('head.headorderofpayment3');
+        }
+    }
+    public function headorderofpayment4(Request $request){
+        if ($request->isMethod('get')) {
+            return view('head.headorderofpayment4');
+        }
+    }
+    public function headorderofpayment5(Request $request){
+        if ($request->isMethod('get')) {
+            return view('head.headorderofpayment5');
+        }
+    }
+    public function headorderofpayment6(Request $request){
+        if ($request->isMethod('get')) {
+            return view('head.headorderofpayment6');
+        }
+    }
 }

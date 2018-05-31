@@ -288,12 +288,12 @@
                </table>
        <div class="showHospit" style="display: none"><h5>Since YES you will proceed to Order of Payment.</h5>
         <ul>
-          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment')}}">Hospital Based Private</a></ol>
-          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment2')}}">Hospital Based Government</a></ol>
-          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment3')}}">Non-Hospital based other Health Facilities</a></ol>
-          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment4')}}">Certificate of Need/Permit to Construct </a></ol>
-          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment5')}}">Dental Laboratory</a></ol>
-          <ol><a href="{{asset('/dashboard/evaluate/orderofpayment6')}}">Non-Hospital Based with Ancillary</a></ol>
+          <ol><a href="{{asset('headorderofpayment')}}">Hospital Based Private</a></ol>
+          <ol><a href="{{asset('headorderofpayment2')}}">Hospital Based Government</a></ol>
+          <ol><a href="{{asset('headorderofpayment3')}}">Non-Hospital based other Health Facilities</a></ol>
+          <ol><a href="{{asset('headorderofpayment4')}}">Certificate of Need/Permit to Construct </a></ol>
+          <ol><a href="{{asset('headorderofpayment5')}}">Dental Laboratory</a></ol>
+          <ol><a href="{{asset('headorderofpayment6')}}">Non-Hospital Based with Ancillary</a></ol>
        </ul>
        <div class="text-center"><button type="button" class="btn btn-warning showHospit" data-dismiss="modal" style="display:none" onclick="showNow2()">Cancel</button></div>
        </div>
