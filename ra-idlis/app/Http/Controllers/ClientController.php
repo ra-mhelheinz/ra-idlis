@@ -27,7 +27,7 @@ class ClientController extends Controller
                                 ->select('x08.u_id', 'client_meta.*', 'region.reg_name', 'province.pro_name')
                                 ->first()
                                 ;
-                session()->put('client_data',$data);
+                session()->put('client_data',$clientUser);
                 return redirect('/client/home');
             }
              else{

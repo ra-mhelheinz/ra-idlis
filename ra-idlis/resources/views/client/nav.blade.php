@@ -1,4 +1,7 @@
 @include('session.clientSession')
+<?php
+      $clientData = session('client_data');
+    ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
       <div class="container">
         <a class="navbar-brand" href="#">Welcome</a>
@@ -29,8 +32,8 @@
                   </p>
                 </div>
                 <div class="col-lg-8">
-                  <p class="text-left"><strong>Juan Dela Cruz</strong></p>
-                  <p class="text-left small">juan@email.com</p>
+                  <p class="text-left"><strong>{{$clientData->cm_auth}}</strong></p>
+                  <p class="text-left small">{{$clientData->cm_email}}</p>
                   <p class="text-left">
                   <button href="#" class="btn-primarys btn-block btn-sm">View Profile</button>
                   </p>
