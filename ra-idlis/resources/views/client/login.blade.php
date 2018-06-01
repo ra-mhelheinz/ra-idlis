@@ -1,3 +1,8 @@
+@if (session()->exists('client_data'))
+	<script type="text/javascript">
+		window.location.href = "{{asset('/client/home')}}";
+	</script>
+@endif
 @extends('main')
 @section('style')
  <link rel="stylesheet" type="text/css" href="ra-idlis/public/css/login.css">

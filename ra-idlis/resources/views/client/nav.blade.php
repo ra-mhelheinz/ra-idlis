@@ -1,3 +1,4 @@
+@include('session.clientSession')
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
       <div class="container">
         <a class="navbar-brand" href="#">Welcome</a>
@@ -21,33 +22,33 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown">
          <div class="navbar-login">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <p class="text-center">
-                                            <span class="fa fa-user icon-size"></span>
-                                        </p>
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <p class="text-left"><strong>Juan Dela Cruz</strong></p>
-                                        <p class="text-left small">juan@email.com</p>
-                                        <p class="text-left">
-                                            <button href="#" class="btn-primarys btn-block btn-sm">View Profile</button>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="navbar-login navbar-login-session">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <p>
-                                            <button href="#" onclick="event.preventDefault();document.getElementById('clientLogout').submit();" class="btn-defaults btn-block btn-sm">Logout</button>
-                                            <form id="clientLogout" action="{{asset('/client/logout')}}" method="POST" hidden>
-                                              @csrf
-                                            </form>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="row">
+               <div class="col-lg-4">
+                  <p class="text-center">
+                    <span class="fa fa-user icon-size"></span>
+                  </p>
+                </div>
+                <div class="col-lg-8">
+                  <p class="text-left"><strong>Juan Dela Cruz</strong></p>
+                  <p class="text-left small">juan@email.com</p>
+                  <p class="text-left">
+                  <button href="#" class="btn-primarys btn-block btn-sm">View Profile</button>
+                  </p>
+                </div>
+              </div>
+          </div>
+          <div class="navbar-login navbar-login-session">
+              <div class="row">
+                <div class="col-lg-12">
+                   <p>
+                      <button href="#" onclick="event.preventDefault();document.getElementById('clientLogout').submit();" class="btn-defaults btn-block btn-sm">Logout</button>
+                      <form id="clientLogout" action="{{asset('/client/logout')}}" method="POST" hidden>
+                        @csrf
+                      </form>
+                   </p>
+                </div>
+              </div>
+          </div>
         </div>
       </li>
             </ul>

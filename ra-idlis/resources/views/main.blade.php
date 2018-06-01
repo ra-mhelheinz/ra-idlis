@@ -158,6 +158,7 @@ body{
 	</style>
 </head>
 <body>
+  
 <!-- <div style="background: url('ra-idlis/public/img/color.png') no-repeat;
     background-size: 100% auto; box-shadow: 0px 2px 4px rgba(0,0,0,0.2);"> -->
     <div style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 5px 5px 5px 5px;">
