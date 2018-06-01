@@ -28,7 +28,7 @@ class ClientController extends Controller
                                 ->first()
                                 ;
                 session()->put('client_data',$data);
-                return redirect('/home');
+                return redirect('/client/home');
             }
              else{
                 session()->flash('client_login','Invalid Username/Password');
@@ -128,6 +128,11 @@ class ClientController extends Controller
         if($request->isMethod('get')){
             return view('client.orderofpaymentc');
         }
+    }
+    public function logout(){
+      session()->forget('client_data');
+      session()->flash('logout_notif','Successfully Logout');
+      return redirect()->route('client');
     }
 
 }

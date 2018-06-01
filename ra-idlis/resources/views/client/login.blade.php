@@ -55,6 +55,14 @@
 					  </button>
 					</div>
 					@endif
+					@if (session()->has('logout_notif'))
+					<div class="alert alert-info alert-dismissible fade show" role="alert">
+					  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('logout_notif')}}
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					</div>
+					@endif
 					<input type="text" style="margin: 0 0 .8em 0;" class="input form-control" name="log_uname" autocomplete="off" placeholder="Username" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" value="{{ old('log_uname')}}" required="">
 					<input type="password" style="margin: 0 0 .8em 0;" class="input form-control" name="log_pass" autocomplete="off" placeholder="Password" data-parsley-required-message="<strong>*</strong>Password <strong>Required</strong>" required="">
 					<input type="checkbox" class="checkbox" id="remember_me">

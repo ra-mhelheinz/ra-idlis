@@ -40,7 +40,10 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <p>
-                                            <button href="#" class="btn-defaults btn-block btn-sm">Logout</button>
+                                            <button href="#" onclick="event.preventDefault();document.getElementById('clientLogout').submit();" class="btn-defaults btn-block btn-sm">Logout</button>
+                                            <form id="clientLogout" action="{{asset('/client/logout')}}" method="POST" hidden>
+                                              @csrf
+                                            </form>
                                         </p>
                                     </div>
                                 </div>
