@@ -19,7 +19,7 @@ class ClientController extends Controller
             $data = DB::table('x08')
                     ->where([ ['u_uname', '=', $uname], ['u_pass', '=', $pass], ['grp_id', '=', '5'] ])
                     ->first();
-            if (count($data)){
+            if ($data){
                 $clientUser  = DB::table('x08')
                                 ->join('client_meta', 'x08.u_id', '=', 'client_meta.u_id')
                                 ->join('region', 'client_meta.reg_id', '=', 'region.reg_id')
