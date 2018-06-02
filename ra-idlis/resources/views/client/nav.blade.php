@@ -10,24 +10,28 @@
 @endif
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
       <div class="container">
-        <a class="navbar-brand" href="#">Welcome</a>
+        <div class="navbar-brand" href="#">OLORS</div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav">
+        <div class="collapse navbar-collapse " id="navbarResponsive">
+          <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home
+              <a class="nav-link" href="{{asset('client/home')}}"><span class="fa fa-home"></span>&nbsp;Home
               </a>
             </li>
+               <li class="nav-item">
+              <a class="nav-link" href="#"><span class="fa fa-question-circle"></span>&nbsp;Help</a>
+            </li>
              <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="#"><span class="fa fa-info"></span>&nbsp;About</a>
             </li>
           </ul>
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ">
+          <button class="btn btn-outline-success"><span class="fa fa-bell"></span>&nbsp;<span class="badge badge-primary">1</span></button>
                <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <span class="fa fa-user-circle"></span>Account
+         <span class="fa fa-user-circle"></span>&nbsp;Account
         </a>
         <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown">
          <div class="navbar-login">
@@ -118,5 +122,40 @@
     font-size: 0.765625rem;
     text-transform: uppercase;
     padding: 1.5rem 1rem;
+    letter-spacing: 2px;
+}
+.navbar-brand{
+  margin-right: 2rem;
+}
+.nav-item{
+  margin-right: 2rem;
+}
+a {
+  position: relative;
+  color: #000;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000;
+}
+a:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #84bd82;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+a:hover:before {
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
 }
 </style>

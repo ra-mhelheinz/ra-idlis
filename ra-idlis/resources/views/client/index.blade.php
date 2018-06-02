@@ -8,44 +8,40 @@
 <!-- End WOWSlider.com HEAD section -->
 @section('content')
 @include('client.nav')
+<style type="text/css">
+  .visitor{
+    position: relative;
+  }
+  .visitor:after{
+      content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 37px solid transparent;
+  border-right-color: #fff;
+  border-left: 0;
+  border-bottom: 0;
+  margin-top: -18.5px;
+  margin-left: -37px;
+  }
+</style>
   <div class="modal fadeInUpBig animated" id="myModal">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">        
-        <!-- Modal body -->
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 100% ! important;">
+<div class="row" style="height: 100%;width: 100%;">
+  <div class="col-sm-4 wow zoomIn" data-wow-delay="1.5s">
+    <img src="{{asset('ra-idlis/public/img/loimg.png')}}" id="aniImg" style="height: auto;width: 500px;padding: 0;max-height: 100%;">
+  </div>
+  <div class="col-sm-8">     
+   <div class="modal-content visitor" style="max-width: 500px;">        
         <div class="modal-body">
-          <table>
+          <table id="guide">
               <td>Need a guide for first-time visitors?</td>
-              <td><button class="btn-primarys" data-toggle="modal" id="yes">Yes</button></td>
+              <td><button class="btn-primarys" data-toggle="modal" onclick="yes()">Yes</button></td>
               <td><button class="btn-defaults" data-dismiss="modal" aria-hidden="true">No</button></td>
           </table>
-
-        </div>
-        
-      </div>
-    </div>
-  </div>
-<script type="text/javascript">
-  $('#myModal').modal('toggle');
-  $('#yes').on('click', function(){
-    $('#myModal').modal('toggle');
-    $('#myModal2').modal('show').delay(3000);
-  });
-  // alert();
-</script>
-<div class="modal" id="myModal2">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content zoomIn animated" id="steps">
-
-      <!-- Modal Header -->
-<!--       <div class="modal-header">
-        <h4 class="modal-title">Modal Heading</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div> -->
-
-      <!-- Modal body -->
-      <div class="modal-body">
-<!-- Start WOWSlider.com BODY section -->
-<div id="wowslider-container1">
+<div id="wowslider-container1" style="display: none;">
 <div class="ws_images"><ul>
     <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_1.png')}}" alt="Step 1. Apply " title="Step 1. Apply" id="wows1_0"/><p id="wows1_0"/>If you are using this for the first time, click on the Apply and fill out the form. </p></li>
     <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_2.png')}}" alt="Step 1. Apply " title=" " id="wows1_1"/><p id="wows1_1"/>After clicking apply this form will appear, you must fill up this form yourself.</p></li>
@@ -77,56 +73,31 @@
 <div class="ws_shadow"></div>
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/wowslider.js')}}"></script>
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/script.js')}}"></script>
-</div>  
+</div>
+        </div>
+        
       </div>
+    </div>
 
+</div>
     </div>
   </div>
-</div>
 <script type="text/javascript">
-  $(document).ready(function(){
- $( "#prev_image" ).click(function(){
-  prev();
- });
- $( "#next_image" ).click(function(){
-  next();
- });
-});
-
-// Write all the names of images in slideshow
-var images = [ "image1" , "image2" , "image3" , "image4" ];
-
-function prev()
-{
- $( '#slideshow_image' ).fadeOut(300,function()
- {
-  var prev_val = document.getElementById( "img_no" ).value;
-  var prev_val = Number(prev_val) - 1;
-  if(prev_val< = -1)
-  {
-   prev_val = images.length - 1;
-  }
-  $( '#slideshow_image' ).attr( 'src' , 'images/'+images[prev_val]+'.jpg' );
-  document.getElementById( "img_no" ).value = prev_val;
- });
- $( '#slideshow_image' ).fadeIn(1000);
-}
-
-function next()
-{
- $( '#slideshow_image' ).fadeOut(300,function()
- {
-  var next_val = document.getElementById( "img_no" ).value;
-  var next_val = Number(next_val)+1;
-  if(next_val >= images.length)
-  {
-   next_val = 0;
-  }
-  $( '#slideshow_image' ).attr( 'src' , 'images/'+images[next_val]+'.jpg' );
-  document.getElementById( "img_no" ).value = next_val;
- });
- $( '#slideshow_image' ).fadeIn(1000);
-}
+        function yes(){
+          $('#wowslider-container1').show();
+          $('.visitor').css('max-width', '100%');
+          $('#guide').hide();
+        }
+         $('#myModal').modal('toggle');
+  $('#yes').on('click', function(){
+    $('#myModal').modal('toggle');
+    $('#myModal2').modal('show').delay(3000);
+  });
+        function ani(){
+            $('#aniImg').animate({left: '250px'});
+        }
+      
+ 
 </script>
 <div class="container-fluid"> 
     <div class="row">

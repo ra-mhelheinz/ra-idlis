@@ -20,19 +20,18 @@
 </style>
 	<div class="container jumbotron" style="margin-top: 2em;">
 		<div class="jumbotron container" style="background-color: #fff;box-shadow: 10px 10px 15px rgba(73, 78, 92, 0.1);">
-			<h4 style="border-bottom: 1px solid green;padding-bottom: 9px;position: relative;"><strong>Apply</strong><span style=" background: lightgreen none repeat scroll 0 0;bottom: -2px;height: 3px;left: 0;position: absolute;width: 75px;"></span></h4>
+			<h4 style="border-bottom: 1px solid green;padding-bottom: 9px;position: relative;"><strong>Application Form</strong><span style=" background: lightgreen none repeat scroll 0 0;bottom: -2px;height: 3px;left: 0;position: absolute;width: 75px;"></span></h4>
 	  <div class="row">
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
 		  		<label style="display:block;"><span >Name of Facility</span></label>
+
 		  		<h2>{{$clientData->cm_faname}}</h2>
-		  		{{-- <h5>​850 United Nations Avenue, Ermita, 1000 Manila - NCR </h5> --}}
-		  		<!-- <h5>Gorordo Ave, Cebu City, 6000 Cebu - Region VII</h5> -->
-		  		<!-- ​850 United Nations Avenue, Ermita, Manila, Philippines -->
-		  	</div>
+ 		  	</div>
 		</div>
 		<div class="col-xs-12 col-md-12 fname" style="margin-top: -10px">
 			<h5>​{{$clientData->cm_str}}, {{$clientData->cm_brgy}}, {{$clientData->cm_zip}} {{$clientData->pro_name}} - {{$clientData->reg_name}} </h5>
+
 		</div>
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
