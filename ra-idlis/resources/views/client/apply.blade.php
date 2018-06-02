@@ -1,6 +1,15 @@
 @extends('main')
 @section('content')
 @include('client.nav')
+@if (session()->exists('client_data'))
+   @php
+     $clientData = session('client_data');
+   @endphp
+@else
+  <script type="text/javascript">
+    window.location.href = "{{asset('/')}}";
+  </script>
+@endif
 <style type="text/css">
 	table.attachments > tr{
 		width: 50%;
@@ -16,11 +25,13 @@
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
 		  		<label style="display:block;"><span >Name of Facility</span></label>
-		  		<h4>ABC Hospital</h4>
-		  	</div>
+
+		  		<h2>{{$clientData->cm_faname}}</h2>
+ 		  	</div>
 		</div>
 		<div class="col-xs-12 col-md-12 fname" style="margin-top: -10px">
-			<p>​850 United Nations Avenue, Ermita, 1000 Manila - NCR </p>
+			<h5>​{{$clientData->cm_str}}, {{$clientData->cm_brgy}}, {{$clientData->cm_zip}} {{$clientData->pro_name}} - {{$clientData->reg_name}} </h5>
+
 		</div>
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
