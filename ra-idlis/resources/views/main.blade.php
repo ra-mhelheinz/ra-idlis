@@ -174,7 +174,7 @@ body{
               </div>
               <div class="republic">
                     <p><small>Republic of the Philippines</small></p>    
-                    <p  style="margin-top: -10px;font-size: 18px">DEPARTMENT OF HEALTH</p>
+                    <p  style="margin-top: -10px;font-size: 18px;font-weight: 600">DEPARTMENT OF HEALTH</p>
                     <p  style="margin-top: -10px;">Kagawaran ng Kalusugan</p>
                     <p  style="margin-top: -10px;">ISO 9001:2008 CERTIFIED</p>
                   </div>
