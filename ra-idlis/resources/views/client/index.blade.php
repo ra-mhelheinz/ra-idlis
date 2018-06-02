@@ -116,62 +116,19 @@
         <section id="services">
       <div class="container">
         <div class="row">
-          <div class="col-sm-4 col-md-4 col-lg-4">
+          <div class="col-sm-3 col-md-4 col-lg-3">
              <div class="card">
             <h5 class="card-header">Announcements</h5>
-            <div class="card-body">
+            <div class="cardb" style="max-height: 100%;padding: 1.25rem;flex: 1 1 auto;">
               <form>
                 <div class="form-group">
-                  <img src="https://i0.wp.com/rmn.ph/wp-content/uploads/2017/07/Bakuna-.jpg?resize=696%2C365&ssl=1">
+                  <img src="http://d3mrff4h76anp4.cloudfront.net/wp-content/uploads/2018/01/04183401/DOH.jpg">
                   <p>sample text sample text</p>
                 </div>
               </form>
             </div>
           </div>
-          </div>
-          <div  class="col-sm-8 col-md-8 col-lg-8">
-          <div class="col-lg-12">
-            <div class="box wow fadeInLeft" id="textSample">
-              <div class="icon"><i class="fa fa-edit"></i></div>
-              <h4 class="title"><a href="{{asset('client/apply')}}">Step 1. Apply</a></h4>
-              <p class="description">Fill-in application form and submit requirements online.</p>
-            </div>
-          </div>
-
-          <div class="col-lg-12">
-            <div class="box wow fadeInRight">
-              <div class="icon"><i class="fa fa-check"></i></div>
-              <h4 class="title"><a href="{{asset('client/evaluate')}}">Step 2. Evaluate</a></h4>
-              <p class="description">DOH will evaluate your submitted documents and notify your schedule of inspection.</p>
-              <p><a href="{{asset('evaluate')}}">View your evaluation status</a></p>
-            </div>
-          </div>
-
-          <div class="col-lg-12">
-            <div class="box wow fadeInLeft" data-wow-delay="0.2s">
-              <div class="icon"><i class="fa fa-search"></i></div>
-              <h4 class="title"><a href="{{asset('client/inspection')}}">Step 3. Inspection</a></h4>
-              <p class="description">DOH will conduct inspection and notify the status of your application.</p>
-            </div>
-          </div>
-
-          <div class="col-lg-12">
-            <div class="box wow fadeInRight" data-wow-delay="0.2s">
-              <div class="icon"><i class="fa fa-print"></i></div>
-              <h4 class="title"><a href="{{asset('client/issuance')}}">Step 4. Issuance</a></h4>
-              <p class="description">You can now print your application online.</p>
-              <p>Issuance Status:<font style="color:orange;">PENDING</font> </p>
-            </div>
-          </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-   </div>
-         <div class="col-sm-2"></div>
-      <div class="col-sm-8">
-        <div class="text-center">
+           <div class="text-center">
         <img src="{{asset('ra-idlis/public/img/FAQ.png')}}">
         </div>
     <main role="main">
@@ -245,8 +202,55 @@
   </a>
 </div>
     </main>
+          </div>
+          <div  class="col-sm-9 col-md-9 col-lg-9">
+            <div class="row">
+          <div class="col-lg-6">
+            <div class="box wow fadeInLeft" id="textSample">
+              <div class="icon"><i class="fa fa-edit"></i></div>
+              <h4 class="title"><a href="{{asset('client/apply')}}">Step 1. Apply</a></h4>
+              <p class="description">Fill-in application form and submit requirements online.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="box wow fadeInRight">
+              <div class="icon"><i class="fa fa-check"></i></div>
+              <h4 class="title"><a href="{{asset('client/evaluate')}}">Step 2. Evaluate</a></h4>
+              <p class="description">DOH will evaluate your submitted documents and notify your schedule of inspection.</p>
+              <p><a href="{{asset('evaluate')}}">View your evaluation status</a></p>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="box wow fadeInLeft" data-wow-delay="0.2s">
+              <div class="icon"><i class="fa fa-search"></i></div>
+              <h4 class="title"><a href="{{asset('client/inspection')}}">Step 3. Inspection</a></h4>
+              <p class="description">DOH will conduct inspection and notify the status of your application.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="box wow fadeInRight" data-wow-delay="0.2s">
+              <div class="icon"><i class="fa fa-print"></i></div>
+              <h4 class="title"><a href="{{asset('client/issuance')}}">Step 4. Issuance</a></h4>
+              <p class="description">You can now print your application online.</p>
+              <p>Issuance Status:<font style="color:orange;">PENDING</font> </p>
+            </div>
+          </div>
+          </div>
+          </div>
+        </div>
+
       </div>
-      <div class="col-sm-2"></div>
+    </section>
+   </div>
+  </div>
+  <div class="row">
+             <div class="col-sm-3">
+       
+      </div>
+      <div class="col-sm-9"></div>
   </div>
  <center><hr style="width:75%;"></center>
     <table class="text-center tableimg">

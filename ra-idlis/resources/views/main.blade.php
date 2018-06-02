@@ -20,9 +20,10 @@
 body{
     font: 16px/26px "Raleway", sans-serif; 
 }
- .img{
-  padding: 8px 8px 8px 0px;height: 95px;width: auto;float: left;
+.img{
+    height: 95px;padding: 8px 8px 8px 0px;width: auto;float: left;
 }
+
  .img2{
   padding: 8px 8px 8px 0px;height: 95px;width: auto;float: left;
   display: none;
@@ -31,11 +32,13 @@ body{
   padding: 8px 8px 8px 0px;height: 95px;width: auto;float: left;
 }
 .republic{
-  margin-top: 20px;
-  font-family: source code pro bold;line-height: 1px;float: left;
+    font-size: 0.765625rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding:  10px;
 }
-.republic h4{
-  margin-bottom: 1.5px;
+.republic > p{
+  margin: 0;
 }
 @media only screen and (max-height: 600px) and (max-height: 500px ) and (max-height: 421px ) {
    div .img {
@@ -158,30 +161,31 @@ body{
 	</style>
 </head>
 <body>
+  @if(session()->exists('client_data'))
+  @else
 
-<!-- <div style="background: url('ra-idlis/public/img/color.png') no-repeat;
-    background-size: 100% auto; box-shadow: 0px 2px 4px rgba(0,0,0,0.2);"> -->
-    <div style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 5px 5px 5px 5px;">
-<div class="container" >
-  <div class="row">
-    <div class="col-md-10">   
-      <div class="imgcenter">
-        <img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img">
-        <img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img2">
-      </div>
-      <div class="republic">
-        <p style="margin-bottom: 4px;font-size: 13px;">Republic of the Philippines</p>     
-        <h4>DEPARTMENT OF HEALTH</h4>
-        <p>Kagawaran ng Kalusugan</p>
-        <p>ISO 9001:2008 CERTIFIED</p>
-      </div>
-    </div>
-    <div class="col-md-2">
-       <img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img3">
-    </div>
-  </div>
-</div>
-</div>
+      <div style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 5px 5px 5px 5px;">
+        <div class="container" >
+          <div class="row">
+            <div class="col-md-10">   
+              <div class="imgcenter">
+                <img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img">
+                <img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img2">
+              </div>
+              <div class="republic">
+                    <p><small>Republic of the Philippines</small></p>    
+                    <p  style="margin-top: -10px;font-size: 18px">DEPARTMENT OF HEALTH</p>
+                    <p  style="margin-top: -10px;">Kagawaran ng Kalusugan</p>
+                    <p  style="margin-top: -10px;">ISO 9001:2008 CERTIFIED</p>
+                  </div>
+            </div>
+            <div class="col-md-2">
+               <img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img3">
+            </div>
+          </div>
+        </div>
+        </div>
+  @endif
 	@yield('content')
 	<div class="fixed-bottom" style="background:transparent;width:30%;float: left;margin-left: 72%;border-radius: 5px 5px 0 0">
 	<div style="padding: 3px;">
@@ -191,7 +195,7 @@ body{
 <!-- <footer style="background: url('ra-idlis/public/img/color.png') no-repeat;
     background-size: 100% auto; box-shadow: 0px 2px 4px rgba(0,0,0,0.2);padding:2% 2% 2% 2%;">
  -->      
-<footer style=" background: linear-gradient(to bottom left,#228B22, #84bd82);padding:1% 1% 1% 1%;"">
+<footer style=" background: linear-gradient(to bottom left,#228B22, #84bd82);padding:1% 1% 1% 1%;">
  <div class="container">
         <p class="m-0 text-center" style="color: #fff;font-size: 15px;">DOH Licensing and Regulatory System &copy; 2018</p>
       </div>

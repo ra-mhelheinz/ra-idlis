@@ -1,7 +1,7 @@
 @extends('main')
 @section('content')
 @include('client.nav')
-<div class="jumbotron container" style="margin-top: 2em;box-shadow: 10px 10px 15px rgba(73, 78, 92, 0.1);background-color: #fff">
+<div class="jumbotron container" style="margin-top: 2%;border: 1px solid rgba(0,0,0,.2);margin-top: 2%;;background-color: #fff">
 		<div class="container">
 			<div class="table-responsive">
 				<table class="table table-borderless">

@@ -18,8 +18,7 @@
 				padding: 1em;
 			}
 </style>
-	<div class="container jumbotron" style="margin-top: 2em;">
-		<div class="jumbotron container" style="background-color: #fff;box-shadow: 10px 10px 15px rgba(73, 78, 92, 0.1);">
+		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);margin-top: 2%;">
 			<h4 style="border-bottom: 1px solid green;padding-bottom: 9px;position: relative;"><strong>Application Form</strong><span style=" background: lightgreen none repeat scroll 0 0;bottom: -2px;height: 3px;left: 0;position: absolute;width: 75px;"></span></h4>
 	  <div class="row">
 	  	<div class="col-xs-12 col-md-6 fname">
@@ -109,7 +108,6 @@
 	  		</select>
 	  	</div>
 	</div>
-		</div>
 		</div>
 		<hr style="color:green;">
 		<div class="container" >
@@ -212,9 +210,7 @@
 			</table>
 		</div>
 		</div>
-	</div>
-
-	</div>
+				</div>
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="border-radius: 0px;border: none;">
@@ -277,5 +273,25 @@ $(document).ready(function(){
 				$('#OtherSpan').hide();
 			}
 		}
+		// function region() {
+			
+		// }
+			// function hideUnhideRegion(region) {
+			// 	var arr = ["Choose Region...", 
+			// 							"Metro Manila", // NCR
+			// 							"Abra, Apayao, Benguet, Ifugao, Kalinga, Mountain Province", // CAR
+			// 							"Ilocos Norte, Ilocos Sur, La Union, Pangasinan", // Region 1
+			// 							"Batanes, Cagayan, Isabela, Nueva Vizcaya, Quirino", // Region 2
+			// 							"Aurora, Bataan, Bulacan, Nueva Ecija, Pampanga, Tarlac, Zambales"];
+			// 		if(region < 1 || region === null) {
+			// 					document.getElementById('anotherRegionSelector').innerHTML = '<option>'+arr[0]+'</option>'
+			// 				} else {
+			// 					var anotherArr = arr[region].split(", ");
+			// 					document.getElementById('anotherRegionSelector').innerHTML = '';
+			// 					for(var i = 0; i < anotherArr.length; i++) {
+			// 						document.getElementById('anotherRegionSelector').innerHTML += '<option>'+anotherArr[i]+'</option>';
+			// 					}
+			// 				}
+			// 			}
 	</script>
 @endsection
