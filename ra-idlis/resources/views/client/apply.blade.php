@@ -278,25 +278,5 @@ $(document).ready(function(){
 				$('#OtherSpan').hide();
 			}
 		}
-		// function region() {
-			
-		// }
-			// function hideUnhideRegion(region) {
-			// 	var arr = ["Choose Region...", 
-			// 							"Metro Manila", // NCR
-			// 							"Abra, Apayao, Benguet, Ifugao, Kalinga, Mountain Province", // CAR
-			// 							"Ilocos Norte, Ilocos Sur, La Union, Pangasinan", // Region 1
-			// 							"Batanes, Cagayan, Isabela, Nueva Vizcaya, Quirino", // Region 2
-			// 							"Aurora, Bataan, Bulacan, Nueva Ecija, Pampanga, Tarlac, Zambales"];
-			// 		if(region < 1 || region === null) {
-			// 					document.getElementById('anotherRegionSelector').innerHTML = '<option>'+arr[0]+'</option>'
-			// 				} else {
-			// 					var anotherArr = arr[region].split(", ");
-			// 					document.getElementById('anotherRegionSelector').innerHTML = '';
-			// 					for(var i = 0; i < anotherArr.length; i++) {
-			// 						document.getElementById('anotherRegionSelector').innerHTML += '<option>'+anotherArr[i]+'</option>';
-			// 					}
-			// 				}
-			// 			}
 	</script>
 @endsection

@@ -7,9 +7,8 @@
 	class ajaxController extends Controller
 	{
 		public function selectProvince(Request $request){
-			
-				$provinces = DB::table('province')->where('reg_id',$request->reg_id)->get();
-	    		return response()->json(['provinces'=>$provinces]);
+			$provinces = DB::table('province')->where('reg_id',$request->reg_id)->get();
+	    	return response()->json(['provinces'=>$provinces]);
 		}
 		public function addCM(Request $request){
           	$data['pro_id'] = $request->input('provinceCM');
