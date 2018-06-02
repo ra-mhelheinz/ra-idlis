@@ -134,5 +134,11 @@ class ClientController extends Controller
       session()->flash('logout_notif','Successfully Logout');
       return redirect()->route('client');
     }
+    public function LOP(){
+      return view('client.lop');
+    }
+    public function SA(){
+      return view('client.sa');
+    }
 
 }
