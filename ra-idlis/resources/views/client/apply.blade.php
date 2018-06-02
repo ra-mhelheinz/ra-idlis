@@ -1,9 +1,15 @@
 @extends('main')
 @section('content')
 @include('client.nav')
-<?php
-      $clientData = session('client_data');
- ?>
+@if (session()->exists('client_data'))
+   @php
+     $clientData = session('client_data');
+   @endphp
+@else
+  <script type="text/javascript">
+    window.location.href = "{{asset('/')}}";
+  </script>
+@endif
 <style type="text/css">
 	table.attachments > tr{
 		width: 50%;

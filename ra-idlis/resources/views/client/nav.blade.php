@@ -1,7 +1,13 @@
 @include('session.clientSession')
-<?php
-      $clientData = session('client_data');
-    ?>
+@if (session()->exists('client_data'))
+   @php
+     $clientData = session('client_data');
+   @endphp
+@else
+  <script type="text/javascript">
+    window.location.href = "{{asset('/')}}";
+  </script>
+@endif
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
       <div class="container">
         <a class="navbar-brand" href="#">Welcome</a>
