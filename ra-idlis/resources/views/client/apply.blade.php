@@ -1,6 +1,9 @@
 @extends('main')
 @section('content')
 @include('client.nav')
+<?php
+      $clientData = session('client_data');
+ ?>
 <style type="text/css">
 	table.attachments > tr{
 		width: 50%;
@@ -16,14 +19,14 @@
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
 		  		<label style="display:block;"><span >Name of Facility</span></label>
-		  		<h2>ABC Hospital</h2>
+		  		<h2>{{$clientData->cm_faname}}</h2>
 		  		{{-- <h5>​850 United Nations Avenue, Ermita, 1000 Manila - NCR </h5> --}}
 		  		<!-- <h5>Gorordo Ave, Cebu City, 6000 Cebu - Region VII</h5> -->
 		  		<!-- ​850 United Nations Avenue, Ermita, Manila, Philippines -->
 		  	</div>
 		</div>
 		<div class="col-xs-12 col-md-12 fname" style="margin-top: -10px">
-			<h5>​850 United Nations Avenue, Ermita, 1000 Manila - NCR </h5>
+			<h5>​{{$clientData->cm_str}}, {{$clientData->cm_brgy}}, {{$clientData->cm_zip}} {{$clientData->pro_name}} - {{$clientData->reg_name}} </h5>
 		</div>
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
