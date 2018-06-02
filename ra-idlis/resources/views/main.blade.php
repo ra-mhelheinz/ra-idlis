@@ -29,6 +29,7 @@ body{
   display: none;
 }
  .img3{
+  display: none;
   padding: 8px 8px 8px 0px;height: 95px;width: auto;float: left;
 }
 .republic{
