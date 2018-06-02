@@ -69,14 +69,14 @@
         </div>
       </div>
     </nav> -->
-    <nav class="navbar navbar-expand-lg sticky-top" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 5px 5px 5px 5px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
+    <nav class="navbar navbar-expand-lg sticky-top" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
       <div class="container">
         <div class="navbar-nav" href="#">
           <img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img4">
-          &nbsp;
+          &nbsp;&nbsp;
                   <div class="republic1">
                     <p><small>Republic of the Philippines</small></p>    
-                    <p  style="margin-top: -10px;font-size: 18px">DEPARTMENT OF HEALTH</p>
+                    <p  style="margin-top: -10px;font-size: 18px;font-weight: 600">DEPARTMENT OF HEALTH</p>
                     <p  style="margin-top: -10px;">Kagawaran ng Kalusugan</p>
                     <p  style="margin-top: -10px;">ISO 9001:2008 CERTIFIED</p>
                   </div>
@@ -94,7 +94,7 @@
           <a style="color: #fff;" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell"></i>&nbsp;<i class="badge badge-primary">1</i>
              <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
          <div class="navbar-login">
-           <p>Application Form Denied!</p>
+           <p>Welcome to DOH OLORS.</p>
           </div>
         </div>
           </a>
@@ -142,37 +142,24 @@
         </div>
       </div>
     </nav>
-<!-- <nav aria-label="breadcrumb ">
-
-  <ol class="breadcrumb arr-right bg-dark">
-
-    <li class="breadcrumb-item "><a href="#" class="text-light">Apply</a></li>
-
-    <li class="breadcrumb-item "><a href="#" class="text-light">Evaluate</a></li>
-
-    <li class="breadcrumb-item text-light active" aria-current="page">Inpsection</li>
- <li class="breadcrumb-item text-light active" aria-current="page">Issuance</li>
-
-
-  </ol>
-
+    <nav class="breadcrumb">
+  <a class="breadcrumb-item active" href="#">Application</a>
+  <a class="breadcrumb-items" href="#">Evaluation</a>
+  <a class="breadcrumb-items" href="#">Inspection</a>
+  <a class="breadcrumb-items" href="#">Issuance</a>
 </nav>
 <style type="text/css">
-  .arr-right .breadcrumb-item+.breadcrumb-item::before {
- 
-  content: "›";
- 
-  vertical-align:top;
- 
-  color: #408080;
- 
-  font-size:35px;
- 
-  line-height:18px;
- 
+.breadcrumb > .breadcrumb-items:before{
+  content: '>'
 }
-</style> -->
-<style type="text/css">
+.breadcrumb{
+  display: block;
+  text-align: center;
+  background-color: #fff;
+}
+.breadcrumb > a{
+    text-decoration: none;
+}
 .navbar{
     font-size: 0.765625rem;
     text-transform: uppercase;
@@ -190,6 +177,7 @@
     width: 300px;
     padding: 10px;
     padding-bottom: 0px;
+    text-transform: none;
 }
 
 .navbar-login-session
@@ -215,16 +203,16 @@
 .nav-item{
   margin-right: 2rem;
 }*/
-a {
+.navbar-nav>a {
   position: relative;
   color: #000;
   text-decoration: none;
 }
 
-a:hover {
+.navbar-nav>a:hover {
   color: #000;
 }
-a:before {
+.navbar-nav>a:before {
   content: "";
   position: absolute;
   width: 100%;
@@ -238,7 +226,7 @@ a:before {
   -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
 }
-a:hover:before {
+.navbar-nav>a:hover:before {
   visibility: visible;
   -webkit-transform: scaleX(1);
   transform: scaleX(1);

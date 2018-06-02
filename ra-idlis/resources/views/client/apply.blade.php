@@ -99,7 +99,7 @@
 				</span>
 			</div>
 
-				<div class="col-xs-12 col-md-6 fname">
+	<div class="col-xs-12 col-md-6 fname">
 	  	<div class=" form-group"><label>Status of Application</label>
 	  		<select class="form-control">
 	  			<option hidden></option>
@@ -108,6 +108,10 @@
 	  		</select>
 	  	</div>
 	</div>
+		</div>
+		<div class="text-center">
+			<a href="{{asset('client/apply/lop')}}"><button style="background-color: #228B22 !important" class="btn-primarys"><i class="fa fa-list-alt"></i>&nbsp;List of Personnel</button>
+				</a>
 		</div>
 		<hr style="color:green;">
 		<div class="container" >

@@ -10,24 +10,12 @@
     window.location.href = "{{asset('/')}}";
   </script>
 @endif
-<style type="text/css">
-	table.attachments > tr{
-		width: 50%;
-			}
-			table.attachments > td {
-				padding: 1em;
-			}
-</style>
-	
-	<div class="container jumbotron" style="margin-top: 2em;">
-		<div class="container" style="display: block;">
-			<button  class="btn btn-success" style="float:right;" data-toggle="modal" data-target="#exampleModalCenter"><i class="fas fa-plus"></i> Add Personnel</button>
-		</div>
-		<div class="jumbotron container" style="background-color: #fff;box-shadow: 10px 10px 15px rgba(73, 78, 92, 0.1);">
-			
-
-			<h4 style="border-bottom: 1px solid green;padding-bottom: 9px;position: relative;text-align:center"><strong>List of Personnel</strong><span style=" background: lightgreen none repeat scroll 0 0;bottom: -2px;height: 3px;left: 0;position: absolute;width: 75px;"></span></h4>
-	  		<div class="container">
+		<div class="container" style="margin-top: 2%;margin-bottom: 20%;">
+	  		<div class="card">
+	  			<div class="card-header">
+	  			List Of Personnel &nbsp;<button style="background-color: #228B22 !important" class="btn-primarys"  data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-plus-circle"></i>Add Personnel</button>
+	  			</div>
+	  			<div class="card-body">
 	  			<table class="table">
 					<thead>
 						<tr>
@@ -47,9 +35,8 @@
 					</tbody>
 				</table>
 	  		</div>
+	  		</div>
 		</div>
-	</div>
-	
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content" style="border-radius: 0px;border: none;">
@@ -97,7 +84,6 @@
 			        		<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
 			        	</div>
 		        	</div>
-		        	<!--  -->
 		        	<div class="row">
 		        		<div class="col-sm-6">Birthday:</div>
 		        		<div class="col-sm-6">Gender:</div>
