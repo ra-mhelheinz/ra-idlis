@@ -25,7 +25,7 @@
 		  	<div class=" form-group">
 		  		<label style="display:block;"><span >Name of Facility</span></label>
 
-		  		<h2>{{$clientData->cm_faname}}</h2>
+		  		<h2>{{$clientData->cm_faname}}</h2>		
  		  	</div>
 		</div>
 		<div class="col-xs-12 col-md-12 fname" style="margin-top: -10px">
