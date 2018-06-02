@@ -27,8 +27,8 @@
 					  </button>
 					</div>
 					@endif
-					<input type="text" class="input form-control" id="user_login" name="uname" autocomplete="off" placeholder="Username" value="{{old('uname')}}" required>
-					<input type="password" class="input form-control" id="user_pass" name="pass" autocomplete="off" placeholder="Password" required>
+					<input type="text" style="margin: 0 0 .8em 0;" class="input form-control" id="user_login" name="uname" autocomplete="off" placeholder="Username" value="{{old('uname')}}" required>
+					<input type="password" style="margin: 0 0 .8em 0;" class="input form-control" id="user_pass" name="pass" autocomplete="off" placeholder="Password" required>
 					<input type="checkbox" class="checkbox 	" id="remember_me">
 					<label for="remember_me">Remember me</label>
 

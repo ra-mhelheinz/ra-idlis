@@ -18,264 +18,318 @@
 				padding: 1em;
 			}
 </style>
+	
 	<div class="container jumbotron" style="margin-top: 2em;">
+		<div class="container" style="display: block;">
+			<button  class="btn btn-success" style="float:right;" data-toggle="modal" data-target="#exampleModalCenter"><i class="fas fa-plus"></i> Add Personnel</button>
+		</div>
 		<div class="jumbotron container" style="background-color: #fff;box-shadow: 10px 10px 15px rgba(73, 78, 92, 0.1);">
-			<h4 style="border-bottom: 1px solid green;padding-bottom: 9px;position: relative;"><strong>Application Form</strong><span style=" background: lightgreen none repeat scroll 0 0;bottom: -2px;height: 3px;left: 0;position: absolute;width: 75px;"></span></h4>
-	  <div class="row">
-	  	<div class="col-xs-12 col-md-6 fname">
-		  	<div class=" form-group">
-		  		<label style="display:block;"><span >Name of Facility</span></label>
+			
 
-		  		<h2>{{$clientData->cm_faname}}</h2>
- 		  	</div>
-		</div>
-		<div class="col-xs-12 col-md-12 fname" style="margin-top: -10px">
-			<h5>​{{$clientData->cm_str}}, {{$clientData->cm_brgy}}, {{$clientData->cm_zip}} {{$clientData->pro_name}} - {{$clientData->reg_name}} </h5>
-
-		</div>
-	  	<div class="col-xs-12 col-md-6 fname">
-		  	<div class=" form-group">
-		  		<label style="display:block;"><span >Type of Health Facility</span></label>
-		  		<select id="HFacility" class="form-control" onchange="selectHealthFacility();">
-		  			<option hidden></option>
-		  			<option>Hospital</option>
-		  			<option>Clinical Lab</option>
-		  			<option>BSF</option>
-		  			<option>LDWA</option>
-		  			<option>DL</option>
-		  			<option>Rural Health Unit</option>
-		  			<option>Infirmary</option>
-		  			<option>Barangay Health Station</option>
-		  			<option>Dental Lab</option>
-		  		</select>
-		  	</div>
-		</div>
-		<div class="col-xs-12 col-md-6">
-			<span id="ServiceSpan" style="display: none">
-			<div class="form-group"><label style="display:block;" ><span >Services</span><small style="font-weight:normal;" class="pull-right"></small></label>
-				<select class="form-control">
-					<option hidden></option>
-					<option>Clinical Services for In-Patients</option>
-					<option>Ancillary Services</option>
-				</select>
-			</div>
-			</span>
-		</div>
-	<div class="col-xs-12 col-md-6 fname">
-	  	<div class=" form-group">
-	  		<label style="display:block;"><span>Classification as to Ownership</span></label>
-	  		<select id="Class2Owner" class="form-control" onchange="ClassOwner()">
-	  			<option hidden></option>
-				<option id="Govern">Government</option>
-	  			<option id="Private">Private</option>
-	  		</select>
-	  	</div>
-	</div>
-		<div class="col-xs-12 col-md-6 fname">
-	  	<div class=" form-group"><label>Classification Type</label>
-	  		<select id="anotherClassSelector" class="form-control" onchange="ClassType();">
-	  			
-	  		</select>
-	  	</div>
-	</div>
-<!-- 	<div class="col-xs-12 col-md-6">
-		<div class="form-group"><label style="display:block;" ><span >Status of Application</span><small style="font-weight:normal;" class="pull-right"></small></label>
-			<select class="form-control">
-				<option>...</option>
-			</select>
-		</div>
-	</div> -->
-
-	<div class="col-xs-12 col-md-6">
-		<div class="form-group"><label style="display:block;" ><span >Authorized Bed Capacity</span><small style="font-weight:normal;" class="pull-right"></small></label>
-			<input type="number" name="" class="form-control">
+			<h4 style="border-bottom: 1px solid green;padding-bottom: 9px;position: relative;text-align:center"><strong>List of Personnel</strong><span style=" background: lightgreen none repeat scroll 0 0;bottom: -2px;height: 3px;left: 0;position: absolute;width: 75px;"></span></h4>
+	  		<div class="container">
+	  			<table class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Position</th>
+							<th>Options</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Juan Dela Cruz</td>
+							<td>Gynecologist</td>
+							<td>
+								<button class="btn btn-info"><i class="fa fa-eye"></i></button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+	  		</div>
 		</div>
 	</div>
 	
-			<div class="col-xs-12 col-md-6">
-				<span id="OtherSpan" style="display: none">
-					<div class="form-group"><label style="display:block;" ><span >Others :</span><small style="font-weight:normal;" class="pull-right"></small></label>
-						<input type="text" name="" class="form-control">
-					</div>
-				</span>
-			</div>
-
-				<div class="col-xs-12 col-md-6 fname">
-	  	<div class=" form-group"><label>Status of Application</label>
-	  		<select class="form-control">
-	  			<option hidden></option>
-	  			<option>Initial</option>
-	  			<option>Renewal</option>
-	  		</select>
-	  	</div>
-	</div>
-		</div>
-		</div>
-		<hr style="color:green;">
-		<div class="container" >
-		<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show Attachments to be Uploaded</div>
-		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;">
-			<!-- <ul class="list-group">
-			  <li class="list-group-item all">Acknowledgement (Notarized) 
-			  	<span style="float:right">
-			  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-			  	</span>
-			  </li>
-			  <li class="list-group-item all">List of Personnel (with proof of qualification)
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  	</span>
-			  </li>
-			  <li class="list-group-item all">List of Equipments
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  <li class="list-group-item all">List of Ancillary Services (if applicable)
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  <li class="list-group-item all">Application Form (Medical X-ray)
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  <li class="list-group-item all">Application Form (Hospital Pharmacy)
-				  <span style="float:right">
-				  	<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  <li class="list-group-item all">Geographic Form (Location Map of the Facility)
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  <li class="list-group-item all">Photographs of exterior and interior of the Health Facility
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  
-
-			</ul>
-			<div class="text-center" style="margin:2em;">
-			<button class="btn btn-outline-success"  data-toggle="modal" data-target="#exampleModalCenter">Submit</button>
-			</div>
-			<ul class="list-group">
-				<li class="list-group-item">Copy of OR for Application fee
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  	</li>
-			</ul> -->
-			<table class="attachments table" style="width: 100%;">
-				<tr>
-					<td>Acknowledgement (Notarized) </td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>List of Personnel (with proof of qualification)</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>List of Equipments</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>List of Ancillary Services (if applicable)</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>Application Form (Medical X-ray)</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>Application Form (Hospital Pharmacy)</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>Geographic Form (Location Map of the Facility)</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>Photographs of exterior and interior of the Health Facility</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td colspan="2" class="text-center"><button style="background-color: #228B22 !important" class="btn-primarys"  data-toggle="modal" data-target="#exampleModalCenter">Submit</button></td>
-				</tr>
-				<tr>
-					<td>Copy of OR for Application fee</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-			</table>
-		</div>
-		</div>
-	</div>
-
-	</div>
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content" style="border-radius: 0px;border: none;">
-      <div class="modal-body text-justify" style=" background-color: #0f8845;
-    color: white;">
-        <h5 class="modal-title text-center" id="exampleModalLongTitle"><strong>Thank You for uploading your requirements.</strong></h5>
-        <hr>
-        <p>Our Licensing Officer (LO) is now reviewing and evaluating the completeness of the documents that you've submitted and please wait within the day (8:00 am - 5:00 pm working hour).</p>
-	        <div class="alert alert-primary" role="alert">
-				<p class="alert-heading"><i class="far fa-sticky-note"></i> Note:</p>
-				<p>&nbsp;- Proceed to Cashier for payment and submit a photocopy of official receipt to the Licensing Officer;</p>
-				<p>&nbsp;- Team Leader sets Schedule for Inspection (you may check through your online account)</p>
-			</div>
-      </div>
-    </div>
-  </div>
-</div>
-	<script> 
-$(document).ready(function(){
-    $("#flip").click(function(){
-        $("#panel").slideToggle("slow");
-    });
-});
-</script>
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content" style="border-radius: 0px;border: none;">
+	      <div class="modal-body text-justify" style=" background-color: #0f8845;
+	    color: white;">
+	        <h5 class="modal-title" id="exampleModalLongTitle"><strong>Add Personnel</strong></h5>
+	        <hr>
+	        <form action="#">
+	        	<ul class="nav nav-tabs">
+				  <li class="nav-item">
+				    <a class="TAB_BTN nav-link active" linkedtab="profile_tab"  href="#">Profile</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="TAB_BTN nav-link" linkedtab="work_tab"  href="#">Work</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="TAB_BTN nav-link" linkedtab="eligiblity_tab" href="#">Eligibility</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="TAB_BTN nav-link" linkedtab="trainings_tab" href="#">Trainings</a>
+				  </li>
+				</ul>
+	        	<span class="tab_cont" id="profile_tab" style="">
+	        		<div class="row">
+		        		<div class="col-sm-6">Last Name:</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+			        		<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-6">First Name:</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+			        		<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-6">Middle Name:</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+			        		<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+		        	</div>
+		        	<!--  -->
+		        	<div class="row">
+		        		<div class="col-sm-6">Birthday:</div>
+		        		<div class="col-sm-6">Gender:</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-6">
+			        		<input type="date" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+			        	<div class="col-sm-6">
+			        		<select class="form-control">
+			        			<option>Male</option>
+			        			<option>Female</option>
+			        		</select>
+			        	</div>
+		        	</div>
+	        	</span>
+	        	<span class="tab_cont" id="work_tab" style="display: none">
+	        		<div class="row">
+		        		<div class="col-sm-6">Position:</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+			        		<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-6">Department:</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+			        		<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-6">Section:</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+			        		<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-6">Assigned Date :</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+			        		<input type="date" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-6">End Date (Optional): </div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+			        		<input type="date" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+		        	</div>
+	        	</span>
+	        	<span class="tab_cont" id="eligiblity_tab" style="display: none">
+	        		<div class="row">
+		        		<div class="col-sm-6">PRC ID: </div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+			        		<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-6">Expiration/Validity Date: </div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+			        		<input type="date" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+			        	</div>
+		        	</div>
+		        	<hr>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+		        			<center><button type="button" onclick="addEligi();" class="btn btn-info">Add Others</button></center>
+		        			<br>
+		        		</div>
+		        	</div>
+		        	<span id="elig_others">
+		        		
+		        	</span>
+	        	</span>
+	        	<span class="tab_cont" id="trainings_tab" style="display: none">
+	        		<div class="row">
+			        	<div class="col-sm-6">School Graduated : </div>
+			        </div>
+		        	<div class="row">
+			        	<div class="col-sm-12">
+				        	<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+				        </div>
+			        </div>
+			        <div class="row">
+			        	<div class="col-sm-6">Year Graduated : </div>
+			        </div>
+		        	<div class="row">
+			        	<div class="col-sm-12">
+				        	<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+				        </div>
+			        </div>
+			        <div class="row">
+			        	<div class="col-sm-6">Course : </div>
+			        </div>
+		        	<div class="row">
+			        	<div class="col-sm-12">
+				        	<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+				        </div>
+			        </div>
+			        <div class="row">
+			        	<div class="col-sm-6">Masteral School : </div>
+			        </div>
+		        	<div class="row">
+			        	<div class="col-sm-12">
+				        	<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+				        </div>
+			        </div>
+			        <div class="row">
+			        	<div class="col-sm-6">Masteral Course : </div>
+			        </div>
+		        	<div class="row">
+			        	<div class="col-sm-12">
+				        	<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+				        </div>
+			        </div>
+			        <div class="row">
+			        	<div class="col-sm-6">Year Graduated : </div>
+			        </div>
+		        	<div class="row">
+			        	<div class="col-sm-12">
+				        	<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">
+				        </div>
+			        </div>
+			        <hr>
+		        	<div class="row">
+		        		<div class="col-sm-12">
+		        			<center><button type="button" onclick="addTrain()" class="btn btn-info">Add Others</button></center>
+		        			<br>
+		        		</div>
+		        	</div>
+		        	<span id="train_others">
+		        	</span>
+	        	</span>
+	        	<hr style="color:white">
+			    	<span style="float:right">
+			    		<button type="submit" class="btn btn-success">Save</button>
+			    		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			    	</span>
+			  </form>
+	      </div>
+	      
+	    </div>
+	    
+	  </div>
+	</div>
 	<script type="text/javascript">
-		function selectHealthFacility(){
-			var selected = $('#HFacility').children(":selected").val();
-			if (selected == "Hospital") {
-					$('#ServiceSpan').show();
-			} else {
-				$('#ServiceSpan').hide();
+		var eligi_cout = 0,tra_count = 0;
+		$('.TAB_BTN').on('click',function(){
+			var ifHas = $(this).hasClass('active');
+			if (ifHas == false) {
+				$(this).addClass('active');
+				$('a.TAB_BTN').not(this).removeClass('active');
+				var getLinked = $(this).attr('linkedtab');
+				$('.tab_cont').hide();
+				$('#'+getLinked).show();
 			}
+		});
+		function addEligi(){
+			$('#elig_others').append(
+				'<span id="eligi_'+eligi_cout+'"><hr>' +
+					'<div class="row">' +
+				        		'<div class="col-sm-6">Other Licensed ID :</div>' +
+				    '</div>' +
+			       	'<div class="row">' +
+				        	'<div class="col-sm-12">' +
+					        	'<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">' +
+					        '</div>' +
+				    '</div>' +
+				    '<div class="row">' +
+				       	'<div class="col-sm-6">Other Licensed ID Expiration Date : </div>'+
+				    '</div>'+
+			        '<div class="row">'+
+				        '<div class="col-sm-12">'+
+					        '<input type="date" name="fname" class="form-control"  style="margin:0 0 .8em 0;">'+
+					    '</div>'+
+				    '</div>' +
+				    '<div class="row">' +
+				    	'<div class="col-sm-12">'+
+				    		'<center><button type="button" onclick="$(\'#eligi_'+eligi_cout+'\').remove()" class="btn btn-danger">Delete</button></center><br>' +
+				    		'</div>'+
+				    '</div>' +
+			    '<hr></span>'
+			);
+			eligi_cout++;
 		}
-		function ClassOwner(){
-			if(document.getElementById('Class2Owner').selectedIndex < 1) {
-
-			} else {
-				// document.getElementById('regionSelector').options[document.getElementById('regionSelector').selectedIndex].id
-				hideUnhideClassType(document.getElementById('Class2Owner').selectedIndex);
-
-			}
+		function addTrain(){
+			$('#train_others').append(
+				'<span id="tra_'+tra_count+'"><hr>' +
+				'<div class="row">' +
+			        		'<div class="col-sm-6">School :</div>' +
+			        	'</div>' +
+		        		'<div class="row">'+
+			        		'<div class="col-sm-12">'+
+				        		'<input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;">'+
+				        	'</div>'+
+			        	'</div>'+
+			        	'<div class="row">'+
+			        		'<div class="col-sm-6">Training: </div>'+
+			        	'</div>'+
+		        		'<div class="row">'+
+			        		'<div class="col-sm-12">'+
+				        		'<input type="name" name="fname" class="form-control"  style="margin:0 0 .8em 0;">'+
+				        	'</div>'+
+			        	'</div>'+
+			        	'<div class="row">'+
+			        		'<div class="col-sm-6">Date: </div>'+
+			        	'</div>' +
+		        		'<div class="row">' +
+			        		'<div class="col-sm-12">' +
+				        		'<input type="date" name="fname" class="form-control"  style="margin:0 0 .8em 0;">'+
+				        	'</div>' +
+			        	'</div>' +
+			        	'<div class="row">' +
+				    	'<div class="col-sm-12">'+
+				    		'<center><button type="button" onclick="$(\'#tra_'+tra_count+'\').remove()" class="btn btn-danger">Delete</button></center><br>' +
+				    		'</div>'+
+				    '</div>' +
+			    '<hr></span>'
+			);
 		}
-		function hideUnhideClassType(ClassType){
-			var arr = ["Select Classification ", "National, Local, Others", "Single Proprietorship, Corporation, Others"];
-			if (ClassType === 0 || ClassType === null) {
-				document.getElementById('anotherClassSelector').innerHTML = '<option>'+arr[ClassType]+'</option>'
-			} else {
-				var anotherArr = arr[ClassType].split(", ");
-				document.getElementById('anotherClassSelector').innerHTML = '';
-					for(var i = 0; i < anotherArr.length; i++) {
-						document.getElementById('anotherClassSelector').innerHTML += '<option>'+anotherArr[i]+'</option>';
-					}
-			}
-		}
-		function ClassType(){
-			var selected = $('#anotherClassSelector').children(":selected").val();
-			if (selected == "Others") {
-				$('#OtherSpan').show();
-			} else {
-				$('#OtherSpan').hide();
-			}
-		}
+		
 	</script>
 @endsection
