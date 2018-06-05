@@ -91,6 +91,7 @@
 
             <div href="" class="navbar btn btn-outline-success" style="font-size: 25px;border-color: #fff;color: #fff;">OLORS</div>
             <a href="{{asset('client/home')}}" class="navbar" style="color: #fff;text-decoration:  none;" ><i class="fa fa-home"></i>&nbsp;Home</a>
+            
           <a style="color: #fff;" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell"></i>&nbsp;<i class="badge badge-primary">1</i>
              <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
          <div class="navbar-login">
@@ -98,11 +99,11 @@
           </div>
         </div>
           </a>
-               <li class="nav-item dropdown">
+      <li class="nav-item dropdown">
         <a style="color: #fff;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <i class="fa fa-user-circle" style="font-size:  30px;"></i>
         </a>
-        <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown" style="width: 300px;">
          <div class="navbar-login">
             <div class="row">
                <div class="col-lg-4">
@@ -174,7 +175,6 @@
 }
     .navbar-login
 {
-    width: 300px;
     padding: 10px;
     padding-bottom: 0px;
     text-transform: none;

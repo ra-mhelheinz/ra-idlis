@@ -1,6 +1,4 @@
 @extends('main')
-@section('content')
-@include('client.nav')
 @if (session()->exists('client_data'))
    @php
      $clientData = session('client_data');
@@ -10,10 +8,12 @@
     window.location.href = "{{asset('/')}}";
   </script>
 @endif
-		<div class="container" style="margin-top: 2%;margin-bottom: 20%;">
-	  		<div class="card">
+@section('content')
+@include('client.nav')
+		<div class="container" style="margin-top: 2%;">
+	  		<div class="card" style="height: 500px;margin-bottom: 2%;">
 	  			<div class="card-header">
-	  			List Of Personnel &nbsp;<button style="background-color: #228B22 !important" class="btn-primarys"  data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-plus-circle"></i>Add Personnel</button>
+	  			List Of Personnel &nbsp;<button style="background-color: #228B22 !important" class="btn-primarys"  data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-circle"></i>Add Personnel</button>
 	  			</div>
 	  			<div class="card-body">
 	  			<table class="table">
@@ -37,7 +37,30 @@
 	  		</div>
 	  		</div>
 		</div>
-	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		 <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          Modal body..
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+	</div>
+{{-- 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content" style="border-radius: 0px;border: none;">
 	      <div class="modal-body text-justify" style=" background-color: #0f8845;
@@ -317,5 +340,6 @@
 			);
 		}
 		
-	</script>
+	</script> --}}
+
 @endsection
