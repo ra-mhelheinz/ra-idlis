@@ -21,7 +21,7 @@
                   </div>
         </div>
         <button style="color: #fff;" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="fa fa-bars" style="color: #fff;"></i> Menu
+          <i class="fa fa-bars" style="color:   #FFFF00;"></i> Menu
         </button>
         <div class="collapse navbar-collapse " id="navbarResponsive">
           <ul class="navbar-nav mr-auto">
@@ -29,9 +29,9 @@
         <ul class="navbar-nav">
 
             <div href="" class="navbar btn btn-outline-success" style="font-size: 25px;border-color: #fff;color: #fff;">OLORS</div>
-            <a href="{{asset('client/home')}}" class="navbar" style="color: #fff;text-decoration:  none;" ><i class="fa fa-home"></i>&nbsp;Home</a>
+            <a href="{{asset('client/home')}}" class="navbar" style="color:   #FFFF00;text-decoration:  none;" ><i class="fa fa-home"></i>&nbsp;Home</a>
             
-          <a style="color: #fff;" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell"></i>&nbsp;<i class="badge badge-primary">1</i>
+          <a style="color:  #FFFF00;" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell"></i>&nbsp;<i class="badge badge-primary">1</i>
              <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
          <div class="navbar-login">
            <p>Welcome to DOH OLORS.</p>
@@ -39,7 +39,7 @@
         </div>
           </a>
       <li class="nav-item dropdown">
-        <a style="color: #fff;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a style="color:  #FFFF00;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <i class="fa fa-user-circle" style="font-size:  30px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown" style="width: 300px;">
@@ -55,7 +55,6 @@
                   <p class="text-left" style="font-size: 10px;">{{$clientData->email}}</p>
                   <p class="text-left "></p>
                   <p class="text-left">
-                  <button href="#" class="btn-primarys btn-block btn-sm">View Profile</button>
                   <button href="#" class="btn-primarys btn-block btn-sm">About</button>
                   <button href="#" class="btn-primarys btn-block btn-sm">Help</button>
                   </p>
