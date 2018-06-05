@@ -8,67 +8,6 @@
     window.location.href = "{{asset('/')}}";
   </script>
 @endif
-<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
-      <div class="container">
-        <div class="navbar-brand" href="#">OLORS</div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse " id="navbarResponsive">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{{asset('client/home')}}"><span class="fa fa-home"></span>&nbsp;Home
-              </a>
-            </li>
-               <li class="nav-item">
-              <a class="nav-link" href="#"><span class="fa fa-question-circle"></span>&nbsp;Help</a>
-            </li>
-             <li class="nav-item">
-              <a class="nav-link" href="#"><span class="fa fa-info"></span>&nbsp;About</a>
-            </li>
-          </ul>
-        <ul class="navbar-nav ">
-          <button class="btn btn-outline-success"><span class="fa fa-bell"></span>&nbsp;<span class="badge badge-primary">1</span></button>
-               <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <span class="fa fa-user-circle"></span>&nbsp;Account
-        </a>
-        <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown">
-         <div class="navbar-login">
-            <div class="row">
-               <div class="col-lg-4">
-                  <p class="text-center">
-                    <span class="fa fa-user icon-size"></span>
-                  </p>
-                </div>
-                <div class="col-lg-8">
-                  <p class="text-left"><strong>{{$clientData->cm_auth}}</strong></p>
-                  <p class="text-left small">{{$clientData->cm_email}}</p>
-                  <p class="text-left">
-                  <button href="#" class="btn-primarys btn-block btn-sm">View Profile</button>
-                  </p>
-                </div>
-              </div>
-          </div>
-          <div class="navbar-login navbar-login-session">
-              <div class="row">
-                <div class="col-lg-12">
-                   <p>
-                      <button href="#" onclick="event.preventDefault();document.getElementById('clientLogout').submit();" class="btn-defaults btn-block btn-sm">Logout</button>
-                      <form id="clientLogout" action="{{asset('/client/logout')}}" method="POST" hidden>
-                        @csrf
-                      </form>
-                   </p>
-                </div>
-              </div>
-          </div>
-        </div>
-      </li>
-            </ul>
-              
-        </div>
-      </div>
-    </nav> -->
     <nav class="navbar navbar-expand-lg sticky-top" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
       <div class="container">
         <div class="navbar-nav" href="#">
@@ -91,6 +30,7 @@
 
             <div href="" class="navbar btn btn-outline-success" style="font-size: 25px;border-color: #fff;color: #fff;">OLORS</div>
             <a href="{{asset('client/home')}}" class="navbar" style="color: #fff;text-decoration:  none;" ><i class="fa fa-home"></i>&nbsp;Home</a>
+            
           <a style="color: #fff;" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell"></i>&nbsp;<i class="badge badge-primary">1</i>
              <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
          <div class="navbar-login">
@@ -98,11 +38,11 @@
           </div>
         </div>
           </a>
-               <li class="nav-item dropdown">
+      <li class="nav-item dropdown">
         <a style="color: #fff;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <i class="fa fa-user-circle" style="font-size:  30px;"></i>
         </a>
-        <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown" style="width: 300px;">
          <div class="navbar-login">
             <div class="row">
                <div class="col-lg-4">
@@ -111,8 +51,8 @@
                   </p>
                 </div>
                 <div class="col-lg-8">
-                  <p class="text-left" style="font-size: 13px;"><strong>{{$clientData->cm_auth}}</strong></p>
-                  <p class="text-left" style="font-size: 10px;">{{$clientData->cm_email}}</p>
+                  <p class="text-left" style="font-size: 13px;"><strong>{{$clientData->authorizedsignature}}</strong></p>
+                  <p class="text-left" style="font-size: 10px;">{{$clientData->email}}</p>
                   <p class="text-left "></p>
                   <p class="text-left">
                   <button href="#" class="btn-primarys btn-block btn-sm">View Profile</button>
@@ -174,7 +114,6 @@
 }
     .navbar-login
 {
-    width: 300px;
     padding: 10px;
     padding-bottom: 0px;
     text-transform: none;

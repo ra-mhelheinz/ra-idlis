@@ -25,11 +25,11 @@
 		  	<div class=" form-group">
 		  		<label style="display:block;"><span >Name of Facility</span></label>
 
-		  		<h2>{{$clientData->cm_faname}}</h2>		
+		  		<h2>{{$clientData->facilityname}}</h2>		
  		  	</div>
 		</div>
 		<div class="col-xs-12 col-md-12 fname" style="margin-top: -10px">
-			<h5>​{{$clientData->cm_str}}, {{$clientData->cm_brgy}}, {{$clientData->cm_zip}} {{$clientData->pro_name}} - {{$clientData->reg_name}} </h5>
+			<h5>​{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} </h5>
 
 		</div>
 	  	<div class="col-xs-12 col-md-6 fname">

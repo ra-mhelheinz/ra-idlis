@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Hash;
 use DB;
+use Carbon\Carbon;
 class ClientController extends Controller
 {
     public function clientlogin(Request $request){
@@ -17,14 +18,14 @@ class ClientController extends Controller
             $pass= $request->input('log_pass');
             $pass = Hash::check('pass', $pass);
             $data = DB::table('x08')
-                    ->where([ ['u_uname', '=', $uname], ['u_pass', '=', $pass], ['grp_id', '=', '5'] ])
+                    ->where([ ['uid', '=', $uname], ['pwd', '=', $pass], ['grpid', '=', '5'] ])
+                    ->select('*')
                     ->first();
             if ($data){
                 $clientUser  = DB::table('x08')
-                                ->join('client_meta', 'x08.u_id', '=', 'client_meta.u_id')
-                                ->join('region', 'client_meta.reg_id', '=', 'region.reg_id')
-                                ->join('province', 'client_meta.pro_id', '=', 'province.pro_id')
-                                ->select('x08.u_id', 'client_meta.*', 'region.reg_name', 'province.pro_name')
+                                ->join('region', 'x08.rgnid', '=', 'region.rgnid')
+                                ->join('province', 'x08.province', '=', 'province.provid')
+                                ->select('x08.*', 'region.rgn_desc', 'province.provname')
                                 ->first()
                                 ;
                 session()->put('client_data',$clientUser);
@@ -41,6 +42,9 @@ class ClientController extends Controller
     		return view('client.register');
     	}
         if($request->isMethod('post')){
+          $dt = Carbon::now();
+          $dateNow = $dt->toDateString();
+          $timeNow = toTimeString();
           $data['facility_name'] = $request->facility_name;
           $data['region'] = $request->region;
           $data['province'] = $request->province;
@@ -53,35 +57,33 @@ class ClientController extends Controller
           $data['pass'] = Hash::make($request->pass2);
           $data['email'] = $request->email;
           $data['contact_p'] = $request->contact_p;
+          $data['ip'] = request()->ip();
           $checkUser = DB::table('x08')
-                        ->where('u_uname', '=' ,$data['uname'])
-                        ->where('grp_id' , '=' , '5')
+                        ->where('uid', '=' ,$data['uname'])
+                        ->where('grpid' , '=' , '5')
                         ->exists();
           if ($checkUser == true) {
               return 'same';
           } else {
             DB::table('x08')->insert(
                 [
-                    'u_uname' => $data['uname'],
-                    'u_pass' => $data['pass'],
-                    'grp_id' => 5,
+                    'uid' => $data['uname'],
+                    'pwd' => $data['pass'],
+                    'facilityname' => $data['facility_name'],
+                    'rgnid' => $data['region'],
+                    'province' => $data['province'],
+                    'barangay' => $data['brgy'],
+                    'streetname' => $data['street'],
+                    'city_muni' => $data['city_muni'],
+                    'zipcode' => $data['zip'],
+                    'contactperson' => $data['contact_p'],
+                    'email' => $data['email'],
+                    'authorizedsignature' => $data['authorized'],
+                    'ipaddress' => $data['ip'],
+                    't_date'=> $dateNow,
+                    't_time' =>$timeNow,
+                    'grpid' => 5,
                 ]
-            );
-            $lastID = DB::getPdo()->lastInsertId();
-            DB::table('client_meta')->insert(
-              [
-                'u_id' => $lastID,
-                'cm_faname' => $data['facility_name'],
-                'reg_id' => $data['region'],
-                'pro_id' => $data['province'],
-                'cm_brgy' => $data['brgy'],
-                'cm_str' => $data['street'],
-                'cm_ctmuni' => $data['city_muni'],
-                'cm_zip' => $data['zip'],
-                'cm_contp' => $data['contact_p'],
-                'cm_email' => $data['email'],
-                'cm_auth' => $data['authorized'],
-              ]
             );
             // return response()->json(['test'=>$data]);
             // return "Check";
