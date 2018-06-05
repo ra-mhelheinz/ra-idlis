@@ -138,7 +138,7 @@
 					<select id="selectRegion4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Region <strong>Required</strong>" required="">
 						<option value="">Select Region</option>
 						@foreach ($regions as $region)
-							<option value="{{$region->reg_id}}">{{$region->reg_name}}</option>
+							<option value="{{$region->rgnid}}">{{$region->rgn_desc}}</option>
 						@endforeach
 					</select>
 					</div>
@@ -273,7 +273,7 @@
           	}
           	for (var i = 0; i < x.length; i++) {
           		$('#selectProvince4Cm').append(
-          				'<option value="'+x[i].pro_id+'">'+x[i].pro_name +'</option>'
+          				'<option value="'+x[i].provid+'">'+x[i].provname +'</option>'
           			);
           	}
           }
