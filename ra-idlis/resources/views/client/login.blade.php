@@ -170,7 +170,7 @@
 
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
-					<input type="password" data-parsley-trigger="change" class="input form-control" id="pass1" data-parsley-equalto="#pass1" name="pass2" autocomplete="off" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Password</strong>" placeholder="Password"  required="">
+					<input type="password" data-parsley-trigger="change" class="input form-control" id="pass1" data-parsley-equalto="#pass1" name="pass2" autocomplete="off" data-parsley-required-message="<strong>*</strong>Required <strong>Password</strong>" placeholder="Password"  required="">
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input  type="password" data-parsley-trigger="change" class="input form-control" id="pass2" name="pass2" autocomplete="off"   placeholder="Retype Password" data-parsley-equalto="#pass1" data-parsley-required-message="<strong>*</strong>Retype Password <strong>Required</strong>" required="">
@@ -180,6 +180,9 @@
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="text" data-parsley-required-message="<strong>*</strong>Contact Person <strong>Required</strong>" class="input form-control" name="contact_p" autocomplete="off" placeholder="Contact Person"  required="">
+				</div>
+				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+					<input type="text" data-parsley-required-message="<strong>*</strong>Contact Person No.<strong>Required</strong>" class="input form-control" name="contact_p" autocomplete="off" placeholder="Contact Person No."  required="">
 				</div>
 					</div>
 				<div class="help-text">
