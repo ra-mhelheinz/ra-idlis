@@ -11,6 +11,7 @@
 <style type="text/css">
   .visitor{
     position: relative;
+    max-width: 500px;
   }
   .visitor:after{
       content: '';
@@ -27,14 +28,14 @@
   margin-left: -37px;
   }
 </style>
-  <div class="modal fadeInUpBig animated" id="myModal">
+  <div class="modal" id="myModal">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 100% ! important;">
 <div class="row" style="height: 100%;width: 100%;">
-  <div class="col-sm-4 wow zoomIn" data-wow-delay="1.5s">
+  <div class="col-sm-4 slideInLeft animated">
     <img src="{{asset('ra-idlis/public/img/loimg.png')}}" id="aniImg" style="height: auto;width: 500px;padding: 0;max-height: 100%;">
   </div>
-  <div class="col-sm-8">     
-   <div class="modal-content visitor" style="max-width: 500px;">        
+  <div class="col-sm-8 bounceInDown animated">     
+   <div class="modal-content visitor" >        
         <div class="modal-body">
           <table id="guide">
               <td>Need a guide for first-time visitors?</td>
@@ -86,6 +87,8 @@
         function yes(){
           $('#wowslider-container1').show();
           $('.visitor').css('max-width', '100%');
+          $('.visitor').addClass('zoomIn');
+          $('.visitor').addClass('animated');
           $('#guide').hide();
         }
          $('#myModal').modal('toggle');
@@ -93,11 +96,6 @@
     $('#myModal').modal('toggle');
     $('#myModal2').modal('show').delay(3000);
   });
-        function ani(){
-            $('#aniImg').animate({left: '250px'});
-        }
-      
- 
 </script>
 <div class="container-fluid"> 
     <div class="row">
@@ -116,7 +114,7 @@
         <section id="services">
       <div class="container">
         <div class="row">
-          <div class="col-sm-3 col-md-4 col-lg-3">
+          <div class="col-sm-3 col-md-3 col-lg-3">
              <div class="card">
             <h5 class="card-header">Announcements</h5>
             <div class="cardb" style="max-height: 100%;padding: 1.25rem;flex: 1 1 auto;">

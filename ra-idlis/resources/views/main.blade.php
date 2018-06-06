@@ -52,6 +52,9 @@ body{
   }
 }
 @media only screen and (max-width: 470px ) {
+  .img{
+    margin-left: 28%;
+  }
    .republic {
     margin: auto;
     text-align: center;
@@ -66,69 +69,28 @@ body{
     width: 100%;
     overflow: auto;
   }
-  .img{
-    margin-left: 28%;
-  }
 }
-@media only screen and (max-width: 400px){
-  .img{
-    margin-left: 27%;
-  }
+@media only screen and (max-width: 460px){
+  .img {
+  margin-left: 27%;
 }
-@media only screen and (max-width: 390px){
-  .img{
-    margin-left: 26%;
-  }
 }
-@media only screen and (max-width: 380px){
-  .img{
-    margin-left: 25%;
-  }
+@media only screen and (max-width: 450px){
+  .img {
+  margin-left: 26%;
 }
-@media only screen and (max-width: 370px){
-  .img{
-    margin-left: 24%;
-  }
 }
+@media only screen and (max-width: 440px){
+  .img {
+  margin-left: 25%;
+}
+}
+
 @media only screen and (max-width: 360px){
-  .img{
-    margin-left: 23%;
-  }
+  .img {
+  margin-left: 24%;
 }
-@media only screen and (max-width: 350px){
-
-  .img{
-    margin-left: 22%;
-  }
 }
-@media only screen and (max-width: 340px){
-
-  .img{
-    margin-left: 21%;
-  }
-}
-@media only screen and (max-width: 330px){
-  .img{
-    margin-left: 20%;
-  }
-}
-@media only screen and (max-width: 320px){
-  .img{
-    margin-left: 19%;
-  }
-}
-@media only screen and (max-width: 310px){
-  .img{
-    margin-left: 18%;
-  }
-}
-@media only screen and (max-width: 300px){
-
-  .img{
-    margin-left: 17%;
-  }
-}
-
 
 
 	</style>

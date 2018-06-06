@@ -240,7 +240,7 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn-primarys"><i class="fa fa-floppy-o"></i> Save</button>
+          <button type="button" class="btn-defaults" style="color: #fff;background-color: #28a745;"><i class="fa fa-floppy-o" ></i> Save</button>
            <button type="button" class="btn-defaults" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
         </div>
         
