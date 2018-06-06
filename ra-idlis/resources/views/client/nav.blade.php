@@ -8,7 +8,7 @@
     window.location.href = "{{asset('/')}}";
   </script>
 @endif
-    <nav class="navbar navbar-expand-lg sticky-top" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
+    <nav class="navbar navbar-expand-lg" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
       <div class="container">
         <div class="navbar-nav" href="#">
           <img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img4">
@@ -21,7 +21,7 @@
                   </div>
         </div>
         <button style="color: #fff;" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="fa fa-bars" style="color:   #FFFF00;"></i> Menu
+          <i class="fa fa-bars" style="color:   #fff;"></i> Menu
         </button>
         <div class="collapse navbar-collapse " id="navbarResponsive">
           <ul class="navbar-nav mr-auto">
@@ -29,9 +29,9 @@
         <ul class="navbar-nav">
 
             <div href="" class="navbar btn btn-outline-success" style="font-size: 25px;border-color: #fff;color: #fff;">OLORS</div>
-            <a href="{{asset('client/home')}}" class="navbar" style="color:   #FFFF00;text-decoration:  none;" ><i class="fa fa-home"></i>&nbsp;Home</a>
+            <a href="{{asset('client/home')}}" class="navbar" style="color:   #fff;text-decoration:  none;" ><i class="fa fa-home"></i>&nbsp;Home</a>
             
-          <a style="color:  #FFFF00;" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell"></i>&nbsp;<i class="badge badge-primary">1</i>
+          <a style="color:  #fff;" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell"></i>&nbsp;<i class="badge badge-primary">1</i>
              <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
          <div class="navbar-login">
            <p>Welcome to DOH OLORS.</p>
@@ -39,7 +39,7 @@
         </div>
           </a>
       <li class="nav-item dropdown">
-        <a style="color:  #FFFF00;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a style="color:  #fff;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <i class="fa fa-user-circle" style="font-size:  30px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown" style="width: 300px;">
@@ -81,24 +81,18 @@
         </div>
       </div>
     </nav>
-    <nav class="breadcrumb">
-  <a class="breadcrumb-item active" href="#">Application</a>
-  <a class="breadcrumb-items" href="#">Evaluation</a>
-  <a class="breadcrumb-items" href="#">Inspection</a>
-  <a class="breadcrumb-items" href="#">Issuance</a>
+<nav class="navbar navbar-expand-sm sticky-top" style="justify-content: center;background-color:  #fff;z-index: 2;">
+  <ul class="navbar-nav">
+      <a class="navbar active" href="#" style="font-weight: 600;color: #228B22">Apply</a>
+      <a class="navbar" href="#"><i class="fa fa-angle-right" style="color: #228B22"></i></a>
+      <a class="navbar" href="#" style="font-weight: 600;color: #228B22">Evaluation</a>
+      <a class="navbar" href="#"><i class="fa fa-angle-right" style="color: #228B22"></i></a>
+      <a class="navbar" href="#" style="font-weight: 600;color: #228B22">Inspection</a>
+      <a class="navbar" href="#"><i class="fa fa-angle-right" style="color: #228B22"></i></a>
+      <a class="navbar" href="#" style="font-weight: 600;color: #228B22">Issuance</a>
+  </ul>
 </nav>
 <style type="text/css">
-.breadcrumb > .breadcrumb-items:before{
-  content: '>'
-}
-.breadcrumb{
-  display: block;
-  text-align: center;
-  background-color: #fff;
-}
-.breadcrumb > a{
-    text-decoration: none;
-}
 .navbar{
     font-size: 0.765625rem;
     text-transform: uppercase;

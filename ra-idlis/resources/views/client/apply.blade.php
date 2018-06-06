@@ -18,8 +18,8 @@
 				padding: 1em;
 			}
 </style>
-		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);margin-top: 2%;">
-			<h4 style="border-bottom: 1px solid green;padding-bottom: 9px;position: relative;"><strong>Application Form</strong><span style=" background: lightgreen none repeat scroll 0 0;bottom: -2px;height: 3px;left: 0;position: absolute;width: 75px;"></span></h4>
+		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);margin-top: 1%;">
+			<h2 style="text-align: center;border-bottom: 1px solid green;padding-bottom: 9px;position: relative;"><strong>APPLICATION FORM</strong><span style=" background: lightgreen none repeat scroll 0 0;bottom: -2px;height: 3px;left: 0;position: absolute;width: 75px;"></span></h2>
 	  <div class="row">
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
