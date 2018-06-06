@@ -8,12 +8,20 @@
     window.location.href = "{{asset('/')}}";
   </script>
 @endif
+<style type="text/css">
+	.close .fa-window-close{
+		       transition: transform .3s ease-in-out;
+	}
+	.fa-window-close:hover{
+		       transform: rotate(180deg);
+	}
+</style>
 @section('content')
 @include('client.nav')
 		<div class="container" style="margin-top: 2%;">
 	  		<div class="card" style="height: 500px;margin-bottom: 2%;">
-	  			<div class="card-header">
-	  			List Of Personnel &nbsp;<button style="background-color: #228B22 !important" class="btn-primarys"  data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-circle"></i>Add Personnel</button>
+	  			<div class="card-header text-center">
+	  			List Of Personnel &nbsp;<button style="background-color: #28a745" class="btn-primarys"  data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-circle"></i>&nbsp;Add Personnel</button>
 	  			</div>
 	  			<div class="card-body">
 	  			<table class="table">
@@ -42,19 +50,198 @@
       <div class="modal-content">
       
         <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="modal-header " style="background-color: #28a745;">
+          <h4 class="modal-title" style="color: #fff;text-shadow: 2px 2px 4px #000000;">ADD PERSONNEL</h4>
+          <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close" style="color: #fff;"></i></button>
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
-          Modal body..
+                          <ul id="tabsJustified" class="nav nav-tabs">
+                    <li class="nav-item"><a href="" data-target="#profile" data-toggle="tab" class="nav-link small text-uppercase active">Profile</a></li>
+                    <li class="nav-item"><a href="" data-target="#work" data-toggle="tab" class="nav-link small text-uppercase ">Work</a></li>
+                    <li class="nav-item"><a href="" data-target="#eligibility" data-toggle="tab" class="nav-link small text-uppercase">Eligibility</a></li>
+                    <li class="nav-item"><a href="" data-target="#trainings" data-toggle="tab" class="nav-link small text-uppercase">Trainings</a></li>
+                </ul>
+                <br>
+                <div id="tabsJustifiedContent" class="tab-content">
+                    <div id="profile" class="tab-pane fade active show">
+                         <form id="contact-form" method="post" role="form">
+                         	<div class="container">
+				            <div class="row">
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <label for="form_name">Last Name *</label>
+				                        <input id="form_name" type="text" name="surname" class="form-control" placeholder="Please enter your last name" required="required" data-error="name is required.">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <label for="form_email">Middle Name *</label>
+				                        <input id="form_email" type="email" name="email" class="form-control" placeholder="Please enter your middle name" required="required" data-error="Valid email is required.">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <label for="form_phone">First Name *</label>
+				                        <input id="form_phone" type="tel" name="phone" class="form-control" placeholder="Please enter your first name">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				            </div>
+				            <div class="row">
+				            	<div class="col-sm-6"><label for="form_phone">Birthday *</label>
+				                        <input id="form_phone" type="date" name="phone" class="form-control"></div>
+				            	<div class="col-sm-6"><label for="form_phone">Gender *</label>
+				                        <select class="form-control">
+				                        	<option hidden></option>
+				                        	<option>Gender</option>
+				                        	<option>Male</option>
+				                        </select>
+				            </div>
+				        </div>
+				        </div>
+   						 </form>
+                    </div>
+                    <div id="work" class="tab-pane fade">
+                    	<div class="container">
+                       		<div class="row">
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <label for="form_name">Position *</label>
+				                        <input id="form_name" type="text" name="surname" class="form-control" required="required" data-error="name is required.">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <label for="form_email">Department *</label>
+				                        <input id="form_email" type="email" name="email" class="form-control" required="required" data-error="Valid email is required.">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <label for="form_phone">Section *</label>
+				                        <input id="form_phone" type="tel" name="phone" class="form-control">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				            </div>
+				             <div class="row">
+				            	<div class="col-sm-6"><label for="form_phone">Assigned Date *</label>
+				                        <input id="form_phone" type="date" name="phone" class="form-control"></div>
+								<div class="col-sm-6"><label for="form_phone">End Date *</label>
+				                        <input id="form_phone" type="date" name="phone" class="form-control"></div>
+				        </div>
+				        </div>
+                    </div>
+                    <div id="eligibility" class="tab-pane fade">
+                    	<div class="container">
+                    		<div class="row">
+                    			<div class="col-sm-3"></div>
+                    			<div class="col-sm-6">
+                    				<label for="form_phone">PRC ID *</label>
+				                        <input id="form_phone" type="text" name="phone" class="form-control">
+				                    <label for="form_phone">Expiration/Validity Date *</label>
+				                        <input id="form_phone" type="date" name="phone" class="form-control">
+				                        <br>
+				                        <div class="text-center"><button style="background-color:#28a745 ; " class="btn-primarys" onclick="add()"><i class="fa fa-plus-circle" ></i> Add Others</button> <button class="btn-primarys" onclick="removeClone()"><i class="fa fa-undo"></i>Reset</button></div>
+				                        <br>	
+				                        <div id="other">
+				                        	<div id="cloneOther">
+							                    <label for="form_phone">Other Licensed ID *</label>
+							                    <input id="form_phone" type="text" name="phone" class="form-control">
+							                    <label for="form_phone">Licensed ID Expiration Date*</label>
+							                    <input id="form_phone" type="date" name="phone" class="form-control">
+							                    <hr>
+							                </div>
+				                        </div>
+													<script>
+															var i = 0;
+															var i_last = 0;
+															var original = document.getElementById('cloneOther');
+															var cloneother = document.getElementById('other');
+
+															function add() {
+															    var clone = original.cloneNode(true); // "deep" clone
+															    clone.id = 'clone' + i;
+															    clone.classList.add("removeClone");
+															    // or clone.id = ""; if the divs don't need an ID
+															    cloneother.appendChild(clone);
+															    i++;
+															}
+															function removeClone(){
+																for(j = i_last; j < i; j++){
+																	document.getElementById('other').removeChild(document.getElementById('clone' + j));
+																}
+																i_last = i;
+															}
+													</script>
+                    			</div>
+                    			<div class="col-sm-3"></div>
+                    		</div>
+                    	</div>
+                    </div>
+                    <div id="trainings" class="tab-pane fade">
+                         	<div class="container">
+                       		<div class="row">
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <label for="form_name">School Graduated *</label>
+				                        <input id="form_name" type="text" name="surname" class="form-control" required="required" data-error="name is required.">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <label for="form_email">Year Graduated *</label>
+				                        <input id="form_email" type="year" name="email" class="form-control" required="required" data-error="Valid email is required.">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <label for="form_phone">Course *</label>
+				                        <input id="form_phone" type="tel" name="phone" class="form-control">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				            </div>
+				             <div class="row">
+				            	<div class="col-sm-12"><label for="form_phone">Masteral School *</label>
+				                        <input id="form_phone" type="text" name="phone" class="form-control"></div>
+								<div class="col-sm-12"><label for="form_phone">Masteral Course *</label>
+				                        <input id="form_phone" type="text" name="phone" class="form-control"></div>
+				               <div class="col-sm-12"><label for="form_phone">Year Graduated *</label>
+				                        <input id="form_phone" type="text" name="phone" class="form-control"></div> 
+
+				        </div>
+				        <br>
+				        <div class="text-center"><button style="background-color:#28a745 ; " class="btn-primarys" onclick="add()"><i class="fa fa-plus-circle" ></i> Add Others</button> <button class="btn-primarys" onclick="removeClone()"><i class="fa fa-undo"></i>Reset</button></div>
+				        <br>
+				        <div id="other">
+				          	<div id="cloneOther">
+							     <label for="form_phone">School *</label>
+							     <input id="form_phone" type="text" name="phone" class="form-control">
+							     <label for="form_phone">Training *</label>
+							     <input id="form_phone" type="text" name="phone" class="form-control">
+							     <label for="form_phone">Date *</label>
+							     <input id="form_phone" type="date" name="phone" class="form-control">
+							     <hr>
+							 </div>
+				        </div>
+				        </div>
+                    </div>
+                </div>
         </div>
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn-primarys"><i class="fa fa-floppy-o"></i> Save</button>
+           <button type="button" class="btn-defaults" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
         </div>
         
       </div>
