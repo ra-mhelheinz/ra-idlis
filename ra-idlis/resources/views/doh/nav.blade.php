@@ -46,7 +46,7 @@
                         <i class="fa fa-fw fa-wrench"></i> Master File
                     </a>
                     <ul id="sm_base" class="list-unstyled collapse">
-                        <li><a href="#lpro" data-toggle="collapse">&nbsp;&nbsp;Licensing Process</a>
+                        <li><a href="#lpro" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-tasks"></i>&nbsp;Licensing Process</a>
                             <ul id="lpro" class="list-unstyled collapse">
                                 <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Application Type</a></li>
                                 <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
@@ -54,9 +54,9 @@
                                 <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
                             </ul>
                         </li>
-                        <li><a href="#phil" data-toggle="collapse">&nbsp;&nbsp;Philippines</a>
+                        <li><a href="#phil" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-flag"></i>&nbsp;Philippines</a>
                             <ul id="phil" class="list-unstyled collapse">
-                                <li><a href="{{ asset('/employee/dashboard/ph/regions') }}">&nbsp;&nbsp;&nbsp;&nbsp;Regions</a></li>
+                                <li><a href="{{ asset('/employee/dashboard/ph/regions') }}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-area-chart"></i>&nbsp;Regions</a></li>
                                 <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Provinces</a></li>
                                 <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;City/Municipalities</a></li>
                             </ul>

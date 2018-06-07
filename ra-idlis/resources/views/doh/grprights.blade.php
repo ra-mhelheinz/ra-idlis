@@ -7,21 +7,25 @@
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
            Group Rights {{-- <a href="" data-toggle="modal" data-target="#myModal" ><span data-toggle="tooltip" title="Add New Regional Admin" class="fa fa-plus-circle"></a></span> --}}
-           <span style="float:right">Filter : 
-              <select class="form-control" id="filterer" onchange="filterGroup()">
+           <div style="float:right;display: inline-block;">
+            <form class="form-inline">
+              <label>Filter : </label>
+              <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Group ...</option>
                 @foreach ($groups as $group)
                   <option value="{{$group->grp_id}}">{{$group->grp_desc}}</option>
                 @endforeach
               </select>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
-           </span>
+              </form>
+           </div>
         </div>
         <div class="card-body">
           <span id="showSucc">
           
           </span>
-            <table class="table" style="overflow-x: scroll;" >
+          <div class="table-responsive">
+            <table class="table table-hover" style="overflow-x: scroll;" >
               <thead>
                 <tr>
                   <th style="width: 15%">Group</th>
@@ -38,6 +42,7 @@
               <tbody id="FilterdBody">
               </tbody>
             </table>
+            </div>
         </div>
     </div>
       </div>
@@ -84,7 +89,7 @@
                               '<td><center><input type="checkbox" class="checkbox disabled" '+cnl+' disabled=""></center></td>' +
                               '<td><center><input type="checkbox" class="checkbox disabled" '+prt+' disabled=""></center></td>' +
                               '<td><center><input type="checkbox" class="checkbox disabled" '+vw+' disabled=""></center></td>' +
-                              '<td><center><button type="button" class="btn btn-warning" onclick="getData('+data[i].x06_id+', \''+data[i].grp_id+'\', \''+data[i].mod_id+'\',\''+data[i].grp_desc+'\',\''+data[i].mod_desc+'\', '+data[i].allow+', '+data[i].ad_d+', '+data[i].upd+', '+data[i].cancel+', '+data[i].print+', '+data[i].view+');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center></td>' +
+                              '<td><center><button type="button" class="btn-defaults" onclick="getData('+data[i].x06_id+', \''+data[i].grp_id+'\', \''+data[i].mod_id+'\',\''+data[i].grp_desc+'\',\''+data[i].mod_desc+'\', '+data[i].allow+', '+data[i].ad_d+', '+data[i].upd+', '+data[i].cancel+', '+data[i].print+', '+data[i].view+');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center></td>' +
                           '<tr>'
                         );
                     }
@@ -103,22 +108,22 @@
         $('#modal_loaded').append(
             '<div class="container">' +
               '<form>' +
-                '<div class="row">' +
+                '<div class="row text-center">' +
                     '<div class="col-sm-6">Group : '+grp_name+'</div>' +
                     '<div class="col-sm-6">Module : '+mod_name+'</div>' +
                   '</div>' +
                   '<hr>' +
                   '<div class="row">' +
-                    '<div class="col-sm-6">Allow : <input type="checkbox" id="chkAlw" class="checkbox" '+alw2+'></div>' +
-                    '<div class="col-sm-6">Add : <input type="checkbox" id="chkAdd" class="checkbox" '+add2+'></div>' +
+                    '<div class="col-sm-6"> <div class="form-check"><label class="form-check-label"><input id="chkAlw" type="checkbox" class="form-check-input" '+alw2+'>Allow</label></div></div>' +
+                    '<div class="col-sm-6"> <div class="form-check"><label class="form-check-label"><input id="chkAdd" type="checkbox" class="form-check-input" '+add2+'>Add</label></div></div>' +
                   '</div>' +
                   '<div class="row">' +
-                    '<div class="col-sm-6">Update : <input type="checkbox" id="chkUpd" class="checkbox" '+upd2+'></div>' +
-                    '<div class="col-sm-6">Cancel : <input type="checkbox" id="chkCnl" class="checkbox" '+cnl2+'></div>' +
+                    '<div class="col-sm-6"> <div class="form-check"><label class="form-check-label"><input id="chkUpd" type="checkbox" class="form-check-input" '+upd2+'>Updtae</label></div></div>' +
+                    '<div class="col-sm-6"><div class="form-check"><label class="form-check-label"><input id="chkCnl" type="checkbox" class="form-check-input" '+cnl2+'>Cancel</label></div></div>' +
                   '</div>' +
                   '<div class="row">' + 
-                    '<div class="col-sm-6">Print : <input type="checkbox" id="chkPrt" class="checkbox" '+prt2+'></div>' +
-                    '<div class="col-sm-6">View : <input type="checkbox" id="chkVw" class="checkbox" '+vw2+'></div>' +
+                    '<div class="col-sm-6"><div class="form-check"><label class="form-check-label"><input id="chkPrt" type="checkbox" class="form-check-input" '+prt2+'>Print</label></div></div>' +
+                    '<div class="col-sm-6"><div class="form-check"><label class="form-check-label"><input id="chkVw" type="checkbox" class="form-check-input" '+vw2+'>View</label></div></div>' +
                   '</div><hr>' +
                   '<div class="row">' +
                     '<div class="col-sm-6">' +
