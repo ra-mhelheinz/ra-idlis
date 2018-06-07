@@ -59,7 +59,7 @@
                     <td>{{$regions->rgn_desc}}</td>
                     <td>
                       <center>
-                        <button type="button" class="btn btn-warning" onclick="showData('{{$regions->rgnid}}', '{{$regions->rgn_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                        <button type="button" class="btn-defaults" onclick="showData('{{$regions->rgnid}}', '{{$regions->rgn_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
                       </center>
                     </td>
                   </tr>

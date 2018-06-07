@@ -29,25 +29,9 @@
                 </tr>
               </thead>
               <tbody>
-                      {{-- <tr>
-                        <td scope="row"></td>
-                        <td></td>
-                        <td>
-                          <font style="color:green">Active</font>
-                          <font style="color:red">Deactived</font>
-                        </td>
-                        <td>
-                          <div class="row">
-                            <a href="" ><button class="btn btn-primary" title="View Account">&nbsp;<i class="fa fa-eye"></i>&nbsp;</button></a>&nbsp;
-                              <form>
-                              <a href=""><button class="btn btn-danger" title="Deactivate Account">&nbsp;<i class="fa fa-toggle-off"></i>&nbsp;</button></a>
-                            </form> 
-                            <form>
-                            <a href=""><button class="btn btn-success" title="Reactivate Account">&nbsp;<i class="fa fa-toggle-on"></i>&nbsp;</button></a>
-                          </form>                               
-                          </div>
-                        </td>
-                      </tr> --}}
+                     <tr>
+                       <td></td>
+                     </tr>
               </tbody>
             </table>
         </div>
@@ -61,7 +45,7 @@
         <h5 class="modal-title text-center"><strong>Regional Administrator Registration</strong></h5>
         <hr>
         <div class="container">
-          <form class="row" action="{{ asset('employee/dashboard/personnel/regional') }}" method="POST" data-parsley-validate>
+          <form class="row" action="{{ asset('employee/dashboard/personnel/lo') }}" method="POST" data-parsley-validate>
             {{ csrf_field() }}
             <div class="col-sm-4">First Name:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -90,7 +74,7 @@
             </div>
             <div class="col-sm-4">Contact No:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
-            <input type="email" name="cntno" class="form-control" data-parsley-required-message="*<strong>Contact no.</strong> required" required>
+            <input type="number" name="cntno" class="form-control" data-parsley-required-message="*<strong>Contact no.</strong> required" required>
             </div>
             <div class="col-sm-4">
               Username:

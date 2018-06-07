@@ -138,8 +138,7 @@
 		            );
 					return 'DONE';
 				}
-			}
-			
+			}			
 		}
 		public function groupRights(Request $request){
 			if ($request->isMethod('get')) {
@@ -165,6 +164,42 @@
 			if ($request->isMethod('get')) {
 				$regions = DB::table('region')->get();
 				return view('doh.lo',['region'=>$regions]);
+			}
+						if($request->isMethod('post')){
+				 $data['fname'] = $request->fname;
+          		 $data['mname'] = $request->mname;
+	             $data['lname'] = $request->lname;
+	             $data['rgn'] = $request->rgn;
+	             $data['email'] = $request->email;
+	             $data['cntno'] = $request->cntno;
+	             $data['uname'] = $request->uname;
+	             $data['pass'] = Hash::make($request->pass);
+	             $data['ip'] = request()->ip();
+	             $checkUser = DB::table('x08')
+                        ->where('uid', '=' ,$data['uname'])
+                        ->where('grpid' , '=' , 'LO')
+                        ->exists();
+                if ($checkUser == true) {
+              		return 'same';
+          			} 
+          			else{
+	             DB::table('x08')->insert(
+	             [
+	             	'uid' => $data['uname'],
+                    'pwd' => $data['pass'],
+                    'rgnid' => $data['rgn'],
+                    'email' => $data['email'],
+                    'contact' => $data['cntno'],
+                    'fname' => $data['fname'],
+                    'mname' => $data['mname'],
+                    'lname' => $data['lname'],
+                    'ipaddress' => $data['ip'],
+                    'grpid' => 'LO',
+
+	             ]
+	         	);
+	             return 'done';
+	             }
 			}
 		}
 	}
