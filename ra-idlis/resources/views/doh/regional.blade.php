@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 
-<{{-- p id="getThis1" hidden>{{ session('arr') }}</p>
+{{-- <p id="getThis1" hidden>{{ session('arr') }}</p>
 <script type="text/javascript">
     var form_id = "MA01";
     var elm = document.getElementById('getThis1');
