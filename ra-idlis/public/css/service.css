@@ -50,7 +50,7 @@
 
 #services .box .icon i {
   color: #444;
-  font-size: 64px;
+  font-size: 50px;
   transition: 0.5s;
   line-height: 0;
   margin-top: 34px;
@@ -95,7 +95,6 @@
 
 @media (max-width: 767px) {
   #services .box  {
-    margin-top: 10px;
     margin-bottom: 20px;
     height: auto;
   }
@@ -105,6 +104,7 @@
     padding-bottom: 15px;
   }
   #services .box h4, #services .box p {
+    margin-top: 10px;
     margin-left: 0;
     text-align: center;
   }
