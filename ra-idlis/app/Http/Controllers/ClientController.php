@@ -18,7 +18,7 @@ class ClientController extends Controller
             $pass= $request->input('log_pass');
             $pass = Hash::check('pass', $pass);
             $data = DB::table('x08')
-                    ->where([ ['uid', '=', $uname], ['pwd', '=', $pass], ['grpid', '=', '5'] ])
+                    ->where([ ['uid', '=', $uname], ['pwd', '=', $pass], ['grpid', '=', 'C'] ])
                     ->select('*')
                     ->first();
             if ($data){
@@ -44,7 +44,7 @@ class ClientController extends Controller
         if($request->isMethod('post')){
           $dt = Carbon::now();
           $dateNow = $dt->toDateString();
-          $timeNow = toTimeString();
+          $timeNow = $dt->toTimeString();
           $data['facility_name'] = $request->facility_name;
           $data['region'] = $request->region;
           $data['province'] = $request->province;
@@ -57,14 +57,23 @@ class ClientController extends Controller
           $data['pass'] = Hash::make($request->pass2);
           $data['email'] = $request->email;
           $data['contact_p'] = $request->contact_p;
+          $data['contact_pno'] = $request->contact_pno;
           $data['ip'] = request()->ip();
+          // Check Username
           $checkUser = DB::table('x08')
                         ->where('uid', '=' ,$data['uname'])
-                        ->where('grpid' , '=' , '5')
+                        ->where('grpid' , '=' , 'C')
+                        ->exists();
+          // Check Facility Name
+          $checkFacility = DB::table('x08')
+                        ->where('facilityname', '=' , $data['facility_name'])
                         ->exists();
           if ($checkUser == true) {
               return 'same';
-          } else {
+          } else if ($checkFacility == true) {
+              return 'sameFacility';
+          }
+          else {
             DB::table('x08')->insert(
                 [
                     'uid' => $data['uname'],
@@ -77,12 +86,13 @@ class ClientController extends Controller
                     'city_muni' => $data['city_muni'],
                     'zipcode' => $data['zip'],
                     'contactperson' => $data['contact_p'],
+                    'contactpersonno' => $data['contact_pno'],
                     'email' => $data['email'],
                     'authorizedsignature' => $data['authorized'],
                     'ipaddress' => $data['ip'],
-                    't_date'=> $dateNow,
+                    't_date' => $dateNow,
                     't_time' =>$timeNow,
-                    'grpid' => 5,
+                    'grpid' => 'C',
                 ]
             );
             // return response()->json(['test'=>$data]);
