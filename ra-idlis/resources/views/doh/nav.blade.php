@@ -13,6 +13,9 @@
             @if ($employeeData->grpid == 'RA')
                 Regional Head, {{$employeeData->rgnid}}
             @endif
+            @if ($employeeData->grpid == 'LO')
+                Licensing Officer, {{$employeeData->rgnid}}
+            @endif
         </a>
 
         <div class="navbar-collapse collapse">
@@ -69,12 +72,15 @@
                     <a href="{{asset('employee/dashboard/grouprights')}}"><i class="fa fa-fw fa-check"></i> Group Rights</a>
                 </li>
                 @endif
-                <li><a href="{{-- {{asset('/employee/personnel')}} --}}#perso" data-toggle="collapse"><i class="fa fa-fw fa-users"></i> Personnel</a>
+                @if ($employeeData->grpid == 'NA' || $employeeData->grpid == 'RA')
+                <li><a href="{{-- {{asset('/employee/personnel')}} --}}#perso" data-toggle="collapse"><i class="fa fa-fw fa-users"></i> Personnel
+                </a>
                     <ul id="perso" class="list-unstyled collapse">
                         <li class="UG01_allow"><a href="{{asset('employee/dashboard/personnel/regional')}}">&nbsp;&nbsp;Regional Admins</a></li>
                         <li><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;Licensing Officers</a></li>
                     </ul>
                 </li>
+                @endif
                 <li><a href="{{-- {{asset('/headprocess')}} --}}#"><i class="fa fa-fw fa-spinner"></i> Licensing Process Status</a></li>
                 {{-- <li><a href="{{asset('/LOaccount')}}"><i class="fa fa-fw fa-eye"></i> LO Account</a></li> --}}
 <!--                 <li><a href=""><i class="fa fa-fw fa-edit"></i> Forms</a></li>
