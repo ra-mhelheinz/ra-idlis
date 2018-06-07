@@ -19,15 +19,14 @@
                 <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-envelope"></i> 5</a></li>
                 <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-bell"></i> 3</a></li>
                 <li class="nav-item dropdown">
-                    <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> @if ($employeeData->grpid == 'NA')
-                        Administrator
-                    @else
-
+                    <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> @if ($employeeData->grpid != 'NA')
                         {{$employeeData->name}}
                     @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">
+                        @if ($employeeData->grpid != 'NA')
                         <a href="#" class="dropdown-item">Profile</a>
+                        @endif
                         <a href="#" onclick="event.preventDefault();document.getElementById('employeeLogout').submit();" class="dropdown-item">Logout</a>
                         <form id="employeeLogout" action="{{asset('/employee/logout')}}" method="POST" hidden>
                         @csrf
@@ -74,7 +73,7 @@
                         @if ($employeeData->grpid == 'NA')
                             <li><a href="{{asset('employee/dashboard/personnel/regional')}}">&nbsp;&nbsp;Regional Admins</a></li>
                         @endif
-                        <li><a href="#">&nbsp;&nbsp;Licensing Officers</a></li>
+                        <li><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;Licensing Officers</a></li>
                     </ul>
                 </li>
                 <li><a href="{{-- {{asset('/headprocess')}} --}}#"><i class="fa fa-fw fa-spinner"></i> Licensing Process Status</a></li>

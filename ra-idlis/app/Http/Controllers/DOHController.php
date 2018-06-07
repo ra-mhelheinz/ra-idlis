@@ -55,6 +55,16 @@
 				$regions = DB::table('region')->get();
 				return view('doh.regional',['region'=>$regions]);
 			}
+			if ($request->isMethod('post')) {
+				// $data['fname'] = $request->fname;
+				// $data['mname'] = $request->;
+				// $data['lname'] = $request->;
+				// $data['rgnid'] = $request->;
+				// $data['email'] = $request->;
+				// $data['cntno'] = $request->;
+				// $data['uname'] = $request->;
+				// $data['pass'] = $request->;
+			}
 			
 		}
 		public function groupRights(Request $request){
@@ -75,6 +85,12 @@
 			if ($request->isMethod('get')) {
 				$regions = DB::table('region')->get();
 				return view('doh.phregion',['region'=>$regions]);
+			}
+		}
+		public function LOfficers(Request $request){
+			if ($request->isMethod('get')) {
+				$regions = DB::table('region')->get();
+				return view('doh.lo',['region'=>$regions]);
 			}
 		}
 	}
