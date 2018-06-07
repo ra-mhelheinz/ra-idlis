@@ -8,6 +8,14 @@
  <link rel="stylesheet" type="text/css" href="ra-idlis/public/css/login.css">
 @endsection
 <style type="text/css">
+@media only screen and (max-width: 992px){
+	.col-lg-7{
+		order: 13;
+	}
+	.col-lg-5{
+		order: -1;
+	}
+}
 	@media only screen and (max-width: 770px){
 		.col-lg-7{
 			display: none;

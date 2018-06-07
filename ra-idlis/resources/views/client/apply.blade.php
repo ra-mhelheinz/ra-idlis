@@ -25,11 +25,11 @@
 		  	<div class=" form-group">
 		  		<label style="display:block;"><span >Name of Facility</span></label>
 
-		  		<h2>{{$clientData->facilityname}}</h2>		
+		  		<h4>{{$clientData->facilityname}}</h4>		
  		  	</div>
 		</div>
 		<div class="col-xs-12 col-md-12 fname" style="margin-top: -10px">
-			<h5>​{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} </h5>
+			<p>​{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} </p>
 
 		</div>
 	  	<div class="col-xs-12 col-md-6 fname">
@@ -60,7 +60,7 @@
 			</div>
 			</span>
 		</div>
-	<div class="col-xs-12 col-md-6 fname">
+	<div class="col-xs-12 col-md-3 fname">
 	  	<div class=" form-group">
 	  		<label style="display:block;"><span>Classification as to Ownership</span></label>
 	  		<select id="Class2Owner" class="form-control" onchange="ClassOwner()">
@@ -70,13 +70,20 @@
 	  		</select>
 	  	</div>
 	</div>
-		<div class="col-xs-12 col-md-6 fname">
+		<div class="col-xs-12 col-md-3 fname">
 	  	<div class=" form-group"><label>Classification Type</label>
 	  		<select id="anotherClassSelector" class="form-control" onchange="ClassType();">
 	  			
 	  		</select>
 	  	</div>
 	</div>
+				<div class="col-xs-12 col-md-6">
+				<span id="OtherSpan" style="display: none">
+					<div class="form-group"><label style="display:block;" ><span >Others :</span><small style="font-weight:normal;" class="pull-right"></small></label>
+						<input type="text" name="" class="form-control">
+					</div>
+				</span>
+			</div>
 <!-- 	<div class="col-xs-12 col-md-6">
 		<div class="form-group"><label style="display:block;" ><span >Status of Application</span><small style="font-weight:normal;" class="pull-right"></small></label>
 			<select class="form-control">
@@ -85,21 +92,15 @@
 		</div>
 	</div> -->
 
-	<div class="col-xs-12 col-md-6">
+	<div class="col-xs-12 col-md-4 offset-md-2">
 		<div class="form-group"><label style="display:block;" ><span >Authorized Bed Capacity</span><small style="font-weight:normal;" class="pull-right"></small></label>
 			<input type="number" name="" class="form-control">
 		</div>
 	</div>
 	
-			<div class="col-xs-12 col-md-6">
-				<span id="OtherSpan" style="display: none">
-					<div class="form-group"><label style="display:block;" ><span >Others :</span><small style="font-weight:normal;" class="pull-right"></small></label>
-						<input type="text" name="" class="form-control">
-					</div>
-				</span>
-			</div>
 
-	<div class="col-xs-12 col-md-6 fname">
+
+	<div class="col-xs-12 col-md-4 fname">
 	  	<div class=" form-group"><label>Status of Application</label>
 	  		<select class="form-control">
 	  			<option hidden></option>
@@ -116,7 +117,7 @@
 		<hr style="color:green;">
 		<div class="container" >
 		<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show Attachments to be Uploaded</div>
-		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;">
+		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
 			<!-- <ul class="list-group">
 			  <li class="list-group-item all">Acknowledgement (Notarized) 
 			  	<span style="float:right">
@@ -171,7 +172,7 @@
 				  </span>
 			  	</li>
 			</ul> -->
-			<table class="attachments table" style="width: 100%;">
+			<table class="attachments table table-hover" style="width: 100%;">
 				<tr>
 					<td>Acknowledgement (Notarized) </td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>

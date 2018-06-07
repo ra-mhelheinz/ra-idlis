@@ -122,9 +122,9 @@ body{
         </div>
   @endif
 	@yield('content')
-	<div class="fixed-bottom" style="background:transparent;width:30%;float: left;margin-left: 72%;border-radius: 5px 5px 0 0">
-	<div style="padding: 3px;">
-		<img width="100%" src="{{asset('ra-idlis/public/img/slogan.png')}}">
+	<div class="fixed-bottom" style="background:transparent;margin-left: 72%;border-radius: 5px 5px 0 0">
+	<div>
+		<img src="{{asset('ra-idlis/public/img/slogan.png')}}" width="100%" >
 	</div>
 </div>
 <!-- <footer style="background: url('ra-idlis/public/img/color.png') no-repeat;

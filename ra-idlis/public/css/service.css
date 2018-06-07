@@ -95,6 +95,7 @@
 
 @media (max-width: 767px) {
   #services .box  {
+    margin-top: 10px;
     margin-bottom: 20px;
     height: auto;
   }
