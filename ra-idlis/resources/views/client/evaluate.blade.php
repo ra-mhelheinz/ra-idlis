@@ -169,7 +169,7 @@
 							<label>Recommended for Inspection:</label>
 							<!-- data-toggle="modal" data-target="#exampleModalCenter" -->
 							<strong><label style="color:green;">&nbsp;Yes</label></strong>
-							<a href="{{asset('/orderofpaymentc')}}" style="text-decoration: none;">View payment</a>
+							<a href="{{asset('client/orderofpaymentc')}}" style="text-decoration: none;">View payment</a>
 					</div>	
 					<div class="col-sm-6">
 						<span>

@@ -81,9 +81,21 @@
   margin-bottom: 0;
   line-height: 24px;
 }
+@media only screen and (max-width: 1125px){
+  #services .box {
+  height: 300px;
+}
+}
+@media only screen and (max-width: 992px){
+  #services .box {
+  height: 200px;
+}
+}
+
 
 @media (max-width: 767px) {
   #services .box  {
+    margin-top: 10px;
     margin-bottom: 20px;
     height: auto;
   }

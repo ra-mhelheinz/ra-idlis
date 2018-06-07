@@ -27,8 +27,6 @@ Route::get('client/inspection3', 'ClientController@inspection3');
 Route::get('client/issuance', 'ClientController@issuance');
 Route::post('client/logout', 'ClientController@logout');
 
-Route::match(['get', 'post'], '/employeelogin', 'LOController@employeelogin');
-
 Route::get('/LOdashboard', 'LOController@LOdashboard');
 Route::get('/LOprocess', 'LOController@LOprocess');
 Route::get('/LOevaluate', 'LOController@LOevaluate');
@@ -54,6 +52,14 @@ Route::get('/headorderofpayment6', 'headController@headorderofpayment6');
 Route::get('/headinspection', 'headController@headinspection');
 Route::get('/headinspection2', 'headController@headinspection2');
 Route::get('/headinspection3', 'headController@headinspection3');
-Route::get('/dashboard', 'DOHController@dashboard');
+
+Route::match(['get', 'post'], '/employee/', 'DOHController@login')->name('employee');
+Route::get('/employee/dashboard', 'DOHController@dashboard')->name('eDashboard');
+Route::match(['get', 'post'], 'employee/dashboard/personnel/regional', 'DOHController@regionalAdmins')->name('regAdmins');
+Route::match(['get', 'post'],'employee/dashboard/grouprights','DOHController@groupRights')->name('grpRights');
+Route::post('/employee/logout','DOHController@logout');
+Route::match(['get', 'post'],'/employee/dashboard/ph/regions','DOHController@regions')->name('philRegions');
 // -----------------------------------------------
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
+Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
+Route::post('/employee/save_rights', ['as'=>'save-rights','uses'=>'ajaxController@saveRights']);

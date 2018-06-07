@@ -8,6 +8,14 @@
  <link rel="stylesheet" type="text/css" href="ra-idlis/public/css/login.css">
 @endsection
 <style type="text/css">
+@media only screen and (max-width: 992px){
+	.col-lg-7{
+		order: 13;
+	}
+	.col-lg-5{
+		order: -1;
+	}
+}
 	@media only screen and (max-width: 770px){
 		.col-lg-7{
 			display: none;
@@ -51,6 +59,7 @@
 		<div class="tabss-content" >
 			<div id="login-tab-content" class="active">
 				<form class="login-form" action="{{asset('/')}}" method="post" data-parsley-validate>
+					
 					{{ csrf_field()}}
 					@if (session()->has('client_login'))
 					<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -76,7 +85,7 @@
 					<button type="submit" name="button" class="button" value="Login">Login</button>
 				</form>
 				<div class="help-text text-center" style="margin-top: 10px;">
-					<small><a href="{{asset('employeelogin')}}">DOH employee login</a></small>
+					<small><a href="{{asset('employee')}}">DOH employee login</a></small>
 				</div>
 			</div><!--.login-tab-content-->
 			<div id="signup-tab-content" >
@@ -86,6 +95,12 @@
 		<form id="rform" class="signup-form" data-parsley-validate>
 			<!-- action="{{asset('/register')}}" method="post"  -->
 				<input type="hidden" name="_token" id="reg_csrf-token" value="{{ Session::token() }}" />
+				<div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none" id="Samelert">
+					  <strong><i class="fas fa-exclamation"></i></strong> Username is already been taken
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					</div>
 			<div class="col-sm-12" style="display :none">
 				@if (session()->has('reg_notif_success'))
 					<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -138,7 +153,7 @@
 					<select id="selectRegion4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Region <strong>Required</strong>" required="">
 						<option value="">Select Region</option>
 						@foreach ($regions as $region)
-							<option value="{{$region->rgnid}}">{{$region->rgn_desc}}</option>
+							<option value="{{$region->rgnid}}">{{$region->rgnid}}</option>
 						@endforeach
 					</select>
 					</div>
@@ -182,7 +197,7 @@
 					<input type="text" data-parsley-required-message="<strong>*</strong>Contact Person <strong>Required</strong>" class="input form-control" name="contact_p" autocomplete="off" placeholder="Contact Person"  required="">
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
-					<input type="text" data-parsley-required-message="<strong>*</strong>Contact Person No.<strong>Required</strong>" class="input form-control" name="contact_p" autocomplete="off" placeholder="Contact Person No."  required="">
+					<input type="text" data-parsley-required-message="<strong>*</strong>Contact Person No.<strong>Required</strong>" class="input form-control" name="contact_pno" autocomplete="off" placeholder="Contact Person No."  required="">
 				</div>
 					</div>
 				<div class="help-text">
@@ -219,6 +234,7 @@
 	                var pass2 = $('input[name="pass2"]').val();
 	                var email = $('input[name="email"]').val();
 	                var contact_p = $('input[name="contact_p"]').val();
+	                var contact_pno = $('input[name="contact_pno"]').val();
 	               $.ajax({
 			          url: " {{asset('/register')}}",
 			          method: 'POST',
@@ -236,14 +252,20 @@
 			          	pass2 : pass2,
 			          	email : email,
 			          	contact_p : contact_p,
+			          	contact_pno : contact_pno,
 			          },
 			          success: function(data) {
 			          	if (data == 'same') {
-			          		// $('input[name="reg_uname"]').removeClass('parsley-success');
-			          		// $('input[name="reg_uname"]').addClass('parsley-error');
+			          		$('input[name="reg_uname"]').removeClass('parsley-success');
+			          		$('input[name="reg_uname"]').addClass('parsley-error');
+			          		// var test = $('input[name="reg_uname"]').attr("data-parsley-id");
+			          		$('#Samelert').show();
+			          		$('#Samelert').focus();
 			          		// $('input[name="reg_uname"]').focus();
-			          		// alert('Username has been taken');
-			          		$('input[name="reg_uname"]').parsley({ errorMessage: "Username already used" });
+			          		// alert(test);	
+			          	} else if (data == 'sameFacility'){
+			          		$('input[name="facility_name"').removeClass('parsley-success');
+			          		$('input[name="facility_name"]').addClass('parsley-error');
 			          	} else {
 			          		window.location.href = "{{asset('/')}}";
 			          	}
