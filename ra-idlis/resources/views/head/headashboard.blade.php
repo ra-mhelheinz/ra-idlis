@@ -5,7 +5,7 @@
 @section('content')
 <div class="content p-4">
                 <h2 class="mb-4">Dashboard/Reports</h2>
-
+{{-- 
     <div class="row mb-4">
         <div class="col-md">
             <div class="d-flex border">
@@ -59,7 +59,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="row mb-4">
         <div class="col-md-8">

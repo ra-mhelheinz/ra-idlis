@@ -52,10 +52,12 @@ body{
   }
 }
 @media only screen and (max-width: 470px ) {
+  .img{
+    margin-left: 28%;
+  }
    .republic {
     margin: auto;
     text-align: center;
-    margin-left: 13%;
   }
      .img3 {
     display: none;
@@ -67,96 +69,28 @@ body{
     width: 100%;
     overflow: auto;
   }
-  .img{
-    margin-left: 28%;
-  }
 }
-@media only screen and (max-width: 400px){
-  .republic{
-    margin-left: 11%;
-  }
-  .img{
-    margin-left: 27%;
-  }
+@media only screen and (max-width: 460px){
+  .img {
+  margin-left: 27%;
 }
-@media only screen and (max-width: 390px){
-   .republic{
-    margin-left: 10%;
-  }
-  .img{
-    margin-left: 26%;
-  }
 }
-@media only screen and (max-width: 380px){
-   .republic{
-    margin-left: 9%;
-  }
-  .img{
-    margin-left: 25%;
-  }
+@media only screen and (max-width: 450px){
+  .img {
+  margin-left: 26%;
 }
-@media only screen and (max-width: 370px){
-   .republic{
-    margin-left: 8%;
-  }
-  .img{
-    margin-left: 24%;
-  }
 }
-@media only screen and (max-width: 360px){
-   .republic{
-    margin-left: 7%;
-  }
-  .img{
-    margin-left: 23%;
-  }
+@media only screen and (max-width: 440px){
+  .img {
+  margin-left: 25%;
 }
-@media only screen and (max-width: 350px){
-   .republic{
-    margin-left: 6%;
-  }
-  .img{
-    margin-left: 22%;
-  }
-}
-@media only screen and (max-width: 340px){
-   .republic{
-    margin-left: 12%;
-  }
-  .img{
-    margin-left: 21%;
-  }
-}
-@media only screen and (max-width: 330px){
-  .img{
-    margin-left: 20%;
-  }
-}
-@media only screen and (max-width: 320px){
-   .republic{
-    margin-left: 5%;
-  }
-  .img{
-    margin-left: 19%;
-  }
-}
-@media only screen and (max-width: 310px){
-   .republic{
-    margin-left: 4%;
-  }
-  .img{
-    margin-left: 18%;
-  }
-}
-@media only screen and (max-width: 300px){
-   .republic{
-    margin-left: 3%;
-  }
-  .img{
-    margin-left: 17%;
-  }
 }
 
+@media only screen and (max-width: 360px){
+  .img {
+  margin-left: 24%;
+}
+}
 
 
 	</style>
