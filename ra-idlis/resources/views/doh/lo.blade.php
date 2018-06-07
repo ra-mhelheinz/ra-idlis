@@ -32,7 +32,8 @@
                 </tr>
               </thead>
               <tbody>
-              @foreach ($users as $user)
+              @if ($users)
+                @foreach ($users as $user)
                 <tr>
                   <td>{{$user->fname}} @if ($user->mname != "") {{substr($user->mname,0,1)}}. @endif {{$user->lname}}
                   </td>
@@ -60,6 +61,7 @@
                   </td>
                 </tr>
               @endforeach
+              @endif
                       {{-- <tr>
                         <td scope="row"></td>
                         <td></td>
@@ -83,7 +85,7 @@
             </table>
             @if (!$users)
              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <strong><i class="fas fa-exclamation"></i></strong> No <strong>Licensing Offiers</strong> are currently registered!
+              <strong><i class="fas fa-exclamation"></i></strong> No <strong>Licensing Officers</strong> are currently registered!
             </div>
             @endif
         </div>
@@ -115,15 +117,23 @@
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
             <input type="text" name="lname" class="form-control" data-parsley-required-message="*<strong>Last name</strong> required"  required>
             </div>
+            
+            @if (session('employee_login')->grpid == 'NA')
             <div class="col-sm-4" >Region:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
-            <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="">
-            <option value=""></option>  
-                @foreach ($region as $regions)
-                  <option value="{{$regions->rgnid}}">{{$regions->rgnid}}</option>
-                @endforeach
-            </select>
-            </div>
+              <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="">
+                <option value=""></option>  
+                    @foreach ($region as $regions)
+                      <option value="{{$regions->rgnid}}">{{$regions->rgnid}}</option>
+                    @endforeach
+                </select>
+                </div>
+            @else
+              <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="" hidden>
+              <option value="{{session('employee_login')->rgnid}}">{{session('employee_login')->rgnid}}</option>
+              </select> 
+            @endif
+            
             <div class="col-sm-4">Email Address:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
             <input type="email" name="email" class="form-control" data-parsley-required-message="*<strong>Email</strong> required" required>

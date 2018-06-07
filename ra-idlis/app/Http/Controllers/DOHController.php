@@ -163,22 +163,39 @@
 		public function LOfficers(Request $request){
 			if ($request->isMethod('get')) {
 				$regions = DB::table('region')->get();
-				$users = DB::table('x08')
-						->where('grpid', '=', 'RA')
-						->select('*')
-						->first()
-						;
-				if ($users) {
+				$testX = session('employee_login');
+				if ($testX->grpid == "NA") {
 					$users = DB::table('x08')
 						->where('grpid', '=', 'LO')
 						->select('*')
-						->get()
+						->first()
 						;
-						// $name = $employeeData->fname.' '.$mid.'. '.$employeeData->lname;
-      //               $users->name = $name;
+					if ($users) {
+						$users = DB::table('x08')
+							->where('grpid', '=', 'LO')
+							->select('*')
+							->get()
+							;
+					return view('doh.lo',['region'=>$regions,'users'=>$users]);
+				} 
+			}else {
+					$users = DB::table('x08')
+						->where('grpid', '=', 'LO')
+						->where('rgnid', '=', $testX->rgnid)
+						->select('*')
+						->first()
+						;
+					if ($users) {
+						$users = DB::table('x08')
+							->where('grpid', '=', 'LO')
+							->where('rgnid', '=', $testX->rgnid)
+							->select('*')
+							->get()
+							;
 				}
-				return view('doh.lo',['region'=>$regions,'users'=>$users]);
+			return view('doh.lo',['region'=>$regions,'users'=>$users]);
 			}
+		}
 			if($request->isMethod('post')){
 				$dt = Carbon::now();
 	          	$dateNow = $dt->toDateString();
