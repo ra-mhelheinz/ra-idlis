@@ -97,7 +97,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#"><span class="fa fa-home"></span>Home</a>
+              <a class="nav-link" href="{{asset('client/home')}}"><span class="fa fa-home"></span>Home</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown"><span class="fa fa-bell" style="font-size:  20px;"></span><i class="badge badge-primary">1</i>
