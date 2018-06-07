@@ -3,6 +3,41 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
+<script type="text/javascript">Right_GG();</script>
+  <input type="text" id="CurrentPage" value="MA01" hidden>
+  {{-- <p id="getThis1" hidden>{{ session('arr') }}</p>
+  <script type="text/javascript">
+      var form_id = "MA01";
+      var elm = document.getElementById('getThis1');
+      var chg, chg1, arr, arr1, arr2, arrz;
+      var arrd = [], arrdd = [], arrddd = [];
+      chg = elm.textContent.replace("[{", "");
+      chg1 = chg.replace("}]", "");
+      arrz = chg1.split('"').join("");
+      arr = arrz.split("},{");
+      for(var i = 0; i < arr.length; i++) {
+          arr1 = arr[i].split(",");
+          // for(var j = 0; j < 7; j++) {
+          //     arr2 = arr1[j].split(":");
+          //     arrd.push(arr2);
+          // }
+          arrdd.push(arr1);
+      }
+      for(var i = 0; i < arrdd.length; i++) {
+          var elem, vw;
+          elem = arrdd[i][0].split(":");
+          vw = arrdd[i][6].split(":");
+          console.log(elem[1]);
+          if(elem[1] == form_id && (parseInt(vw[1]) < 1)) {
+              console.log(elem);
+              window.location.href = "{{ asset('employee/dashboard') }}";
+          }
+      }
+      // for(var k = 0; k < arrdd.length; k++) {
+      //     console.log(arrdd[k].split(":"));
+      // }
+  </script> --}}
+
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
@@ -24,7 +59,7 @@
                     <td>{{$regions->rgn_desc}}</td>
                     <td>
                       <center>
-                        <button type="button" class="btn btn-warning" onclick="showData('{{$regions->rgnid}}', '{{$regions->rgn_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                        <button type="button" class="btn-defaults" onclick="showData('{{$regions->rgnid}}', '{{$regions->rgn_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
                       </center>
                     </td>
                   </tr>

@@ -2,47 +2,46 @@
 @section('content')
 @include('client.nav')
 <div class="container-fluid">
-       <div class="card" style="margin: 0 0 5em 0;">
-                <div class="card-header bg-white font-weight-bold">
-                    <table style="width:100%;">
-                      <tr>
-                        <th style="width:10%"><img src="{{asset('ra-idlis/public/img/doh2.png')}}" style="height: auto; width:100px;"></th>
-                        <th class="text-center" style="width:80%">
-                          <h6>Republic of the Philippines</h6>
-                          <h6>DEPARTMENT OF HEALTH</h6>
-                          <h5>Order of Payment</h5>
-                          <h4><strong>ONE STOP-SHOP PRIVATE HOSPITAL</strong></h4>
-                        </th>
-              <th style="width:10%"></th>
-                      </tr>
-                    </table>
-                    <br>
-                     <table style="width: 100%;">
-                <thead>
-                <tr>
-                    <td>Date:</td>
-                    <td></td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Name of Hospital:</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Address:</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>To CASHIER: Please charge the amount of</td>
-                    <td>(Php_______)for</td>
-                </tr>
-                </tbody>
+  <div class="card" style="margin: 0 0 5em 0;">
+          <div class="card-header bg-white font-weight-bold">
+            <table style="width:100%;">
+              <tr>
+                <th style="width:10%"><img src="{{asset('ra-idlis/public/img/doh2.png')}}" style="height: auto; width:100px;"></th>
+                <th class="text-center" style="width:80%">
+                  <h6>Republic of the Philippines</h6>
+                  <h6>DEPARTMENT OF HEALTH</h6>
+                  <h5>Order of Payment</h5>
+                  <h4><strong>ONE STOP-SHOP PRIVATE HOSPITAL</strong></h4>
+                </th>
+                  <th style="width:10%"></th>
+              </tr>
             </table>
-
-                </div>
-                <div class="card-body">
-                  <table style="width: 100%;">
+                      <br>
+            <table style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <td>Date:</td>
+                        <td></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Name of Hospital:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Address:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>To CASHIER: Please charge the amount of</td>
+                        <td>(Php_______)for</td>
+                    </tr>
+                    </tbody>
+            </table>
+          </div>
+          <div class="card-body">
+              <table style="width: 100%;">
                     <tbody>
                        <tr>
                         <td style="width: 85%;">&nbsp;</td>
@@ -53,7 +52,7 @@
                         <td  class="text-right" style="width:15%;"></td>
                       </tr>
                     </tbody>
-                    </table>
+              </table>
                     <div class="row">
                       <div class="col-lg-5">
               <table border="1" class="text-center" style="width: 100%;">
@@ -296,8 +295,9 @@
               </tbody>
             </table>
             </div>
-            <div class="col-lg-7">
-              <table border="1" class="text-center" style="width: 100%;">
+            <div class="col-lg-7 ">
+              <div class="table-responsive">
+              <table border="1" class="text-center">
                 <tbody>
                   <tr>
                       <th style="width:25%;"></th>
@@ -547,7 +547,7 @@
                       <td style="font-size:13px;font-weight: bold" rowspan="2" colspan="3" id="GrandTotal">76,950</td>
                   </tr>
                   <tr>
-                  </tr>   
+                  </tr>  
               </tbody>
               </table>
             </div>
@@ -581,11 +581,9 @@
                   </tr>
                 </tbody>
               </table>
-
+              </div>
             </div>
-            
           </div>  
-			
 	        </div>
 	      </div>
       </div>

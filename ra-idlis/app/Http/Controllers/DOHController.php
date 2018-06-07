@@ -8,12 +8,28 @@
 	use Hash;
 	class DOHController extends Controller
 	{
+		public function getSettings(){
+			$grpid = session()->get('employee_login');
+			$rights = DB::table('x06')
+                    			->where('grp_id', '=', $grpid->grpid)
+                    			->select('mod_id','allow','ad_d','upd','cancel', 'print','view')
+                    			->get();
+			return $rights;
+		}
+		public function getSettings2(){
+			$grpid = session()->get('employee_login');
+			$rights = DB::table('x06')
+                    			->where('grp_id', '=', $grpid->grpid)
+                    			->select('mod_id','allow','ad_d','upd','cancel', 'print','view')
+                    			->get();
+			return response()->json($rights);
+		}
 		public function login(Request $request){
 			if($request->isMethod('get')){
 	   			return view('doh.login');
 	   		}
 	   		if ($request->isMethod('post')) {
-	   			$uname = $request->uname;
+	   			$uname = strtoupper($request->uname);
 	   			$data['pass'] = $request->pass;
 	   			$pass = Hash::check('pass', $data['pass']);
 	   			$data = DB::table('x08')
@@ -23,17 +39,28 @@
                 if ($data) {
                 	$employeeData =	DB::table('x08')
                                 ->join('region', 'x08.rgnid', '=', 'region.rgnid')
-                                ->join('province', 'x08.province', '=', 'province.provid')
-                                ->select('x08.*', 'region.rgn_desc', 'province.provname')
+                                ->select('x08.*', 'region.rgn_desc')
                                 ->where('x08.uid', '=', $data->uid)
                                 ->first()
                                 ;
                     $x = $employeeData->mname;
-                    $mid = strtoupper($x[0]);
-                    $name = $employeeData->fname.' '.$mid.'. '.$employeeData->lname;
-                    echo $name;
+                    if ($x != "") {
+                    	$mid = strtoupper($x[0]);
+                    	$mid = $mid.'. ';
+                    } else {
+                    	$mid = ' ';
+                    }
+                    $rights = DB::table('x06')
+                    			->where('grp_id', '=', $employeeData->grpid)
+                    			->get();
+                    $name = $employeeData->fname.' '.$mid.''.$employeeData->lname;
                     $employeeData->name = $name;
                 	session()->put('employee_login',$employeeData);
+                	
+                	// return json_encode($rights);
+                	$test = $this->getSettings();
+                	session()->put('arr', $test);
+
                 	return redirect()->route('eDashboard');
                 } else {
                 	session()->flash('dohUser_login','Invalid Username/Password');
@@ -53,9 +80,65 @@
 		public function regionalAdmins(Request $request){
 			if ($request->isMethod('get')) {
 				$regions = DB::table('region')->get();
-				return view('doh.regional',['region'=>$regions]);
+				$users = DB::table('x08')
+						->where('grpid', '=', 'RA')
+						->select('*')
+						->first()
+						;
+				if ($users) {
+					$users = DB::table('x08')
+						->where('grpid', '=', 'RA')
+						->select('*')
+						->get()
+						;
+						// $name = $employeeData->fname.' '.$mid.'. '.$employeeData->lname;
+      //               $users->name = $name;
+				}
+				return view('doh.regional',['region'=>$regions,'users'=>$users]);
 			}
-			
+			if ($request->isMethod('post')) {
+				$dt = Carbon::now();
+	          	$dateNow = $dt->toDateString();
+	          	$timeNow = $dt->toTimeString();
+				$data['fname'] = $request->fname;
+				$data['mname'] = $request->mname;
+				$data['lname'] = $request->lname;
+				$data['rgnid'] = $request->rgn;
+				$data['email'] = $request->email;
+				$data['cntno'] = $request->cntno;
+				$data['uname'] = strtoupper($request->uname);
+				$data['pass'] = Hash::make($request->pass);
+				$data['ip'] = request()->ip();
+				// checkUser
+				$checkUser = DB::table('x08')
+                    ->where([ ['uid', '=', $data['uname']], ['pwd', '=', $data['pass']] ])
+                    ->select('*')
+                    ->first();
+				if ($checkUser) {
+					return 'SAME';
+				} else {
+					$addedby = session()->get('employee_login');
+					DB::table('x08')->insert(
+		                [
+		                    'uid' => $data['uname'],
+		                    'pwd' => $data['pass'],
+		                    'rgnid' => $data['rgnid'],
+		                    'contact' => $data['cntno'],
+		                    'email' => $data['email'],
+		                    'fname' => $data['fname'],
+		                    'mname' => $data['mname'],
+		                    'lname' => $data['lname'],
+		                    'ipaddress' => $data['ip'],
+		                    't_date' => $dateNow,
+		                    't_time' =>$timeNow,
+		                    'grpid' => 'RA',
+		                    'isActive' => 1,
+		                    'isAddedBy' => $addedby->uid,
+		                ]
+		            );
+					return 'DONE';
+				}
+			}			
 		}
 		public function groupRights(Request $request){
 			if ($request->isMethod('get')) {
@@ -75,6 +158,70 @@
 			if ($request->isMethod('get')) {
 				$regions = DB::table('region')->get();
 				return view('doh.phregion',['region'=>$regions]);
+			}
+		}
+		public function LOfficers(Request $request){
+			if ($request->isMethod('get')) {
+				$regions = DB::table('region')->get();
+				$users = DB::table('x08')
+						->where('grpid', '=', 'RA')
+						->select('*')
+						->first()
+						;
+				if ($users) {
+					$users = DB::table('x08')
+						->where('grpid', '=', 'LO')
+						->select('*')
+						->get()
+						;
+						// $name = $employeeData->fname.' '.$mid.'. '.$employeeData->lname;
+      //               $users->name = $name;
+				}
+				return view('doh.lo',['region'=>$regions,'users'=>$users]);
+			}
+			if($request->isMethod('post')){
+				$dt = Carbon::now();
+	          	$dateNow = $dt->toDateString();
+	          	$timeNow = $dt->toTimeString();
+				$data['fname'] = $request->fname;
+				$data['mname'] = $request->mname;
+				$data['lname'] = $request->lname;
+				$data['rgnid'] = $request->rgn;
+				$data['email'] = $request->email;
+				$data['cntno'] = $request->cntno;
+				$data['uname'] = strtoupper($request->uname);
+				$data['pass'] = Hash::make($request->pass);
+				$data['ip'] = request()->ip();
+				// checkUser
+				$checkUser = DB::table('x08')
+                    ->where([ ['uid', '=', $data['uname']], ['pwd', '=', $data['pass']] ])
+                    ->select('*')
+                    ->first();
+				if ($checkUser) {
+					return 'SAME';
+				} else {
+					$addedby = session()->get('employee_login');
+					DB::table('x08')->insert(
+		                [
+		                    'uid' => $data['uname'],
+		                    'pwd' => $data['pass'],
+		                    'rgnid' => $data['rgnid'],
+		                    'contact' => $data['cntno'],
+		                    'email' => $data['email'],
+		                    'fname' => $data['fname'],
+		                    'mname' => $data['mname'],
+		                    'lname' => $data['lname'],
+		                    'ipaddress' => $data['ip'],
+		                    't_date' => $dateNow,
+		                    't_time' =>$timeNow,
+		                    'grpid' => 'LO',
+		                    'isActive' => 1,
+		                    'isAddedBy' => $addedby->uid,
+		                ]
+		            );
+					return 'DONE';
+				}
+			
 			}
 		}
 	}

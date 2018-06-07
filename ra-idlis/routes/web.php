@@ -56,9 +56,11 @@ Route::get('/headinspection3', 'headController@headinspection3');
 Route::match(['get', 'post'], '/employee/', 'DOHController@login')->name('employee');
 Route::get('/employee/dashboard', 'DOHController@dashboard')->name('eDashboard');
 Route::match(['get', 'post'], 'employee/dashboard/personnel/regional', 'DOHController@regionalAdmins')->name('regAdmins');
+Route::match(['get', 'post'], 'employee/dashboard/personnel/lo', 'DOHController@LOfficers')->name('regAdmins');
 Route::match(['get', 'post'],'employee/dashboard/grouprights','DOHController@groupRights')->name('grpRights');
 Route::post('/employee/logout','DOHController@logout');
 Route::match(['get', 'post'],'/employee/dashboard/ph/regions','DOHController@regions')->name('philRegions');
+Route::post('employee/getRights', 'DOHController@getSettings2');
 // -----------------------------------------------
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);

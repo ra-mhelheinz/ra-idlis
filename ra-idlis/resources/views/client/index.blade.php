@@ -9,6 +9,10 @@
 @section('content')
 @include('client.nav')
 <style type="text/css">
+#aniImg{
+  height: 100%;width: 400px;
+}
+
   .visitor{
     position: relative;
     max-width: 500px;
@@ -28,13 +32,12 @@
   margin-left: -37px;
   }
 </style>
-  <div class="modal" id="myModal">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 100% ! important;">
-<div class="row" style="height: 100%;width: 100%;">
-  <div class="col-sm-4 slideInLeft animated">
-    <img src="{{asset('ra-idlis/public/img/loimg.png')}}" id="aniImg" style="height: auto;width: 500px;padding: 0;max-height: 100%;">
+  <div class="modal" id="myModal" style="overflow: auto;">
+    <div class="modal-dialog row" style="max-width: 100% ! important;margin-bottom: 0;">
+  <div class="col-sm-5 slideInLeft animated">
+    <img src="{{asset('ra-idlis/public/img/loimg.png')}}" id="aniImg" style="padding: 0;max-height: 100%;margin-left: 10%;">
   </div>
-  <div class="col-sm-8 bounceInDown animated">     
+  <div class="col-sm-7 bounceInDown animated">     
    <div class="modal-content visitor" >        
         <div class="modal-body">
           <table id="guide">
@@ -79,8 +82,6 @@
         
       </div>
     </div>
-
-</div>
     </div>
   </div>
 <script type="text/javascript">

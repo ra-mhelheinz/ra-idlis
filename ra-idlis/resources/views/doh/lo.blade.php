@@ -3,44 +3,10 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-
-<{{-- p id="getThis1" hidden>{{ session('arr') }}</p>
-<script type="text/javascript">
-    var form_id = "MA01";
-    var elm = document.getElementById('getThis1');
-    var chg, chg1, arr, arr1, arr2, arrz;
-    var arrd = [], arrdd = [], arrddd = [];
-    chg = elm.textContent.replace("[{", "");
-    chg1 = chg.replace("}]", "");
-    arrz = chg1.split('"').join("");
-    arr = arrz.split("},{");
-    for(var i = 0; i < arr.length; i++) {
-        arr1 = arr[i].split(",");
-        // for(var j = 0; j < 7; j++) {
-        //     arr2 = arr1[j].split(":");
-        //     arrd.push(arr2);
-        // }
-        arrdd.push(arr1);
-    }
-    for(var i = 0; i < arrdd.length; i++) {
-        var elem, vw;
-        elem = arrdd[i][0].split(":");
-        vw = arrdd[i][6].split(":");
-        console.log(elem[1]);
-        if(elem[1] == form_id && (parseInt(vw[1]) > 0)) {
-            console.log(elem);
-            window.location.href = "{{ asset('employee/dashboard') }}";
-        }
-    }
-    // for(var k = 0; k < arrdd.length; k++) {
-    //     console.log(arrdd[k].split(":"));
-    // }
-</script> --}}
-
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Regional Administrator Accounts <a href="" data-toggle="modal" data-target="#myModal" ><span data-toggle="tooltip" title="Add New Regional Admin" class="fa fa-plus-circle"></a></span>
+           Licesing Officers Accounts <a href="" data-toggle="modal" data-target="#myModal" ><span data-toggle="tooltip" title="Add Licensing Officer" class="fa fa-plus-circle"></a></span>
            {{-- <span style="float:right">Filter : 
               <select class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Region ...</option>
@@ -117,7 +83,7 @@
             </table>
             @if (!$users)
              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <strong><i class="fas fa-exclamation"></i></strong> No <strong>Regional Administrators</strong> are currently registered!
+              <strong><i class="fas fa-exclamation"></i></strong> No <strong>Licensing Offiers</strong> are currently registered!
             </div>
             @endif
         </div>
@@ -129,7 +95,7 @@
     <div class="modal-content" style="border-radius: 0px;border: none;">
       <div class="modal-body text-justify" style=" background-color: #272b30;
     color: white;">
-        <h5 class="modal-title text-center"><strong>Regional Administrator Registration</strong></h5>
+        <h5 class="modal-title text-center"><strong>Licensing Officer Registration</strong></h5>
         <hr>
         <div class="container">
           <form id="RAdmin" class="row" data-parsley-validate>
@@ -179,7 +145,7 @@
               <input type="password" name="pass" class="form-control" data-parsley-required-message="*<strong>Password</strong> required" required>
             </div>
             <div class="col-sm-12">
-              <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Regional Adminstrator</button>
+              <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Licensing Officer</button>
               {{-- action="{{ asset('employee/dashboard/personnel/regional') }}" method="POST"  --}}
             </div> 
           </form>
@@ -197,7 +163,7 @@
               if (form.parsley().isValid()){
                 // $('input[name="fname"]').val()
                   $.ajax({
-                  url: " {{asset('employee/dashboard/personnel/regional')}}",
+                  url: " {{asset('employee/dashboard/personnel/lo')}}",
                   method: 'POST',
                   data: {
                     _token : $('input[name="_token"]').val(),
@@ -214,8 +180,8 @@
                     if (data === 'DONE') {
                         // $("#RAdmin").trigger( "reset" );
                         // $('#myModal').modal('toggle');
-                        alert('Successfully Added New Regional Administrator');
-                       window.location.href = "{{asset('employee/dashboard/personnel/regional')}}";
+                        alert('Successfully Added New Licensing Officer');
+                       window.location.href = "{{asset('employee/dashboard/personnel/lo')}}";
                     } else {
                       $('input[name="uname"]').focus();
                       showEr();
