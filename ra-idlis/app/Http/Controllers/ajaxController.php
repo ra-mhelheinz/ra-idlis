@@ -20,5 +20,35 @@
         );
           	return back();
 		}
+		public function getRights(Request $request){
+			$groupRights = DB::table('x06')
+				// ->join('orders', 'users.id', '=', 'orders.user_id')
+								->join('x05', 'x06.mod_id','=','x05.mod_id')
+								->join('x07', 'x06.grp_id', '=', 'x07.grp_id')
+								->select('x06.*', 'x05.*', 'x07.*')
+								->where('x06.grp_id', '=', $request->grp_id)
+								->get()
+								;
+			if ($groupRights) {
+				return $groupRights;
+				// return response()->json(['GrpRights'=>$groupRights]);
+			} else {
+				return "NONE";
+			}
+		}
+		public function saveRights(Request $request){
+			$updateData = array(
+						'allow' 	=> 	$request->alwChk,
+						'ad_d'		=>	$request->addChk,
+						'upd'		=>	$request->updChk,
+						'cancel'	=>	$request->cnlChk,
+						'print' 	=>	$request->prtChk,
+						'view' 		=>	$request->vwChk
+					);
+			DB::table('x06')
+            ->where('x06_id', $request->id)
+            ->update($updateData);
+			return 'DONE';
+		}
 	}
 ?>

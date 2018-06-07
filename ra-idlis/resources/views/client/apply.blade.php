@@ -29,8 +29,7 @@
  		  	</div>
 		</div>
 		<div class="col-xs-12 col-md-12 fname" style="margin-top: -10px">
-			<p>​{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} </p>
-
+			<h5>​{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} </h5>
 		</div>
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
