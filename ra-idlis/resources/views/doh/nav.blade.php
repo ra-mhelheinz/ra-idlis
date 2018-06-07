@@ -3,6 +3,7 @@
      $employeeData = session('employee_login');
    @endphp
 @endif
+<input type="hidden" id="global-token" value="{{ Session::token() }}" />
 <nav class="navbar navbar-expand navbar-dark bg-primary">
         <a class="sidebar-toggle mr-3" href="#"><i class="fa fa-bars"></i></a>
         <a class="navbar-brand" href="#">
@@ -70,9 +71,7 @@
                 @endif
                 <li><a href="{{-- {{asset('/employee/personnel')}} --}}#perso" data-toggle="collapse"><i class="fa fa-fw fa-users"></i> Personnel</a>
                     <ul id="perso" class="list-unstyled collapse">
-                        @if ($employeeData->grpid == 'NA')
-                            <li><a href="{{asset('employee/dashboard/personnel/regional')}}">&nbsp;&nbsp;Regional Admins</a></li>
-                        @endif
+                        <li class="UG01_allow"><a href="{{asset('employee/dashboard/personnel/regional')}}">&nbsp;&nbsp;Regional Admins</a></li>
                         <li><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;Licensing Officers</a></li>
                     </ul>
                 </li>
@@ -99,3 +98,80 @@
                 <li><a href=""><i class="fa fa-fw fa-book"></i> Documentation</a></li> -->
             </ul>
         </div>
+
+{{-- <p id="getThis" hidden>{{ session('arr') }}</p>
+<script type="text/javascript">
+    var elm = document.getElementById('getThis');
+    var chg, chg1, arr, arr1, arr2, arrz;
+    var arrd = [], arrdd = [], arrddd = [];
+    chg = elm.textContent.replace("[{", "");
+    chg1 = chg.replace("}]", "");
+    arrz = chg1.split('"').join("");
+    arr = arrz.split("},{");
+    for(var i = 0; i < arr.length; i++) {
+        arr1 = arr[i].split(",");
+        // for(var j = 0; j < 7; j++) {
+        //     arr2 = arr1[j].split(":");
+        //     arrd.push(arr2);
+        // }
+        arrdd.push(arr1);
+    }
+    for(var i = 0; i < arrdd.length; i++) {
+        var elem, vw;
+        elem = arrdd[i][0].split(":");
+        vw = arrdd[i][6].split(":");
+        if(parseInt(vw[1]) < 1) {
+            if(document.getElementById(elem[1]) == null || document.getElementById(elem[1]) == undefined){
+
+            } else {
+                document.getElementById(elem[1]).remove();
+            }
+        }
+    }
+    document.getElementById("getThis").remove();
+    // for(var k = 0; k < arrdd.length; k++) {
+    //     console.log(arrdd[k].split(":"));
+    // }
+</script> --}}
+<script type="text/javascript">
+    $(document).ready(
+        function(){
+            Right_GG();
+        });
+    function Right_GG(){
+        var CurrentPage = $('#CurrentPage').val();
+        $.ajax({
+                  url: " {{asset('employee/getRights')}}",
+                  data : {_token: $('#global-token').val()},
+                  method: 'POST',
+                  success: function(data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var moduleSelected = data[i];
+                        if (moduleSelected.mod_id == CurrentPage) {
+                            if (moduleSelected.allow == "0") {
+                                window.location.href = "{{asset('employee/dashboard')}}";
+                            }
+                        }
+                        if (moduleSelected.ad_d == "0") {
+                            $('.'+moduleSelected.mod_id+'_add').empty();
+                        }
+                        if (moduleSelected.cancel == "0") {
+                            $('.'+moduleSelected.mod_id+'_cancel').empty();
+                        }
+                        if (moduleSelected.print == "0") {
+                            $('.'+moduleSelected.mod_id+'_print').empty();
+                        }
+                        if (moduleSelected.allow == "0") {
+                            $('.'+moduleSelected.mod_id+'_allow').empty();
+                        }
+                        if (moduleSelected.upd == "0") {
+                            $('.'+moduleSelected.mod_id+'_update').empty();
+                        }
+                        if (moduleSelected.view == "0") {
+                            $('.'+moduleSelected.mod_id+'_view').empty();
+                        }
+                    }
+                  }
+              });
+    }
+</script>

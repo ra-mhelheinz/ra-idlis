@@ -14,7 +14,7 @@ class ClientController extends Controller
    			return view('client.login',['regions' => $regions]);
    		} 
         if($request->isMethod('post')){
-            $uname=$request->input('log_uname');
+            $uname=strtoupper($request->input('log_uname'));
             $pass= $request->input('log_pass');
             $pass = Hash::check('pass', $pass);
             $data = DB::table('x08')
@@ -53,7 +53,7 @@ class ClientController extends Controller
           $data['city_muni'] = $request->city_muni;
           $data['zip'] = $request->zipcode;
           $data['authorized'] = $request->auth_name;
-          $data['uname'] = $request->uname;
+          $data['uname'] = strtoupper($request->uname);
           $data['pass'] = Hash::make($request->pass2);
           $data['email'] = $request->email;
           $data['contact_p'] = $request->contact_p;

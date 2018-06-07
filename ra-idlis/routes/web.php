@@ -60,6 +60,7 @@ Route::match(['get', 'post'], 'employee/dashboard/personnel/lo', 'DOHController@
 Route::match(['get', 'post'],'employee/dashboard/grouprights','DOHController@groupRights')->name('grpRights');
 Route::post('/employee/logout','DOHController@logout');
 Route::match(['get', 'post'],'/employee/dashboard/ph/regions','DOHController@regions')->name('philRegions');
+Route::post('employee/getRights', 'DOHController@getSettings2');
 // -----------------------------------------------
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
