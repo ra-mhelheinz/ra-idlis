@@ -143,6 +143,7 @@
 		public function groupRights(Request $request){
 			if ($request->isMethod('get')) {
 				$group = DB::table('x07')->select('*')->get();
+				$module = DB::table('x05')->select('*')->get();
 				$groupRights = DB::table('x06')
 				// ->join('orders', 'users.id', '=', 'orders.user_id')
 								->join('x05', 'x06.mod_id','=','x05.mod_id')
@@ -151,13 +152,30 @@
 								->get()
 								;
 				// return response()->json(['rights'=>$groupRights]);
-				return view('doh.grprights',['rights'=>$groupRights], ['groups'=>$group]);
+				return view('doh.grprights',['rights'=>$groupRights, 'groups'=>$group, 'modules'=>$module]); 
+					// ['groups'=>$group], ['modules'=>$module]);
 			}
 		}
 		public function regions(Request $request){
 			if ($request->isMethod('get')) {
 				$regions = DB::table('region')->get();
 				return view('doh.phregion',['region'=>$regions]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('region')->insert(
+					[
+						'rgnid' => $request->id,
+						'rgn_desc' => $request->name,
+					]
+				);
+				return 'DONE';
+			}
+		}
+		public function provinces(Request $request){
+			if ($request->isMethod('get')) {
+				$province = DB::table('province')->get();
+				$regions = DB::table('region')->get();
+				return view('doh.phprovince',['province'=>$province],['region'=>$regions]);
 			}
 		}
 		public function LOfficers(Request $request){
@@ -240,6 +258,34 @@
 				}
 			
 			}
+		}
+		public function chckgr(Request $request){
+			DB::table('x07')->insert(
+				[
+					'grp_id' => $request->id,
+					'grp_desc' => $request->name, 
+				]
+			);
+			// DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
+			DB::insert('INSERT INTO x06 (`grp_id`, `mod_id`, `allow`, `ad_d`, `upd`, `cancel`, `print`, `view`) 
+						SELECT COALESCE(?), mod_id, COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1)
+						FROM x05', [$request->id]);
+			return "DONE";			
+		}
+		public function lps(){
+			return view('doh.lps');
+		}
+		public function evalute(){
+			return view('doh.evalute');
+		}
+		public function ins1(){
+			return view('doh.ins1');
+		}
+		public function ins2(){
+			return view('doh.ins2');
+		}
+		public function ins3(){
+			return view('doh.ins3');
 		}
 	}
 ?>

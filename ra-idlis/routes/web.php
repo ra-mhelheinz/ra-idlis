@@ -60,7 +60,14 @@ Route::match(['get', 'post'], 'employee/dashboard/personnel/lo', 'DOHController@
 Route::match(['get', 'post'],'employee/dashboard/grouprights','DOHController@groupRights')->name('grpRights');
 Route::post('/employee/logout','DOHController@logout');
 Route::match(['get', 'post'],'/employee/dashboard/ph/regions','DOHController@regions')->name('philRegions');
+Route::match(['get', 'post'],'/employee/dashboard/ph/provinces','DOHController@provinces')->name('philProvinces');
 Route::post('employee/getRights', 'DOHController@getSettings2');
+Route::post('/employee/grprights/check','DOHController@chckgr');
+Route::get('/employee/dashboard/lps','DOHController@lps');
+Route::get('/employee/dashboard/lps/evalute','DOHController@evalute');
+Route::get('/employee/dashboard/lps/evalute/ins/1','DOHController@ins1');
+Route::get('/employee/dashboard/lps/evalute/ins/2','DOHController@ins2');
+Route::get('/employee/dashboard/lps/evalute/ins/3','DOHController@ins3');
 // -----------------------------------------------
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
