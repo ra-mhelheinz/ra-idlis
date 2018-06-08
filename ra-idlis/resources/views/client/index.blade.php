@@ -9,42 +9,22 @@
 @section('content')
 @include('client.nav')
 <style type="text/css">
-#aniImg{
-  height: 100%;width: 400px;
-}
-
-  .visitor{
-    position: relative;
-    max-width: 500px;
-  }
-  .visitor:after{
-      content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 0;
-  height: 0;
-  border: 37px solid transparent;
-  border-right-color: #fff;
-  border-left: 0;
-  border-bottom: 0;
-  margin-top: -18.5px;
-  margin-left: -37px;
-  }
 </style>
   <div class="modal" id="myModal" style="overflow: auto;">
-    <div class="modal-dialog row" style="max-width: 100% ! important;margin-bottom: 0;">
-  <div class="col-sm-5 slideInLeft animated">
-    <img src="{{asset('ra-idlis/public/img/loimg.png')}}" id="aniImg" style="padding: 0;max-height: 100%;margin-left: 10%;">
+<div class="modal-dialog row content" style="max-width: 100% ! important;margin-bottom: 0;">
+  <div class="col-sm-5 slideInLeft animated ord">
+    <img src="{{asset('ra-idlis/public/img/loimg.png')}}" id="aniImg">
   </div>
-  <div class="col-sm-7 bounceInDown animated">     
-   <div class="modal-content visitor" >        
-        <div class="modal-body">
-          <table id="guide">
-              <td>Need a guide for first-time visitors?</td>
-              <td><button class="btn-primarys" data-toggle="modal" onclick="yes()">Yes</button></td>
-              <td><button class="btn-defaults" data-dismiss="modal" aria-hidden="true">No</button></td>
-          </table>
+  <div class="col-sm-5 bounceInDown animated ord2">     
+   <div class="modal-content visitor">        
+        <div class="modal-body" ">
+          <div id="guide" class="text-center">
+            Need a guide for first-time visitors?
+            <div>
+              <button class="btn-primarys" data-toggle="modal" onclick="yes()">Yes</button>
+              <button class="btn-defaults" data-dismiss="modal" aria-hidden="true">No</button>
+            </div>
+          </div>
 <div id="wowslider-container1" style="display: none;">
 <div class="ws_images"><ul>
     <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_1.png')}}" alt="Step 1. Apply " title="Step 1. Apply" id="wows1_0"/><p id="wows1_0"/>If you are using this for the first time, click on the Apply and fill out the form. </p></li>
@@ -87,7 +67,7 @@
 <script type="text/javascript">
         function yes(){
           $('#wowslider-container1').show();
-          $('.visitor').css('max-width', '100%');
+          $('.ord2').addClass('col-sm-7');
           $('.visitor').addClass('zoomIn');
           $('.visitor').addClass('animated');
           $('#guide').hide();
@@ -191,4 +171,25 @@
         <td class="td"><img src="{{asset('ra-idlis/public/img/nobreak.jpg')}}"  width="125" height="60"></td> 
     </table>
   </div>
+  <script type="text/javascript">
+    setInterval(function(e){
+      var x = parseFloat(parseFloat(window.innerHeight) + parseFloat(window.scrollY)) - parseFloat(document.getElementById('paraTago').offsetHeight);
+      var y = parseFloat((parseFloat(document.body.offsetHeight) - parseFloat(document.getElementById('paraTago').offsetHeight)) - parseFloat(document.getElementById('paraTago').offsetHeight)) + 10;
+
+      var t = parseFloat(document.getElementById('paraTagoNav').offsetHeight);
+      var z = parseFloat(window.scrollY);
+      if(z < t) {
+        document.getElementById('fortagoTago').setAttribute("hidden", true);
+        document.getElementById('fortagoTago1').setAttribute("hidden", true);
+      } else {
+        document.getElementById('fortagoTago').removeAttribute("hidden");
+        document.getElementById('fortagoTago1').removeAttribute("hidden");
+      }
+      if(y <= x) {
+        document.getElementsByClassName('fixed-bottom')[0].setAttribute("hidden", true);
+      } else {
+        document.getElementsByClassName('fixed-bottom')[0].removeAttribute("hidden");
+      }
+    }, 1);
+  </script>
 @endsection

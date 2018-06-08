@@ -81,14 +81,14 @@
         </div>
       </div>
     </nav> --}}
-       <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);padding: 1px 1px 1px 1px;">
+       <nav id="paraTagoNav" class="navbar navbar-expand-lg navbar-dark bg-dark" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);padding: 1px 1px 1px 1px;">
       <div class="container">
         <a class="navbar-brand" href="#"><img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img4">
             <div class="republic1">
-                    <p  style="font-size: 11px;"><small>Republic of the Philippines</small></p>    
-                    <p  style="margin-top: -10px;font-size: 18px;font-weight: 600">DEPARTMENT OF HEALTH</p>
-                    <p  style="margin-top: -10px;font-size: 13px;">Kagawaran ng Kalusugan</p>
-                    <p  style="margin-top: -10px;font-size: 13px;">ISO 9001:2008 CERTIFIED</p>
+                    <p class="text-contentr"><small>Republic of the Philippines</small></p>    
+                    <p class="text-contentd">DEPARTMENT OF HEALTH</p>
+                    <p class="text-content">Kagawaran ng Kalusugan</p>
+                    <p class="text-content">ISO 9001:2008 CERTIFIED</p>
             </div>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -152,16 +152,68 @@
     </nav>
 <nav class="navbar navbar-expand-sm sticky-top" id="timeline" style="justify-content: center;background-color:  #fff;z-index: 2;">
   <ul class="navbar-nav">
-      <a class="navbar active" href="#" style="font-weight: 600;color: #228B22">Apply</a>
-      <a class="navbar" href="#"><i class="fa fa-hand-o-right" style="color: #228B22"></i></a>
-      <a class="navbar" href="#" style="font-weight: 600;color: #228B22">Evaluation</a>
-      <a class="navbar" href="#"><i class="fa fa-hand-o-right" style="color: #228B22"></i></a>
-      <a class="navbar" href="#" style="font-weight: 600;color: #228B22">Inspection</a>
-      <a class="navbar" href="#"><i class="fa fa-hand-o-right" style="color: #228B22"></i></a>
-      <a class="navbar" href="#" style="font-weight: 600;color: #228B22">Issuance</a>
+      <a class="navbar active" href="#" style="font-weight: 600;color: #228B22"><i class="fa fa-edit ic"></i><span class="ic2">Apply</span></a>
+      <a class="navbar" href="#" style="border: 0;"><i class="fa fa-hand-o-right" style="color: #228B22"></i></a>
+      <a class="navbar" href="#" style="font-weight: 600;color: #228B22"><i class="fa fa-check ic"></i><span class="ic2">Evaluation</span></a>
+      <a class="navbar" href="#" style="border: 0;"><i class="fa fa-hand-o-right" style="color: #228B22"></i></a>
+      <a class="navbar" href="#" style="font-weight: 600;color: #228B22"><i class="fa fa-search ic"></i><span class="ic2">Inspection</span></a>
+      <a class="navbar" href="#" style="border: 0;"><i class="fa fa-hand-o-right" style="color: #228B22"></i></a>
+      <a class="navbar" href="#" style="font-weight: 600;color: #228B22;"><i class="fa fa-print ic"></i><span class="ic2">Issuance</span></a>
+      <a id="fortagoTago1" class="navbar" href="{{asset('client/home')}}" style="font-weight: 600;color: #228B22;border: 0;"><span class="fa fa-home"></span></a>
+                <li id="fortagoTago" class="nav-item dropdown" hidden>
+             <a style="color:  #228B22;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         <i class="fa fa-user-circle" style="font-size:  20px;"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right bg-light" id="acc" aria-labelledby="navbarDropdown">
+         <div class="navbar-login">
+            <div class="row">
+               <div class="col-lg-4">
+                  <p class="text-center">
+                    <i class="fa fa-user icon-size"></i>
+                  </p>
+                </div>
+                <div class="col-lg-8">
+                  <p class="text-left" style="font-size: 13px;"><strong>{{$clientData->authorizedsignature}}</strong></p>
+                  <p class="text-left" style="font-size: 10px;">{{$clientData->email}}</p>
+                  <p class="text-left "></p>
+                  <p class="text-left">
+                  <button href="#" class="btn-primarys btn-block btn-sm" style="background-color: #28a745;">About</button>
+                  <button href="#" class="btn-primarys btn-block btn-sm" style="background-color: #28a745;">Help</button>
+                  </p>
+                </div>
+              </div>
+          </div>
+          <hr>
+          <div class="navbar-login navbar-login-session">
+              <div class="row">
+                <div class="col-lg-12">
+                   <p>
+                      <button href="#" onclick="event.preventDefault();document.getElementById('clientLogout').submit();" class="btn-defaults btn-block btn-sm">Logout</button>
+                      <form id="clientLogout" action="{{asset('/client/logout')}}" method="POST" hidden>
+                        @csrf
+                      </form>
+                   </p>
+                </div>
+              </div>
+          </div>
+        </div>
+            </li>
   </ul>
+
 </nav>
 <style type="text/css">
+.ic{
+  display: none;
+}
+.republic1 > .text-contentr{
+   font-size: 11px;
+}
+.republic1 > .text-contentd{
+  margin-top: -10px;font-size: 18px;font-weight: 600
+}
+.republic1 > .text-content{
+  margin-top: -10px;font-size: 13px;
+}
 .navbar{
     font-size: 0.765625rem;
     text-transform: uppercase;
@@ -227,14 +279,95 @@
 #acc{
   width: 300px;
 }
+@media only screen and (max-width: 360px){
+  .img4{
+    height: 60px;width: auto;float: left;
+}
+.republic1{
+  margin-left: 65px;
+}
+.republic1 > .text-contentr{
+  font-size: 8;
+}
+.republic1 > .text-contentd{
+  margin-top: -15px;
+  font-size: 13px;
+}
+.republic1 > .text-content{
+   margin-top: -15px;
+  font-size: 9;
+}
+.navbar-toggler{
+  font-size: 13px;
+}
+}
+
 @media only screen and (max-width: 990px){
   #acc{
     width: 100%;
   }
 }
+@media only screen and (max-width: 729px){
+  #timeline> ul > a{
+    font-size: 11px;
+  }
+}
+@media only screen and (max-width: 675px){
+  #timeline> ul > a{
+    font-size: 10px;
+  }
+}
+@media only screen and (max-width: 650px){
+  #timeline> ul > a{
+    font-size: 8px;
+  }
+}
 @media only screen and (max-width: 575px){
-  #timeline{
+  .ic{
+    display: block;
+    display: inline-block;
+  }
+  .ic2{
     display: none;
+  }
+  .navbar-nav{
+    flex-direction: row;
+  }
+    #timeline > ul > a{
+    padding: 10px;
+        border: 1px solid #228B22;
+  }
+}
+@media only screen and (max-width: 420px){
+  .ic{
+    display: block;
+    display: inline-block;
+  }
+  .ic2{
+    display: none;
+  }
+  .navbar-nav{
+    flex-direction: row;
+  }
+  #timeline > ul > a{
+    padding: 10px;
+        border: 1px solid #228B22;
+  }
+}
+@media only screen and (max-width: 360px){
+  .ic{
+    display: block;
+    display: inline-block;
+  }
+  .ic2{
+    display: none;
+  }
+  .navbar-nav{
+    flex-direction: row;
+  }
+  #timeline > ul > a{
+    padding: 10px;
+    border: 1px solid #228B22;
   }
 }
 </style>
