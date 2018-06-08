@@ -217,6 +217,7 @@
                     $('#GodModal').modal('toggle');
                     filterGroup();
                     showSucc(grp_name,mod_name);
+                    alert('Page will automatically reload to apply changes.');
                     setInterval('refreshPage()', 3000);
                   }
                 }
