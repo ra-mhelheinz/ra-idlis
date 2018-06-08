@@ -3,45 +3,19 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-<script type="text/javascript">Right_GG();</script>
   <input type="text" id="CurrentPage" value="MA01" hidden>
-  {{-- <p id="getThis1" hidden>{{ session('arr') }}</p>
-  <script type="text/javascript">
-      var form_id = "MA01";
-      var elm = document.getElementById('getThis1');
-      var chg, chg1, arr, arr1, arr2, arrz;
-      var arrd = [], arrdd = [], arrddd = [];
-      chg = elm.textContent.replace("[{", "");
-      chg1 = chg.replace("}]", "");
-      arrz = chg1.split('"').join("");
-      arr = arrz.split("},{");
-      for(var i = 0; i < arr.length; i++) {
-          arr1 = arr[i].split(",");
-          // for(var j = 0; j < 7; j++) {
-          //     arr2 = arr1[j].split(":");
-          //     arrd.push(arr2);
-          // }
-          arrdd.push(arr1);
-      }
-      for(var i = 0; i < arrdd.length; i++) {
-          var elem, vw;
-          elem = arrdd[i][0].split(":");
-          vw = arrdd[i][6].split(":");
-          console.log(elem[1]);
-          if(elem[1] == form_id && (parseInt(vw[1]) < 1)) {
-              console.log(elem);
-              window.location.href = "{{ asset('employee/dashboard') }}";
-          }
-      }
-      // for(var k = 0; k < arrdd.length; k++) {
-      //     console.log(arrdd[k].split(":"));
-      // }
-  </script> --}}
-
+  <script type="text/javascript">Right_GG();</script>
+  <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
+    <datalist id="rgn_list">
+      @foreach ($region as $regions)
+      <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
+      @endforeach
+    </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Regions <a href="" data-toggle="modal" data-target="#myModal" ><span data-toggle="tooltip" title="Add New Regional Admin" class="fa fa-plus-circle"></a></span>
+           Regions <a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+
         </div>
         <div class="card-body">
                <table class="table" style="overflow-x: scroll;" >
@@ -77,18 +51,18 @@
                 <h5 class="modal-title text-center"><strong>Add New Region</strong></h5>
                 <hr>
                 <div class="container">
-                  <form class="row" action="{{-- {{asset('headashboard/addLO')}} --}}" method="POST">
+                  <form id="addRgn" class="row"  data-parsley-validate>
                     {{ csrf_field() }}
                     <div class="col-sm-4">Name:</div>
-                    <div class="col-sm-8">
-                    <input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;" required>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>Name</strong> required"  class="form-control"  required>
                     </div>
                     <div class="col-sm-4">Description:</div>
-                    <div class="col-sm-8">
-                    <input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;" required>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Description</strong> required" required>
                     </div>
                     <div class="col-sm-12">
-                      <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Region</button>
+                      <button type="submit" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Region</button>
                     </div> 
                   </form>
                </div>
@@ -130,5 +104,36 @@
           $('#edit_name').attr('value',id);
           $('#edit_desc').attr('value',desc);
         } 
+        $('#addRgn').on('submit',function(event){
+            event.preventDefault();
+            var form = $(this);
+            form.parsley().validate();
+            if (form.parsley().isValid()) {
+                var id = $('#new_rgnid').val();
+                var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
+                var test = $.inArray(id,arr);
+                if (test == -1) { // Not in Array
+                    $.ajax({
+                      url: "{{asset('employee/dashboard/ph/regions')}}",
+                      method: 'POST',
+                      data: {
+                        _token : $('#token').val(),
+                        id: $('#new_rgnid').val(),
+                        name : $('#new_rgn_desc').val(),
+                      },
+                      success: function(data) {
+                        if (data == 'DONE') {
+                            alert('Successfully Added New Region');
+                            window.location.href = "{{ asset('employee/dashboard/ph/regions') }}";
+                        }
+                      }
+                  });
+                } else {
+                  alert('Regional ID is already been taken');
+                  $('#new_rgnid').focus();
+                }
+            }
+        });
+        
     </script>
 @endsection

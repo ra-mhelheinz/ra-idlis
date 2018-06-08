@@ -3,44 +3,12 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-
-{{-- <p id="getThis1" hidden>{{ session('arr') }}</p>
-<script type="text/javascript">
-    var form_id = "MA01";
-    var elm = document.getElementById('getThis1');
-    var chg, chg1, arr, arr1, arr2, arrz;
-    var arrd = [], arrdd = [], arrddd = [];
-    chg = elm.textContent.replace("[{", "");
-    chg1 = chg.replace("}]", "");
-    arrz = chg1.split('"').join("");
-    arr = arrz.split("},{");
-    for(var i = 0; i < arr.length; i++) {
-        arr1 = arr[i].split(",");
-        // for(var j = 0; j < 7; j++) {
-        //     arr2 = arr1[j].split(":");
-        //     arrd.push(arr2);
-        // }
-        arrdd.push(arr1);
-    }
-    for(var i = 0; i < arrdd.length; i++) {
-        var elem, vw;
-        elem = arrdd[i][0].split(":");
-        vw = arrdd[i][6].split(":");
-        console.log(elem[1]);
-        if(elem[1] == form_id && (parseInt(vw[1]) > 0)) {
-            console.log(elem);
-            window.location.href = "{{ asset('employee/dashboard') }}";
-        }
-    }
-    // for(var k = 0; k < arrdd.length; k++) {
-    //     console.log(arrdd[k].split(":"));
-    // }
-</script> --}}
-
+<input type="text" id="CurrentPage" value="UG01" hidden>
+  <script type="text/javascript">Right_GG();</script>
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Regional Administrator Accounts <a href="" data-toggle="modal" data-target="#myModal" ><span data-toggle="tooltip" title="Add New Regional Admin" class="fa fa-plus-circle"></a></span>
+           Regional Administrator Accounts <a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            {{-- <span style="float:right">Filter : 
               <select class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Region ...</option>
@@ -89,6 +57,7 @@
                         @else
                           <a href="#"><button class="btn btn-success" title="Reactivate Account">&nbsp;<i class="fa fa-toggle-on"></i>&nbsp;</button></a>
                       @endif
+                        <a href="#"><button class="btn btn-warning" title="Edit Account">&nbsp;<i class="fa fa-edit"></i>&nbsp;</button></a>&nbsp;
                       </center>
                     
                   </td>
