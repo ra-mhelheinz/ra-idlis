@@ -3,6 +3,9 @@
  <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/login.css')}}">
 @endsection
 @section('content')
+<div class="row">
+	<div class="col-sm-4"></div>
+	<div class="col-sm-4">
 	<div class="form-wrapss" style="width: 420px !important;">
  				<div class="text-center" style="background-color: #e6e7e8;">
 					<h3 style="padding: 20px;">Login</h3>
@@ -40,4 +43,7 @@
 			</div><!--.login-tab-content-->
 		</div><!--.tabs-content-->
 	</div><!--.form-wrap-->
+	</div>
+	<div class="col-sm-4"></div>
+</div>
 	@endsection
