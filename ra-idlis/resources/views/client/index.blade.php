@@ -1,15 +1,9 @@
 @extends('main')
-@section('style')
  <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/service.css')}}">
-@endsection
-  <!-- Start WOWSlider.com HEAD section -->
 <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/engine1/style.css')}}" />
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/jquery.js')}}"></script>
-<!-- End WOWSlider.com HEAD section -->
 @section('content')
 @include('client.nav')
-<style type="text/css">
-</style>
   <div class="modal" id="myModal" style="overflow: auto;">
 <div class="modal-dialog row content" style="max-width: 100% ! important;margin-bottom: 0;">
   <div class="col-sm-5 slideInLeft animated ord">
@@ -81,21 +75,10 @@
 <div class="container-fluid"> 
     <div class="row">
       <div class="col-sm-12">
-    <!--     <div id="mainMouse" class="divani" onclick="asdf()"> <img id="asdf1" src="https://upload.wikimedia.org/wikipedia/commons/3/39/Pointing_hand_cursor_vector.svg" class="img" style="width:45px;" hidden> <img id="asdf2" src="http://www.pngmart.com/files/3/Cursor-Arrow-PNG-Picture.png" style="width:15px;" class="img2"> </div>
-        <script type="text/javascript">
-          setTimeout(function() {
-            if(document.getElementById('mainMouse').offsetLeft == 270) {
-              document.getElementById('asdf1').removeAttribute('hidden');
-              document.getElementById('asdf2').setAttribute('hidden', true);
-            }
-            // document.getElementsByClassName('box')[0].setAttribute('id', 'extraFunction');
-            $('.row .col-lg-6:first-child').attr('id','extraFunction');
-          }, 3000);
-        </script> -->
         <section id="services">
       <div class="container">
         <div class="row">
-          <div class="col-sm-3 col-md-3 col-lg-3">
+          <div class="col-sm-3 col-md-12 col-lg-3">
              <div class="card">
             <h5 class="card-header">Announcements</h5>
             <div class="cardb" style="max-height: 100%;padding: 1.25rem;flex: 1 1 auto;">
@@ -107,11 +90,11 @@
               </form>
             </div>
           </div>
-           <div class="text-center">
-        <img src="{{asset('ra-idlis/public/img/FAQ.png')}}">
-        </div>
+          <div class="text-center">
+              <img src="{{asset('ra-idlis/public/img/FAQ.png')}}">
           </div>
-          <div  class="col-sm-9 col-md-9 col-lg-9">
+          </div>
+          <div  class="col-sm-9 col-md-12 col-lg-9">
             <div class="row">
           <div class="col-lg-6">
             <div class="box wow fadeInLeft" id="textSample">
@@ -171,25 +154,5 @@
         <td class="td"><img src="{{asset('ra-idlis/public/img/nobreak.jpg')}}"  width="125" height="60"></td> 
     </table>
   </div>
-  <script type="text/javascript">
-    setInterval(function(e){
-      var x = parseFloat(parseFloat(window.innerHeight) + parseFloat(window.scrollY)) - parseFloat(document.getElementById('paraTago').offsetHeight);
-      var y = parseFloat((parseFloat(document.body.offsetHeight) - parseFloat(document.getElementById('paraTago').offsetHeight)) - parseFloat(document.getElementById('paraTago').offsetHeight)) + 10;
-
-      var t = parseFloat(document.getElementById('paraTagoNav').offsetHeight);
-      var z = parseFloat(window.scrollY);
-      if(z < t) {
-        document.getElementById('fortagoTago').setAttribute("hidden", true);
-        document.getElementById('fortagoTago1').setAttribute("hidden", true);
-      } else {
-        document.getElementById('fortagoTago').removeAttribute("hidden");
-        document.getElementById('fortagoTago1').removeAttribute("hidden");
-      }
-      if(y <= x) {
-        document.getElementsByClassName('fixed-bottom')[0].setAttribute("hidden", true);
-      } else {
-        document.getElementsByClassName('fixed-bottom')[0].removeAttribute("hidden");
-      }
-    }, 1);
-  </script>
+  
 @endsection
