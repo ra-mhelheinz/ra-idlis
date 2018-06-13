@@ -50,5 +50,9 @@
             ->update($updateData);
 			return 'DONE';
 		}
+		public function getClass(Request $request){
+			$class = DB::table('class')->where('ocid',$request->ocid)->get();
+	    	return response()->json(['classes'=>$class]);
+		}
 	}
 ?>

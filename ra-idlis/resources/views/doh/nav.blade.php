@@ -53,18 +53,18 @@
                     <ul id="sm_base" class="list-unstyled collapse">
                         <li><a href="#lpro" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-tasks"></i>&nbsp;Licensing</a>
                             <ul id="lpro" class="list-unstyled collapse">
-                                <li class="MA07_allow"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Application Type</a></li>
-                                <li class="MA08_allow"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
-                                <li class="MA05_allow"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Facility Type</a></li>
-                                <li class="MA06_allow"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
+                                <li class="MA07_allow"><a href="{{ asset('/employee/dashboard/mf/apptype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Type</a></li>
+                                <li class="MA08_allow"><a href="{{ asset('/employee/dashboard/mf/class') }}">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
+                                <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/facility') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facility Type</a></li>
+                                <li class="MA06_allow"><a href="{{ asset('/employee/dashboard/mf/ownership') }}">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
                             </ul>
                         </li>
-                        <li><a href="#phil" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-flag"></i>&nbsp;Playset</a>
+                        <li><a href="#phil" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-flag"></i>&nbsp;Places</a>
                             <ul id="phil" class="list-unstyled collapse">
                                 <li class="MA01_allow"><a href="{{ asset('/employee/dashboard/ph/regions') }}">&nbsp;&nbsp;&nbsp;&nbsp;Regions</a></li>
                                 <li class="MA02_allow"><a href="{{ asset('/employee/dashboard/ph/provinces') }}">&nbsp;&nbsp;&nbsp;&nbsp;Provinces</a></li>
-                                <li class="MA03_allow"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;City/Municipalities</a></li>
-                                <li class="MA04_allow"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Barangay</a></li>
+                                <li class="MA03_allow"><a href="{{ asset('/employee/dashboard/ph/citymuni') }}">&nbsp;&nbsp;&nbsp;&nbsp;City/Municipalities</a></li>
+                                <li class="MA04_allow"><a href="{{ asset('/employee/dashboard/ph/barangay') }}">&nbsp;&nbsp;&nbsp;&nbsp;Barangay</a></li>
                             </ul>
                         </li>
                         
@@ -79,7 +79,7 @@
                 </a>
                     <ul id="perso" class="list-unstyled collapse">
                         <li class="UG01_allow"><a href="{{asset('employee/dashboard/personnel/regional')}}">&nbsp;&nbsp;Regional Admins</a></li>
-                        <li class="UG02_allow"><a href="{{-- {{asset('employee/dashboard/personnel/lo')}} --}}#">&nbsp;&nbsp;Food and Drug Authority</a></li>
+                        <li class="UG02_allow"><a href="{{asset('employee/dashboard/personnel/fda')}}">&nbsp;&nbsp;Food and Drug Authority</a></li>
                         <li class="UG03_allow"><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;Licensing Officers</a></li>
                     </ul>
                 </li>

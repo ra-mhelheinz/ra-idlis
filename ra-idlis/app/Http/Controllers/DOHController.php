@@ -6,6 +6,7 @@
 	use Illuminate\Database\Query\Builder;
 	use Carbon\Carbon;
 	use Hash;
+	
 	class DOHController extends Controller
 	{
 		public function getSettings(){
@@ -286,6 +287,117 @@
 		}
 		public function ins3(){
 			return view('doh.ins3');
+		}
+		public function ClassType(Request $request){
+			if ($request->isMethod('get')) {
+				$own = DB::table('ownership')->get();
+				$class = DB::table('class')->get();
+				return view('doh.cls',['own'=>$own, 'class'=> $class]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('class')->insert([
+					'classid' => $request->id,
+					'classname'=> $request->name,
+					'ocid' => $request->ocid,
+				]);
+				return 'DONE';
+			}
+		}
+		public function AppType(Request $request) {
+			if ($request->isMethod('get')) {
+				$apptype = DB::table('apptype')->get();
+				return view('doh.apptype',['apptype'=>$apptype]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('apptype')->insert(
+				[
+					'aptid' => $request->id,
+					'aptdesc' => $request->name, 
+				]
+			);
+				return "DONE";
+			}
+		}
+		public function FaType(Request $request){
+			if ($request->isMethod('get')) {
+				$fatype = DB::table('facilitytyp')->get();
+				return view('doh.fatype',['fa'=>$fatype]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('facilitytyp')->insert([
+					'facid' => $request->id,
+					'facname' => $request->name,
+				]);
+				return 'DONE';
+			}
+		}
+		public function OwnShip(Request $request){
+			if ($request->isMethod('get')) {
+				$oShip = DB::table('ownership')->get();
+				return view('doh.oship',['oShip'=>$oShip]);
+			}
+		}
+		public function CityMuni(Request $request) {
+			if ($request->isMethod('get')) {
+				$region = DB::table('region')->get();
+				$province = DB::table('province')->get();
+				$CiMu = DB::table('city_muni')->get();
+				return view('doh.phcm',['region'=>$region,'province'=>$province,'cm'=>$CiMu]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('city_muni')->insert([
+					'provid' => $request->id,
+					'cmname' => $request->name,
+				]);
+				return 'DONE';
+			}
+		}
+		public function Brgy(Request $request){
+			if ($request->isMethod('get')) {
+				$region = DB::table('region')->get();
+				$province = DB::table('province')->get();
+				$CiMu = DB::table('city_muni')->get();
+				$brgy = DB::table('barangay')->get();
+				return view('doh.phbrgy',['region'=>$region, 'province'=>$province, 'cm'=>$CiMu, 'brgy' => $brgy]);
+			}
+		}
+		public function FDAs(Request $request){
+			if ($request->isMethod('get')) {
+					$regions = DB::table('region')->get();
+					$testX = session('employee_login');
+					return json_encode($testX);
+				// 	if ($testX->grpid == "NA") {
+				// 		$users = DB::table('x08')
+				// 			->where('grpid', '=', 'FDA')
+				// 			->select('*')
+				// 			->first()
+				// 			;
+				// 		if ($users) {
+				// 			$users = DB::table('x08')
+				// 				->where('grpid', '=', 'FDA')
+				// 				->select('*')
+				// 				->get()
+				// 				;
+				// 		return view('doh.fda',['region'=>$regions,'users'=>$users]);
+				// 	} 
+				// }else {
+				// 		$users = DB::table('x08')
+				// 			->where('grpid', '=', 'FDA')
+				// 			->where('rgnid', '=', $testX->rgnid)
+				// 			->select('*')
+				// 			->first()
+				// 			;
+				// 		if ($users) {
+				// 			$users = DB::table('x08')
+				// 				->where('grpid', '=', 'FDA')
+				// 				->where('rgnid', '=', $testX->rgnid)
+				// 				->select('*')
+				// 				->get()
+				// 				;
+				// 	}
+				// 	return view('doh.fda',['region'=>$regions,'users'=>$users]);
+				// }
+			}
 		}
 	}
 ?>

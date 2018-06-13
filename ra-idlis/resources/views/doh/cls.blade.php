@@ -3,29 +3,34 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-<script type="text/javascript">Right_GG();</script>
-  <input type="text" id="CurrentPage" value="MA02" hidden>
+  <input type="text" id="CurrentPage" value="MA08" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @foreach ($region as $regions)
-    <datalist id="{{$regions->rgnid}}_list">
-      @foreach ($province as $provinces)
-        @if ($regions->rgnid == $provinces->rgnid)
-          <option id="{{$provinces->provid}}_pro" value="{{$provinces->provid}}">{{$provinces->provname}}</option>
-        @endif
-      @endforeach
-    </datalist>
+  @foreach ($own as $owns)
+   <datalist id="{{$owns->ocid}}_list">
+     @foreach ($class as $classs)
+       @if ($owns->ocid == $classs->ocid)
+          <option id="{{$classs->classid}}_pro" value="{{$classs->classid}}">{{$classs->classname}}</option>
+       @endif
+     @endforeach
+   </datalist>
   @endforeach
+   {{-- $('#new_rgnid').val() --}}
+ <datalist id="rgn_list">
+   @foreach ($class as $classs)
+     <option id="{{$classs->classid}}_pro" value="{{$classs->classid}}">{{$classs->classname}}</option>
+   @endforeach
+ </datalist>
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Provinces <a href="#" title="Add New Province" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Class <a href="#" title="Add New Province" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            <div style="float:right;display: inline-block;">
             <form class="form-inline">
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
-                <option value="">Select Region ...</option>
-                @foreach ($region as $regions)
-                  <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
+                <option value="">Select Ownership ...</option>
+                @foreach ($own as $owns)
+                  <option value="{{$owns->ocid}}">{{$owns->ocdesc}}</option>
                 @endforeach
               </select>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
@@ -36,22 +41,12 @@
                <table class="table" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 75%">Name</th>
+                  <th style="width: 40%">ID</th>
+                  <th style="width: 35%">Name</th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
               <tbody id="FilterdBody">
-                {{-- @foreach ($region as $regions)
-                  <tr>
-                    <td scope="row"> {{$regions->rgnid}}</td>
-                    <td>{{$regions->rgn_desc}}</td>
-                    <td>
-                      <center>
-                        <button type="button" class="btn-defaults" onclick="showData('{{$regions->rgnid}}', '{{$regions->rgn_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
-                      </center>
-                    </td>
-                  </tr>
-                @endforeach --}}
               </tbody>
             </table>
         </div>
@@ -62,26 +57,30 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Province</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Class</strong></h5>
                 <hr>
                 <div class="container">
-                  <form class="row" action="{{-- {{asset('headashboard/addLO')}} --}}" method="POST">
+                  <form class="row" id="addCls" data-parsley-validate>
                     {{ csrf_field() }}
-                    <div class="col-sm-4">Region:</div>
-                    <div class="col-sm-8">
-                      <select class="form-control"  style="margin:0 0 .8em 0;" required="">  
-                          <option value="">Select Region ...</option>
-                         @foreach ($region as $regions)
-                            <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
+                    <div class="col-sm-4">Ownership:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <select id="OCID" data-parsley-required-message="*<strong>Ownership</strong> required" class="form-control" required>  
+                          <option value="">Select Ownership ...</option>
+                          @foreach ($own as $owns)
+                            <option value="{{$owns->ocid}}">{{$owns->ocdesc}}</option>
                           @endforeach
                       </select>
                     </div>
+                    <div class="col-sm-4">ID:</div>
+                    <div class="col-sm-8"  style="margin:0 0 .8em 0;">
+                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required" name="fname" class="form-control" required>
+                    </div>
                     <div class="col-sm-4">Description:</div>
-                    <div class="col-sm-8">
-                    <input type="text" name="fname" class="form-control"  style="margin:0 0 .8em 0;" required>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <input type="text" id="new_rgn_desc" name="fname" data-parsley-required-message="*<strong>Name</strong> required" class="form-control"  required>
                     </div>
                     <div class="col-sm-12">
-                      <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Province</button>
+                      <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
                     </div> 
                   </form>
                </div>
@@ -94,7 +93,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Province</strong></h5>
+              <h5 class="modal-title text-center"><strong>Edit Class</strong></h5>
               <hr>
               <div class="container">
                 <div class="col-sm-4">Name:</div>
@@ -131,14 +130,48 @@
             var e = $('#'+x[i]+'_pro').attr('value');
             $('#FilterdBody').append(
                         '<tr>'+
+                          '<td>'+e+'</td>' +
                           '<td>'+d+'</td>' +
                           '<td><center><button type="button" class="btn-defaults" onclick="getData(\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center></td>' +
                         '</tr>'
                         );
-          } 
+          }
       }
       function getData(provname){
           $('#edit_name').attr("value",provname);
       } 
+      $('#addCls').on('submit',function(event){
+            event.preventDefault();
+            var form = $(this);
+            form.parsley().validate();
+            if (form.parsley().isValid()) {
+                var id = $('#new_rgnid').val();
+                var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
+                // console.log(arr);
+                var test = $.inArray(id,arr);
+                // console.log($('#OCID').val());
+                if (test == -1) { // Not in Array
+                    $.ajax({
+                      // url: "{{asset('employee/dashboard/ph/regions')}}",
+                      method: 'POST',
+                      data: {
+                        _token : $('#token').val(),
+                        id: $('#new_rgnid').val(),
+                        name : $('#new_rgn_desc').val(),
+                        ocid : $('#OCID').val(),
+                      },
+                      success: function(data) {
+                        if (data == 'DONE') {
+                            alert('Successfully Added New Class');
+                            window.location.href = "{{ asset('employee/dashboard/mf/class') }}";
+                        }
+                      }
+                  });
+                } else {
+                  alert('Class ID is already been taken');
+                  $('#new_rgnid').focus();
+                }
+            }
+        });
     </script>
 @endsection
