@@ -1,4 +1,6 @@
 @extends('main')
+@section('content')
+@include('client.nav')
 @if (session()->exists('client_data'))
    @php
      $clientData = session('client_data');
@@ -16,8 +18,7 @@
 		       transform: rotate(180deg);
 	}
 </style>
-@section('content')
-@include('client.nav')
+@include('client.breadcrumb')
 		<div class="container" style="margin-top: 2%;">
 	  		<div class="card" style="height: 500px;margin-bottom: 2%;">
 	  			<div class="card-header text-center">
@@ -71,33 +72,31 @@
 				            <div class="row">
 				                <div class="col-sm-4">
 				                    <div class="form-group">
-				                        <label for="form_name">Last Name *</label>
-				                        <input id="form_name" type="text" name="surname" class="form-control" placeholder="Please enter your last name" required="required" data-error="name is required.">
+				                        <input type="text" name="" placeholder="Last Name" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 				                        <div class="help-block with-errors"></div>
 				                    </div>
 				                </div>
 				                <div class="col-sm-4">
 				                    <div class="form-group">
-				                        <label for="form_email">Middle Name *</label>
-				                        <input id="form_email" type="email" name="email" class="form-control" placeholder="Please enter your middle name" required="required" data-error="Valid email is required.">
+				                        <input type="text" name="" placeholder="Middle Name" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 				                        <div class="help-block with-errors"></div>
 				                    </div>
 				                </div>
 				                <div class="col-sm-4">
 				                    <div class="form-group">
-				                        <label for="form_phone">First Name *</label>
-				                        <input id="form_phone" type="tel" name="phone" class="form-control" placeholder="Please enter your first name">
+				                        <input type="text" name="" placeholder="First Name" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 				                        <div class="help-block with-errors"></div>
 				                    </div>
 				                </div>
 				            </div>
 				            <div class="row">
-				            	<div class="col-sm-6"><label for="form_phone">Birthday *</label>
-				                        <input id="form_phone" type="date" name="phone" class="form-control"></div>
-				            	<div class="col-sm-6"><label for="form_phone">Gender *</label>
-				                        <select class="form-control">
-				                        	<option hidden></option>
-				                        	<option>Gender</option>
+				            	<div class="col-sm-6">
+				                       <input type="date" name="" placeholder="Birthday" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                    </div>
+				            	<div class="col-sm-6">
+				                        <select style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .55rem .75rem;width: 100%;">
+				                        	<option disabled selected hidden>Gender</option>
+				                        	<option>Female</option>
 				                        	<option>Male</option>
 				                        </select>
 				            </div>
@@ -110,31 +109,26 @@
                        		<div class="row">
 				                <div class="col-sm-4">
 				                    <div class="form-group">
-				                        <label for="form_name">Position *</label>
-				                        <input id="form_name" type="text" name="surname" class="form-control" required="required" data-error="name is required.">
+				                        <input type="text" name="" placeholder="Position" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 				                        <div class="help-block with-errors"></div>
 				                    </div>
 				                </div>
 				                <div class="col-sm-4">
 				                    <div class="form-group">
-				                        <label for="form_email">Department *</label>
-				                        <input id="form_email" type="email" name="email" class="form-control" required="required" data-error="Valid email is required.">
+				                        <input type="text" name="" placeholder="Department" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 				                        <div class="help-block with-errors"></div>
 				                    </div>
 				                </div>
 				                <div class="col-sm-4">
 				                    <div class="form-group">
-				                        <label for="form_phone">Section *</label>
-				                        <input id="form_phone" type="tel" name="phone" class="form-control">
+				                        <input type="text" name="" placeholder="Section" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 				                        <div class="help-block with-errors"></div>
 				                    </div>
 				                </div>
 				            </div>
 				             <div class="row">
-				            	<div class="col-sm-6"><label for="form_phone">Assigned Date *</label>
-				                        <input id="form_phone" type="date" name="phone" class="form-control"></div>
-								<div class="col-sm-6"><label for="form_phone">End Date *</label>
-				                        <input id="form_phone" type="date" name="phone" class="form-control"></div>
+				            	<div class="col-sm-6"><input type="date" name="" placeholder="Assigned Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;"></div>
+								<div class="col-sm-6"><input type="date" name="" placeholder="End Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;"></div>
 				        </div>
 				        </div>
                     </div>
@@ -143,19 +137,15 @@
                     		<div class="row">
                     			<div class="col-sm-3"></div>
                     			<div class="col-sm-6">
-                    				<label for="form_phone">PRC ID *</label>
-				                        <input id="form_phone" type="text" name="phone" class="form-control">
-				                    <label for="form_phone">Expiration/Validity Date *</label>
-				                        <input id="form_phone" type="date" name="phone" class="form-control">
-				                        <br>
+                    				<input type="text" name="" placeholder="PRC ID" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                    <input type="date" name="" placeholder="Expiration/Validity Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div style="margin-top: 5%;margin-bottom: 5%;"></div>
 				                        <div class="text-center"><button style="background-color:#28a745 ; " class="btn-primarys" onclick="add()"><i class="fa fa-plus-circle" ></i> Add Others</button> <button class="btn-primarys" onclick="removeClone()"><i class="fa fa-undo"></i>Reset</button></div>
 				                        <br>	
 				                        <div id="other">
 				                        	<div id="cloneOther">
-							                    <label for="form_phone">Other Licensed ID *</label>
-							                    <input id="form_phone" type="text" name="phone" class="form-control">
-							                    <label for="form_phone">Licensed ID Expiration Date*</label>
-							                    <input id="form_phone" type="date" name="phone" class="form-control">
+							                    <input type="text" name="" placeholder="Other Licensed ID" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+							                    <input type="date" name="" placeholder="Licensed ID Expiration Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 							                    <hr>
 							                </div>
 				                        </div>
@@ -190,33 +180,27 @@
                        		<div class="row">
 				                <div class="col-sm-4">
 				                    <div class="form-group">
-				                        <label for="form_name">School Graduated *</label>
-				                        <input id="form_name" type="text" name="surname" class="form-control" required="required" data-error="name is required.">
+				                        <input type="text" name="" placeholder="School Graduated" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 				                        <div class="help-block with-errors"></div>
 				                    </div>
 				                </div>
 				                <div class="col-sm-4">
 				                    <div class="form-group">
-				                        <label for="form_email">Year Graduated *</label>
-				                        <input id="form_email" type="year" name="email" class="form-control" required="required" data-error="Valid email is required.">
+				                        <input type="text" name="" placeholder="Year Graduated" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 				                        <div class="help-block with-errors"></div>
 				                    </div>
 				                </div>
 				                <div class="col-sm-4">
 				                    <div class="form-group">
-				                        <label for="form_phone">Course *</label>
-				                        <input id="form_phone" type="tel" name="phone" class="form-control">
+				                        <input type="text" name="" placeholder="Course" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 				                        <div class="help-block with-errors"></div>
 				                    </div>
 				                </div>
 				            </div>
 				             <div class="row">
-				            	<div class="col-sm-12"><label for="form_phone">Masteral School *</label>
-				                        <input id="form_phone" type="text" name="phone" class="form-control"></div>
-								<div class="col-sm-12"><label for="form_phone">Masteral Course *</label>
-				                        <input id="form_phone" type="text" name="phone" class="form-control"></div>
-				               <div class="col-sm-12"><label for="form_phone">Year Graduated *</label>
-				                        <input id="form_phone" type="text" name="phone" class="form-control"></div> 
+				            	<div class="col-sm-12"><input type="text" name="" placeholder="Masteral School" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;"></div>
+								<div class="col-sm-12"><input type="text" name="" placeholder="Masteral Course" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;"></div>
+				               <div class="col-sm-12"><input type="text" name="" placeholder="Year Graduated" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;"></div> 
 
 				        </div>
 				        <br>
@@ -224,12 +208,9 @@
 				        <br>
 				        <div id="other">
 				          	<div id="cloneOther">
-							     <label for="form_phone">School *</label>
-							     <input id="form_phone" type="text" name="phone" class="form-control">
-							     <label for="form_phone">Training *</label>
-							     <input id="form_phone" type="text" name="phone" class="form-control">
-							     <label for="form_phone">Date *</label>
-							     <input id="form_phone" type="date" name="phone" class="form-control">
+							     <input type="text" name="" placeholder="School" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+							     <input type="text" name="" placeholder="Training" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+							     <input type="date" name="" placeholder="Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 							     <hr>
 							 </div>
 				        </div>

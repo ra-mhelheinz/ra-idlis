@@ -18,24 +18,29 @@
 				padding: 1em;
 			}
 </style>
-		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);margin-top: 1%;">
-			<h2 style="text-align: center;border-bottom: 1px solid green;padding-bottom: 9px;position: relative;"><strong>APPLICATION FORM</strong><span style=" background: lightgreen none repeat scroll 0 0;bottom: -2px;height: 3px;left: 0;position: absolute;width: 75px;"></span></h2>
+@include('client.breadcrumb')
+<script type="text/javascript">
+	  	document.getElementById('first').style = "color: blue;";
+</script>
+		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-radius: 0;padding: 2rem 2rem;margin-top: 1%;">
+			<div class="title"  style="text-align: center;border-bottom: 1px solid green;padding-bottom: 9px;position: relative;margin-bottom: 2%;"> 
+			<h2><strong>APPLICATION FORM</strong></h2>
+			</div>
 	  <div class="row">
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
 		  		<label style="display:block;"><span >Name of Facility</span></label>
 
-		  		<h4>{{$clientData->facilityname}}</h4>		
+		  		<p>{{$clientData->facilityname}}</p>		
  		  	</div>
 		</div>
 		<div class="col-xs-12 col-md-12 fname" style="margin-top: -10px">
-			<h5>​{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgnid}} </h5>
+			<p>​{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgnid}} </p>
 		</div>
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
-		  		<label style="display:block;"><span >Type of Health Facility</span></label>
-		  		<select id="HFacility" class="form-control" onchange="selectHealthFacility();">
-		  			<option hidden></option>
+		  		<select id="HFacility" onchange="selectHealthFacility();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .55rem .75rem;width: 100%;">
+		  			<option disabled selected hidden>Type of Health Facility</option>
 		  			<option>Hospital</option>
 		  			<option>Clinical Lab</option>
 		  			<option>BSF</option>
@@ -50,9 +55,9 @@
 		</div>
 		<div class="col-xs-12 col-md-6">
 			<span id="ServiceSpan" style="display: none">
-			<div class="form-group"><label style="display:block;" ><span >Services</span><small style="font-weight:normal;" class="pull-right"></small></label>
-				<select class="form-control">
-					<option hidden></option>
+			<div class="form-group">
+				<select style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .55rem .75rem;width: 100%;">
+					<option  disabled selected hidden>Services</option>
 					<option>Clinical Services for In-Patients</option>
 					<option>Ancillary Services</option>
 				</select>
@@ -61,54 +66,43 @@
 		</div>
 	<div class="col-xs-12 col-md-3 fname">
 	  	<div class=" form-group">
-	  		<label style="display:block;"><span>Classification as to Ownership</span></label>
-	  		<select id="Class2Owner" class="form-control" onchange="ClassOwner()">
-	  			<option hidden></option>
+	  		<select id="Class2Owner" onchange="ClassOwner()" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .55rem .75rem;width: 100%;">
+	  			<option  disabled selected hidden>Classification as to Ownership</option>
 				<option id="Govern">Government</option>
 	  			<option id="Private">Private</option>
 	  		</select>
 	  	</div>
 	</div>
 		<div class="col-xs-12 col-md-3 fname">
-	  	<div class=" form-group"><label>Classification Type</label>
-	  		<select id="anotherClassSelector" class="form-control" onchange="ClassType();">
-	  			
+	  		<select id="anotherClassSelector" onchange="ClassType();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .55rem .75rem;width: 100%;">
+	  			<option  disabled selected hidden>Classification Type</option>
 	  		</select>
 	  	</div>
-	</div>
+
 				<div class="col-xs-12 col-md-6">
 				<span id="OtherSpan" style="display: none">
-					<div class="form-group"><label style="display:block;" ><span >Others :</span><small style="font-weight:normal;" class="pull-right"></small></label>
-						<input type="text" name="" class="form-control">
+					<div class="form-group">
+						<input type="text" name="" placeholder="Others" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 					</div>
 				</span>
 			</div>
-<!-- 	<div class="col-xs-12 col-md-6">
-		<div class="form-group"><label style="display:block;" ><span >Status of Application</span><small style="font-weight:normal;" class="pull-right"></small></label>
-			<select class="form-control">
-				<option>...</option>
-			</select>
-		</div>
-	</div> -->
 
 	<div class="col-xs-12 col-md-4 offset-md-2">
-		<div class="form-group"><label style="display:block;" ><span >Authorized Bed Capacity</span><small style="font-weight:normal;" class="pull-right"></small></label>
-			<input type="number" name="" class="form-control">
+		<div class="form-group">
+			<input type="number" placeholder="Authorized Bed Capacity" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 		</div>
 	</div>
 	
 
 
 	<div class="col-xs-12 col-md-4 fname">
-	  	<div class=" form-group"><label>Status of Application</label>
-	  		<select class="form-control">
-	  			<option hidden></option>
+	  		<select style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .55rem .75rem;width: 100%;">
+	  			<option disabled selected hidden>Status of Application</option>
 	  			<option>Initial</option>
 	  			<option>Renewal</option>
 	  		</select>
-	  	</div>
 	</div>
-		</div>
+				</div>
 		<div class="text-center">
 			<a href="{{asset('client/apply/lop')}}"><button style="background-color: #228B22 !important" class="btn-primarys"><i class="fa fa-list-alt"></i>&nbsp;List of Personnel</button>
 				</a>
@@ -117,60 +111,6 @@
 		<div class="container" >
 		<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show Attachments to be Uploaded</div>
 		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
-			<!-- <ul class="list-group">
-			  <li class="list-group-item all">Acknowledgement (Notarized) 
-			  	<span style="float:right">
-			  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-			  	</span>
-			  </li>
-			  <li class="list-group-item all">List of Personnel (with proof of qualification)
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  	</span>
-			  </li>
-			  <li class="list-group-item all">List of Equipments
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  <li class="list-group-item all">List of Ancillary Services (if applicable)
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  <li class="list-group-item all">Application Form (Medical X-ray)
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  <li class="list-group-item all">Application Form (Hospital Pharmacy)
-				  <span style="float:right">
-				  	<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  <li class="list-group-item all">Geographic Form (Location Map of the Facility)
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  <li class="list-group-item all">Photographs of exterior and interior of the Health Facility
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  </li>
-			  
-
-			</ul>
-			<div class="text-center" style="margin:2em;">
-			<button class="btn btn-outline-success"  data-toggle="modal" data-target="#exampleModalCenter">Submit</button>
-			</div>
-			<ul class="list-group">
-				<li class="list-group-item">Copy of OR for Application fee
-				  <span style="float:right">
-				  		<button type="button" class="btn btn-primary"><i class="fa fa-upload"></i>&nbsp;Upload</button>
-				  </span>
-			  	</li>
-			</ul> -->
 			<table class="attachments table table-hover" style="width: 100%;">
 				<tr>
 					<td>Acknowledgement (Notarized) </td>

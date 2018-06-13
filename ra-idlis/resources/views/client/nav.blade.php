@@ -1,4 +1,5 @@
 @include('session.clientSession')
+<link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/nav.css')}}">
 @if (session()->exists('client_data'))
    @php
      $clientData = session('client_data');
@@ -8,79 +9,6 @@
     window.location.href = "{{asset('/')}}";
   </script>
 @endif
-   {{--  <nav class="navbar navbar-expand-lg" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);" >
-      <div class="container">
-        <div class="navbar-nav" href="#">
-          <img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img4">
-          &nbsp;&nbsp;
-                  <div class="republic1">
-                    <p><small>Republic of the Philippines</small></p>    
-                    <p  style="margin-top: -10px;font-size: 18px;font-weight: 600">DEPARTMENT OF HEALTH</p>
-                    <p  style="margin-top: -10px;">Kagawaran ng Kalusugan</p>
-                    <p  style="margin-top: -10px;">ISO 9001:2008 CERTIFIED</p>
-                  </div>
-        </div>
-        <button style="color: #fff;" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="fa fa-bars" style="color:   #fff;"></i> Menu
-        </button>
-        <div class="collapse navbar-collapse " id="navbarResponsive">
-          <ul class="navbar-nav mr-auto">
-          </ul>
-        <ul class="navbar-nav">
-
-            <div href="" class="navbar btn btn-outline-success" style="font-size: 25px;border-color: #fff;color: #fff;">OLORS</div>
-            <a href="{{asset('client/home')}}" class="navbar" style="color:   #fff;text-decoration:  none;" ><i class="fa fa-home"></i>&nbsp;Home</a>
-            
-          <a style="color:  #fff;" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell"></i>&nbsp;<i class="badge badge-primary">1</i>
-             <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
-         <div class="navbar-login">
-           <p>Welcome to DOH OLORS.</p>
-          </div>
-        </div>
-          </a>
-      <li class="nav-item dropdown">
-        <a style="color:  #fff;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <i class="fa fa-user-circle" style="font-size:  30px;"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right bg-light" id="acc" aria-labelledby="navbarDropdown">
-         <div class="navbar-login">
-            <div class="row">
-               <div class="col-lg-4">
-                  <p class="text-center">
-                    <i class="fa fa-user icon-size"></i>
-                  </p>
-                </div>
-                <div class="col-lg-8">
-                  <p class="text-left" style="font-size: 13px;"><strong>{{$clientData->authorizedsignature}}</strong></p>
-                  <p class="text-left" style="font-size: 10px;">{{$clientData->email}}</p>
-                  <p class="text-left "></p>
-                  <p class="text-left">
-                  <button href="#" class="btn-primarys btn-block btn-sm" style="background-color: #28a745;">About</button>
-                  <button href="#" class="btn-primarys btn-block btn-sm" style="background-color: #28a745;">Help</button>
-                  </p>
-                </div>
-              </div>
-          </div>
-          <hr>
-          <div class="navbar-login navbar-login-session">
-              <div class="row">
-                <div class="col-lg-12">
-                   <p>
-                      <button href="#" onclick="event.preventDefault();document.getElementById('clientLogout').submit();" class="btn-defaults btn-block btn-sm">Logout</button>
-                      <form id="clientLogout" action="{{asset('/client/logout')}}" method="POST" hidden>
-                        @csrf
-                      </form>
-                   </p>
-                </div>
-              </div>
-          </div>
-        </div>
-      </li>
-            </ul>
-              
-        </div>
-      </div>
-    </nav> --}}
        <nav id="paraTagoNav" class="navbar navbar-expand-lg navbar-dark bg-dark" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);padding: 1px 1px 1px 1px;">
       <div class="container">
         <a class="navbar-brand" href="#"><img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img4">
@@ -91,16 +19,19 @@
                     <p class="text-content">ISO 9001:2008 CERTIFIED</p>
             </div>
         </a>
+        <div style="text-align:center;">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>Menu
+          <span class="navbar-toggler-icon"></span> 
         </button>
+        </div>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{{asset('client/home')}}"><span class="fa fa-home"></span>Home</a>
+          <ul class="navbar-nav ml-auto" style="text-align: center;">
+            <li class="nav-item">
+              <a class="nav-link" href="{{asset('client/home')}}" data-toggle="tooltip" title="HOME"><i class="fa fa-home" style="font-size:  20px;" ></i>
+              </a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown"><span class="fa fa-bell" style="font-size:  20px;"></span><i class="badge badge-primary">1</i>
+            <li class="nav-item dropdown"> 
+              <a class="nav-link" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown"><span class="fa fa-bell" style="font-size:  20px;"></span>1
                 <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
                   <div class="navbar-login">
                     <p>Welcome to DOH OLORS.</p>
@@ -109,7 +40,7 @@
               </a>
             </li>
             <li class="nav-item dropdown">
-             <a style="color:  #fff;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <i class="fa fa-user-circle" style="font-size:  20px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right bg-light" id="acc" aria-labelledby="navbarDropdown">
@@ -150,224 +81,24 @@
         </div>
       </div>
     </nav>
-<nav class="navbar navbar-expand-sm sticky-top" id="timeline" style="justify-content: center;background-color:  #fff;z-index: 2;">
-  <ul class="navbar-nav">
-      <a class="navbar active" href="#" style="font-weight: 600;color: #228B22"><i class="fa fa-edit ic"></i><span class="ic2">Apply</span></a>
-      <a class="navbar" href="#" style="border: 0;"><i class="fa fa-hand-o-right" style="color: #228B22"></i></a>
-      <a class="navbar" href="#" style="font-weight: 600;color: #228B22"><i class="fa fa-check ic"></i><span class="ic2">Evaluation</span></a>
-      <a class="navbar" href="#" style="border: 0;"><i class="fa fa-hand-o-right" style="color: #228B22"></i></a>
-      <a class="navbar" href="#" style="font-weight: 600;color: #228B22"><i class="fa fa-search ic"></i><span class="ic2">Inspection</span></a>
-      <a class="navbar" href="#" style="border: 0;"><i class="fa fa-hand-o-right" style="color: #228B22"></i></a>
-      <a class="navbar" href="#" style="font-weight: 600;color: #228B22;"><i class="fa fa-print ic"></i><span class="ic2">Issuance</span></a>
-      <a id="fortagoTago1" class="navbar" href="{{asset('client/home')}}" style="font-weight: 600;color: #228B22;border: 0;"><span class="fa fa-home"></span></a>
-                <li id="fortagoTago" class="nav-item dropdown" hidden>
-             <a style="color:  #228B22;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <i class="fa fa-user-circle" style="font-size:  20px;"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right bg-light" id="acc" aria-labelledby="navbarDropdown">
-         <div class="navbar-login">
-            <div class="row">
-               <div class="col-lg-4">
-                  <p class="text-center">
-                    <i class="fa fa-user icon-size"></i>
-                  </p>
-                </div>
-                <div class="col-lg-8">
-                  <p class="text-left" style="font-size: 13px;"><strong>{{$clientData->authorizedsignature}}</strong></p>
-                  <p class="text-left" style="font-size: 10px;">{{$clientData->email}}</p>
-                  <p class="text-left "></p>
-                  <p class="text-left">
-                  <button href="#" class="btn-primarys btn-block btn-sm" style="background-color: #28a745;">About</button>
-                  <button href="#" class="btn-primarys btn-block btn-sm" style="background-color: #28a745;">Help</button>
-                  </p>
-                </div>
-              </div>
-          </div>
-          <hr>
-          <div class="navbar-login navbar-login-session">
-              <div class="row">
-                <div class="col-lg-12">
-                   <p>
-                      <button href="#" onclick="event.preventDefault();document.getElementById('clientLogout').submit();" class="btn-defaults btn-block btn-sm">Logout</button>
-                      <form id="clientLogout" action="{{asset('/client/logout')}}" method="POST" hidden>
-                        @csrf
-                      </form>
-                   </p>
-                </div>
-              </div>
-          </div>
-        </div>
-            </li>
-  </ul>
+<script type="text/javascript">
+    setInterval(function(e){
+      var x = parseFloat(parseFloat(window.innerHeight) + parseFloat(window.scrollY)) - parseFloat(document.getElementById('paraTago').offsetHeight);
+      var y = parseFloat((parseFloat(document.body.offsetHeight) - parseFloat(document.getElementById('paraTago').offsetHeight)) - parseFloat(document.getElementById('paraTago').offsetHeight)) + 10;
 
-</nav>
-<style type="text/css">
-.ic{
-  display: none;
-}
-.republic1 > .text-contentr{
-   font-size: 11px;
-}
-.republic1 > .text-contentd{
-  margin-top: -10px;font-size: 18px;font-weight: 600
-}
-.republic1 > .text-content{
-  margin-top: -10px;font-size: 13px;
-}
-.navbar{
-    font-size: 0.765625rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-.img4{
-    height: 75px;width: auto;float: left;
-}
-.republic1{
-  margin-left: 80px;
-}
-.republic1 > p{
-  margin: 0;
-  color: #000;
-}
-    .navbar-login
-{
-    padding: 10px;
-    padding-bottom: 0px;
-    text-transform: none;
-    text-align: center;
-}
-
-.navbar-login-session
-{
-    padding: 10px;
-    padding-bottom: 0px;
-    padding-top: 0px;
-}
-
-.icon-size
-{
-    font-size: 87px;
-}
-.navbar-nav>a {
-  position: relative;
-  color: #000;
-  text-decoration: none;
-}
-
-.navbar-nav>a:hover {
-  color: #000;
-}
-.navbar-nav>a:before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: #84bd82;
-  visibility: hidden;
-  -webkit-transform: scaleX(0);
-  transform: scaleX(0);
-  -webkit-transition: all 0.3s ease-in-out 0s;
-  transition: all 0.3s ease-in-out 0s;
-}
-.navbar-nav>a:hover:before {
-  visibility: visible;
-  -webkit-transform: scaleX(1);
-  transform: scaleX(1);
-}
-#acc{
-  width: 300px;
-}
-@media only screen and (max-width: 360px){
-  .img4{
-    height: 60px;width: auto;float: left;
-}
-.republic1{
-  margin-left: 65px;
-}
-.republic1 > .text-contentr{
-  font-size: 8;
-}
-.republic1 > .text-contentd{
-  margin-top: -15px;
-  font-size: 13px;
-}
-.republic1 > .text-content{
-   margin-top: -15px;
-  font-size: 9;
-}
-.navbar-toggler{
-  font-size: 13px;
-}
-}
-
-@media only screen and (max-width: 990px){
-  #acc{
-    width: 100%;
-  }
-}
-@media only screen and (max-width: 729px){
-  #timeline> ul > a{
-    font-size: 11px;
-  }
-}
-@media only screen and (max-width: 675px){
-  #timeline> ul > a{
-    font-size: 10px;
-  }
-}
-@media only screen and (max-width: 650px){
-  #timeline> ul > a{
-    font-size: 8px;
-  }
-}
-@media only screen and (max-width: 575px){
-  .ic{
-    display: block;
-    display: inline-block;
-  }
-  .ic2{
-    display: none;
-  }
-  .navbar-nav{
-    flex-direction: row;
-  }
-    #timeline > ul > a{
-    padding: 10px;
-        border: 1px solid #228B22;
-  }
-}
-@media only screen and (max-width: 420px){
-  .ic{
-    display: block;
-    display: inline-block;
-  }
-  .ic2{
-    display: none;
-  }
-  .navbar-nav{
-    flex-direction: row;
-  }
-  #timeline > ul > a{
-    padding: 10px;
-        border: 1px solid #228B22;
-  }
-}
-@media only screen and (max-width: 360px){
-  .ic{
-    display: block;
-    display: inline-block;
-  }
-  .ic2{
-    display: none;
-  }
-  .navbar-nav{
-    flex-direction: row;
-  }
-  #timeline > ul > a{
-    padding: 10px;
-    border: 1px solid #228B22;
-  }
-}
-</style>
+      // var t = parseFloat(document.getElementById('paraTagoNav').offsetHeight);
+      // var z = parseFloat(window.scrollY);
+      // if(z < t) {
+      //   document.getElementById('fortagoTago').setAttribute("hidden", true);
+      //   document.getElementById('fortagoTago1').setAttribute("hidden", true);
+      // } else {
+      //   document.getElementById('fortagoTago').removeAttribute("hidden");
+      //   document.getElementById('fortagoTago1').removeAttribute("hidden");
+      // }
+      if(y <= x) {
+        document.getElementsByClassName('fixed-bottom')[0].setAttribute("hidden", true);
+      } else {
+        document.getElementsByClassName('fixed-bottom')[0].removeAttribute("hidden");
+      }
+    }, 1);
+  </script>
