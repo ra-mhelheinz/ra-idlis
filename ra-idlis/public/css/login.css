@@ -1,3 +1,6 @@
+ @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,200,300);
+ body {
+  font: 16px/26px "Roboto", sans-serif; }
 
      .help-text > a {
         color: #666;
@@ -6,13 +9,6 @@
 
   .help-text >a:hover {
     color: #4FDA8C; }
-
-input {
-  font: 16px/26px "Raleway", sans-serif; }
-
-body {
-  background-color: #f1f2f2;
-  font: 16px/26px "Raleway", sans-serif; }
 
 .form-wrapss{
   background-color: #fff;

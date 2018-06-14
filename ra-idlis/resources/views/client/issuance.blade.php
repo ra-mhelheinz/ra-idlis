@@ -1,6 +1,7 @@
 @extends('main')
 @section('content')
 @include('client.nav')
+@include('client.breadcrumb')
 		<div class="container">
 			<div class="modal-dialog modal-lg">
 		      <div class="modal-content container">   

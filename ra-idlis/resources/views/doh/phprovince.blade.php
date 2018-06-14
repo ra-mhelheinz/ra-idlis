@@ -6,6 +6,15 @@
 <script type="text/javascript">Right_GG();</script>
   <input type="text" id="CurrentPage" value="MA02" hidden>
   <script type="text/javascript">Right_GG();</script>
+  @foreach ($region as $regions)
+    <datalist id="{{$regions->rgnid}}_list">
+      @foreach ($province as $provinces)
+        @if ($regions->rgnid == $provinces->rgnid)
+          <option id="{{$provinces->provid}}_pro" value="{{$provinces->provid}}">{{$provinces->provname}}</option>
+        @endif
+      @endforeach
+    </datalist>
+  @endforeach
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
@@ -16,7 +25,7 @@
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Region ...</option>
                 @foreach ($region as $regions)
-                  <option value="{{$regions->rgnid}}">{{$regions->rgnid}}</option>
+                  <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
                 @endforeach
               </select>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
@@ -63,7 +72,7 @@
                       <select class="form-control"  style="margin:0 0 .8em 0;" required="">  
                           <option value="">Select Region ...</option>
                          @foreach ($region as $regions)
-                            <option value="{{$regions->rgnid}}">{{$regions->rgnid}}</option>
+                            <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
                           @endforeach
                       </select>
                     </div>
@@ -114,31 +123,19 @@
         function filterGroup(){
         var id = $('#filterer').val();
         var token = $('#token').val();
-        $.ajax({
-                url: " {{asset('/ph/get_province')}}",
-                method: 'POST',
-                data: {
-                  _token : token,
-                  reg_id : id,
-                },
-                success: function(data) {
-
-                  if (data == 'NONE') {
-                    $('#FilterdBody').empty();
-                  } else {
-                    var dataSelected = data['provinces'];
-                    $('#FilterdBody').empty();
-                    for (var i = 0; i < dataSelected.length; i++) {
-                      $('#FilterdBody').append(
-                          '<tr>'+
-                              '<td>'+dataSelected[i].provname+'</td>' +
-                              '<td><center><button type="button" class="btn-defaults" onclick="getData(\''+dataSelected[i].provname+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center></td>' +
-                          '<tr>'
+        var x = $('#'+id+'_list option').map(function() {return $(this).val();}).get();
+        $('#FilterdBody').empty();
+        // $('#FilterdBody').append('<option value="">Select Province ...</option>');
+          for (var i = 0; i < x.length; i++) {
+            var d = $('#'+x[i]+'_pro').text();
+            var e = $('#'+x[i]+'_pro').attr('value');
+            $('#FilterdBody').append(
+                        '<tr>'+
+                          '<td>'+d+'</td>' +
+                          '<td><center><button type="button" class="btn-defaults" onclick="getData(\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center></td>' +
+                        '</tr>'
                         );
-                    }
-                  }
-                }
-            });
+          } 
       }
       function getData(provname){
           $('#edit_name').attr("value",provname);

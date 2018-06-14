@@ -1,6 +1,7 @@
 @extends('main')
 @section('content')
 @include('client.nav')
+@include('client.breadcrumb')
 	<div class="jumbotron container" style="margin-top: 2em;box-shadow: 0px 2px 20px rgba(0,0,0,0.2);background-color: #fff">
 		<div class="container">
 			<h2>ABC Hospital. Rizal St., Manila</h2>

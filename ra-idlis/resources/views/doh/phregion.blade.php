@@ -21,15 +21,13 @@
                <table class="table" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 40%">Name</th>
-                  <th style="width: 35%">Description</th>
+                  <th style="width: 75%">Name</th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($region as $regions)
                   <tr>
-                    <td scope="row"> {{$regions->rgnid}}</td>
                     <td>{{$regions->rgn_desc}}</td>
                     <td>
                       <center>
@@ -77,10 +75,10 @@
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Edit Region</strong></h5>
               <div class="container">
-                <div class="col-sm-4">Name:</div>
+                    {{-- <div class="col-sm-4">Name:</div>
                     <div class="col-sm-12">
                     <input type="text" id="edit_name" class="form-control"  style="margin:0 0 .8em 0;" required>
-                    </div>
+                    </div> --}}
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-12">
                     <input type="text" id="edit_desc" class="form-control"  style="margin:0 0 .8em 0;" required>

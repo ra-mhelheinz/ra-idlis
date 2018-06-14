@@ -1,6 +1,7 @@
-		  @import url(https://fonts.googleapis.com/css?family=Raleway:400,100,200,300);
+		  @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,200,300);
 body{
-    font: 16px/26px "Raleway", sans-serif; 
+  font: 16px/26px 'Roboto' , sans-serif;
+
 }
 .back{
   background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 5px 5px 5px 5px;
@@ -39,6 +40,7 @@ footer{
 .slogan{
   width: 400px;float:right;
 }
+
 @media only screen and (max-width: 360px){
   .slogan{
     float:none;
@@ -73,6 +75,7 @@ footer{
     overflow: auto;
   }
 }
+
 @media only screen and (max-width: 460px){
   .img {
   margin-left: 27%;
@@ -94,3 +97,4 @@ footer{
   margin-left: 24%;
 }
 }
+
