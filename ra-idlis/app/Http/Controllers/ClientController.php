@@ -11,7 +11,9 @@ class ClientController extends Controller
     public function clientlogin(Request $request){
   		if($request->isMethod('get')){
         $regions = DB::table('region')->get();
-   			return view('client.login',['regions' => $regions]);
+        $province = DB::table('province')->get();
+        $city_muni = DB::table('city_muni')->get();
+   			return view('client.login',['regions' => $regions, 'province' => $province, 'citymuni' => $city_muni]);
    		} 
         if($request->isMethod('post')){
             $uname=strtoupper($request->input('log_uname'));

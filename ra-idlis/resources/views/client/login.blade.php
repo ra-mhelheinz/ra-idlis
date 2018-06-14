@@ -6,8 +6,13 @@
 @extends('main')
 @section('style')
  <link rel="stylesheet" type="text/css" href="ra-idlis/public/css/login.css">
+
 @endsection
 <style type="text/css">
+		html, body{height: 100%;width: 100%;margin: 0px;padding: 0px;}
+		#canvasMap{
+			height: 400px;
+		}
 @media only screen and (max-width: 992px){
 	.col-lg-7{
 		order: 13;
@@ -23,6 +28,33 @@
 	}
 </style>
 @section('content')
+{{-- <div hidden>
+<datalist id="rgn_list">
+	@foreach($regions as $region)
+		<option id="{{$region->rgnid}}_rid" value="{{$region->rgn_desc}}"></option>
+	@endforeach
+</datalist>
+	 @foreach ($regions as $region)
+    <datalist id="{{$region->rgnid}}_list">
+      @foreach ($province as $provinces)
+        @if ($region->rgnid == $provinces->rgnid)
+          <option id="{{$provinces->provid}}_pro" value="{{$provinces->provid}}">{{$provinces->provname}}</option>
+        @endif
+      @endforeach
+    </datalist>
+  @endforeach
+</div>
+<div hidden>
+	 @foreach ($province as $provinces)
+    <datalist id="{{$provinces->provid}}_lists">
+      @foreach ($citymuni as $citymunici)
+        @if ($provinces->provid == $citymunici->provid)
+          <option id="{{$citymunici->provid}}_cm" value="{{$citymunici->provid}}">{{$citymunici->cmname}}</option>
+        @endif
+      @endforeach
+    </datalist>
+  @endforeach
+</div> --}}
 <header>
 	<div class="jumbotron" style="padding: 0 !important;border-radius:0;background-color: #fff !important;margin-bottom: 0;">
 		<div class="container">
@@ -134,49 +166,134 @@
 					<div class="col-sm-12" id="passwordAlertMatch" style="display:none">
 						<div class="alert alert-danger alert-dismissible fade show" role="alert">
 						  <strong><i class="fas fa-exclamation"></i></strong> Password Mismatch
-						<!--   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						    <span aria-hidden="true">&times;</span>
-						  </button> -->
 						</div>
 					</div>	
 					<div class="row">
 						<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 							<input type="text" class="input form-control" autocomplete="off" name="facility_name" placeholder="Name of Facility (Complete Name)" data-parsley-required-message="<strong>*</strong>Facility name <strong>Required</strong>"  value="{{ old('facility_name') }}" required="">
+
 						</div>
 
 					<hr>
 					
 					<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 						<h5>Address</h5>
-					</div>			
+					</div>
+					<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+						<div class="input-group">
+							<input type="text" id="gsearch" class="form-control" placeholder="Address">
+						<div class="input-group-prepend" style="cursor: pointer;"  data-toggle="modal" data-target="#exampleModal">
+							<div class="input-group-text"><i class="fa fa-map-marker"></i></div>
+						</div>
+					<div class="modal animated" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="		exampleModalCenterTitle" aria-hidden="true">
+					  <div class="modal-dialog modal-dialog-centered" role="document">
+					    <div class="modal-content text-center" >
+					      <div class="modal-header" style="border: 0;background-color: #5cb85c">
+					        <h5 class="modal-title" id="exampleModalLongTitle" style="color: #fff;">Map</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body" style="padding: 0;">
+					        <div id="canvasMap"></div>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+						</div>
+					</div>		
 					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
-					<select id="selectRegion4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Region <strong>Required</strong>" required="">
-						<option value="">Select Region</option>
+					<input type="text" class="form-control" id="filterer" list="rgn_list" placeholder="REGION">
+						
+					{{-- <select id="selectRegion4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Region <strong>Required</strong>" required="">
+						<option disabled selected hidden>Select Region</option>
 						@foreach ($regions as $region)
-							<option value="{{$region->rgnid}}">{{$region->rgnid}}</option>
+							<option value="{{$region->rgnid}}">{{$region->rgn_desc}}</option>
 						@endforeach
-					</select>
+					</select> --}}
 					</div>
 					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
 					<select id="selectProvince4Cm" data-parsley-required-message="<strong>*</strong>Province <strong>Required</strong>" class="form-control" name="province"  required="">
-						<option value="">Province</option>
+						<option disabled selected hidden>Province</option>
 					</select>
 					</div>
 				<div class="col-sm-6" style="margin: 0 0 .8em 0;">
-					<input type="text" class="input form-control" name="brgy" autocomplete="off" placeholder="Brgy. Name" data-parsley-required-message="<strong>*</strong>Barangay name <strong>Required</strong>" required="">
+					<select id="selectCM4Cm" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>City/Municipality <strong>Required</strong>" required="">
+						<option disabled selected hidden>City/Municipality</option>
+					</select>
 				</div>
-					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
-					<input type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name"   data-parsley-required-message="<strong>*</strong>Street Name <strong>Required</strong>" required="">
+				<div class="col-sm-6" style="margin: 0 0 .8em 0;">
+					<select id="selectbrgy4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Brgy. <strong>Required</strong>" required="">
+						<option disabled selected hidden>Brgy. Name</option>
+					</select>
 				</div>
 				<div class="col-sm-8" style="margin: 0 0 .8em 0;">
-					<!-- <select  id="CityMunicpalSelector" class="form-control">
-						<option>City/Municipality Name</option>
-					</select> -->
-					<input type="text" class="input form-control" name="city_muni" autocomplete="off" placeholder="City/Municipality Name" data-parsley-required-message="<strong>*</strong>City/Municipal Name <strong>Required</strong>" required="">
+					<input type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name"   data-parsley-required-message="<strong>*</strong>Street Name <strong>Required</strong>" required="">
 				</div>
 				<div class="col-sm-4" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="zipcode" autocomplete="off" placeholder="Zip Code"  required=""  data-parsley-type="digits" data-parsley-maxlength="4" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>">
 				</div>
+  				<script type="text/javascript">
+  					var map, place, arr;
+      				function initMap() {
+        				map = new google.maps.Map(document.getElementById('canvasMap'), {
+				          center: {lat: 12.8797, lng: 121.7740},
+				          zoom: 6
+				        });
+
+				        var geocoder = new google.maps.Geocoder();
+				    
+				        var input = document.getElementById('gsearch');
+				    	var autocomplete = new google.maps.places.Autocomplete(input);
+        				autocomplete.bindTo('bounds', map);
+
+
+			          	place = autocomplete.getPlace();
+  						google.maps.event.addDomListener(document.getElementById('gsearch'), 'blur', route);
+
+					    function route() {
+					    	autocomplete.addListener('place_changed', function() {
+						        place = autocomplete.getPlace();
+						        // if (!place.geometry) {
+						        //   return;
+						        // }
+
+						        if (place.geometry.viewport) {
+						          map.fitBounds(place.geometry.viewport);
+						        } else {
+						          map.setCenter(place.geometry.location);
+						          map.setZoom(17);
+						        }
+						        // marker.setPlace({
+						        //   placeId: place.place_id,
+						        //   location: place.geometry.location
+						        // });
+						        // marker.setVisible(true);
+
+							    geocoder.geocode({'placeId': place.place_id}, function(results, status) {
+						            if (status === 'OK') 
+						            {
+						            	arr = results[0]["address_components"];
+						            	console.log(arr);
+						            	if((results[0]["address_components"]).length > 5) {
+						            		// alert("You must search the barangay first");
+						            		if(isNaN(parseInt(arr[arr.length - 1])) == false) {
+						            			document.getElementById('gsearch').value = "";
+						            		}
+						            	} else {
+						            		
+						            	}
+						            } 
+						            else {
+
+						            }
+						        });
+					        });
+					    }
+				    }
+
+				    
+  				</script>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="auth_name" autocomplete="off" placeholder="Authorized Signature" data-parsley-required-message="<strong>*</strong>Authorized Signature <strong>Required</strong>"  required="">
 				</div>
@@ -289,7 +406,33 @@
           success: function(data) {
           	var x = data.provinces;
           	$('#selectProvince4Cm').empty();
-          	$('#selectProvince4Cm').append('<option value="">Province</option>');          	
+          	$('#selectProvince4Cm').append('<option disabled selected hidden>Province</option>');          	
+          	var valX = $('#selectProvince4Cm').val();
+          	if (valX == "0") {
+          		$('#selectProvince4Cm').addClass('parsley-error');
+          	} else {
+          		$('#selectProvince4Cm').removeClass('parsley-success');
+          	}
+          	for (var i = 0; i < x.length; i++) {
+          		$('#selectProvince4Cm').append(
+          				'<option value="'+x[i].provid+'">'+x[i].provname +'</option>'
+          			);
+          	}
+          }
+      });
+  });
+	  $("#selectRegion4CM").change(function(){
+      	var region_id = $(this).val();
+      	var token = $("#reg_csrf-token").val();
+      	// alert(token);
+      $.ajax({
+          url: " {{asset('/ph/get_province')}}",
+          method: 'POST',
+          data: {reg_id:region_id, _token:token},
+          success: function(data) {
+          	var x = data.provinces;
+          	$('#selectProvince4Cm').empty();
+          	$('#selectProvince4Cm').append('<option disabled selected hidden>Province</option>');          	
           	var valX = $('#selectProvince4Cm').val();
           	if (valX == "0") {
           		$('#selectProvince4Cm').addClass('parsley-error');

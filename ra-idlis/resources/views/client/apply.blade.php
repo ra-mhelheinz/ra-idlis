@@ -24,7 +24,7 @@
 </script>
 		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-radius: 0;padding: 2rem 2rem;margin-top: 1%;">
 			<div class="title"  style="text-align: center;border-bottom: 1px solid green;padding-bottom: 9px;position: relative;margin-bottom: 2%;"> 
-			<h2><strong>APPLICATION FORM</strong></h2>
+			<h2>APPLICATION FORM</h2>
 			</div>
 	  <div class="row">
 	  	<div class="col-xs-12 col-md-6 fname">
