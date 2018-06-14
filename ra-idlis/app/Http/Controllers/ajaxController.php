@@ -10,6 +10,10 @@
 			$provinces = DB::table('province')->where('rgnid',$request->reg_id)->get();
 	    	return response()->json(['provinces'=>$provinces]);
 		}
+			public function selectCM(Request $request){
+			$provinces = DB::table('city_muni')->where('provid',$request->cmid)->get();
+	    	return response()->json(['citym'=>$citym]);
+		}
 		public function addCM(Request $request){
           	$data['pro_id'] = $request->input('provinceCM');
           	$data['cm_name'] = $request->input('new_cm');

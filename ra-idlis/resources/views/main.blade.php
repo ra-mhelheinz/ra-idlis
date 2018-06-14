@@ -48,9 +48,6 @@
 		<img src="{{asset('ra-idlis/public/img/slogan.png')}}" class="slogan" >
 	</div>
 </div>
-<!-- <footer style="background: url('ra-idlis/public/img/color.png') no-repeat;
-    background-size: 100% auto; box-shadow: 0px 2px 4px rgba(0,0,0,0.2);padding:2% 2% 2% 2%;">
- -->  
 <div id="paraTago"> 
 <footer style=" background: linear-gradient(to bottom left,#228B22, #84bd82);padding:1% 1% 1% 1%;">
  <div class="container">
@@ -58,6 +55,8 @@
       </div>
       <!-- /.container -->
 </footer>
-</div>   
+</div>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBE7IlYmz12J_ME_ePczAF6NKr2Ha9ss5w&libraries=places&callback=initMap"
+    async defer></script>
 </body>
 </html>
