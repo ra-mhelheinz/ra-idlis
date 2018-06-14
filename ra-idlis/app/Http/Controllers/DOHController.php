@@ -363,40 +363,84 @@
 		}
 		public function FDAs(Request $request){
 			if ($request->isMethod('get')) {
-					$regions = DB::table('region')->get();
-					$testX = session('employee_login');
-					return json_encode($testX);
-				// 	if ($testX->grpid == "NA") {
-				// 		$users = DB::table('x08')
-				// 			->where('grpid', '=', 'FDA')
-				// 			->select('*')
-				// 			->first()
-				// 			;
-				// 		if ($users) {
-				// 			$users = DB::table('x08')
-				// 				->where('grpid', '=', 'FDA')
-				// 				->select('*')
-				// 				->get()
-				// 				;
-				// 		return view('doh.fda',['region'=>$regions,'users'=>$users]);
-				// 	} 
-				// }else {
-				// 		$users = DB::table('x08')
-				// 			->where('grpid', '=', 'FDA')
-				// 			->where('rgnid', '=', $testX->rgnid)
-				// 			->select('*')
-				// 			->first()
-				// 			;
-				// 		if ($users) {
-				// 			$users = DB::table('x08')
-				// 				->where('grpid', '=', 'FDA')
-				// 				->where('rgnid', '=', $testX->rgnid)
-				// 				->select('*')
-				// 				->get()
-				// 				;
-				// 	}
-				// 	return view('doh.fda',['region'=>$regions,'users'=>$users]);
-				// }
+				$regions = DB::table('region')->get();
+				$testX = session('employee_login');
+				if ($testX->grpid == "NA") {
+					$users = DB::table('x08')
+						->where('grpid', '=', 'FDA')
+						->select('*')
+						->first()
+						;
+					if ($users) {
+						$users = DB::table('x08')
+							->where('grpid', '=', 'FDA')
+							->select('*')
+							->get()
+							;
+					return view('doh.fda',['region'=>$regions,'users'=>$users]);
+				} 
+				return view('doh.fda',['region'=>$regions,'users'=>$users]);
+			}else {
+					$users = DB::table('x08')
+						->where('grpid', '=', 'FDA')
+						->where('rgnid', '=', $testX->rgnid)
+						->select('*')
+						->first()
+						;
+					if ($users) {
+						$users = DB::table('x08')
+							->where('grpid', '=', 'FDA')
+							->where('rgnid', '=', $testX->rgnid)
+							->select('*')
+							->get()
+							;
+				}
+			return view('doh.fda',['region'=>$regions,'users'=>$users]);
+			}
+		}
+			if($request->isMethod('post')){
+				$dt = Carbon::now();
+	          	$dateNow = $dt->toDateString();
+	          	$timeNow = $dt->toTimeString();
+				$data['fname'] = $request->fname;
+				$data['mname'] = $request->mname;
+				$data['lname'] = $request->lname;
+				$data['rgnid'] = $request->rgn;
+				$data['email'] = $request->email;
+				$data['cntno'] = $request->cntno;
+				$data['uname'] = strtoupper($request->uname);
+				$data['pass'] = Hash::make($request->pass);
+				$data['ip'] = request()->ip();
+				// checkUser
+				$checkUser = DB::table('x08')
+                    ->where([ ['uid', '=', $data['uname']], ['pwd', '=', $data['pass']] ])
+                    ->select('*')
+                    ->first();
+				if ($checkUser) {
+					return 'SAME';
+				} else {
+					$addedby = session()->get('employee_login');
+					DB::table('x08')->insert(
+		                [
+		                    'uid' => $data['uname'],
+		                    'pwd' => $data['pass'],
+		                    'rgnid' => $data['rgnid'],
+		                    'contact' => $data['cntno'],
+		                    'email' => $data['email'],
+		                    'fname' => $data['fname'],
+		                    'mname' => $data['mname'],
+		                    'lname' => $data['lname'],
+		                    'ipaddress' => $data['ip'],
+		                    't_date' => $dateNow,
+		                    't_time' =>$timeNow,
+		                    'grpid' => 'FDA',
+		                    'isActive' => 1,
+		                    'isAddedBy' => $addedby->uid,
+		                ]
+		            );
+					return 'DONE';
+				}
+			
 			}
 		}
 	}

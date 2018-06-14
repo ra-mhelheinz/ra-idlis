@@ -10,9 +10,16 @@
 			$provinces = DB::table('province')->where('rgnid',$request->reg_id)->get();
 	    	return response()->json(['provinces'=>$provinces]);
 		}
+<<<<<<< HEAD
 			public function selectCM(Request $request){
 			$provinces = DB::table('city_muni')->where('provid',$request->cmid)->get();
 	    	return response()->json(['citym'=>$citym]);
+=======
+		public function selectBrgy(Request $request){
+			$brgy = DB::table('barangay')->where('cmid',$request->id)->get();
+			// return $request->id;
+			return response()->json($brgy);
+>>>>>>> 3f70c47a29073e9013a51fcf06a80717b60efc52
 		}
 		public function addCM(Request $request){
           	$data['pro_id'] = $request->input('provinceCM');
@@ -57,6 +64,15 @@
 		public function getClass(Request $request){
 			$class = DB::table('class')->where('ocid',$request->ocid)->get();
 	    	return response()->json(['classes'=>$class]);
+		} 
+		public function saveAppType(Request $request){
+			$updateData = array(
+							'aptdesc' => $request->name
+						);
+			DB::table('apptype')
+			->where('aptid',$request->id)
+			->update($updateData);
+			return 'DONE';
 		}
 	}
 ?>

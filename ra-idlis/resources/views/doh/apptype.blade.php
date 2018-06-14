@@ -33,7 +33,12 @@
                     <td>{{$apptypes->aptdesc}}</td>
                     <td>
                       <center>
-                        <button type="button" class="btn-defaults" onclick="showData('{{$apptypes->aptid}}', '{{$apptypes->aptdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                        <span class="MA07_update">
+                          <button type="button" class="btn-defaults" onclick="showData('{{$apptypes->aptid}}', '{{$apptypes->aptdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                        </span>
+                        <span class="MA07_cancel">
+                          <button type="button" class="btn-defaults" onclick="showDelete('{{$apptypes->aptid}}', '{{$apptypes->aptdesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                        </span>
                       </center>
                     </td>
                   </tr>
@@ -77,17 +82,41 @@
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Edit Application Type</strong></h5>
               <div class="container">
-                    {{-- <div class="col-sm-4">ID:</div>
+                    <form id="EditAppType" data-parsley-validate>
+                    <span id="EditAppTypeBody">
+                      
+                    </span>
+                    <div class="row">
+                      <div class="col-sm-6">
+                      <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
+                    </div> 
+                    <div class="col-sm-6">
+                      <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
+                    </div>
+                    </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content" style="border-radius: 0px;border: none;">
+            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+              <h5 class="modal-title text-center"><strong>Delete Application Type</strong></h5>
+              <div class="container">
+                    <div class="col-sm-4">Name:</div>
                     <div class="col-sm-12">
-                    <input type="text" id="edit_name" class="form-control"  style="margin:0 0 .8em 0;" required>
-                    </div> --}}
+                    <input type="text" id="edit_name2" class="form-control"  style="margin:0 0 .8em 0;" required>
+                    </div>
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-12">
-                    <input type="text" id="edit_desc" class="form-control"  style="margin:0 0 .8em 0;" required>
+                    <input type="text" id="edit_desc2" class="form-control"  style="margin:0 0 .8em 0;" required>
                     </div>
                     <div class="row">
                       <div class="col-sm-6">
-                      <button type="type" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
+                      <button type="button" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
                     </div> 
                     <div class="col-sm-6">
                       <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
@@ -101,8 +130,17 @@
     </div>
     <script type="text/javascript">
         function showData(id,desc){
-          $('#edit_name').attr('value',id);
-          $('#edit_desc').attr('value',desc);
+          $('#EditAppTypeBody').empty();
+          $('#EditAppTypeBody').append(
+              '<div class="col-sm-4">ID:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<input type="text" id="edit_name" value="'+id+'" class="form-control disabled" required disabled>' +
+              '</div>' +
+              '<div class="col-sm-4">Description:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<input type="text" id="edit_desc" value="'+desc+'" placeholder="'+desc+'" class="form-control" required>' +
+              '</div>' 
+            );
         } 
         $('#addRgn').on('submit',function(event){
             event.preventDefault();
@@ -134,6 +172,28 @@
                 }
             }
         });
-        
+        $('#EditAppType').on('submit',function(event){
+          event.preventDefault();
+            var form = $(this);
+            form.parsley().validate();
+             if (form.parsley().isValid()) {
+               var x = $('#edit_name').val();
+               var y = $('#edit_desc').val();
+               $.ajax({
+                  url: "{{ asset('/employee/save_aptype') }}",
+                  method: 'POST',
+                  data : {_token:$('#token').val(),id:x,name:y},
+                  success: function(data){
+                      if (data == "DONE") {
+                          alert('Successfully Edited Application Type');
+                          window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+                      }
+                  }
+               });
+             }
+        });
+        function showDelete (){
+
+        }
     </script>
 @endsection

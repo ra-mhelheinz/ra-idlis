@@ -173,6 +173,7 @@
         $('#filterer2').empty();
         $('#filterer2').append('<option value="">Select Province ...</option>')
         $('#filterer3').empty();
+        $('#FilterdBody').empty();
         $('#filterer3').append('<option value="">Select City/Municipality ...</option>');
           for (var i = 0; i < x.length; i++) {
             var d = $('#'+x[i]+'_pro').text();
@@ -200,6 +201,7 @@
          var id = $('#filterer2').val();
          var x = $('#'+id+'_provlist option').map(function() {return $(this).val();}).get();
          $('#filterer3').empty();
+         $('#FilterdBody').empty();
          $('#filterer3').append('<option value="">Select City/Municipality ...</option>');
          for (var i = 0; i < x.length; i++) {
             var d = $('#'+x[i]+'_cm').text();
@@ -222,6 +224,35 @@
                 '<option value="'+e+'">'+d+'</option>'
               );
          }
+      }
+      function filterGroup3(){
+        var id = $('#filterer3').val();
+        $('#FilterdBody').empty();
+        $.ajax({
+          url : "{{ asset('/ph/get_brgy') }}",
+          method: 'POST',
+          data: {
+              _token : $('#token').val(),
+              id : $('#filterer3').val(),
+            },
+          success: function(data){
+              if(data){
+                for (var i = 0; i < data.length; i++) {
+                 var  x = data[i];
+                 $('#FilterdBody').append(
+                      '<tr>'+
+                          '<td>'+x.brgyname+'</td>' +
+                          '<td>' +
+                          '<center>' +
+                            '<button type="button" class="btn-defaults" onclick="showData(\''+x.brgyname+'\', '+x.brgyid+');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>' +
+                          '</center>' +
+                          '</td>' +
+                      '</tr>'
+                  );
+                }
+              }
+          }
+        });
       }
       $('#addRgn').on('submit',function(event){
             event.preventDefault();

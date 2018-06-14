@@ -77,6 +77,9 @@ Route::get('/employee/dashboard/lps/evalute/ins/2','DOHController@ins2');
 Route::get('/employee/dashboard/lps/evalute/ins/3','DOHController@ins3');
 // -----------------------------------------------
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
+Route::post('/ph/get_brgy', ['as'=>'select-brgy','uses'=>'ajaxController@selectBrgy']);
 Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass']);
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
 Route::post('/employee/save_rights', ['as'=>'save-rights','uses'=>'ajaxController@saveRights']);
+Route::post('/employee/save_aptype', ['as'=>'save-AppType','uses'=>'ajaxController@saveAppType']);
+//

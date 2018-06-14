@@ -8,7 +8,7 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Licesing Officers Accounts <a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           FDA Officers <a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            {{-- <span style="float:right">Filter : 
               <select class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Region ...</option>
@@ -88,7 +88,7 @@
             </table>
             @if (!$users)
              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <strong><i class="fas fa-exclamation"></i></strong> No <strong>Licensing Officers</strong> are currently registered!
+              <strong><i class="fas fa-exclamation"></i></strong> No <strong>FDA Officers</strong> are currently registered!
             </div>
             @endif
         </div>
@@ -100,7 +100,7 @@
     <div class="modal-content" style="border-radius: 0px;border: none;">
       <div class="modal-body text-justify" style=" background-color: #272b30;
     color: white;">
-        <h5 class="modal-title text-center"><strong>Licensing Officer Registration</strong></h5>
+        <h5 class="modal-title text-center"><strong>FDA Officer Registration</strong></h5>
         <hr>
         <div class="container">
           <form id="RAdmin" class="row" data-parsley-validate>
@@ -127,7 +127,7 @@
               <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="">
                 <option value=""></option>  
                     @foreach ($region as $regions)
-                      <option value="{{$regions->rgnid}}">{{$regions->rgnid}}</option>
+                      <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
                     @endforeach
                 </select>
                 </div>
@@ -158,7 +158,7 @@
               <input type="password" name="pass" class="form-control" data-parsley-required-message="*<strong>Password</strong> required" required>
             </div>
             <div class="col-sm-12">
-              <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Licensing Officer</button>
+              <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New FDA</button>
               {{-- action="{{ asset('employee/dashboard/personnel/regional') }}" method="POST"  --}}
             </div> 
           </form>
