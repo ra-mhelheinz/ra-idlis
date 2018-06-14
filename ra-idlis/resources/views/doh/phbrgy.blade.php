@@ -25,7 +25,7 @@
       @endforeach
     </datalist>
   @endforeach
- {{--  @foreach ($cm as $cms)
+  {{-- @foreach ($cm as $cms)
     <datalist id="{{$cms->cmid}}_cmlist">
       @foreach ($brgy as $brgys)
         @if ($cms->cmid == $brgys->cmid)

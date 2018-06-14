@@ -38,31 +38,36 @@
                     ->select('*')
                     ->first();
                 if ($data) {
-                	$employeeData =	DB::table('x08')
-                                ->join('region', 'x08.rgnid', '=', 'region.rgnid')
-                                ->select('x08.*', 'region.rgn_desc')
-                                ->where('x08.uid', '=', $data->uid)
-                                ->first()
-                                ;
-                    $x = $employeeData->mname;
-                    if ($x != "") {
-                    	$mid = strtoupper($x[0]);
-                    	$mid = $mid.'. ';
-                    } else {
-                    	$mid = ' ';
-                    }
-                    $rights = DB::table('x06')
-                    			->where('grp_id', '=', $employeeData->grpid)
-                    			->get();
-                    $name = $employeeData->fname.' '.$mid.''.$employeeData->lname;
-                    $employeeData->name = $name;
-                	session()->put('employee_login',$employeeData);
-                	
-                	// return json_encode($rights);
-                	$test = $this->getSettings();
-                	session()->put('arr', $test);
+                	if ($data->isActive == 1) {
+                		$employeeData =	DB::table('x08')
+	                                ->join('region', 'x08.rgnid', '=', 'region.rgnid')
+	                                ->select('x08.*', 'region.rgn_desc')
+	                                ->where('x08.uid', '=', $data->uid)
+	                                ->first()
+	                                ;
+	                    $x = $employeeData->mname;
+	                    if ($x != "") {
+	                    	$mid = strtoupper($x[0]);
+	                    	$mid = $mid.'. ';
+	                    } else {
+	                    	$mid = ' ';
+	                    }
+	                    $rights = DB::table('x06')
+	                    			->where('grp_id', '=', $employeeData->grpid)
+	                    			->get();
+	                    $name = $employeeData->fname.' '.$mid.''.$employeeData->lname;
+	                    $employeeData->name = $name;
+	                	session()->put('employee_login',$employeeData);
+	                	
+	                	// return json_encode($rights);
+	                	$test = $this->getSettings();
+	                	session()->put('arr', $test);
 
-                	return redirect()->route('eDashboard');
+	                	return redirect()->route('eDashboard');
+                	} else {
+                		session()->flash('dohUser_login','Account Deactivate, Contact nearest Regional Administrator/National Administrator.');
+                	return back();
+                	}
                 } else {
                 	session()->flash('dohUser_login','Invalid Username/Password');
                 	return back();
@@ -78,7 +83,7 @@
 		public function dashboard(){
 			return view('doh.dashboard');
 		}
-		public function regionalAdmins(Request $request){
+		public function regionalAdmins(Request $request){ // Personnel/Regional Admin Page
 			if ($request->isMethod('get')) {
 				$regions = DB::table('region')->get();
 				$users = DB::table('x08')
@@ -88,8 +93,9 @@
 						;
 				if ($users) {
 					$users = DB::table('x08')
+						->join('region', 'x08.rgnid', '=', 'region.rgnid')
 						->where('grpid', '=', 'RA')
-						->select('*')
+						->select('x08.*','region.*')
 						->get()
 						;
 						// $name = $employeeData->fname.' '.$mid.'. '.$employeeData->lname;
@@ -141,7 +147,7 @@
 				}
 			}			
 		}
-		public function groupRights(Request $request){
+		public function groupRights(Request $request){ // GROUP RIGHTS PAGE
 			if ($request->isMethod('get')) {
 				$group = DB::table('x07')->select('*')->get();
 				$module = DB::table('x05')->select('*')->get();
@@ -157,7 +163,7 @@
 					// ['groups'=>$group], ['modules'=>$module]);
 			}
 		}
-		public function regions(Request $request){
+		public function regions(Request $request){ // Places/Regions Page
 			if ($request->isMethod('get')) {
 				$regions = DB::table('region')->get();
 				return view('doh.phregion',['region'=>$regions]);
@@ -172,14 +178,14 @@
 				return 'DONE';
 			}
 		}
-		public function provinces(Request $request){
+		public function provinces(Request $request){ // Places/Provinces Page
 			if ($request->isMethod('get')) {
 				$province = DB::table('province')->get();
 				$regions = DB::table('region')->get();
 				return view('doh.phprovince',['province'=>$province],['region'=>$regions]);
 			}
 		}
-		public function LOfficers(Request $request){
+		public function LOfficers(Request $request){ // Personnel/Licensing Officer Page
 			if ($request->isMethod('get')) {
 				$regions = DB::table('region')->get();
 				$testX = session('employee_login');
@@ -273,7 +279,7 @@
 						FROM x05', [$request->id]);
 			return "DONE";			
 		}
-		public function lps(){
+		public function lps(){ // Licensing Status Page
 			return view('doh.lps');
 		}
 		public function evalute(){
@@ -288,11 +294,11 @@
 		public function ins3(){
 			return view('doh.ins3');
 		}
-		public function ClassType(Request $request){
+		public function ClassType(Request $request){ // Master File/Class Type Page
 			if ($request->isMethod('get')) {
 				$own = DB::table('ownership')->get();
 				$class = DB::table('class')->get();
-				return view('doh.cls',['own'=>$own, 'class'=> $class]);
+				return view('doh.mfcls',['own'=>$own, 'class'=> $class]);
 			}
 			if ($request->isMethod('post')) {
 				DB::table('class')->insert([
@@ -303,10 +309,10 @@
 				return 'DONE';
 			}
 		}
-		public function AppType(Request $request) {
+		public function AppType(Request $request) { // Master File/Application Type Page
 			if ($request->isMethod('get')) {
 				$apptype = DB::table('apptype')->get();
-				return view('doh.apptype',['apptype'=>$apptype]);
+				return view('doh.mfapptype',['apptype'=>$apptype]);
 			}
 			if ($request->isMethod('post')) {
 				DB::table('apptype')->insert(
@@ -318,10 +324,10 @@
 				return "DONE";
 			}
 		}
-		public function FaType(Request $request){
+		public function FaType(Request $request){ // Master File/Facility Type Page
 			if ($request->isMethod('get')) {
 				$fatype = DB::table('facilitytyp')->get();
-				return view('doh.fatype',['fa'=>$fatype]);
+				return view('doh.mffatype',['fa'=>$fatype]);
 			}
 			if ($request->isMethod('post')) {
 				DB::table('facilitytyp')->insert([
@@ -331,13 +337,20 @@
 				return 'DONE';
 			}
 		}
-		public function OwnShip(Request $request){
+		public function OwnShip(Request $request){ // Master File/Ownership Page
 			if ($request->isMethod('get')) {
 				$oShip = DB::table('ownership')->get();
-				return view('doh.oship',['oShip'=>$oShip]);
+				return view('doh.mfoship',['oShip'=>$oShip]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('ownership')->insert([
+						'ocid' => $request->id,
+						'ocdesc' => $request->name,
+					]);
+				return 'DONE';
 			}
 		}
-		public function CityMuni(Request $request) {
+		public function CityMuni(Request $request) { // Places/City/Municipality Page
 			if ($request->isMethod('get')) {
 				$region = DB::table('region')->get();
 				$province = DB::table('province')->get();
@@ -352,7 +365,7 @@
 				return 'DONE';
 			}
 		}
-		public function Brgy(Request $request){
+		public function Brgy(Request $request){ // Places/Barangay Page
 			if ($request->isMethod('get')) {
 				$region = DB::table('region')->get();
 				$province = DB::table('province')->get();
@@ -361,7 +374,7 @@
 				return view('doh.phbrgy',['region'=>$region, 'province'=>$province, 'cm'=>$CiMu, 'brgy' => $brgy]);
 			}
 		}
-		public function FDAs(Request $request){
+		public function FDAs(Request $request){ // Master File/Food and Drug Page
 			if ($request->isMethod('get')) {
 				$regions = DB::table('region')->get();
 				$testX = session('employee_login');
@@ -441,6 +454,40 @@
 					return 'DONE';
 				}
 			
+			}
+		}
+		public function Litype(Request $request){ // Master File/License Type Page
+			if ($request->isMethod('get')) {
+				$pltype = DB::table('plicensetype')->get();
+				return view('doh.mflitype',['plitype'=>$pltype]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('plicensetype')->insert([
+					'plid' => $request->id,
+					'pldesc' => $request->name,
+				]);
+				return 'DONE';
+			}
+		}
+		public function Train(Request $request){
+			if ($request->isMethod('get')) {
+				$train = DB::table('ptrain')->get();
+				return view('doh.mftrain',['train'=>$train]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('ptrain')->insert(['ptid'=>$request->id,'ptdesc'=>$request->name]);
+				return 'DONE';
+			}
+		}
+		public function Upload(Request $request){ // Master File/Upload Page
+			if ($request->isMethod('get')) {
+				$fatype = DB::table('facilitytyp')->get();
+				$ups = DB::table('upload')->get();
+				return view('doh.mfupload',['facility'=>$fatype,'uploads'=>$ups]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('upload')->insert(['updesc'=>$request->name,'facid'=>$request->facid]);
+				return 'DONE';
 			}
 		}
 	}

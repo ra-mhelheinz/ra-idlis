@@ -8,7 +8,7 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Regional Administrator Accounts <a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Regional Administrator Accounts <span class="UG01_add"><a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
            {{-- <span style="float:right">Filter : 
               <select class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Region ...</option>
@@ -38,7 +38,7 @@
                 <tr>
                   <td>{{$user->fname}} @if ($user->mname != "") {{substr($user->mname,0,1)}}. @endif {{$user->lname}}
                   </td>
-                  <td><center>{{$user->rgnid}}</center></td>
+                  <td>{{$user->rgn_desc}}</td>
                   <td>
                     <center>
                       @if ($user->isActive == 1)
@@ -48,40 +48,20 @@
                       @endif
                     </center>
                   </td>
-                  <td>
-                     
+                <td>
                         <center>
-                        <a href="#"><button class="btn btn-primary" title="View Account">&nbsp;<i class="fa fa-eye"></i>&nbsp;</button></a>&nbsp;
+                        <a href="#ViewAccount" ><button data-toggle="modal" data-target="#ViewModal" onclick="showData('{{$user->uid}}','{{$user->fname}}','{{$user->mname}}','{{$user->lname}}','{{$user->contact}}','{{$user->rgn_desc}}', '{{$user->email}}')" class="btn btn-primary" title="View Account">&nbsp;<i class="fa fa-eye"></i>&nbsp;</button></a>&nbsp;
                         @if ($user->isActive == 1)
-                          <a href=""><button class="btn btn-danger" title="Deactivate Account">&nbsp;<i class="fa fa-toggle-off"></i>&nbsp;</button></a>
+                          <a href="#DeactivateAccount"><button data-toggle="modal" onclick="showIfActive({{$user->isActive}},'{{$user->uid}}','{{$user->fname}}','{{$user->mname}}','{{$user->lname}}')" data-target="#IfActiveModal" class="btn btn-danger" title="Deactivate Account">&nbsp;<i class="fa fa-toggle-off"></i>&nbsp;</button></a>
                         @else
-                          <a href="#"><button class="btn btn-success" title="Reactivate Account">&nbsp;<i class="fa fa-toggle-on"></i>&nbsp;</button></a>
+                          <a href="#ReactovateAccount"><button data-toggle="modal" onclick="showIfActive({{$user->isActive}},'{{$user->uid}}','{{$user->fname}}','{{$user->mname}}','{{$user->lname}}')" data-target="#IfActiveModal" class="btn btn-success" title="Reactivate Account">&nbsp;<i class="fa fa-toggle-on"></i>&nbsp;</button></a>
                       @endif
-                        <a href="#"><button class="btn btn-warning" title="Edit Account">&nbsp;<i class="fa fa-edit"></i>&nbsp;</button></a>&nbsp;
+                        <a href="#EditAccount"><button class="btn btn-warning" title="Edit Account">&nbsp;<i class="fa fa-edit"></i>&nbsp;</button></a>&nbsp;
                       </center>
                     
                   </td>
                 </tr>
               @endforeach
-                      {{-- <tr>
-                        <td scope="row"></td>
-                        <td></td>
-                        <td>
-                          <font style="color:green">Active</font>
-                          <font style="color:red">Deactived</font>
-                        </td>
-                        <td>
-                          <div class="row">
-                            <a href="" ><button class="btn btn-primary" title="View Account">&nbsp;<i class="fa fa-eye"></i>&nbsp;</button></a>&nbsp;
-                              <form>
-                              <a href=""><button class="btn btn-danger" title="Deactivate Account">&nbsp;<i class="fa fa-toggle-off"></i>&nbsp;</button></a>
-                            </form> 
-                            <form>
-                            <a href=""><button class="btn btn-success" title="Reactivate Account">&nbsp;<i class="fa fa-toggle-on"></i>&nbsp;</button></a>
-                          </form>                               
-                          </div>
-                        </td>
-                      </tr> --}}
               </tbody>
             </table>
             @if (!$users)
@@ -93,7 +73,7 @@
 
     </div>
         </div>
-         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="border-radius: 0px;border: none;">
       <div class="modal-body text-justify" style=" background-color: #272b30;
@@ -123,7 +103,7 @@
             <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="">
             <option value=""></option>  
                 @foreach ($region as $regions)
-                  <option value="{{$regions->rgnid}}">{{$regions->rgnid}}</option>
+                  <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
                 @endforeach
             </select>
             </div>
@@ -149,7 +129,6 @@
             </div>
             <div class="col-sm-12">
               <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Regional Adminstrator</button>
-              {{-- action="{{ asset('employee/dashboard/personnel/regional') }}" method="POST"  --}}
             </div> 
           </form>
        </div>
@@ -157,7 +136,82 @@
     </div>
   </div>
 </div>
+</div>
+<div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-radius: 0px;border: none;">
+      <div class="modal-body text-justify" style=" background-color: #272b30;
+    color: white;">
+        <h5 class="modal-title text-center"><strong>Regional Administrator Information</strong></h5>
+        <hr>
+        <div class="container">
+          <form  class="row" >
+            <div class="col-sm-12" id="Error">
+                
+            </div>
+            <div class="col-sm-4">First Name:</div>
+            <div class="col-sm-8" style="margin:0 0 .8em 0;">
+              <span id="ViewFname" style="font-weight: bold"></span>
+            </div>
+            <div class="col-sm-4">Middle Name:</div>
+            <div class="col-sm-8" style="margin:0 0 .8em 0;">
+              <span id="ViewMname" style="font-weight: bold"></span>
+            </div>
+            <div class="col-sm-4">Last Name:</div>
+            <div class="col-sm-8" style="margin:0 0 .8em 0;">
+              <span id="ViewLname" style="font-weight: bold"></span>
+            </div>
+            <div class="col-sm-4">Region:</div>
+            <div class="col-sm-8" style="margin:0 0 .8em 0;">
+              <span id="ViewRegion" style="font-weight: bold"></span>
+            </div>
+            <div class="col-sm-4">Email Address:</div>
+            <div class="col-sm-8" style="margin:0 0 .8em 0;">
+              <span id="ViewEmail" style="font-weight: bold"></span>
+            </div>
+            <div class="col-sm-4">Contact No:</div>
+            <div class="col-sm-8" style="margin:0 0 .8em 0;">
+              <span id="ViewCntNo" style="font-weight: bold"</span>
+            </div>
+            <div class="col-sm-12">
+              <hr>
+              <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Close</button>
+            </div> 
+          </form>
+       </div>
+      </div>
     </div>
+  </div>
+</div>
+<div class="modal fade" id="IfActiveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-radius: 0px;border: none;">
+      <div class="modal-body text-justify" style=" background-color: #272b30;
+    color: white;">
+        <h5 class="modal-title text-center"><strong><span id="ifActiveTitle"></span></strong></h5>
+        <hr>
+        <div class="container">
+          <form  class="row" >
+            <div class="col-sm-12" id="Error">
+            <div class="col-sm-12" id="IfActiveModalBody">
+            </div>
+            <div class="col-sm-12">
+              <hr>
+              <div class="row">
+                <div class="col-sm-6">
+                  <button type="button" onclick="ChangeActiveStateNow()" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Yes</button>
+                </div>
+                <div class="col-sm-6">
+                  <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>No</button>
+                </div>
+              </div>
+            </div> 
+          </form>
+       </div>
+      </div>
+    </div>
+  </div>
+</div>
     <script type="text/javascript">
         $('#RAdmin').on('submit', function(e){
           e.preventDefault();
@@ -210,6 +264,46 @@
           //       <span aria-hidden="true">&times;</span>
           //     </button>
           //   </div>
+        }
+        function showData(id,fname,mname,lname,cntno,rgn,email){
+          $('#ViewFname').text(fname.toUpperCase());
+          $('#ViewMname').text(mname.toUpperCase());
+          $('#ViewLname').text(lname.toUpperCase());
+          $('#ViewRegion').text(rgn.toUpperCase());
+          $('#ViewEmail').text(email);
+          $('#ViewCntNo').text(cntno);
+        }
+        function showIfActive(state,id,fname,mname,lname){
+          var title,name,message;
+          if (mname != "" || mname != null) {
+              mname = mname.charAt(0)+'.';
+          }
+          name = fname + ' ' + mname + ' ' + lname;
+          if (state == 1) {
+            title = "Deactivate Account";
+            message = "Are you sure you want to deactivate <strong>" + name.toUpperCase() + "</strong> account?";
+          } else {
+            title = "Reactivate Account";
+            message = "Are you sure you want to reactivate <strong>" + name.toUpperCase() + "</strong> account?";
+          }
+          $('#ifActiveTitle').text(title);
+          $('#IfActiveModalBody').empty();
+          $('#IfActiveModalBody').append(message+'<span id="ifActiveState" hidden>'+state+'</span><span id="ifActiveID" hidden>'+id+'</span>');
+        }
+        function ChangeActiveStateNow(){
+          var state = $('#ifActiveState').text();
+          var id = $('#ifActiveID').text();
+          $.ajax({
+            url: "{{ asset('/personnel/isActive') }}",
+            method: "POST",
+            data: {_token:$('input[name="_token"]').val(),isActive:state,id:id},
+            success: function(data){
+                if (data == 'DONE') {
+                    alert('Successfully change state of a Regional Administrator');
+                    window.location.href = "{{asset('employee/dashboard/personnel/regional')}}";
+                }
+              }
+          });
         }
     </script>
 @endsection

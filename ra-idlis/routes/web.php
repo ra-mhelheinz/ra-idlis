@@ -52,7 +52,7 @@ Route::get('/headorderofpayment6', 'headController@headorderofpayment6');
 Route::get('/headinspection', 'headController@headinspection');
 Route::get('/headinspection2', 'headController@headinspection2');
 Route::get('/headinspection3', 'headController@headinspection3');
-
+// ----------------------------------------------- DOH Controller
 Route::match(['get', 'post'], '/employee/', 'DOHController@login')->name('employee');
 Route::match(['get', 'post'], '/employee/dashboard/personnel/regional', 'DOHController@regionalAdmins')->name('regAdmins');
 Route::match(['get', 'post'], '/employee/dashboard/personnel/lo', 'DOHController@LOfficers')->name('regOfficer');
@@ -66,6 +66,10 @@ Route::match(['get', 'post'],'/employee/dashboard/mf/class','DOHController@Class
 Route::match(['get', 'post'],'/employee/dashboard/mf/facility','DOHController@FaType')->name('mfFacility');
 Route::match(['get', 'post'],'/employee/dashboard/mf/apptype','DOHController@AppType')->name('mfAppType');
 Route::match(['get', 'post'],'/employee/dashboard/mf/ownership','DOHController@OwnShip')->name('mfOwnShip');
+Route::match(['get', 'post'],'/employee/dashboard/mf/litype','DOHController@LiType')->name('mfLiType');
+Route::match(['get', 'post'],'/employee/dashboard/mf/training','DOHController@Train')->name('mfTrain');
+// training
+Route::match(['get', 'post'],'/employee/dashboard/mf/uploads','DOHController@Upload')->name('mfUpload');
 Route::post('/employee/logout','DOHController@logout');
 Route::post('employee/getRights', 'DOHController@getSettings2');
 Route::post('/employee/grprights/check','DOHController@chckgr');
@@ -75,11 +79,31 @@ Route::get('/employee/dashboard/lps/evalute','DOHController@evalute');
 Route::get('/employee/dashboard/lps/evalute/ins/1','DOHController@ins1');
 Route::get('/employee/dashboard/lps/evalute/ins/2','DOHController@ins2');
 Route::get('/employee/dashboard/lps/evalute/ins/3','DOHController@ins3');
-// -----------------------------------------------
+// ----------------------------------------------- Ajax Controller
+// -------------------------------------- GET
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
 Route::post('/ph/get_brgy', ['as'=>'select-brgy','uses'=>'ajaxController@selectBrgy']);
 Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass']);
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
+// -------------------------------------- GET
+// -------------------------------------- UPDATE
 Route::post('/employee/save_rights', ['as'=>'save-rights','uses'=>'ajaxController@saveRights']);
-Route::post('/employee/save_aptype', ['as'=>'save-AppType','uses'=>'ajaxController@saveAppType']);
-//
+Route::post('/personnel/isActive', ['as'=>'isActive','uses'=>'ajaxController@isActive']);
+Route::post('/mf/save_aptype', ['as'=>'save-AppType','uses'=>'ajaxController@saveAppType']);
+Route::post('/mf/save_class', ['as'=>'save-Class','uses'=>'ajaxController@saveClass']);
+Route::post('/mf/save_faaptype', ['as'=>'save-FaType','uses'=>'ajaxController@saveFaType']);
+Route::post('/mf/save_oship', ['as'=>'save-OShip','uses'=>'ajaxController@saveOShip']);
+Route::post('/mf/save_plicense', ['as'=>'save-PLicense','uses'=>'ajaxController@savePLicense']);
+Route::post('/mf/save_ptrain', ['as'=>'save-PTrain','uses'=>'ajaxController@savePTrain']);
+Route::post('/mf/save_upload', ['as'=>'save-Upload','uses'=>'ajaxController@saveUpload']);
+// -------------------------------------- UPDATE
+// -------------------------------------- DELETE
+Route::post('/mf/del_aptype', ['as'=>'del-AppType','uses'=>'ajaxController@delAppType']);
+Route::post('/mf/del_class', ['as'=>'del-Class','uses'=>'ajaxController@delClass']);
+Route::post('/mf/del_FaType', ['as'=>'del-FaType','uses'=>'ajaxController@delFaType']);
+Route::post('/mf/del_oship', ['as'=>'del-OShip','uses'=>'ajaxController@delOShip']);
+Route::post('/mf/del_plicense', ['as'=>'del-PLicense','uses'=>'ajaxController@delPLicense']);
+Route::post('/mf/del_ptrain', ['as'=>'del-PTrain','uses'=>'ajaxController@delTrain']);
+Route::post('/mf/del_upload', ['as'=>'del-Upload','uses'=>'ajaxController@delUpload']);
+// -------------------------------------- DELETE
+// ----------------------------------------------- Ajax Controller

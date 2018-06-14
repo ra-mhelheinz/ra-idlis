@@ -3,18 +3,18 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-  <input type="text" id="CurrentPage" value="MA07" hidden>
+  <input type="text" id="CurrentPage" value="MA06" hidden>
   <script type="text/javascript">Right_GG();</script>
   <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
     <datalist id="rgn_list">
-      @foreach ($apptype as $apptypes)
-      <option value="{{$apptypes->aptid}}">{{$apptypes->aptdesc}}</option>
+      @foreach ($oShip as $oShips)
+      <option value="{{$oShips->ocid}}">{{$oShips->ocdesc}}</option>
       @endforeach
     </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Application Type <span class="MA07_add"><a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
+           Ownership <a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
 
         </div>
         <div class="card-body">
@@ -27,17 +27,20 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($apptype as $apptypes)
+                @foreach ($oShip as $oShips)
                   <tr>
-                    <td scope="row"> {{$apptypes->aptid}}</td>
-                    <td>{{$apptypes->aptdesc}}</td>
+                    <td scope="row"> {{$oShips->ocid}}</td>
+                    <td>{{$oShips->ocdesc}}</td>
                     <td>
+                      {{-- <center>
+                        <button type="button" class="btn-defaults" onclick="showData('{{$oShips->ocid}}', '{{$oShips->ocdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                      </center> --}}
                       <center>
-                        <span class="MA07_update">
-                          <button type="button" class="btn-defaults" onclick="showData('{{$apptypes->aptid}}', '{{$apptypes->aptdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                        <span class="MA06_update">
+                          <button type="button" class="btn-defaults" onclick="showData('{{$oShips->ocid}}', '{{$oShips->ocdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
                         </span>
-                        <span class="MA07_cancel">
-                          <button type="button" class="btn-defaults" onclick="showDelete('{{$apptypes->aptid}}', '{{$apptypes->aptdesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                        <span class="MA06_cancel">
+                          <button type="button" class="btn-defaults" onclick="showDelete('{{$oShips->ocid}}', '{{$oShips->ocdesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
                         </span>
                       </center>
                     </td>
@@ -53,14 +56,14 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Appplication Type</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Ownership</strong></h5>
                 <hr>
                 <div class="container">
                   <form id="addRgn" class="row"  data-parsley-validate>
                     {{ csrf_field() }}
                     <div class="col-sm-4">ID:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required"  class="form-control"  required>
+                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>Name</strong> required"  class="form-control"  required>
                     </div>
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -80,10 +83,11 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Edit Ownership</strong></h5>
+              <hr>
               <div class="container">
-                    <form id="EditAppType" data-parsley-validate>
-                    <span id="EditAppTypeBody">
+                    <form id="EditNow" data-parsley-validate>
+                    <span id="EditBody">
                       
                     </span>
                     <div class="row">
@@ -104,22 +108,18 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Delete Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Delete Ownership</strong></h5>
+              <hr>
               <div class="container">
-                    <div class="col-sm-4">Name:</div>
-                    <div class="col-sm-12">
-                    <input type="text" id="edit_name2" class="form-control"  style="margin:0 0 .8em 0;" required>
-                    </div>
-                    <div class="col-sm-4">Description:</div>
-                    <div class="col-sm-12">
-                    <input type="text" id="edit_desc2" class="form-control"  style="margin:0 0 .8em 0;" required>
-                    </div>
+                <span id="DelModSpan">
+                </span>
+                <hr>
                     <div class="row">
                       <div class="col-sm-6">
-                      <button type="button" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
+                      <button type="button" onclick="deleteNow();" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Yes</button>
                     </div> 
                     <div class="col-sm-6">
-                      <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
+                      <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>No</button>
                     </div>
                     </div>
               </div>
@@ -127,20 +127,31 @@
           </div>
         </div>
       </div> 
+    </div> 
     </div>
     <script type="text/javascript">
         function showData(id,desc){
-          $('#EditAppTypeBody').empty();
-          $('#EditAppTypeBody').append(
+          $('#EditBody').empty();
+          $('#EditBody').append(
               '<div class="col-sm-4">ID:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
-                '<input type="text" id="edit_name" value="'+id+'" class="form-control disabled" required disabled>' +
+                '<input type="text" id="edit_name" value="'+id+'" class="form-control disabled" disabled>' +
               '</div>' +
               '<div class="col-sm-4">Description:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
-                '<input type="text" id="edit_desc" value="'+desc+'" placeholder="'+desc+'" class="form-control" required>' +
+                '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Description <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
               '</div>' 
             );
+        } 
+        function showDelete (id,desc){
+            $('#DelModSpan').empty();
+            $('#DelModSpan').append(
+                '<div class="col-sm-12"> Are you sure you want to delete <span style="color:red"><strong>' + desc + '</strong></span>?' +
+                  // <input type="text" id="edit_desc2" class="form-control"  style="margin:0 0 .8em 0;" required>
+                '<input type="text" id="toBeDeletedID" class="form-control"  style="margin:0 0 .8em 0;" value="'+id+'" hidden>'+
+                '<input type="text" id="toBeDeletedname" class="form-control"  style="margin:0 0 .8em 0;" value="'+desc+'" hidden>'+
+                '</div>'
+              );
         } 
         $('#addRgn').on('submit',function(event){
             event.preventDefault();
@@ -152,7 +163,7 @@
                 var test = $.inArray(id,arr);
                 if (test == -1) { // Not in Array
                     $.ajax({
-                      url: "{{ asset('/employee/dashboard/mf/apptype') }}",
+                      url: "{{asset('/employee/dashboard/mf/ownership')}}",
                       method: 'POST',
                       data: {
                         _token : $('#token').val(),
@@ -161,18 +172,18 @@
                       },
                       success: function(data) {
                         if (data == 'DONE') {
-                            alert('Successfully Added New Application Type');
-                            window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+                            alert('Successfully Added New Ownership');
+                            window.location.href = "{{ asset('employee/dashboard/mf/ownership') }}";
                         }
                       }
                   });
                 } else {
-                  alert('Regional ID is already been taken');
+                  alert('Ownership ID is already been taken');
                   $('#new_rgnid').focus();
                 }
             }
         });
-        $('#EditAppType').on('submit',function(event){
+        $('#EditNow').on('submit',function(event){
           event.preventDefault();
             var form = $(this);
             form.parsley().validate();
@@ -180,20 +191,30 @@
                var x = $('#edit_name').val();
                var y = $('#edit_desc').val();
                $.ajax({
-                  url: "{{ asset('/employee/save_aptype') }}",
+                  url: "{{ asset('/mf/save_oship') }}",
                   method: 'POST',
                   data : {_token:$('#token').val(),id:x,name:y},
                   success: function(data){
                       if (data == "DONE") {
-                          alert('Successfully Edited Application Type');
-                          window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+                          alert('Successfully Edited Ownership');
+                          window.location.href = "{{ asset('/employee/dashboard/mf/ownership') }}";
                       }
                   }
                });
              }
         });
-        function showDelete (){
-
+        function deleteNow(){
+          var id = $("#toBeDeletedID").val();
+          var name = $("#toBeDeletedname").val();
+          $.ajax({
+            url : "{{ asset('/mf/del_oship') }}",
+            method: 'POST',
+            data: {_token:$('#token').val(),id:id},
+            success: function(data){
+              alert('Successfully deleted '+name);
+              window.location.href = "{{ asset('/employee/dashboard/mf/ownership') }}";
+            }
+          });
         }
     </script>
 @endsection
