@@ -65,25 +65,6 @@
                 </tr>
               @endforeach
               @endif
-                      {{-- <tr>
-                        <td scope="row"></td>
-                        <td></td>
-                        <td>
-                          <font style="color:green">Active</font>
-                          <font style="color:red">Deactived</font>
-                        </td>
-                        <td>
-                          <div class="row">
-                            <a href="" ><button class="btn btn-primary" title="View Account">&nbsp;<i class="fa fa-eye"></i>&nbsp;</button></a>&nbsp;
-                              <form>
-                              <a href=""><button class="btn btn-danger" title="Deactivate Account">&nbsp;<i class="fa fa-toggle-off"></i>&nbsp;</button></a>
-                            </form> 
-                            <form>
-                            <a href=""><button class="btn btn-success" title="Reactivate Account">&nbsp;<i class="fa fa-toggle-on"></i>&nbsp;</button></a>
-                          </form>                               
-                          </div>
-                        </td>
-                      </tr> --}}
               </tbody>
             </table>
             @if (!$users)

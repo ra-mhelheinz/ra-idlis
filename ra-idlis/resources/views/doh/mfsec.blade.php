@@ -3,34 +3,34 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-  <input type="text" id="CurrentPage" value="MA08" hidden>
+  <input type="text" id="CurrentPage" value="MA13" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @foreach ($own as $owns)
-   <datalist id="{{$owns->ocid}}_list">
-     @foreach ($class as $classs)
-       @if ($owns->ocid == $classs->ocid)
-          <option id="{{$classs->classid}}_pro" value="{{$classs->classid}}">{{$classs->classname}}</option>
+  @foreach ($depts as $dept)
+   <datalist id="{{$dept->depid}}_list">
+     @foreach ($secs as $sec)
+       @if ($dept->depid == $sec->depid)
+          <option id="{{$sec->secid}}_pro" value="{{$sec->secid}}">{{$sec->secname}}</option>
        @endif
      @endforeach
    </datalist>
   @endforeach
    {{-- $('#new_rgnid').val() --}}
  <datalist id="rgn_list">
-   @foreach ($class as $classs)
-     <option id="{{$classs->classid}}_pro" value="{{$classs->classid}}">{{$classs->classname}}</option>
+   @foreach ($secs as $sec)
+     <option id="{{$sec->secid}}_pro" value="{{$sec->secid}}">{{$sec->secname}}</option>
    @endforeach
  </datalist>
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Class <a href="#" title="Add New Class" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Section <a href="#" title="Add New Section" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            <div style="float:right;display: inline-block;">
             <form class="form-inline">
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
-                <option value="">Select Ownership ...</option>
-                @foreach ($own as $owns)
-                  <option value="{{$owns->ocid}}">{{$owns->ocdesc}}</option>
+                <option value="">Select Department ...</option>
+                @foreach ($depts as $dept)
+                  <option value="{{$dept->depid}}">{{$dept->depname}}</option>
                 @endforeach
               </select>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
@@ -57,18 +57,18 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Class</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Department</strong></h5>
                 <hr>
                 <div class="container">
                   <form class="row" id="addCls" data-parsley-validate>
                     {{ csrf_field() }}
-                    <div class="col-sm-4">Ownership:</div>
+                    <div class="col-sm-4">Department:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                       <select id="OCID" data-parsley-required-message="*<strong>Ownership</strong> required" class="form-control" required>  
-                          <option value="">Select Ownership ...</option>
-                          @foreach ($own as $owns)
-                            <option value="{{$owns->ocid}}">{{$owns->ocdesc}}</option>
-                          @endforeach
+                          <option value="">Select Department ...</option>
+                            @foreach ($depts as $dept)
+                              <option value="{{$dept->depid}}">{{$dept->depname}}</option>
+                            @endforeach
                       </select>
                     </div>
                     <div class="col-sm-4">ID:</div>
@@ -93,7 +93,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Edit Section</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
@@ -117,7 +117,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Delete Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Delete Section</strong></h5>
               <hr>
               <div class="container">
                 <span id="DelModSpan">
@@ -165,10 +165,10 @@
                           '<td>'+e+'</td>' +
                           '<td>'+d+'</td>' +
                           '<td><center>'+
-                          '<span class="MA08_update">'+
+                          '<span class="MA13_update">'+
                           '<button type="button" class="btn-defaults" onclick="showData(\''+e+'\',\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;'+
                           '</span>'+
-                          '<span class="MA08_cancel">' +
+                          '<span class="MA13_cancel">' +
                           '<button type="button" class="btn-defaults" onclick="showDelete(\''+e+'\', \''+d+'\');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>'+
                         '</span>' +
                           '</center></td>' +
@@ -186,28 +186,26 @@
             if (form.parsley().isValid()) {
                 var id = $('#new_rgnid').val();
                 var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
-                // console.log(arr);
                 var test = $.inArray(id,arr);
-                // console.log($('#OCID').val());
                 if (test == -1) { // Not in Array
                     $.ajax({
-                      // url: "{{asset('employee/dashboard/ph/regions')}}",
+                      url: "{{asset('employee/dashboard/mf/section')}}",
                       method: 'POST',
                       data: {
                         _token : $('#token').val(),
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
-                        ocid : $('#OCID').val(),
+                        depid : $('#OCID').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {
-                            alert('Successfully Added New Class');
-                            window.location.href = "{{ asset('employee/dashboard/mf/class') }}";
+                            alert('Successfully Added New Section');
+                            window.location.href = "{{ asset('employee/dashboard/mf/section') }}";
                         }
                       }
                   });
                 } else {
-                  alert('Class ID is already been taken');
+                  alert('Section ID is already been taken');
                   $('#new_rgnid').focus();
                 }
             }
@@ -220,13 +218,13 @@
                var x = $('#edit_name').val();
                var y = $('#edit_desc').val();
                $.ajax({
-                  url: "{{ asset('/mf/save_class') }}",
+                  url: "{{ asset('/mf/save_section') }}",
                   method: 'POST',
                   data : {_token:$('#token').val(),id:x,name:y},
                   success: function(data){
                       if (data == "DONE") {
-                          alert('Successfully Edited Class');
-                          window.location.href = "{{ asset('/employee/dashboard/mf/class') }}";
+                          alert('Successfully Edited Section');
+                          window.location.href = "{{ asset('/employee/dashboard/mf/section') }}";
                       }
                   }
                });
@@ -246,12 +244,12 @@
           var id = $("#toBeDeletedID").val();
           var name = $("#toBeDeletedname").val();
           $.ajax({
-            url : "{{ asset('/mf/del_class') }}",
+            url : "{{ asset('/mf/del_sec') }}",
             method: 'POST',
             data: {_token:$('#token').val(),id:id},
             success: function(data){
               alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/class') }}";
+              window.location.href = "{{ asset('/employee/dashboard/mf/section') }}";
             }
           });
         }

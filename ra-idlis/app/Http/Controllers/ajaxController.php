@@ -11,16 +11,10 @@
 			$provinces = DB::table('province')->where('rgnid',$request->reg_id)->get();
 	    	return response()->json(['provinces'=>$provinces]);
 		}
-<<<<<<< HEAD
-			public function selectCM(Request $request){
-			$provinces = DB::table('city_muni')->where('provid',$request->cmid)->get();
-	    	return response()->json(['citym'=>$citym]);
-=======
 		public function selectBrgy(Request $request){
 			$brgy = DB::table('barangay')->where('cmid',$request->id)->get();
 			// return $request->id;
 			return response()->json($brgy);
->>>>>>> 3f70c47a29073e9013a51fcf06a80717b60efc52
 		}
 		public function getRights(Request $request){
 			$groupRights = DB::table('x06')
@@ -115,7 +109,7 @@
 		}
 		public function savePTrain(Request $request){
 			$updateData = array('ptdesc'=>$request->name);
-			DB::table('ptrain')
+			DB::table('ptrainings_trainingtype')
 				->where('ptid',$request->id)
 				->update($updateData);
 			return 'DONE';
@@ -124,6 +118,48 @@
 			$updateData = array('updesc'=>$request->name);
 			DB::table('upload')
 				->where('upid',$request->id)
+				->update($updateData);
+			return 'DONE';
+		}
+		public function saveDept(Request $request){
+			$updateData = array('depname'=>$request->name);
+			DB::table('department')
+				->where('depid',$request->id)
+				->update($updateData);
+			return 'DONE';
+		}
+		public function saveSect(Request $request){
+			$updateData = array('secname'=>$request->name);
+			DB::table('section')
+				->where('secid', $request->id)
+				->update($updateData);
+			return 'DONE';
+		}
+		public function saveWorkStats(Request $request){
+			$updateData = array('pworksname'=>$request->name);
+			DB::table('pwork_status')
+				->where('pworksid', $request->id)
+				->update($updateData);
+			return 'DONE';
+		}
+		public function saveWork(Request $request){
+			$updateData = array('pworkname'=>$request->name);
+			DB::table('pwork')
+				->where('pworkid', $request->id)
+				->update($updateData);
+			return 'DONE';
+		}
+		public function savePart(Request $request){
+			$updateData = array('partdesc'=>$request->name);
+			DB::table('part')
+				->where('partid', $request->id)
+				->update($updateData);
+			return 'DONE';
+		}
+		public function saveAsMt(Request $request){
+			$updateData = array('asmt_name'=>$request->name);
+			DB::table('assessment')
+				->where('asmt_id', $request->id)
 				->update($updateData);
 			return 'DONE';
 		}
@@ -150,11 +186,35 @@
 			return 'DONE';
 		}
 		public function delTrain(Request $request){
-			DB::table('ptrain')->where('ptid', '=', $request->id)->delete();
+			DB::table('ptrainings_trainingtype')->where('ptid', '=', $request->id)->delete();
 			return 'DONE';
 		}
 		public function delUpload(Request $request){
 			DB::table('upload')->where('upid', '=', $request->id)->delete();
+			return 'DONE';
+		}
+		public function delDept(Request $request){
+			DB::table('department')->where('depid', '=', $request->id)->delete();
+			return 'DONE';
+		}
+		public function delSect(Request $request){
+			DB::table('section')->where('secid', '=', $request->id)->delete();
+			return 'DONE';
+		}
+		public function delWorkStats(Request $request){
+			DB::table('pwork_status')->where('pworksid', '=', $request->id)->delete();
+			return 'DONE';
+		}
+		public function delWork(Request $request){
+			DB::table('pwork')->where('pworkid', '=', $request->id)->delete();
+			return 'DONE';
+		}
+		public function delPart(Request $request){
+			DB::table('part')->where('partid', '=', $request->id)->delete();
+			return 'DONE';
+		}
+		public function delAsMt(Request $request){
+			DB::table('assessment')->where('asmt_id', '=', $request->id)->delete();
 			return 'DONE';
 		}
 		// -------------------- DELETE --------------------

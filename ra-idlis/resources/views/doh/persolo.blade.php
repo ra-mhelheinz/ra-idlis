@@ -3,12 +3,12 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-<input type="text" id="CurrentPage" value="UG01" hidden>
+<input type="text" id="CurrentPage" value="UG03" hidden>
   <script type="text/javascript">Right_GG();</script>
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Regional Administrator Accounts <span class="UG01_add"><a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
+           Licensing Officer Accounts <span class="UG03_add"><a href="#" title="Add New Licensing Officer" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
            {{-- <span style="float:right">Filter : 
               <select class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Region ...</option>
@@ -66,7 +66,7 @@
             </table>
             @if (!$users)
              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <strong><i class="fas fa-exclamation"></i></strong> No <strong>Regional Administrators</strong> are currently registered!
+              <strong><i class="fas fa-exclamation"></i></strong> No <strong>Licensing Officer/s</strong> are currently registered!
             </div>
             @endif
         </div>
@@ -78,7 +78,7 @@
     <div class="modal-content" style="border-radius: 0px;border: none;">
       <div class="modal-body text-justify" style=" background-color: #272b30;
     color: white;">
-        <h5 class="modal-title text-center"><strong>Regional Administrator Registration</strong></h5>
+        <h5 class="modal-title text-center"><strong>Licensing Officer Registration</strong></h5>
         <hr>
         <div class="container">
           <form id="RAdmin" class="row" data-parsley-validate>
@@ -128,7 +128,7 @@
               <input type="password" name="pass" class="form-control" data-parsley-required-message="*<strong>Password</strong> required" required>
             </div>
             <div class="col-sm-12">
-              <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Regional Adminstrator</button>
+              <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Licensing Officer</button>
             </div> 
           </form>
        </div>
@@ -142,12 +142,11 @@
     <div class="modal-content" style="border-radius: 0px;border: none;">
       <div class="modal-body text-justify" style=" background-color: #272b30;
     color: white;">
-        <h5 class="modal-title text-center"><strong>Regional Administrator Information</strong></h5>
+        <h5 class="modal-title text-center"><strong>Licensing Officer Information</strong></h5>
         <hr>
         <div class="container">
           <form  class="row" >
             <div class="col-sm-12" id="Error">
-                
             </div>
             <div class="col-sm-4">First Name:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -220,7 +219,7 @@
               if (form.parsley().isValid()){
                 // $('input[name="fname"]').val()
                   $.ajax({
-                  url: " {{asset('employee/dashboard/personnel/regional')}}",
+                  url: " {{asset('employee/dashboard/personnel/lo')}}",
                   method: 'POST',
                   data: {
                     _token : $('input[name="_token"]').val(),
@@ -237,8 +236,8 @@
                     if (data === 'DONE') {
                         // $("#RAdmin").trigger( "reset" );
                         // $('#myModal').modal('toggle');
-                        alert('Successfully Added New Regional Administrator');
-                       window.location.href = "{{asset('employee/dashboard/personnel/regional')}}";
+                        alert('Successfully Added New Licensing Officer');
+                       window.location.href = "{{asset('employee/dashboard/personnel/lo')}}";
                     } else {
                       $('input[name="uname"]').focus();
                       showEr();
@@ -299,8 +298,8 @@
             data: {_token:$('input[name="_token"]').val(),isActive:state,id:id},
             success: function(data){
                 if (data == 'DONE') {
-                    alert('Successfully change state of a Regional Administrator');
-                    window.location.href = "{{asset('employee/dashboard/personnel/regional')}}";
+                    alert('Successfully change state of a Licensing Officer');
+                    window.location.href = "{{asset('employee/dashboard/personnel/lo')}}";
                 }
               }
           });
