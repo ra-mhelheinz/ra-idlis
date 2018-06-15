@@ -68,8 +68,13 @@ Route::match(['get', 'post'],'/employee/dashboard/mf/apptype','DOHController@App
 Route::match(['get', 'post'],'/employee/dashboard/mf/ownership','DOHController@OwnShip')->name('mfOwnShip');
 Route::match(['get', 'post'],'/employee/dashboard/mf/litype','DOHController@LiType')->name('mfLiType');
 Route::match(['get', 'post'],'/employee/dashboard/mf/training','DOHController@Train')->name('mfTrain');
-// training
+Route::match(['get', 'post'],'/employee/dashboard/mf/department','DOHController@Dept')->name('mfDept');
+Route::match(['get', 'post'],'/employee/dashboard/mf/section','DOHController@Sec')->name('mfSec');
 Route::match(['get', 'post'],'/employee/dashboard/mf/uploads','DOHController@Upload')->name('mfUpload');
+Route::match(['get', 'post'],'/employee/dashboard/mf/work_status','DOHController@WorkStatus')->name('mfWorkStatus');
+Route::match(['get', 'post'],'/employee/dashboard/mf/work','DOHController@Work')->name('mfWork');
+Route::match(['get', 'post'],'/employee/dashboard/mf/part','DOHController@Part')->name('mfPart');
+Route::match(['get', 'post'],'/employee/dashboard/mf/assessment','DOHController@AsMent')->name('mfAsMent');
 Route::post('/employee/logout','DOHController@logout');
 Route::post('employee/getRights', 'DOHController@getSettings2');
 Route::post('/employee/grprights/check','DOHController@chckgr');
@@ -79,6 +84,7 @@ Route::get('/employee/dashboard/lps/evalute','DOHController@evalute');
 Route::get('/employee/dashboard/lps/evalute/ins/1','DOHController@ins1');
 Route::get('/employee/dashboard/lps/evalute/ins/2','DOHController@ins2');
 Route::get('/employee/dashboard/lps/evalute/ins/3','DOHController@ins3');
+// ----------------------------------------------- DOH Controller
 // ----------------------------------------------- Ajax Controller
 // -------------------------------------- GET
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
@@ -96,6 +102,12 @@ Route::post('/mf/save_oship', ['as'=>'save-OShip','uses'=>'ajaxController@saveOS
 Route::post('/mf/save_plicense', ['as'=>'save-PLicense','uses'=>'ajaxController@savePLicense']);
 Route::post('/mf/save_ptrain', ['as'=>'save-PTrain','uses'=>'ajaxController@savePTrain']);
 Route::post('/mf/save_upload', ['as'=>'save-Upload','uses'=>'ajaxController@saveUpload']);
+Route::post('/mf/save_dept', ['as'=>'save-Dept','uses'=>'ajaxController@saveDept']);
+Route::post('/mf/save_section', ['as'=>'save-Sec', 'uses'=> 'ajaxController@saveSect']);
+Route::post('/mf/save_pworkstats', ['as'=>'save-PworkStats', 'uses'=> 'ajaxController@saveWorkStats']);
+Route::post('/mf/save_pwork', ['as'=>'save-Pwork', 'uses'=> 'ajaxController@saveWork']);
+Route::post('/mf/save_part', ['as'=>'save-Part', 'uses'=> 'ajaxController@savePart']);
+Route::post('/mf/save_asmt', ['as'=>'save-AsMt', 'uses'=> 'ajaxController@saveAsMt']);
 // -------------------------------------- UPDATE
 // -------------------------------------- DELETE
 Route::post('/mf/del_aptype', ['as'=>'del-AppType','uses'=>'ajaxController@delAppType']);
@@ -105,5 +117,11 @@ Route::post('/mf/del_oship', ['as'=>'del-OShip','uses'=>'ajaxController@delOShip
 Route::post('/mf/del_plicense', ['as'=>'del-PLicense','uses'=>'ajaxController@delPLicense']);
 Route::post('/mf/del_ptrain', ['as'=>'del-PTrain','uses'=>'ajaxController@delTrain']);
 Route::post('/mf/del_upload', ['as'=>'del-Upload','uses'=>'ajaxController@delUpload']);
+Route::post('/mf/del_dept', ['as'=>'del-Dept','uses'=>'ajaxController@delDept']);
+Route::post('/mf/del_sec', ['as'=>'del-Sec','uses'=>'ajaxController@delSect']);
+Route::post('/mf/del_pworkstats', ['as'=>'del-PworkStats','uses'=>'ajaxController@delWorkStats']);
+Route::post('/mf/del_pwork', ['as'=>'del-Pwork','uses'=>'ajaxController@delWork']);
+Route::post('/mf/del_part', ['as'=>'del-Part','uses'=>'ajaxController@delPart']);
+Route::post('/mf/del_asmt', ['as'=>'del-AsMt','uses'=>'ajaxController@delAsMt']);
 // -------------------------------------- DELETE
 // ----------------------------------------------- Ajax Controller

@@ -3,50 +3,47 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-  <input type="text" id="CurrentPage" value="MA08" hidden>
+  <input type="text" id="CurrentPage" value="MA14" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @foreach ($own as $owns)
-   <datalist id="{{$owns->ocid}}_list">
-     @foreach ($class as $classs)
-       @if ($owns->ocid == $classs->ocid)
-          <option id="{{$classs->classid}}_pro" value="{{$classs->classid}}">{{$classs->classname}}</option>
-       @endif
-     @endforeach
-   </datalist>
-  @endforeach
-   {{-- $('#new_rgnid').val() --}}
- <datalist id="rgn_list">
-   @foreach ($class as $classs)
-     <option id="{{$classs->classid}}_pro" value="{{$classs->classid}}">{{$classs->classname}}</option>
-   @endforeach
- </datalist>
+  <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
+    <datalist id="rgn_list">
+      @foreach ($pwStats as $pwStat)
+      <option value="{{$pwStat->pworksid}}">{{$pwStat->pworksname}}</option>
+      @endforeach
+    </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Class <a href="#" title="Add New Class" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
-           <div style="float:right;display: inline-block;">
-            <form class="form-inline">
-              <label>Filter : &nbsp;</label>
-              <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
-                <option value="">Select Ownership ...</option>
-                @foreach ($own as $owns)
-                  <option value="{{$owns->ocid}}">{{$owns->ocdesc}}</option>
-                @endforeach
-              </select>
-              <input type="" id="token" value="{{ Session::token() }}" hidden>
-              </form>
-           </div>
+           Work Status <a href="#" title="Add New Work Status" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+
         </div>
         <div class="card-body">
                <table class="table" style="overflow-x: scroll;" >
               <thead>
                 <tr>
                   <th style="width: 40%">ID</th>
-                  <th style="width: 35%">Name</th>
+                  <th style="width: 35%">Description</th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
-              <tbody id="FilterdBody">
+              <tbody>
+                @foreach ($pwStats as $pwStat)
+                  <tr>
+                    <td scope="row"> {{$pwStat->pworksid}}</td>
+                    <td>{{$pwStat->pworksname}}</td>
+                    <td>
+                      <center>
+                        {{-- <button type="button" class="btn-defaults" onclick="showData('{{$fas->facid}}', '{{$fas->facname}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button> --}}
+                        <span class="MA14_update">
+                          <button type="button" class="btn-defaults" onclick="showData('{{$pwStat->pworksid}}', '{{$pwStat->pworksname}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                        </span>
+                        <span class="MA14_cancel">
+                          <button type="button" class="btn-defaults" onclick="showDelete('{{$pwStat->pworksid}}', '{{$pwStat->pworksname}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                        </span>
+                      </center>
+                    </td>
+                  </tr>
+                @endforeach
               </tbody>
             </table>
         </div>
@@ -57,30 +54,21 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Class</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Work Status</strong></h5>
                 <hr>
                 <div class="container">
-                  <form class="row" id="addCls" data-parsley-validate>
+                  <form id="addRgn" class="row"  data-parsley-validate>
                     {{ csrf_field() }}
-                    <div class="col-sm-4">Ownership:</div>
-                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                      <select id="OCID" data-parsley-required-message="*<strong>Ownership</strong> required" class="form-control" required>  
-                          <option value="">Select Ownership ...</option>
-                          @foreach ($own as $owns)
-                            <option value="{{$owns->ocid}}">{{$owns->ocdesc}}</option>
-                          @endforeach
-                      </select>
-                    </div>
                     <div class="col-sm-4">ID:</div>
-                    <div class="col-sm-8"  style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required" name="fname" class="form-control" required>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required"  class="form-control"  required>
                     </div>
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgn_desc" name="fname" data-parsley-required-message="*<strong>Name</strong> required" class="form-control"  required>
+                    <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Description</strong> required" required>
                     </div>
                     <div class="col-sm-12">
-                      <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
+                      <button type="submit" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
                     </div> 
                   </form>
                </div>
@@ -93,11 +81,12 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Edit Work Status</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
                     <span id="EditBody">
+                      
                     </span>
                     <div class="row">
                       <div class="col-sm-6">
@@ -117,7 +106,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Delete Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Delete Work Status</strong></h5>
               <hr>
               <div class="container">
                 <span id="DelModSpan">
@@ -136,6 +125,7 @@
           </div>
         </div>
       </div> 
+    </div> 
     </div>
     <script type="text/javascript">
         function showData(id,desc){
@@ -147,92 +137,41 @@
               '</div>' +
               '<div class="col-sm-4">Description:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
-                '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
+                '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Description <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
               '</div>' 
             );
-        }
-        function filterGroup(){
-        var id = $('#filterer').val();
-        var token = $('#token').val();
-        var x = $('#'+id+'_list option').map(function() {return $(this).val();}).get();
-        $('#FilterdBody').empty();
-        // $('#FilterdBody').append('<option value="">Select Province ...</option>');
-          for (var i = 0; i < x.length; i++) {
-            var d = $('#'+x[i]+'_pro').text();
-            var e = $('#'+x[i]+'_pro').attr('value');
-            $('#FilterdBody').append(
-                        '<tr>'+
-                          '<td>'+e+'</td>' +
-                          '<td>'+d+'</td>' +
-                          '<td><center>'+
-                          '<span class="MA08_update">'+
-                          '<button type="button" class="btn-defaults" onclick="showData(\''+e+'\',\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;'+
-                          '</span>'+
-                          '<span class="MA08_cancel">' +
-                          '<button type="button" class="btn-defaults" onclick="showDelete(\''+e+'\', \''+d+'\');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>'+
-                        '</span>' +
-                          '</center></td>' +
-                        '</tr>'
-                        );
-          }
-      }
-      function getData(provname){
-          $('#edit_name').attr("value",provname);
-      } 
-      $('#addCls').on('submit',function(event){
+        } 
+        $('#addRgn').on('submit',function(event){
             event.preventDefault();
             var form = $(this);
             form.parsley().validate();
             if (form.parsley().isValid()) {
                 var id = $('#new_rgnid').val();
                 var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
-                // console.log(arr);
                 var test = $.inArray(id,arr);
-                // console.log($('#OCID').val());
                 if (test == -1) { // Not in Array
                     $.ajax({
-                      // url: "{{asset('employee/dashboard/ph/regions')}}",
+                      url: "{{asset('employee/dashboard/mf/work_status')}}",
                       method: 'POST',
                       data: {
                         _token : $('#token').val(),
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
-                        ocid : $('#OCID').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {
-                            alert('Successfully Added New Class');
-                            window.location.href = "{{ asset('employee/dashboard/mf/class') }}";
+                            alert('Successfully Added New Work Status');
+                            window.location.href = "{{asset('employee/dashboard/mf/work_status')}}";
                         }
                       }
                   });
                 } else {
-                  alert('Class ID is already been taken');
+                  alert('Worker Status ID is already been taken');
                   $('#new_rgnid').focus();
                 }
             }
         });
-      $('#EditNow').on('submit',function(event){
-          event.preventDefault();
-            var form = $(this);
-            form.parsley().validate();
-             if (form.parsley().isValid()) {
-               var x = $('#edit_name').val();
-               var y = $('#edit_desc').val();
-               $.ajax({
-                  url: "{{ asset('/mf/save_class') }}",
-                  method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y},
-                  success: function(data){
-                      if (data == "DONE") {
-                          alert('Successfully Edited Class');
-                          window.location.href = "{{ asset('/employee/dashboard/mf/class') }}";
-                      }
-                  }
-               });
-             }
-        });
-      function showDelete (id,desc){
+        function showDelete (id,desc){
             $('#DelModSpan').empty();
             $('#DelModSpan').append(
                 '<div class="col-sm-12"> Are you sure you want to delete <span style="color:red"><strong>' + desc + '</strong></span>?' +
@@ -242,16 +181,36 @@
                 '</div>'
               );
         }
+        $('#EditNow').on('submit',function(event){
+          event.preventDefault();
+            var form = $(this);
+            form.parsley().validate();
+             if (form.parsley().isValid()) {
+               var x = $('#edit_name').val();
+               var y = $('#edit_desc').val();
+               $.ajax({
+                  url: "{{ asset('/mf/save_pworkstats') }}",
+                  method: 'POST',
+                  data : {_token:$('#token').val(),id:x,name:y},
+                  success: function(data){
+                      if (data == "DONE") {
+                          alert('Successfully Edited Work Status');
+                          window.location.href = "{{ asset('/employee/dashboard/mf/work_status') }}";
+                      }
+                  }
+               });
+             }
+        });
         function deleteNow(){
           var id = $("#toBeDeletedID").val();
           var name = $("#toBeDeletedname").val();
           $.ajax({
-            url : "{{ asset('/mf/del_class') }}",
+            url : "{{ asset('/mf/del_pworkstats') }}",
             method: 'POST',
             data: {_token:$('#token').val(),id:id},
             success: function(data){
               alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/class') }}";
+              window.location.href = "{{ asset('/employee/dashboard/mf/work_status') }}";
             }
           });
         }
