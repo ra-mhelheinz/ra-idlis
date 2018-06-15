@@ -11,10 +11,13 @@
                 National Admin
             @endif
             @if ($employeeData->grpid == 'RA')
-                Regional Head, {{$employeeData->rgnid}}
+                Regional Head, {{$employeeData->rgn_desc}}
             @endif
             @if ($employeeData->grpid == 'LO')
-                Licensing Officer, {{$employeeData->rgnid}}
+                Licensing Officer, {{$employeeData->rgn_desc}}
+            @endif
+            @if ($employeeData->grpid == 'FDA')
+                FDA Officer, {{$employeeData->rgn_desc}}
             @endif
         </a>
 
@@ -28,10 +31,9 @@
                     @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">
-                        @if ($employeeData->grpid != 'NA')
-                        <a href="#" class="dropdown-item">Profile</a>
-                        @endif
+                        <a href="#" class="dropdown-item S03_allow">Settings</a>
                         <a href="#" class="dropdown-item S03_allow">Activity Logs</a>
+                        <a href="#" class="dropdown-item S03_allow">Change Password</a>
                         <a href="#" onclick="event.preventDefault();document.getElementById('employeeLogout').submit();" class="dropdown-item">Logout</a>
                         <form id="employeeLogout" action="{{asset('/employee/logout')}}" method="POST" hidden>
                         @csrf
@@ -51,15 +53,26 @@
                         <i class="fa fa-fw fa-wrench"></i> Master File
                     </a>
                     <ul id="sm_base" class="list-unstyled collapse">
-                        <li><a href="#lpro" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-tasks"></i>&nbsp;Licensing</a>
-                            <ul id="lpro" class="list-unstyled collapse">
+                        <li><a href="#AppMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-clipboard-list"></i>&nbsp;Application</a>
+                            <ul id="AppMenu" class="list-unstyled collapse">
                                 <li class="MA07_allow"><a href="{{ asset('/employee/dashboard/mf/apptype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Type</a></li>
                                 <li class="MA08_allow"><a href="{{ asset('/employee/dashboard/mf/class') }}">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
-                                <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/facility') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facility Type</a></li>
                                 <li class="MA06_allow"><a href="{{ asset('/employee/dashboard/mf/ownership') }}">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/litype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Personnel License</a></li>
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/training') }}">&nbsp;&nbsp;&nbsp;&nbsp;Personnel Training</a></li>
+                                <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/facility') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facility Type</a></li>
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/uploads') }}">&nbsp;&nbsp;&nbsp;&nbsp;Uploads</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#PersoMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-users"></i>&nbsp;Personnel</a>
+                            <ul id="PersoMenu" class="list-unstyled collapse">
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/department') }}">&nbsp;&nbsp;&nbsp;&nbsp;Department</a></li>
+                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Section</a></li>
+                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Personnel</a></li>
+                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Education/Trainings</a></li>
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/work') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work</a></li>
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/work_status') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work Status</a></li>
+                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Eligibility</a></li>
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/litype') }}">&nbsp;&nbsp;&nbsp;&nbsp;License Type</a></li>
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/training') }}">&nbsp;&nbsp;&nbsp;&nbsp;Training Type</a></li>
                             </ul>
                         </li>
                         <li><a href="#phil" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-flag"></i>&nbsp;Places</a>
@@ -70,24 +83,44 @@
                                 <li class="MA04_allow"><a href="{{ asset('/employee/dashboard/ph/barangay') }}">&nbsp;&nbsp;&nbsp;&nbsp;Barangay</a></li>
                             </ul>
                         </li>
-                        
+                        <li><a href="#AssMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-tasks"></i>&nbsp;Assessment</a>
+                            <ul id="AssMenu" class="list-unstyled collapse">
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/part') }}">&nbsp;&nbsp;&nbsp;&nbsp;Part</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
+                @endif
+                <li><a href="#ProFlowMenu" data-toggle="collapse"><i class="fa fa-sitemap"></i> Process Flow</a>
+                    <ul id="ProFlowMenu" class="list-unstyled collapse">
+                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;View Applications</a></li>
+                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
+                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
+                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
+                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" ><i class="fa fa-chart-bar"></i> Report</a></li>                
                 <li>
-                    <a href="{{asset('employee/dashboard/grouprights')}}"><i class="fa fa-fw fa-check"></i> Group Rights</a>
+                    <a href="#ManMenu" data-toggle="collapse"><i class="fas fa-fw fa-cog"></i> Manage</a>
+                        <ul id="ManMenu" class="list-unstyled collapse">
+                            @if ($employeeData->grpid == 'NA')
+                            <li>
+                                <a href="{{asset('employee/dashboard/grouprights')}}"><i class="fa fa-fw fa-check"></i> Group Rights</a>
+                            </li>
+                            @endif
+                            <li><a href="{{-- {{asset('/employee/personnel')}} --}}#perso" data-toggle="collapse"><i class="fa fa-fw fa-users"></i> Users
+                                </a>
+                                    <ul id="perso" class="list-unstyled collapse">
+                                        <li class="UG01_allow"><a href="{{asset('employee/dashboard/personnel/regional')}}">&nbsp;&nbsp;&nbsp;&nbsp;Regional Admins</a></li>
+                                        <li class="UG02_allow"><a href="{{asset('employee/dashboard/personnel/fda')}}">&nbsp;&nbsp;&nbsp;&nbsp;Food and Drug Authority</a></li>
+                                        <li class="UG03_allow"><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;&nbsp;&nbsp;Licensing Officers</a></li>
+                                    </ul>
+                                </li>
+                        </ul>
                 </li>
-                @endif
-                @if ($employeeData->grpid == 'NA' || $employeeData->grpid == 'RA')
-                <li><a href="{{-- {{asset('/employee/personnel')}} --}}#perso" data-toggle="collapse"><i class="fa fa-fw fa-users"></i> Personnel
-                </a>
-                    <ul id="perso" class="list-unstyled collapse">
-                        <li class="UG01_allow"><a href="{{asset('employee/dashboard/personnel/regional')}}">&nbsp;&nbsp;Regional Admins</a></li>
-                        <li class="UG02_allow"><a href="{{asset('employee/dashboard/personnel/fda')}}">&nbsp;&nbsp;Food and Drug Authority</a></li>
-                        <li class="UG03_allow"><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;Licensing Officers</a></li>
-                    </ul>
-                </li>
-                @endif
-                <li><a href="{{asset('/employee/dashboard/lps')}}"><i class="fa fa-fw fa-spinner"></i> Licensing Process Status</a></li>
+                <li hidden><a href="{{asset('/employee/dashboard/lps')}}"><i class="fa fa-fw fa-spinner"></i> Licensing Process Status</a></li>
             </ul>
         </div>
 <script type="text/javascript">

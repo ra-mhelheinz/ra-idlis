@@ -5,35 +5,35 @@
 @section('content')
   <input type="text" id="CurrentPage" value="MA08" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @foreach ($own as $owns)
-   <datalist id="{{$owns->ocid}}_list">
-     @foreach ($class as $classs)
-       @if ($owns->ocid == $classs->ocid)
-          <option id="{{$classs->classid}}_pro" value="{{$classs->classid}}">{{$classs->classname}}</option>
+  @foreach ($parts as $part)
+   <datalist id="{{$part->partid}}_list">
+     @foreach ($asments as $asment)
+       @if ($part->partid == $asment->partid)
+          <option id="{{$asment->asmt_id}}_pro" value="{{$asment->asmt_id}}">{{$asment->asmt_name}}</option>
        @endif
      @endforeach
    </datalist>
   @endforeach
    {{-- $('#new_rgnid').val() --}}
  <datalist id="rgn_list">
-   @foreach ($class as $classs)
-     <option id="{{$classs->classid}}_pro" value="{{$classs->classid}}">{{$classs->classname}}</option>
+   @foreach ($asments as $asment)
+     <option id="{{$asment->asmt_id}}_pro" value="{{$asment->asmt_id}}">{{$asment->asmt_name}}</option>
    @endforeach
  </datalist>
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Class <a href="#" title="Add New Class" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Assessment <a href="#" title="Add New Assessment" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            <div style="float:right;display: inline-block;">
             <form class="form-inline">
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
-                <option value="">Select Ownership ...</option>
-                @foreach ($own as $owns)
-                  <option value="{{$owns->ocid}}">{{$owns->ocdesc}}</option>
+                <option value="">Select Part ...</option>
+                @foreach ($parts as $part)
+                  <option value="{{$part->partid}}">{{$part->partdesc}}</option>
                 @endforeach
               </select>
-              <input type="" id="token" value="{{ Session::token() }}" hidden>
+              <input type="" id="token" value="{{Session::token()}}" hidden>
               </form>
            </div>
         </div>
@@ -57,17 +57,17 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Class</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Assessment</strong></h5>
                 <hr>
                 <div class="container">
                   <form class="row" id="addCls" data-parsley-validate>
                     {{ csrf_field() }}
-                    <div class="col-sm-4">Ownership:</div>
+                    <div class="col-sm-4">Part:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                      <select id="OCID" data-parsley-required-message="*<strong>Ownership</strong> required" class="form-control" required>  
-                          <option value="">Select Ownership ...</option>
-                          @foreach ($own as $owns)
-                            <option value="{{$owns->ocid}}">{{$owns->ocdesc}}</option>
+                      <select id="partid" data-parsley-required-message="*<strong>Part</strong> required" class="form-control" required>  
+                          <option value="">Select Part ...</option>
+                          @foreach ($parts as $part)
+                            <option value="{{$part->partid}}">{{$part->partdesc}}</option>
                           @endforeach
                       </select>
                     </div>
@@ -93,7 +93,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Edit Assessment</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
@@ -117,7 +117,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Delete Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Delete Assessment</strong></h5>
               <hr>
               <div class="container">
                 <span id="DelModSpan">
@@ -188,7 +188,7 @@
                 var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
                 // console.log(arr);
                 var test = $.inArray(id,arr);
-                // console.log($('#OCID').val());
+                // console.log($('#partid').val());
                 if (test == -1) { // Not in Array
                     $.ajax({
                       // url: "{{asset('employee/dashboard/ph/regions')}}",
@@ -197,17 +197,17 @@
                         _token : $('#token').val(),
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
-                        ocid : $('#OCID').val(),
+                        partid : $('#partid').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {
-                            alert('Successfully Added New Class');
-                            window.location.href = "{{ asset('employee/dashboard/mf/class') }}";
+                            alert('Successfully Added New Assessment');
+                            window.location.href = "{{ asset('employee/dashboard/mf/assessment') }}";
                         }
                       }
                   });
                 } else {
-                  alert('Class ID is already been taken');
+                  alert('Assessment ID is already been taken');
                   $('#new_rgnid').focus();
                 }
             }
@@ -220,13 +220,13 @@
                var x = $('#edit_name').val();
                var y = $('#edit_desc').val();
                $.ajax({
-                  url: "{{ asset('/mf/save_class') }}",
+                  url: "{{ asset('/mf/save_asmt') }}",
                   method: 'POST',
                   data : {_token:$('#token').val(),id:x,name:y},
                   success: function(data){
                       if (data == "DONE") {
                           alert('Successfully Edited Class');
-                          window.location.href = "{{ asset('/employee/dashboard/mf/class') }}";
+                          window.location.href = "{{ asset('/employee/dashboard/mf/assessment') }}";
                       }
                   }
                });
@@ -246,12 +246,12 @@
           var id = $("#toBeDeletedID").val();
           var name = $("#toBeDeletedname").val();
           $.ajax({
-            url : "{{ asset('/mf/del_class') }}",
+            url : "{{ asset('/mf/del_asmt') }}",
             method: 'POST',
             data: {_token:$('#token').val(),id:id},
             success: function(data){
               alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/class') }}";
+              window.location.href = "{{ asset('/employee/dashboard/mf/assessment') }}";
             }
           });
         }

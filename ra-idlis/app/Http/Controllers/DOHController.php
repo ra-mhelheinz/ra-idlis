@@ -101,7 +101,7 @@
 						// $name = $employeeData->fname.' '.$mid.'. '.$employeeData->lname;
       //               $users->name = $name;
 				}
-				return view('doh.regional',['region'=>$regions,'users'=>$users]);
+				return view('doh.persoreg',['region'=>$regions,'users'=>$users]);
 			}
 			if ($request->isMethod('post')) {
 				$dt = Carbon::now();
@@ -197,11 +197,12 @@
 						;
 					if ($users) {
 						$users = DB::table('x08')
-							->where('grpid', '=', 'LO')
-							->select('*')
-							->get()
-							;
-					return view('doh.lo',['region'=>$regions,'users'=>$users]);
+						->join('region', 'x08.rgnid', '=', 'region.rgnid')
+						->where('grpid', '=', 'LO')
+						->select('x08.*','region.*')
+						->get()
+						;
+						return view('doh.persolo',['region'=>$regions,'users'=>$users]);
 				} 
 			}else {
 					$users = DB::table('x08')
@@ -212,13 +213,14 @@
 						;
 					if ($users) {
 						$users = DB::table('x08')
-							->where('grpid', '=', 'LO')
-							->where('rgnid', '=', $testX->rgnid)
-							->select('*')
+							->join('region', 'x08.rgnid', '=', 'region.rgnid')
+							->where('x08.grpid', '=', 'LO')
+							->where('region.rgnid', '=', $testX->rgnid)
+							->select('x08.*','region.*')
 							->get()
 							;
 				}
-			return view('doh.lo',['region'=>$regions,'users'=>$users]);
+			return view('doh.persolo',['region'=>$regions,'users'=>$users]);
 			}
 		}
 			if($request->isMethod('post')){
@@ -469,13 +471,13 @@
 				return 'DONE';
 			}
 		}
-		public function Train(Request $request){
+		public function Train(Request $request){ // Personnel Training
 			if ($request->isMethod('get')) {
-				$train = DB::table('ptrain')->get();
+				$train = DB::table('ptrainings_trainingtype')->get();
 				return view('doh.mftrain',['train'=>$train]);
 			}
 			if ($request->isMethod('post')) {
-				DB::table('ptrain')->insert(['ptid'=>$request->id,'ptdesc'=>$request->name]);
+				DB::table('ptrainings_trainingtype')->insert(['ptid'=>$request->id,'ptdesc'=>$request->name]);
 				return 'DONE';
 			}
 		}
@@ -490,5 +492,87 @@
 				return 'DONE';
 			}
 		}
+		public function Dept(Request $request){ // Deaprtment
+			if ($request->isMethod('get')) {
+				$depts = DB::table('department')->get();
+				return view('doh.mfdept',['depts'=>$depts]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('department')->insert([
+					'depid' => $request->id,
+					'depname' => $request->name,
+				]);
+				return 'DONE';
+			}
+		}
+		public function Sec(Request $request){ // Section
+			if ($request->isMethod('get')) {
+				$depts = DB::table('department')->get();
+				$sec = DB::table('section')->get();
+				return view('doh.mfsec',['depts'=>$depts, 'secs'=>$sec]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('section')->insert([
+					'secid' => $request->id,
+					'secname' => $request->name,
+					'depid' => $request->depid,	
+				]);
+				return 'DONE';
+			}
+		}
+		public function WorkStatus(Request $request){ // Personnel Work Status
+			if ($request->isMethod('get')) {
+				$pworkstatus = DB::table('pwork_status')->get();
+				return view('doh.mfpworkStatus', ['pwStats'=>$pworkstatus]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('pwork_status')->insert([
+						'pworksid' => $request->id,
+						'pworksname' => $request->name,
+					]);
+				return 'DONE';
+			}
+		}
+		public function Work(Request $request){ // Personnel Work 
+			if ($request->isMethod('get')) {
+				$work = DB::table('pwork')->get();
+				return view('doh.mfpwork', ['works'=>$work]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('pwork')->insert([
+						'pworkid' => $request->id,
+						'pworkname' => $request->name,
+					]);
+				return 'DONE';
+			}
+		}
+		public function Part(Request $request){
+			if ($request->isMethod('get')) {
+				$part = DB::table('part')->get();
+				return view('doh.mfpart', ['parts'=>$part]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('part')->insert([
+						'partid' => $request->id,
+						'partdesc' => $request->name,
+					]);
+				return 'DONE';
+			}
+		}
+		public function AsMent(Request $request){
+			if ($request->isMethod('get')) {
+				$asMent = DB::table('assessment')->get();
+				$part = DB::table('part')->get();
+				return view('doh.mfasment', ['asments'=>$asMent, 'parts'=>$part]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('assessment')->insert([
+						'asmt_id' => $request->id,
+						'asmt_name' => $request->name,
+						'partid' => $request->partid,
+					]);
+				return 'DONE';
+			}
+		}	
 	}
 ?>
