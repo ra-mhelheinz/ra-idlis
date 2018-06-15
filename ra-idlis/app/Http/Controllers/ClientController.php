@@ -178,4 +178,17 @@ class ClientController extends Controller
       return [$tblBrgy, $tblCty, $tblProv, $tblRgn];
     }
 
+    public function loadCurrTbl(Request $req, $tbl, $col, $id) {
+      $cur_tbl = [];
+
+      if($col == 1 && $id == 1) {
+        $cur_tbl = DB::table($tbl)->get();
+      } else {
+        $cur_tbl = DB::table($tbl)->where($col, $id)->get();
+      }
+
+
+      return $cur_tbl;
+    }
+
 }
