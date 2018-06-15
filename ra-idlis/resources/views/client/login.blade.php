@@ -9,7 +9,6 @@
 
 @endsection
 <style type="text/css">
-		html, body{height: 100%;width: 100%;margin: 0px;padding: 0px;}
 		#canvasMap{
 			height: 400px;
 		}
@@ -25,6 +24,14 @@
 		.col-lg-7{
 			display: none;
 		}
+	}
+
+	.loading {    
+	    background-color: #ffffff;
+	    background-image: url("{{ asset('ra-idlis/public/img/load.gif') }}");
+	    background-size: 15px 15px;
+	    background-position:right center;
+	    background-repeat: no-repeat;
 	}
 </style>
 @section('content')
@@ -181,30 +188,30 @@
 					</div>
 					<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 						<div class="input-group">
-							<input type="text" id="gsearch" class="form-control" placeholder="Address">
+						<input type="text" id="gsearch" class="form-control" placeholder="Address">
+
 						<div class="input-group-prepend" style="cursor: pointer;"  data-toggle="modal" data-target="#exampleModal">
-							<div class="input-group-text"><i class="fa fa-map-marker"></i></div>
+							<div id="appLd" class="input-group-text" style="max-height: 38px;"><i class="fa fa-map-marker"></i></div>
 						</div>
-					<div class="modal animated" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="		exampleModalCenterTitle" aria-hidden="true">
-					  <div class="modal-dialog modal-dialog-centered" role="document">
-					    <div class="modal-content text-center" >
-					      <div class="modal-header" style="border: 0;background-color: #5cb85c">
-					        <h5 class="modal-title" id="exampleModalLongTitle" style="color: #fff;">Map</h5>
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					      </div>
-					      <div class="modal-body" style="padding: 0;">
-					        <div id="canvasMap"></div>
-					      </div>
+						<div class="modal slideInRight animated" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="		exampleModalCenterTitle" aria-hidden="true" style="overflow: hidden;">
+						  <div class="modal-dialog modal-dialog-centered" role="document">
+						    <div class="modal-content text-center" >
+						      <div class="modal-header" style="border: 0;background-color: #5cb85c">
+						        <h5 class="modal-title" id="exampleModalLongTitle" style="color: #fff;">Map</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body" style="padding: 0;">
+						        <div id="canvasMap"></div>
+						      </div>
 					    </div>
 					  </div>
 					</div>
 						</div>
 					</div>		
 					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
-					<input type="text" class="form-control" id="filterer" list="rgn_list" placeholder="REGION">
-						
+					<input id="rgnID" type="text" class="form-control" placeholder="Region">
 					{{-- <select id="selectRegion4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Region <strong>Required</strong>" required="">
 						<option disabled selected hidden>Select Region</option>
 						@foreach ($regions as $region)
@@ -213,19 +220,22 @@
 					</select> --}}
 					</div>
 					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
-					<select id="selectProvince4Cm" data-parsley-required-message="<strong>*</strong>Province <strong>Required</strong>" class="form-control" name="province"  required="">
+					{{-- <select id="selectProvince4Cm" data-parsley-required-message="<strong>*</strong>Province <strong>Required</strong>" class="form-control" name="province"  required="">
 						<option disabled selected hidden>Province</option>
-					</select>
+					</select> --}}
+					<input id="provID" type="text" class="form-control" placeholder="Province">
 					</div>
 				<div class="col-sm-6" style="margin: 0 0 .8em 0;">
-					<select id="selectCM4Cm" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>City/Municipality <strong>Required</strong>" required="">
+					{{-- <select id="selectCM4Cm" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>City/Municipality <strong>Required</strong>" required="">
 						<option disabled selected hidden>City/Municipality</option>
-					</select>
+					</select> --}}
+					<input id="ctyID" type="text" class="form-control" placeholder="City/Municipality">
 				</div>
 				<div class="col-sm-6" style="margin: 0 0 .8em 0;">
-					<select id="selectbrgy4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Brgy. <strong>Required</strong>" required="">
+					{{-- <select id="selectbrgy4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Brgy. <strong>Required</strong>" required="">
 						<option disabled selected hidden>Brgy. Name</option>
-					</select>
+					</select> --}}
+					<input id="brgyID" type="text" class="form-control" placeholder="Brgy. Name">
 				</div>
 				<div class="col-sm-8" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name"   data-parsley-required-message="<strong>*</strong>Street Name <strong>Required</strong>" required="">
@@ -234,12 +244,15 @@
 					<input type="text" class="input form-control" name="zipcode" autocomplete="off" placeholder="Zip Code"  required=""  data-parsley-type="digits" data-parsley-maxlength="4" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>">
 				</div>
   				<script type="text/javascript">
-  					var map, place, arr;
+  					var map, place, arr, marker;
+  					var arr2 = [];
       				function initMap() {
         				map = new google.maps.Map(document.getElementById('canvasMap'), {
 				          center: {lat: 12.8797, lng: 121.7740},
 				          zoom: 6
 				        });
+
+				        marker = new google.maps.Marker({map: map});
 
 				        var geocoder = new google.maps.Geocoder();
 				    
@@ -252,36 +265,69 @@
   						google.maps.event.addDomListener(document.getElementById('gsearch'), 'blur', route);
 
 					    function route() {
+					    	chgLd('gsearch', true);
 					    	autocomplete.addListener('place_changed', function() {
 						        place = autocomplete.getPlace();
 						        // if (!place.geometry) {
 						        //   return;
 						        // }
 
-						        if (place.geometry.viewport) {
-						          map.fitBounds(place.geometry.viewport);
-						        } else {
-						          map.setCenter(place.geometry.location);
-						          map.setZoom(17);
+						        if (place.geometry) {
+						       	//		.viewport
+						        //   	map.fitBounds(place.geometry.viewport);
+						        //   	chgLd();
+						        // } else {
+						          	map.setCenter(place.geometry.location);
+						          	map.setZoom(17);
+						            chgLd('gsearch', false);
 						        }
-						        // marker.setPlace({
-						        //   placeId: place.place_id,
-						        //   location: place.geometry.location
-						        // });
-						        // marker.setVisible(true);
+						        marker.setPlace({
+						          placeId: place.place_id,
+						          location: place.geometry.location
+						        });
+						        marker.setVisible(true);
 
 							    geocoder.geocode({'placeId': place.place_id}, function(results, status) {
 						            if (status === 'OK') 
 						            {
+						            	arr = [];
+						            	arr2 = [];
+						            	chgLd('gsearch', false);
 						            	arr = results[0]["address_components"];
-						            	console.log(arr);
 						            	if((results[0]["address_components"]).length > 5) {
-						            		// alert("You must search the barangay first");
-						            		if(isNaN(parseInt(arr[arr.length - 1])) == false) {
-						            			document.getElementById('gsearch').value = "";
+						            		if(isNaN(parseInt(arr[arr.length - 1]["short_name"])) == false) {
+						            			arr.pop();
+						            			if(arr[arr.length - 1]["short_name"] == "PH") {
+						            				arr.pop();
+						            				for(var x = 0; x < arr.length; x++) {
+						            					arr2.push((arr[x]['short_name']).toUpperCase());
+							            			}
+							            			console.log(arr2);
+							            			callBack(arr2);
+						            			} else {
+						            				for(var x = 0; x < arr.length; x++) {
+						            					arr2.push((arr[x]['short_name']).toUpperCase());
+							            			}
+							            			console.log(arr2);
+							            			callBack(arr2);
+						            			}
+						            			
 						            		}
 						            	} else {
-						            		
+						            		if(arr[arr.length - 1]["short_name"] == "PH") {
+						            			arr.pop();
+						            			for(var x = 0; x < arr.length; x++) {
+						            				arr2.push((arr[x]['short_name']).toUpperCase());
+							            		}
+							            		console.log(arr2);
+							            		callBack(arr2);
+						            		} else {
+						            			for(var x = 0; x < arr.length; x++) {
+						            				arr2.push((arr[x]['short_name']).toUpperCase());
+							            		}
+							            		console.log(arr2);
+							            		callBack(arr2);
+						            		}
 						            	}
 						            } 
 						            else {
@@ -290,8 +336,52 @@
 						        });
 					        });
 					    }
-				    }
+					    function chgLd(element, cond) {
+					    	if(cond == false) {
+					    		document.getElementById(element).classList.remove('loading');
+					    	} else {
+					    		document.getElementById(element).classList.add('loading');
+					    	}
+					    }
+					    function callBack(data) {
+					    	chgLd('gsearch', true);
+					    	chgLd('brgyID', true);
+					    	chgLd('ctyID', true);
+					    	chgLd('provID', true);
+					    	chgLd('rgnID', true);
+					    	document.getElementById('brgyID').value = "";
+							document.getElementById('ctyID').value = "";
+							document.getElementById('provID').value = "";
+							document.getElementById('rgnID').value = "";
+					    	var xhttp = new XMLHttpRequest();
+					    	// if(data != null) {
+					    		xhttp.onprogress = function() {
 
+					    		};
+					    		xhttp.onreadystatechange = function() {
+								    if (this.readyState == 4 && this.status == 200) {
+								       chgLd('gsearch', false);
+
+								       var extract = JSON.parse(this.responseText);
+								       document.getElementById('brgyID').value = extract[0][0]["brgyname"];
+								       document.getElementById('ctyID').value = extract[1][0]["cmname"];
+								       document.getElementById('provID').value = extract[2][0]["provname"];
+								       document.getElementById('rgnID').value = extract[3][0]["rgn_desc"];
+								       if(document.getElementById('brgyID').value != "" && document.getElementById('ctyID').value != "" || document.getElementById('provID').value != "" || document.getElementById('rgnID').value != "") {
+								    	chgLd('brgyID', false);
+								    	chgLd('ctyID', false);
+								    	chgLd('provID', false);
+								    	chgLd('rgnID', false);
+								       }
+
+								    }
+								};
+								xhttp.open("POST", "{{ asset('/getRPMB') }}", true);
+								xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+								xhttp.send('data='+data+'&_token={{ Session::token() }}');
+					    	// }
+					    }
+				    }
 				    
   				</script>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
