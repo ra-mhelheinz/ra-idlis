@@ -11,6 +11,7 @@
 |
 */
 
+Route::post('/getRPMB', ['as'=>'reancy','uses'=>'ClientController@loadAllRPMB']);
 
 Route::match(['get', 'post'], '/', 'ClientController@clientlogin')->name('client');
 Route::match(['get', 'post'], '/register', 'ClientController@registerclient');
