@@ -9,6 +9,10 @@
 
 @endsection
 <style type="text/css">
+html, body, #canvasMap{
+	width: 100%;
+	height: 100%;
+}
 		#canvasMap{
 			height: 400px;
 		}
@@ -234,13 +238,14 @@
 					</div>
 					<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 						<div class="input-group">
-						<input type="text" id="gsearch" class="form-control" placeholder="Address (Barangay/City/Province/Region)">
+							<div class="input-group-text" style="border-radius: 0 ;border-right-style: none;background-color: transparent;padding: 6;"><input type="radio" name="rad" id="rad1" onclick="firstradio([true, false], ['rgnID', 'provID', 'ctyID', 'brgyID'])"></div>
+						<input type="text" id="gsearch" class="form-control" placeholder="Address (Barangay/City/Province/Region)" style="border-left-style: none;padding-left: 0;"	disabled>
 
 						<div class="input-group-prepend" style="cursor: pointer;"  data-toggle="modal" data-target="#exampleModal">
 							<div id="appLd" class="input-group-text" style="max-height: 38px;"><i class="fa fa-map-marker"></i></div>
 						</div>
-						<div class="modal slideInRight animated" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="		exampleModalCenterTitle" aria-hidden="true" style="overflow: hidden;">
-						  <div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal slideInRight animated" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="		exampleModalCenterTitle" aria-hidden="true">
+						  <div class="modal-dialog modal-dialog-centered" role="">
 						    <div class="modal-content text-center" >
 						      <div class="modal-header" style="border: 0;background-color: #5cb85c">
 						        <h5 class="modal-title" id="exampleModalLongTitle" style="color: #fff;">Map</h5>
@@ -257,7 +262,10 @@
 						</div>
 					</div>		
 					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
-					<input id="rgnID" type="text" class="form-control" placeholder="Region" onblur="loadTbl(['province', 'rgnid', getDataTbl(this.id)], 'prov_list', ['provid', 'provname'], ['provID', 'prov_list'])">
+						<div class="input-group">
+							<div class="input-group-text" style="border-radius: 0 ;border-right-style: none;background-color: transparent;padding: 6;"><input type="radio" name="rad" id="rad2" onclick="firstradio([false, true], ['gsearch'])"></div>
+					<input id="rgnID" type="text" class="form-control idis" placeholder="Region" onblur="loadTbl(['province', 'rgnid', getDataTbl(this.id)], 'prov_list', ['provid', 'provname'], ['provID', 'prov_list'])" autocomplete="off"  style="border-left-style: none;padding-left: 0;" disabled>
+					</div>
 					{{-- <select id="selectRegion4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Region <strong>Required</strong>" required="">
 						<option disabled selected hidden>Select Region</option>
 						@foreach ($regions as $region)
@@ -269,19 +277,19 @@
 					{{-- <select id="selectProvince4Cm" data-parsley-required-message="<strong>*</strong>Province <strong>Required</strong>" class="form-control" name="province"  required="">
 						<option disabled selected hidden>Province</option>
 					</select> --}}
-					<input id="provID" type="text" class="form-control" placeholder="Province" onblur="loadTbl(['city_muni', 'provid', getDataTbl(this.id)], 'cty_list', ['cmid', 'cmname'], ['ctyID', 'cty_list'])">
+					<input id="provID" type="text" class="form-control idis" placeholder="Province" onblur="loadTbl(['city_muni', 'provid', getDataTbl(this.id)], 'cty_list', ['cmid', 'cmname'], ['ctyID', 'cty_list'])" autocomplete="off" disabled>
 					</div>
 				<div class="col-sm-6" style="margin: 0 0 .8em 0;">
 					{{-- <select id="selectCM4Cm" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>City/Municipality <strong>Required</strong>" required="">
 						<option disabled selected hidden>City/Municipality</option>
 					</select> --}}
-					<input id="ctyID" type="text" class="form-control" placeholder="City/Municipality" onblur="loadTbl(['barangay', 'cmid', getDataTbl(this.id)], 'brgy_list', ['brgyid', 'brgyname'], ['brgyID', 'brgy_list'])">
+					<input id="ctyID" type="text" class="form-control idis" placeholder="City/Municipality" onblur="loadTbl(['barangay', 'cmid', getDataTbl(this.id)], 'brgy_list', ['brgyid', 'brgyname'], ['brgyID', 'brgy_list'])" autocomplete="off" disabled>
 				</div>
 				<div class="col-sm-6" style="margin: 0 0 .8em 0;">
 					{{-- <select id="selectbrgy4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Brgy. <strong>Required</strong>" required="">
 						<option disabled selected hidden>Brgy. Name</option>
 					</select> --}}
-					<input id="brgyID" type="text" class="form-control" placeholder="Brgy. Name">
+					<input id="brgyID" type="text" class="form-control idis" placeholder="Brgy. Name" autocomplete="off" disabled>
 				</div>
 				<div class="col-sm-8" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name"   data-parsley-required-message="<strong>*</strong>Street Name <strong>Required</strong>" required="">
@@ -289,6 +297,22 @@
 				<div class="col-sm-4" style="margin: 0 0 .8em 0;">
 					<input id="zipcode" type="text" class="input form-control" name="zipcode" autocomplete="off" placeholder="Zip Code"  required=""  data-parsley-type="digits" data-parsley-maxlength="4" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>">
 				</div>
+				<script type="text/javascript">
+					function firstradio(bool,getId){
+						document.getElementById('gsearch').disabled = bool[1];
+						for(var x = 0; x < document.getElementsByClassName('idis').length; x++) {
+							document.getElementsByClassName('idis')[x].disabled = bool[0];
+						}
+						for(var x = 0; x < getId.length; x++) {
+							document.getElementById(getId[x]).value = "";
+						}
+						document.getElementById('rad2').checked = bool[1];
+					}
+					function secradio(){
+						
+					}
+
+				</script>
   				<script type="text/javascript">
   					var map, place, arr, marker;
   					var arr2 = [];
