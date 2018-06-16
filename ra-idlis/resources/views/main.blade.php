@@ -56,7 +56,7 @@
       <!-- /.container -->
 </footer>
 </div>
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5Eq93e_E7Jjj6aGqhUATjFnzXecUk5Hc&libraries=places&callback=initMap"
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBE7IlYmz12J_ME_ePczAF6NKr2Ha9ss5w&libraries=places&callback=initMap"
     async defer></script>
 </body>
 </html>
