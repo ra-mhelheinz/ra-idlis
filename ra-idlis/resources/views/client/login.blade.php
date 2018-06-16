@@ -372,20 +372,30 @@ html, body, #canvasMap{
 						            			if(arr[arr.length - 1]["short_name"] == "PH") {
 						            				arr.pop();
 						            				for(var x = 0; x < arr.length; x++) {
-						            					arr2.push((arr[x]['short_name']).toUpperCase());
+						            					if(((arr[x]['short_name']).toUpperCase()).includes("BRGY") == true) {
+								            				arr2.push(((arr[x]['short_name']).toUpperCase()).replace("BRGY. ", ""));
+								            			} else {
+								            				arr2.push((arr[x]['short_name']).toUpperCase());
+								            			}	
 							            			}
 							            			if(arr2.length < 4) {
-							            				alert("Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)");
+							            				document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
+							            				myFunction();
 									    				document.getElementById('gsearch').value = "";
 							            			} else {
 							            				callBack(arr2);
 							            			}
 						            			} else {
 						            				for(var x = 0; x < arr.length; x++) {
-						            					arr2.push((arr[x]['short_name']).toUpperCase());
+						            					if(((arr[x]['short_name']).toUpperCase()).includes("BRGY") == true) {
+								            				arr2.push(((arr[x]['short_name']).toUpperCase()).replace("BRGY. ", ""));
+								            			} else {
+								            				arr2.push((arr[x]['short_name']).toUpperCase());
+								            			}	
 							            			}
 							            			if(arr2.length < 4) {
-							            				alert("Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)");
+							            				document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
+							            				myFunction();
 									    				document.getElementById('gsearch').value = "";
 							            			} else {
 							            				callBack(arr2);
@@ -397,23 +407,33 @@ html, body, #canvasMap{
 						            		if(arr[arr.length - 1]["short_name"] == "PH") {
 						            			arr.pop();
 						            			for(var x = 0; x < arr.length; x++) {
-						            				arr2.push((arr[x]['short_name']).toUpperCase());
+						            				if(((arr[x]['short_name']).toUpperCase()).includes("BRGY") == true) {
+							            				arr2.push(((arr[x]['short_name']).toUpperCase()).replace("BRGY. ", ""));
+							            			} else {
+							            				arr2.push((arr[x]['short_name']).toUpperCase());
+							            			}	
 							            		}
 							            		if(arr2.length < 4) {
-							            			alert("Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)");
+							            			document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
+							            			myFunction();
 									    			document.getElementById('gsearch').value = "";
 							            		} else {
 							            			callBack(arr2);
 							            		}
 						            		} else {
 						            			for(var x = 0; x < arr.length; x++) {
-						            				arr2.push((arr[x]['short_name']).toUpperCase());
+							            			if(((arr[x]['short_name']).toUpperCase()).includes("BRGY") == true) {
+							            				arr2.push(((arr[x]['short_name']).toUpperCase()).replace("BRGY. ", ""));
+							            			} else {
+							            				arr2.push((arr[x]['short_name']).toUpperCase());
+							            			}						            				
 							            		}
 							            		if(arr2.length < 4) {
-							            			alert("Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)");
+							            			document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
+							            			myFunction();
 									    			document.getElementById('gsearch').value = "";
 							            		} else {
-							            			callBack(arr2);
+
 							            		}
 						            		}
 						            	}
@@ -456,7 +476,8 @@ html, body, #canvasMap{
 									    document.getElementById('rgnID').value = (extract[3][0] == undefined) ? "" : extract[3][0]["rgn_desc"];
 									    if(extract[0][0] == undefined && extract[1][0] == undefined && extract[2][0] == undefined && extract[3][0] == undefined) {
 									    	document.getElementById('gsearch').value = "";
-									    	alert("Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)");
+									    	document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
+							            	myFunction();
 									    }
 									    chgLd('brgyID', false);
 									    chgLd('ctyID', false);
@@ -509,7 +530,7 @@ html, body, #canvasMap{
 	</div>
 </div>
 </header>
-<button onclick="myFunction()">Show Snackbar</button>
+{{-- <button onclick="myFunction()">Show Snackbar</button> --}}
 <div id="snackbar">Some text some message..</div>
 <datalist id="rgn_list"></datalist>
 <datalist id="prov_list"></datalist>
