@@ -67,7 +67,8 @@ Route::match(['get', 'post'],'/employee/dashboard/ph/barangay','DOHController@Br
 Route::match(['get', 'post'],'/employee/dashboard/mf/class','DOHController@ClassType')->name('mfClass');
 Route::match(['get', 'post'],'/employee/dashboard/mf/facility','DOHController@FaType')->name('mfFacility');
 Route::match(['get', 'post'],'/employee/dashboard/mf/faciservtype','DOHController@FaServType')->name('mfFaServType');
-//
+Route::match(['get', 'post'],'/employee/dashboard/mf/faciserv','DOHController@FaServ')->name('mfFaServ');
+// 
 Route::match(['get', 'post'],'/employee/dashboard/mf/apptype','DOHController@AppType')->name('mfAppType');
 Route::match(['get', 'post'],'/employee/dashboard/mf/ownership','DOHController@OwnShip')->name('mfOwnShip');
 Route::match(['get', 'post'],'/employee/dashboard/mf/litype','DOHController@LiType')->name('mfLiType');

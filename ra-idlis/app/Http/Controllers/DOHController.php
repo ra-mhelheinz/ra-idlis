@@ -601,6 +601,21 @@
 					]);
 				return 'DONE';
 			}
+		}
+		public function FaServ(Request $request){
+			if ($request->isMethod('get')) {
+				$hfstype = DB::table('hfaci_serv_type')->get();
+				$fatype = DB::table('facilitytyp')->get();
+				return view('doh.mfFaServ', ['hfstypes'=>$hfstype, 'fatypes'=>$fatype]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('facilitytyp')->insert([
+					'facid' => $request->id,
+					'facname'=> $request->name,
+					'hfser_id' => $request->hfser_id,
+				]);
+				return 'DONE';
+			}
 		}	
 	}
 ?>
