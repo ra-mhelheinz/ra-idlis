@@ -7,16 +7,16 @@
 	class ajaxController extends Controller
 	{
 		// -------------------- SELECT --------------------
-		public function selectProvince(Request $request){
+		public function selectProvince(Request $request){ // Get Provinces
 			$provinces = DB::table('province')->where('rgnid',$request->reg_id)->get();
 	    	return response()->json(['provinces'=>$provinces]);
 		}
-		public function selectBrgy(Request $request){
+		public function selectBrgy(Request $request){ // Get Barangays
 			$brgy = DB::table('barangay')->where('cmid',$request->id)->get();
 			// return $request->id;
 			return response()->json($brgy);
 		}
-		public function getRights(Request $request){
+		public function getRights(Request $request){ // Get Rights
 			$groupRights = DB::table('x06')
 				// ->join('orders', 'users.id', '=', 'orders.user_id')
 								->join('x05', 'x06.mod_id','=','x05.mod_id')
@@ -32,11 +32,11 @@
 				return "NONE";
 			}
 		}
-		public function getClass(Request $request){
+		public function getClass(Request $request){ // Get Classes
 			$class = DB::table('class')->where('ocid',$request->ocid)->get();
 	    	return response()->json(['classes'=>$class]);
 		}
-		public function selectUploads(Request $request){
+		public function selectUploads(Request $request){ // Get Uploads
 			$upload = DB::table('upload')->where('facid',$request->id)->first();
 			if ($upload) {
 				$upload = DB::table('upload')->where('facid',$request->id)->get();
@@ -58,7 +58,7 @@
 		}
 		// -------------------- ADD --------------------
 		// -------------------- EDIT --------------------
-		public function isActive(Request $request){
+		public function isActive(Request $request){ // Update User Stat
 			$currentState = ($request->isActive == 1 ? 0 : 1);
 			$updateData = array('isActive'=> $currentState);
 			DB::table('x08')
@@ -66,7 +66,7 @@
 				->update($updateData);
 			return 'DONE';
 		}
-		public function saveRights(Request $request){ // Add New Rights
+		public function saveRights(Request $request){ // Update User Rights
 			$updateData = array(
 						'allow' 	=> 	$request->alwChk,
 						'ad_d'		=>	$request->addChk,
@@ -80,94 +80,101 @@
             ->update($updateData);
 			return 'DONE';
 		}
-		public function saveAppType(Request $request){
+		public function saveAppType(Request $request){ // Update Application Type
 			$updateData = array('aptdesc' => $request->name);
 			DB::table('apptype')
 				->where('aptid',$request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function saveClass(Request $request){
+		public function saveClass(Request $request){ // Update Class
 			$updateData = array('classname' => $request->name);
 			DB::table('class')
 				->where('classid',$request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function saveFaType(Request $request){
+		public function saveFaType(Request $request){ // Update Facility Type
 			$updateData = array('facname' => $request->name);
 			DB::table('facilitytyp')
 				->where('facid',$request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function saveOShip(Request $request){
+		public function saveOShip(Request $request){ // Update Ownership
 			$updateData = array('ocdesc'=>$request->name);
 			DB::table('ownership')
 				->where('ocid',$request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function savePLicense(Request $request){
+		public function savePLicense(Request $request){ // Update Personnel License
 			$updateData = array('pldesc'=>$request->name);
 			DB::table('plicensetype')
 				->where('plid',$request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function savePTrain(Request $request){
+		public function savePTrain(Request $request){ // Update Personnel Training
 			$updateData = array('ptdesc'=>$request->name);
 			DB::table('ptrainings_trainingtype')
 				->where('ptid',$request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function saveUpload(Request $request){
+		public function saveUpload(Request $request){ // Update Uploads
 			$updateData = array('updesc'=>$request->name);
 			DB::table('upload')
 				->where('upid',$request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function saveDept(Request $request){
+		public function saveDept(Request $request){ // Update Department
 			$updateData = array('depname'=>$request->name);
 			DB::table('department')
 				->where('depid',$request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function saveSect(Request $request){
+		public function saveSect(Request $request){ // Update Section 
 			$updateData = array('secname'=>$request->name);
 			DB::table('section')
 				->where('secid', $request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function saveWorkStats(Request $request){
+		public function saveWorkStats(Request $request){ // Update Work Status
 			$updateData = array('pworksname'=>$request->name);
 			DB::table('pwork_status')
 				->where('pworksid', $request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function saveWork(Request $request){
+		public function saveWork(Request $request){ // Update Work
 			$updateData = array('pworkname'=>$request->name);
 			DB::table('pwork')
 				->where('pworkid', $request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function savePart(Request $request){
+		public function savePart(Request $request){ // Update Part
 			$updateData = array('partdesc'=>$request->name);
 			DB::table('part')
 				->where('partid', $request->id)
 				->update($updateData);
 			return 'DONE';
 		}
-		public function saveAsMt(Request $request){
+		public function saveAsMt(Request $request){ // Update Assessment
 			$updateData = array('asmt_name'=>$request->name);
 			DB::table('assessment')
 				->where('asmt_id', $request->id)
+				->update($updateData);
+			return 'DONE';
+		}
+		public function saveHfst(Request $request){ // Update Health Facility/Service Type
+			$updateData = array('hfser_desc'=>$request->name);
+			DB::table('hfaci_serv_type')
+				->where('hfser_id', $request->id)
 				->update($updateData);
 			return 'DONE';
 		}
@@ -223,6 +230,10 @@
 		}
 		public function delAsMt(Request $request){
 			DB::table('assessment')->where('asmt_id', '=', $request->id)->delete();
+			return 'DONE';
+		}
+		public function delHfst(Request $request){
+			DB::table('hfaci_serv_type')->where('hfser_id', '=', $request->id)->delete();
 			return 'DONE';
 		}
 		// -------------------- DELETE --------------------

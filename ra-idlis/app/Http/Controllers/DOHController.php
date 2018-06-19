@@ -578,6 +578,29 @@
 					]);
 				return 'DONE';
 			}
+		}
+		public function PfView(Request $request){ // Process Flow/View
+			if ($request->isMethod('get')) {
+				$appForm = DB::table('appform')->get();
+			}
+		}
+		public function PerSoNel(Request $request){ // Master File/Personnel/Personnel
+			if ($request->isMethod('get')) {
+				return view('doh.mfperso');
+			}
+		}
+		public function FaServType(Request $request){
+			if ($request->isMethod('get')) {
+				$hfstype = DB::table('hfaci_serv_type')->get();
+				return view('doh.mfFaServType', ['hfstypes'=>$hfstype]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('hfaci_serv_type')->insert([
+						'hfser_id' => $request->id,
+						'hfser_desc' => $request->name,
+					]);
+				return 'DONE';
+			}
 		}	
 	}
 ?>

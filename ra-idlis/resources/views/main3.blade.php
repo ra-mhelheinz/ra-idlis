@@ -34,6 +34,8 @@ opacity: .8;
 </body>
 <script type="text/javascript">
 $("body").append('<div class="pageloader"></div>');
-$(".pageloader").fadeOut(2000);
+  $(document).ready(function(){
+    $(".pageloader").fadeOut(1000);
+  });
 </script>
 </html>
