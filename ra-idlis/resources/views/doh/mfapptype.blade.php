@@ -160,6 +160,8 @@
                         if (data == 'DONE') {
                             alert('Successfully Added New Application Type');
                             window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+                        } else {
+                          alert(data);
                         }
                       }
                   });

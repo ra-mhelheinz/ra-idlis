@@ -2,7 +2,7 @@
     @php
      $employeeData = session('employee_login');
    @endphp
-@endif
+
 <input type="hidden" id="global-token" value="{{ Session::token() }}" />
 <nav class="navbar navbar-expand navbar-dark bg-primary">
         <a class="sidebar-toggle mr-3" href="#"><i class="fa fa-bars"></i></a>
@@ -95,7 +95,7 @@
                 @endif
                 <li><a href="#ProFlowMenu" data-toggle="collapse"><i class="fa fa-sitemap"></i> Process Flow</a>
                     <ul id="ProFlowMenu" class="list-unstyled collapse">
-                        <li class=""><a href="{{asset('/employee/dashboard/lps')}}">&nbsp;&nbsp;&nbsp;&nbsp;View Applications</a></li>
+                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;View Applications</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
@@ -204,3 +204,8 @@
               });
     }
 </script>
+@else
+    <script type="text/javascript">
+        window.location.href = "{{ asset('/employee') }}";
+    </script>
+@endif

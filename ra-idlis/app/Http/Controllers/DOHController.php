@@ -5,6 +5,7 @@
 	use Illuminate\Support\Facades\DB;
 	use Illuminate\Database\Query\Builder;
 	use Carbon\Carbon;
+	use Exception;
 	use Hash;
 	
 	class DOHController extends Controller
@@ -332,11 +333,15 @@
 				return view('doh.mffatype',['fa'=>$fatype]);
 			}
 			if ($request->isMethod('post')) {
-				DB::table('facilitytyp')->insert([
-					'facid' => $request->id,
-					'facname' => $request->name,
-				]);
-				return 'DONE';
+				try {
+					DB::table('facilitytyp')->insert([
+						'facid' => $request->id,
+						'facname' => $request->name,
+					]);
+					return 'DONE';
+				} catch (Exception $e) {
+					return $e->getMessage();
+				}
 			}
 		}
 		public function OwnShip(Request $request){ // Master File/Ownership Page

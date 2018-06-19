@@ -91,6 +91,7 @@ Route::get('/employee/dashboard/lps/evalute/ins/3','DOHController@ins3');
 // -------------------------------------- GET
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
 Route::post('/ph/get_brgy', ['as'=>'select-brgy','uses'=>'ajaxController@selectBrgy']);
+Route::post('mf/getUploads',['as'=>'select-uploads','uses'=>'ajaxController@selectUploads']);
 Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass']);
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
 // -------------------------------------- GET

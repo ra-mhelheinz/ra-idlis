@@ -4,11 +4,8 @@
    @php
      $clientData = session('client_data');
    @endphp
-@else
-  <script type="text/javascript">
-    window.location.href = "{{asset('/')}}";
-  </script>
-@endif
+
+      <input type="hidden" id="global-token" value="{{ Session::token() }}" />
        <nav id="paraTagoNav" class="navbar navbar-expand-lg navbar-dark bg-dark" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);padding: 1px 1px 1px 1px;">
       <div class="container">
         <a class="navbar-brand" href="#"><img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img4">
@@ -102,3 +99,8 @@
       }
     }, 1);
   </script>
+  @else
+  <script type="text/javascript">
+    window.location.href = "{{asset('/')}}";
+  </script>
+@endif

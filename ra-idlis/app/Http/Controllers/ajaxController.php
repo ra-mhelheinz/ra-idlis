@@ -36,6 +36,14 @@
 			$class = DB::table('class')->where('ocid',$request->ocid)->get();
 	    	return response()->json(['classes'=>$class]);
 		}
+		public function selectUploads(Request $request){
+			$upload = DB::table('upload')->where('facid',$request->id)->first();
+			if ($upload) {
+				$upload = DB::table('upload')->where('facid',$request->id)->get();
+				return response()->json($upload);
+			} else {return 'NO';}
+		}
+		
 		// -------------------- SELECT --------------------
 		// -------------------- ADD --------------------
 		public function addCM(Request $request){ // Add New City/ Municipality

@@ -162,6 +162,8 @@
                         if (data == 'DONE') {
                             alert('Successfully Added New Facility Type');
                             window.location.href = "{{asset('employee/dashboard/mf/facility')}}";
+                        } else {
+                          console.log(data);
                         }
                       }
                   });
