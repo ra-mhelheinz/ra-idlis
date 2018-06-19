@@ -62,7 +62,8 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">
                         <a href="#" class="dropdown-item S03_allow">Settings</a>
                         <a href="#" class="dropdown-item S03_allow">Activity Logs</a>
-                        <a href="#" class="dropdown-item S03_allow">Change Password</a>
+                        <a href="#" data-toggle="modal" data-target="#ChgPass" class="dropdown-item S03_allow">Change Password</a>
+
                         <a href="#" onclick="event.preventDefault();document.getElementById('employeeLogout').submit();" class="dropdown-item">Logout</a>
                         <form id="employeeLogout" action="{{asset('/employee/logout')}}" method="POST" hidden>
                         @csrf
@@ -123,7 +124,11 @@
                 @endif
                 <li><a href="#ProFlowMenu" data-toggle="collapse"><i class="fa fa-sitemap"></i> Process Flow</a>
                     <ul id="ProFlowMenu" class="list-unstyled collapse">
+<<<<<<< HEAD
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;View Applications</a></li>
+=======
+                        <li class=""><a href="{{asset('/employee/dashboard/lps')}}">&nbsp;&nbsp;&nbsp;&nbsp;View Applications</a></li>
+>>>>>>> 145ff8616a64037725847e5e2e8719e9767c6d18
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
@@ -152,6 +157,44 @@
                 <li hidden><a href="{{asset('/employee/dashboard/lps')}}"><i class="fa fa-fw fa-spinner"></i> Licensing Process Status</a></li>
             </ul>
         </div>
+    <div class="modal fade" id="ChgPass" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 0px;border: none;">
+              <div class="modal-body text-justify" style=" background-color: #272b30;
+            color: white;">
+                <h5 class="modal-title text-center"><strong>Change Password</strong></h5>
+                <hr>
+                <div class="container">
+                  <form id="ChgPass_form" class="row"  data-parsley-validate>
+                    {{ csrf_field() }}
+                    <div class="col-sm-4">New Password:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <input type="text" id="new_pass" data-parsley-required-message="*<strong>New Password</strong> required"  class="form-control"  required>
+                    </div>
+                    <div class="col-sm-12">
+                          <div class="row">
+                              <div class="col-sm-6">
+                                  <button type="submit" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
+                              </div>
+                              <div class="col-sm-6">
+                              <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
+                            </div>
+                          </div>
+                    </div>
+                    {{-- <div class="row">
+                        <div class="col-sm-12">
+                          <button type="submit" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
+                        </div>
+                        <div class="col-sm-12">
+                          <button type="button" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
+                        </div>
+                    </div>  --}}
+                  </form>
+               </div>
+              </div>
+            </div>
+          </div>
+    </div>
 <script type="text/javascript">
     $(document).ready(
         function(){
