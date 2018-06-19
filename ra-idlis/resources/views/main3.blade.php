@@ -15,10 +15,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js"></script>
     <title>Dashboard | DOH</title>
     @yield('style')
+        <style type="text/css">
+      .pageloader {
+position: fixed;
+left: 0px;
+top: 0px;
+width: 100%;
+height: 100%;
+z-index: 9999;
+background: url('{{asset("ra-idlis/public/img/pageloader.gif")}}') 50% 50% no-repeat rgb(249,249,249);
+opacity: .8;
+    </style>
 </head>
 <body class="bg-light">
     @include('doh.nav')
     @yield('content')
 <script src="{{asset('ra-idlis/public/js/bootadmin.min.js')}}"></script>
 </body>
+<script type="text/javascript">
+$("body").append('<div class="pageloader"></div>');
+$(".pageloader").fadeOut(2000);
+</script>
 </html>
