@@ -61,7 +61,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">
                         <a href="#" class="dropdown-item S03_allow">Settings</a>
-                        <a href="#" class="dropdown-item S03_allow">Activity Logs</a>
+                        <a href="{{ asset('employee/dashboard/act_logs') }}" class="dropdown-item S03_allow">Activity Logs</a>
                         <a href="#" data-toggle="modal" data-target="#ChgPass" class="dropdown-item S03_allow">Change Password</a>
 
                         <a href="#" onclick="event.preventDefault();document.getElementById('employeeLogout').submit();" class="dropdown-item">Logout</a>
@@ -162,11 +162,11 @@
                 <h5 class="modal-title text-center"><strong>Change Password</strong></h5>
                 <hr>
                 <div class="container">
-                  <form id="ChgPass_form" class="row"  data-parsley-validate>
+                  <form id="ChgPass_form" class="row" >
                     {{ csrf_field() }}
                     <div class="col-sm-4">New Password:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_pass" data-parsley-required-message="*<strong>New Password</strong> required"  class="form-control"  required>
+                    <input type="password" id="new_pass" data-parsley-required-message="*<strong>New Password</strong> required"  class="form-control"  required>
                     </div>
                     <div class="col-sm-12">
                           <div class="row">
@@ -178,14 +178,6 @@
                             </div>
                           </div>
                     </div>
-                    {{-- <div class="row">
-                        <div class="col-sm-12">
-                          <button type="submit" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
-                        </div>
-                        <div class="col-sm-12">
-                          <button type="button" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
-                        </div>
-                    </div>  --}}
                   </form>
                </div>
               </div>
@@ -193,6 +185,24 @@
           </div>
     </div>
 <script type="text/javascript">
+    $('#ChgPass').on('submit',function(e){
+        e.preventDefault();
+        var form = $(this);
+        if (form.parsley().isValid()) {
+            var newPass = $('#new_pass').val();
+            var token = $('#global-token').val();
+            $.ajax({
+                url : "{{ asset('/employee/changepass') }}",
+                method: 'POST',
+                data : {_token: $('#global-token').val(),nPass:newPass},
+                success : function(data){
+                    console.log(data);
+                }
+            });
+
+        }
+        /// method="POST" action="{{ asset('employee/changepass') }}"
+    });
     $(document).ready(
         function(){
             Right_GG();
