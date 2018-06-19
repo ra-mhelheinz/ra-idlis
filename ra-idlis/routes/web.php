@@ -55,6 +55,8 @@ Route::get('/headinspection', 'headController@headinspection');
 Route::get('/headinspection2', 'headController@headinspection2');
 Route::get('/headinspection3', 'headController@headinspection3');
 // ----------------------------------------------- DOH Controller
+//
+Route::match(['get', 'post'], 'employee/dashboard/act_logs', 'DOHController@ActLogs')->name('setActLogs');
 Route::match(['get', 'post'], '/employee/', 'DOHController@login')->name('employee');
 Route::match(['get', 'post'], '/employee/dashboard/personnel/regional', 'DOHController@regionalAdmins')->name('regAdmins');
 Route::match(['get', 'post'], '/employee/dashboard/personnel/lo', 'DOHController@LOfficers')->name('regOfficer');
@@ -101,6 +103,7 @@ Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass'
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
 // -------------------------------------- GET
 // -------------------------------------- UPDATE
+Route::post('/employee/changepass', ['as'=>'change-pass','uses'=>'ajaxController@chngPass']);
 Route::post('/employee/save_rights', ['as'=>'save-rights','uses'=>'ajaxController@saveRights']);
 Route::post('/personnel/isActive', ['as'=>'isActive','uses'=>'ajaxController@isActive']);
 Route::post('/mf/save_aptype', ['as'=>'save-AppType','uses'=>'ajaxController@saveAppType']);

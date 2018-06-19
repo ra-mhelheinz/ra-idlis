@@ -4,6 +4,7 @@
 	use Illuminate\Http\Request;
 	use Illuminate\Support\Facades\DB;
 	use Illuminate\Database\Query\Builder;
+	use Illuminate\Support\Facades\Hash;
 	class ajaxController extends Controller
 	{
 		// -------------------- SELECT --------------------
@@ -177,6 +178,25 @@
 				->where('hfser_id', $request->id)
 				->update($updateData);
 			return 'DONE';
+		}
+		public function chngPass(Request $request){
+			 $employeeData = session('employee_login');
+			 $id = $employeeData->uid;
+	   		$data['pass'] = $request->pass;
+	   		$pass = Hash::check('pass', $data['pass']);
+	   		$data = DB::table('x08')
+                   ->where([ ['uid', '=', $id], ['pwd', '=', $pass], ['grpid', '!=', 'C'] ])
+                   ->select('*')
+                   ->first();
+   			if ($data) {
+   				return 'SamePass';
+   			} else {
+   				$updateData = array('pwd'=>$pass);
+				DB::table('x08')
+					->where('uid', $id)
+					->update($updateData);
+				return 'DONE';
+   			}
 		}
 		// -------------------- EDIT -------------------- 
 		// -------------------- DELETE --------------------
