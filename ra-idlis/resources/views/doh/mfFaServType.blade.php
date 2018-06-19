@@ -3,18 +3,18 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-  <input type="text" id="CurrentPage" value="MA07" hidden>
+  <input type="text" id="CurrentPage" value="MA16" hidden>
   <script type="text/javascript">Right_GG();</script>
   <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
     <datalist id="rgn_list">
-      @foreach ($apptype as $apptypes)
-      <option value="{{$apptypes->aptid}}">{{$apptypes->aptdesc}}</option>
+      @foreach ($hfstypes as $hfstype)
+      <option value="{{$hfstype->hfser_id}}">{{$hfstype->hfser_desc}}</option>
       @endforeach
     </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Application Type <span class="MA07_add"><a href="#" title="Add New Application Type" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
+           Health Facility/Service Type <span class="MA16_add"><a href="#" title="Add New Health Facility/Service Type" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
 
         </div>
         <div class="card-body">
@@ -27,17 +27,17 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($apptype as $apptypes)
+                @foreach ($hfstypes as $hfstype)
                   <tr>
-                    <td scope="row"> {{$apptypes->aptid}}</td>
-                    <td>{{$apptypes->aptdesc}}</td>
+                    <td scope="row"> {{$hfstype->hfser_id}}</td>
+                    <td>{{$hfstype->hfser_desc}}</td>
                     <td>
                       <center>
-                        <span class="MA07_update">
-                          <button type="button" class="btn-defaults" onclick="showData('{{$apptypes->aptid}}', '{{$apptypes->aptdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                        <span class="MA16_update">
+                          <button type="button" class="btn-defaults" onclick="showData('{{$hfstype->hfser_id}}', '{{$hfstype->hfser_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
                         </span>
-                        <span class="MA07_cancel">
-                          <button type="button" class="btn-defaults" onclick="showDelete('{{$apptypes->aptid}}', '{{$apptypes->aptdesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                        <span class="MA16_cancel">
+                          <button type="button" class="btn-defaults" onclick="showDelete('{{$hfstype->hfser_id}}', '{{$hfstype->hfser_desc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
                         </span>
                       </center>
                     </td>
@@ -53,7 +53,7 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Appplication Type</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Health Facility/Service Type</strong></h5>
                 <hr>
                 <div class="container">
                   <form id="addRgn" class="row"  data-parsley-validate>
@@ -80,7 +80,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Edit Health Facility/Service Type</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
@@ -105,7 +105,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Delete Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Delete Health Facility/Service Type</strong></h5>
               <hr>
               <div class="container">
                 <span id="DelModSpan">
@@ -149,7 +149,7 @@
                 var test = $.inArray(id,arr);
                 if (test == -1) { // Not in Array
                     $.ajax({
-                      url: "{{ asset('/employee/dashboard/mf/apptype') }}",
+                      url: "{{ asset('/employee/dashboard/mf/faciservtype') }}",
                       method: 'POST',
                       data: {
                         _token : $('#token').val(),
@@ -158,15 +158,15 @@
                       },
                       success: function(data) {
                         if (data == 'DONE') {
-                            alert('Successfully Added New Application Type');
-                            window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+                            alert('Successfully Added New Health Facility/Service Type');
+                            window.location.href = "{{ asset('/employee/dashboard/mf/faciservtype') }}";
                         } else {
                           alert(data);
                         }
                       }
                   });
                 } else {
-                  alert('Application ID is already been taken');
+                  alert('Health Facility/Service Type ID is already been taken');
                   $('#new_rgnid').focus();
                 }
             }
@@ -179,13 +179,13 @@
                var x = $('#edit_name').val();
                var y = $('#edit_desc').val();
                $.ajax({
-                  url: "{{ asset('/mf/save_aptype') }}",
+                  url: "{{ asset('/mf/save_hfst') }}",
                   method: 'POST',
                   data : {_token:$('#token').val(),id:x,name:y},
                   success: function(data){
                       if (data == "DONE") {
-                          alert('Successfully Edited Application Type');
-                          window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+                          alert('Successfully Edited Health Facility/Service Type');
+                          window.location.href = "{{ asset('/employee/dashboard/mf/faciservtype') }}";
                       }
                   }
                });
@@ -205,12 +205,12 @@
           var id = $("#toBeDeletedID").val();
           var name = $("#toBeDeletedname").val();
           $.ajax({
-            url : "{{ asset('/mf/del_aptype') }}",
+            url : "{{ asset('/mf/del_hfst') }}",
             method: 'POST',
             data: {_token:$('#token').val(),id:id},
             success: function(data){
               alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+              window.location.href = "{{ asset('/employee/dashboard/mf/faciservtype') }}";
             }
           });
         }

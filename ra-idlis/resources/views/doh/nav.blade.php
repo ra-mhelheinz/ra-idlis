@@ -2,7 +2,7 @@
     @php
      $employeeData = session('employee_login');
    @endphp
-@endif
+
 <input type="hidden" id="global-token" value="{{ Session::token() }}" />
 <nav class="navbar navbar-expand navbar-dark bg-primary">
         <a class="sidebar-toggle mr-3" href="#"><i class="fa fa-bars"></i></a>
@@ -23,8 +23,37 @@
 
         <div class="navbar-collapse collapse">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item S01_allow"><a href="#" class="nav-link"><i class="fa fa-envelope"></i> 0</a></li>
-                <li class="nav-item S02_allow"><a href="#" class="nav-link"><i class="fa fa-bell"></i> 0</a></li>
+                <li class="nav-item S01_allow dropdown"><a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i>1</a>
+                    <div class="dropdown-menu dropdown-menu-right" style="width: 300px;background-color: transparent;border: 0;">
+                            <ul class="list-group" style="margin: 0;padding: 0;">
+                                  <a class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                      <h5 class="mb-1">John Smith</h5>
+                                      <small>3 days ago</small>
+                                    </div>
+                                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                                    <small>01/01/2018</small>
+                                </a>
+                              <a class="list-group-item list-group-item-action">
+                                  <div class="d-flex w-100 justify-content-between">
+                                  <h5 class="mb-1">Kevin Hart</h5>
+                                  <small>3 days ago</small>
+                                </div>
+                                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                                <small>01/01/2018</small>
+                              </a>
+                              <a class="list-group-item list-group-item-action">
+                                     <div class="d-flex w-100 justify-content-between">
+                                          <h5 class="mb-1">Ice Cube</h5>
+                                          <small>3 days ago</small>
+                                        </div>
+                                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                                        <small>01/01/2018</small>
+                              </a>
+                            </ul>
+                    </div>
+                </li>
+                <li class="nav-item S02_allow"><a href="#" class="nav-link "><i class="fa fa-bell"></i>1</a></li>
                 <li class="nav-item dropdown">
                     <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> @if ($employeeData->grpid != 'NA')
                         {{$employeeData->name}}
@@ -59,7 +88,8 @@
                                 <li class="MA07_allow"><a href="{{ asset('/employee/dashboard/mf/apptype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Type</a></li>
                                 <li class="MA08_allow"><a href="{{ asset('/employee/dashboard/mf/class') }}">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
                                 <li class="MA06_allow"><a href="{{ asset('/employee/dashboard/mf/ownership') }}">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
-                                <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/facility') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facility Type</a></li>
+                                <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/faciservtype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facility/Service Type</a></li>
+                                <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/faciserv') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facilities/Services</a></li>
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/uploads') }}">&nbsp;&nbsp;&nbsp;&nbsp;Uploads</a></li>
                             </ul>
                         </li>
@@ -67,7 +97,7 @@
                             <ul id="PersoMenu" class="list-unstyled collapse">
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/department') }}">&nbsp;&nbsp;&nbsp;&nbsp;Department</a></li>
                                 <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Section</a></li>
-                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Personnel</a></li>
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/personnel') }}">&nbsp;&nbsp;&nbsp;&nbsp;Personnel</a></li>
                                 <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Education/Trainings</a></li>
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/work') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work</a></li>
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/work_status') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work Status</a></li>
@@ -116,7 +146,7 @@
                                     <ul id="perso" class="list-unstyled collapse">
                                         <li class="UG01_allow"><a href="{{asset('employee/dashboard/personnel/regional')}}">&nbsp;&nbsp;&nbsp;&nbsp;Regional Admins</a></li>
                                         <li class="UG02_allow"><a href="{{asset('employee/dashboard/personnel/fda')}}">&nbsp;&nbsp;&nbsp;&nbsp;Food and Drug Authority</a></li>
-                                        <li class="UG03_allow"><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;&nbsp;&nbsp;Licensing Officers</a></li>
+                                            <li class="UG03_allow"><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;&nbsp;&nbsp;Licensing Officers</a></li>
                                     </ul>
                                 </li>
                         </ul>
@@ -204,3 +234,8 @@
               });
     }
 </script>
+@else
+    <script type="text/javascript">
+        window.location.href = "{{ asset('/employee') }}";
+    </script>
+@endif

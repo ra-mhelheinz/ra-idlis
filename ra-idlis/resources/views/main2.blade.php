@@ -15,6 +15,6 @@
 <body class="bg-light">
     @include('doh.nav')
     @yield('content')
-<script src="{{asset('ra-idlis/public/js/bootadmin.min.js')}}"></script>
 </body>
+
 </html>

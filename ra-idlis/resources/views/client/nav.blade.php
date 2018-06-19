@@ -4,11 +4,8 @@
    @php
      $clientData = session('client_data');
    @endphp
-@else
-  <script type="text/javascript">
-    window.location.href = "{{asset('/')}}";
-  </script>
-@endif
+
+      <input type="hidden" id="global-token" value="{{ Session::token() }}" />
        <nav id="paraTagoNav" class="navbar navbar-expand-lg navbar-dark bg-dark" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);padding: 1px 1px 1px 1px;">
       <div class="container">
         <a class="navbar-brand" href="#"><img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img4">
@@ -80,25 +77,9 @@
           </ul>
         </div>
       </div>
-    </nav>
-<script type="text/javascript">
-    setInterval(function(e){
-      var x = parseFloat(parseFloat(window.innerHeight) + parseFloat(window.scrollY)) - parseFloat(document.getElementById('paraTago').offsetHeight);
-      var y = parseFloat((parseFloat(document.body.offsetHeight) - parseFloat(document.getElementById('paraTago').offsetHeight)) - parseFloat(document.getElementById('paraTago').offsetHeight)) + 10;
-
-      // var t = parseFloat(document.getElementById('paraTagoNav').offsetHeight);
-      // var z = parseFloat(window.scrollY);
-      // if(z < t) {
-      //   document.getElementById('fortagoTago').setAttribute("hidden", true);
-      //   document.getElementById('fortagoTago1').setAttribute("hidden", true);
-      // } else {
-      //   document.getElementById('fortagoTago').removeAttribute("hidden");
-      //   document.getElementById('fortagoTago1').removeAttribute("hidden");
-      // }
-      if(y <= x) {
-        document.getElementsByClassName('fixed-bottom')[0].setAttribute("hidden", true);
-      } else {
-        document.getElementsByClassName('fixed-bottom')[0].removeAttribute("hidden");
-      }
-    }, 1);
+</nav>
+  @else
+  <script type="text/javascript">
+    window.location.href = "{{asset('/')}}";
   </script>
+@endif

@@ -236,10 +236,10 @@ html, body, #canvasMap{
 					<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 						<h5>Address</h5>
 					</div>
-					<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+					<div class="col-sm-12" style="margin: 0 0 .8em 0;" onclick="firstradio([true, false], ['rgnID', 'provID', 'ctyID', 'brgyID'])">
 						<div class="input-group">
 							<div class="input-group-text" style="border-radius: 0 ;border-right-style: none;background-color: transparent;padding: 6;"><input type="radio" name="rad" id="rad1" onclick="firstradio([true, false], ['rgnID', 'provID', 'ctyID', 'brgyID'])"></div>
-						<input type="text" id="gsearch" class="form-control" placeholder="Address (Barangay/City/Province/Region)" style="border-left-style: none;padding-left: 0;"	disabled>
+						<input type="text" id="gsearch" class="form-control" name="regionadd" placeholder="Address (Barangay/City/Province/Region)" style="border-left-style: none;padding-left: 0;"	disabled>
 
 						<div class="input-group-prepend" style="cursor: pointer;"  data-toggle="modal" data-target="#exampleModal">
 							<div id="appLd" class="input-group-text" style="max-height: 38px;"><i class="fa fa-map-marker"></i></div>
@@ -261,10 +261,10 @@ html, body, #canvasMap{
 					</div>
 						</div>
 					</div>		
-					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
+					<div class="col-sm-6" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
 						<div class="input-group">
 							<div class="input-group-text" style="border-radius: 0 ;border-right-style: none;background-color: transparent;padding: 6;"><input type="radio" name="rad" id="rad2" onclick="firstradio([false, true], ['gsearch'])"></div>
-					<input id="rgnID" type="text" class="form-control idis" placeholder="Region" onblur="loadTbl(['province', 'rgnid', getDataTbl(this.id)], 'prov_list', ['provid', 'provname'], ['provID', 'prov_list'])" autocomplete="off"  style="border-left-style: none;padding-left: 0;" disabled>
+					<input id="rgnID" type="text" class="form-control idis" name="region" placeholder="Region" onchange="loadTbl(['province', 'rgnid', getDataTbl(this.id)], 'prov_list', ['provid', 'provname'], ['provID', 'prov_list'])" autocomplete="off"  style="border-left-style: none;padding-left: 0;" disabled>
 					</div>
 					{{-- <select id="selectRegion4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Region <strong>Required</strong>" required="">
 						<option disabled selected hidden>Select Region</option>
@@ -273,23 +273,23 @@ html, body, #canvasMap{
 						@endforeach
 					</select> --}}
 					</div>
-					<div class="col-sm-6" style="margin: 0 0 .8em 0;">
+					<div class="col-sm-6" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
 					{{-- <select id="selectProvince4Cm" data-parsley-required-message="<strong>*</strong>Province <strong>Required</strong>" class="form-control" name="province"  required="">
 						<option disabled selected hidden>Province</option>
 					</select> --}}
-					<input id="provID" type="text" class="form-control idis" placeholder="Province" onblur="loadTbl(['city_muni', 'provid', getDataTbl(this.id)], 'cty_list', ['cmid', 'cmname'], ['ctyID', 'cty_list'])" autocomplete="off" disabled>
+					<input id="provID" type="text" class="form-control idis" name="province" placeholder="Province" onchange="loadTbl(['city_muni', 'provid', getDataTbl(this.id)], 'cty_list', ['cmid', 'cmname'], ['ctyID', 'cty_list'])" autocomplete="off" disabled>
 					</div>
-				<div class="col-sm-6" style="margin: 0 0 .8em 0;">
+				<div class="col-sm-6" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
 					{{-- <select id="selectCM4Cm" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>City/Municipality <strong>Required</strong>" required="">
 						<option disabled selected hidden>City/Municipality</option>
 					</select> --}}
-					<input id="ctyID" type="text" class="form-control idis" placeholder="City/Municipality" onblur="loadTbl(['barangay', 'cmid', getDataTbl(this.id)], 'brgy_list', ['brgyid', 'brgyname'], ['brgyID', 'brgy_list'])" autocomplete="off" disabled>
+					<input id="ctyID" type="text" class="form-control idis" name="city_muni" placeholder="City/Municipality" onchange="loadTbl(['barangay', 'cmid', getDataTbl(this.id)], 'brgy_list', ['brgyid', 'brgyname'], ['brgyID', 'brgy_list'])" autocomplete="off" disabled>
 				</div>
-				<div class="col-sm-6" style="margin: 0 0 .8em 0;">
+				<div class="col-sm-6" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
 					{{-- <select id="selectbrgy4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Brgy. <strong>Required</strong>" required="">
 						<option disabled selected hidden>Brgy. Name</option>
 					</select> --}}
-					<input id="brgyID" type="text" class="form-control idis" placeholder="Brgy. Name" autocomplete="off" disabled>
+					<input id="brgyID" type="text" class="form-control idis" placeholder="Brgy. Name" name="brgy" autocomplete="off" disabled>
 				</div>
 				<div class="col-sm-8" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name"   data-parsley-required-message="<strong>*</strong>Street Name <strong>Required</strong>" required="">
@@ -306,6 +306,7 @@ html, body, #canvasMap{
 						for(var x = 0; x < getId.length; x++) {
 							document.getElementById(getId[x]).value = "";
 						}
+						document.getElementById('rad1').checked = bool[0];
 						document.getElementById('rad2').checked = bool[1];
 					}
 					function secradio(){

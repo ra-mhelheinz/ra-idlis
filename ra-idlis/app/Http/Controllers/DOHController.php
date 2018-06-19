@@ -5,6 +5,7 @@
 	use Illuminate\Support\Facades\DB;
 	use Illuminate\Database\Query\Builder;
 	use Carbon\Carbon;
+	use Exception;
 	use Hash;
 	
 	class DOHController extends Controller
@@ -332,11 +333,15 @@
 				return view('doh.mffatype',['fa'=>$fatype]);
 			}
 			if ($request->isMethod('post')) {
-				DB::table('facilitytyp')->insert([
-					'facid' => $request->id,
-					'facname' => $request->name,
-				]);
-				return 'DONE';
+				try {
+					DB::table('facilitytyp')->insert([
+						'facid' => $request->id,
+						'facname' => $request->name,
+					]);
+					return 'DONE';
+				} catch (Exception $e) {
+					return $e->getMessage();
+				}
 			}
 		}
 		public function OwnShip(Request $request){ // Master File/Ownership Page
@@ -570,6 +575,29 @@
 						'asmt_id' => $request->id,
 						'asmt_name' => $request->name,
 						'partid' => $request->partid,
+					]);
+				return 'DONE';
+			}
+		}
+		public function PfView(Request $request){ // Process Flow/View
+			if ($request->isMethod('get')) {
+				$appForm = DB::table('appform')->get();
+			}
+		}
+		public function PerSoNel(Request $request){ // Master File/Personnel/Personnel
+			if ($request->isMethod('get')) {
+				return view('doh.mfperso');
+			}
+		}
+		public function FaServType(Request $request){
+			if ($request->isMethod('get')) {
+				$hfstype = DB::table('hfaci_serv_type')->get();
+				return view('doh.mfFaServType', ['hfstypes'=>$hfstype]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('hfaci_serv_type')->insert([
+						'hfser_id' => $request->id,
+						'hfser_desc' => $request->name,
 					]);
 				return 'DONE';
 			}

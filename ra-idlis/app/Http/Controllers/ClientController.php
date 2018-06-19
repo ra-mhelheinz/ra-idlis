@@ -81,6 +81,7 @@ class ClientController extends Controller
                     'uid' => $data['uname'],
                     'pwd' => $data['pass'],
                     'facilityname' => $data['facility_name'],
+                    'rgnid_address' => $data['regionadd'],
                     'rgnid' => $data['region'],
                     'province' => $data['province'],
                     'barangay' => $data['brgy'],
@@ -110,7 +111,11 @@ class ClientController extends Controller
     }
     public function apply(Request $request){
     	if($request->isMethod('get')){
-    		return view('client.apply');
+        $fatype = DB::table('facilitytyp')->get();
+        $ownsh = DB::table('ownership')->get();
+        $aptyp = DB::table('apptype')->get();
+        $clss = DB::table('class')->get();
+     		return view('client.apply', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss]);
     	}
     }
      public function evaluate(Request $request){

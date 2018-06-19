@@ -66,6 +66,8 @@ Route::match(['get', 'post'],'/employee/dashboard/ph/citymuni','DOHController@Ci
 Route::match(['get', 'post'],'/employee/dashboard/ph/barangay','DOHController@Brgy')->name('philBarangay');
 Route::match(['get', 'post'],'/employee/dashboard/mf/class','DOHController@ClassType')->name('mfClass');
 Route::match(['get', 'post'],'/employee/dashboard/mf/facility','DOHController@FaType')->name('mfFacility');
+Route::match(['get', 'post'],'/employee/dashboard/mf/faciservtype','DOHController@FaServType')->name('mfFaServType');
+//
 Route::match(['get', 'post'],'/employee/dashboard/mf/apptype','DOHController@AppType')->name('mfAppType');
 Route::match(['get', 'post'],'/employee/dashboard/mf/ownership','DOHController@OwnShip')->name('mfOwnShip');
 Route::match(['get', 'post'],'/employee/dashboard/mf/litype','DOHController@LiType')->name('mfLiType');
@@ -77,6 +79,8 @@ Route::match(['get', 'post'],'/employee/dashboard/mf/work_status','DOHController
 Route::match(['get', 'post'],'/employee/dashboard/mf/work','DOHController@Work')->name('mfWork');
 Route::match(['get', 'post'],'/employee/dashboard/mf/part','DOHController@Part')->name('mfPart');
 Route::match(['get', 'post'],'/employee/dashboard/mf/assessment','DOHController@AsMent')->name('mfAsMent');
+Route::match(['get', 'post'],'/employee/dashboard/mf/personnel','DOHController@PerSoNel')->name('mfPersonnel');
+Route::match(['get', 'post'],'/employee/dashboard/pf/view','DOHController@PfView')->name('pfView');
 Route::post('/employee/logout','DOHController@logout');
 Route::post('employee/getRights', 'DOHController@getSettings2');
 Route::post('/employee/grprights/check','DOHController@chckgr');
@@ -91,7 +95,8 @@ Route::get('/employee/dashboard/lps/evalute/ins/3','DOHController@ins3');
 // -------------------------------------- GET
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
 Route::post('/ph/get_brgy', ['as'=>'select-brgy','uses'=>'ajaxController@selectBrgy']);
-Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass']);
+Route::post('mf/getUploads',['as'=>'select-uploads','uses'=>'ajaxController@selectUploads']);
+Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass']);\
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
 // -------------------------------------- GET
 // -------------------------------------- UPDATE
@@ -110,6 +115,7 @@ Route::post('/mf/save_pworkstats', ['as'=>'save-PworkStats', 'uses'=> 'ajaxContr
 Route::post('/mf/save_pwork', ['as'=>'save-Pwork', 'uses'=> 'ajaxController@saveWork']);
 Route::post('/mf/save_part', ['as'=>'save-Part', 'uses'=> 'ajaxController@savePart']);
 Route::post('/mf/save_asmt', ['as'=>'save-AsMt', 'uses'=> 'ajaxController@saveAsMt']);
+Route::post('/mf/save_hfst', ['as'=>'save-HfsT', 'uses'=> 'ajaxController@saveHfst']);
 // -------------------------------------- UPDATE
 // -------------------------------------- DELETE
 Route::post('/mf/del_aptype', ['as'=>'del-AppType','uses'=>'ajaxController@delAppType']);
@@ -125,5 +131,6 @@ Route::post('/mf/del_pworkstats', ['as'=>'del-PworkStats','uses'=>'ajaxControlle
 Route::post('/mf/del_pwork', ['as'=>'del-Pwork','uses'=>'ajaxController@delWork']);
 Route::post('/mf/del_part', ['as'=>'del-Part','uses'=>'ajaxController@delPart']);
 Route::post('/mf/del_asmt', ['as'=>'del-AsMt','uses'=>'ajaxController@delAsMt']);
+Route::post('/mf/del_hfst', ['as'=>'del-HfsT','uses'=>'ajaxController@delHfst']);
 // -------------------------------------- DELETE
 // ----------------------------------------------- Ajax Controller
