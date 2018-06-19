@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
+  
 <div class="content p-4">
                 <h2 class="mb-4">Dashboard/Reports</h2>
 
@@ -138,4 +139,5 @@
     </div>
         </div>
     </div>
+    <script src="{{asset('ra-idlis/public/js/bootadmin.min.js')}}"></script>
 @endsection

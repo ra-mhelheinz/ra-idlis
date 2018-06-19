@@ -154,5 +154,25 @@
         <td class="td"><img src="{{asset('ra-idlis/public/img/nobreak.jpg')}}"  width="125" height="60"></td> 
     </table>
   </div>
-  
+  <script type="text/javascript">
+    setInterval(function(e){
+      var x = parseFloat(parseFloat(window.innerHeight) + parseFloat(window.scrollY)) - parseFloat(document.getElementById('paraTago').offsetHeight);
+      var y = parseFloat((parseFloat(document.body.offsetHeight) - parseFloat(document.getElementById('paraTago').offsetHeight)) - parseFloat(document.getElementById('paraTago').offsetHeight)) + 10;
+
+      // var t = parseFloat(document.getElementById('paraTagoNav').offsetHeight);
+      // var z = parseFloat(window.scrollY);
+      // if(z < t) {
+      //   document.getElementById('fortagoTago').setAttribute("hidden", true);
+      //   document.getElementById('fortagoTago1').setAttribute("hidden", true);
+      // } else {
+      //   document.getElementById('fortagoTago').removeAttribute("hidden");
+      //   document.getElementById('fortagoTago1').removeAttribute("hidden");
+      // }
+      if(y <= x) {
+        document.getElementsByClassName('fixed-bottom')[0].setAttribute("hidden", true);
+      } else {
+        document.getElementsByClassName('fixed-bottom')[0].removeAttribute("hidden");
+      }
+    }, 1);
+  </script>
 @endsection

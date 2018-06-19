@@ -81,6 +81,7 @@ class ClientController extends Controller
                     'uid' => $data['uname'],
                     'pwd' => $data['pass'],
                     'facilityname' => $data['facility_name'],
+                    'rgnid_address' => $data['regionadd'],
                     'rgnid' => $data['region'],
                     'province' => $data['province'],
                     'barangay' => $data['brgy'],

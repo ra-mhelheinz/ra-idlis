@@ -23,8 +23,37 @@
 
         <div class="navbar-collapse collapse">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item S01_allow"><a href="#" class="nav-link"><i class="fa fa-envelope"></i> 0</a></li>
-                <li class="nav-item S02_allow"><a href="#" class="nav-link"><i class="fa fa-bell"></i> 0</a></li>
+                <li class="nav-item S01_allow dropdown"><a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i>1</a>
+                    <div class="dropdown-menu dropdown-menu-right" style="width: 300px;background-color: transparent;border: 0;">
+                            <ul class="list-group" style="margin: 0;padding: 0;">
+                                  <a class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                      <h5 class="mb-1">John Smith</h5>
+                                      <small>3 days ago</small>
+                                    </div>
+                                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                                    <small>01/01/2018</small>
+                                </a>
+                              <a class="list-group-item list-group-item-action">
+                                  <div class="d-flex w-100 justify-content-between">
+                                  <h5 class="mb-1">Kevin Hart</h5>
+                                  <small>3 days ago</small>
+                                </div>
+                                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                                <small>01/01/2018</small>
+                              </a>
+                              <a class="list-group-item list-group-item-action">
+                                     <div class="d-flex w-100 justify-content-between">
+                                          <h5 class="mb-1">Ice Cube</h5>
+                                          <small>3 days ago</small>
+                                        </div>
+                                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                                        <small>01/01/2018</small>
+                              </a>
+                            </ul>
+                    </div>
+                </li>
+                <li class="nav-item S02_allow"><a href="#" class="nav-link "><i class="fa fa-bell"></i>1</a></li>
                 <li class="nav-item dropdown">
                     <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> @if ($employeeData->grpid != 'NA')
                         {{$employeeData->name}}
@@ -94,7 +123,7 @@
                 @endif
                 <li><a href="#ProFlowMenu" data-toggle="collapse"><i class="fa fa-sitemap"></i> Process Flow</a>
                     <ul id="ProFlowMenu" class="list-unstyled collapse">
-                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;View Applications</a></li>
+                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;View Applications</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
@@ -115,7 +144,7 @@
                                     <ul id="perso" class="list-unstyled collapse">
                                         <li class="UG01_allow"><a href="{{asset('employee/dashboard/personnel/regional')}}">&nbsp;&nbsp;&nbsp;&nbsp;Regional Admins</a></li>
                                         <li class="UG02_allow"><a href="{{asset('employee/dashboard/personnel/fda')}}">&nbsp;&nbsp;&nbsp;&nbsp;Food and Drug Authority</a></li>
-                                        <li class="UG03_allow"><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;&nbsp;&nbsp;Licensing Officers</a></li>
+                                            <li class="UG03_allow"><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;&nbsp;&nbsp;Licensing Officers</a></li>
                                     </ul>
                                 </li>
                         </ul>
