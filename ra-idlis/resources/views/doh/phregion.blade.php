@@ -51,11 +51,11 @@
                 <div class="container">
                   <form id="addRgn" class="row"  data-parsley-validate>
                     {{ csrf_field() }}
-                    <div class="col-sm-4">Name:</div>
+                    <div class="col-sm-4">ID:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>Name</strong> required"  class="form-control"  required>
+                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required"  class="form-control"  required>
                     </div>
-                    <div class="col-sm-4">Description:</div>
+                    <div class="col-sm-4">Name:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Description</strong> required" required>
                     </div>
@@ -79,7 +79,7 @@
                     <div class="col-sm-12">
                     <input type="text" id="edit_name" class="form-control"  style="margin:0 0 .8em 0;" required>
                     </div> --}}
-                    <div class="col-sm-4">Description:</div>
+                    <div class="col-sm-4">Name:</div>
                     <div class="col-sm-12">
                     <input type="text" id="edit_desc" class="form-control"  style="margin:0 0 .8em 0;" required>
                     </div>
@@ -118,6 +118,7 @@
                         _token : $('#token').val(),
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
+                        mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {

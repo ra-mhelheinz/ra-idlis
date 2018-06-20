@@ -169,6 +169,7 @@
                         _token : $('#token').val(),
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
+                        mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {
@@ -193,7 +194,7 @@
                $.ajax({
                   url: "{{ asset('/mf/save_oship') }}",
                   method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y},
+                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
                   success: function(data){
                       if (data == "DONE") {
                           alert('Successfully Edited Ownership');
@@ -209,7 +210,7 @@
           $.ajax({
             url : "{{ asset('/mf/del_oship') }}",
             method: 'POST',
-            data: {_token:$('#token').val(),id:id},
+            data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
               alert('Successfully deleted '+name);
               window.location.href = "{{ asset('/employee/dashboard/mf/ownership') }}";

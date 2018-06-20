@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-  <input type="text" id="CurrentPage" value="MA08" hidden>
+  <input type="text" id="CurrentPage" value="MA05" hidden>
   <script type="text/javascript">Right_GG();</script>
   @foreach ($hfstypes as $hfstype)
    <datalist id="{{$hfstype->hfser_id}}_list">
@@ -165,10 +165,10 @@
                           '<td>'+e+'</td>' +
                           '<td>'+d+'</td>' +
                           '<td><center>'+
-                          '<span class="MA08_update">'+
+                          '<span class="MA05_update">'+
                           '<button type="button" class="btn-defaults" onclick="showData(\''+e+'\',\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;'+
                           '</span>'+
-                          '<span class="MA08_cancel">' +
+                          '<span class="MA05_cancel">' +
                           '<button type="button" class="btn-defaults" onclick="showDelete(\''+e+'\', \''+d+'\');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>'+
                         '</span>' +
                           '</center></td>' +
@@ -198,6 +198,7 @@
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
                         hfser_id : $('#hfser_id').val(),
+                        mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {
@@ -222,7 +223,7 @@
                $.ajax({
                   url: "{{ asset('/mf/save_faaptype') }}",
                   method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y},
+                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
                   success: function(data){
                       if (data == "DONE") {
                           alert('Successfully Edited Facility/Service');
@@ -248,7 +249,7 @@
           $.ajax({
             url : "{{ asset('/mf/del_FaType') }}",
             method: 'POST',
-            data: {_token:$('#token').val(),id:id},
+            data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
               alert('Successfully deleted '+name);
               window.location.href = "{{ asset('/employee/dashboard/mf/faciserv') }}";

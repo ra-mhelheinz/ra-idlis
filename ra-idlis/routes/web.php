@@ -102,6 +102,7 @@ Route::post('/ph/get_brgy', ['as'=>'select-brgy','uses'=>'ajaxController@selectB
 Route::post('mf/getUploads',['as'=>'select-uploads','uses'=>'ajaxController@selectUploads']);
 Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass']);\
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
+Route::post('/employee/get_date_actlogs', ['as'=>'get-ActLogs','uses'=>'ajaxController@getActLogs']);
 // -------------------------------------- GET
 // -------------------------------------- UPDATE
 Route::post('/employee/changepass', ['as'=>'change-pass','uses'=>'ajaxController@chngPass']);
