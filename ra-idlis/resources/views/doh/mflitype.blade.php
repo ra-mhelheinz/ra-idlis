@@ -159,6 +159,7 @@
                         _token : $('#token').val(),
                         id: $('#new_rgnid').val().toUpperCase(),
                         name : $('#new_rgn_desc').val(),
+                        mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {
@@ -183,7 +184,7 @@
                $.ajax({
                   url: "{{ asset('/mf/save_plicense') }}",
                   method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y},
+                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
                   success: function(data){
                       if (data == "DONE") {
                           alert('Successfully Edited Application Type');
@@ -208,7 +209,7 @@
           $.ajax({
             url : "{{ asset('/mf/del_plicense') }}",
             method: 'POST',
-            data: {_token:$('#token').val(),id:id},
+            data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
               alert('Successfully deleted '+name);
               window.location.href = "{{ asset('/employee/dashboard/mf/litype') }}";

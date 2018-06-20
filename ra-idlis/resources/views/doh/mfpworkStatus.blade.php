@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-  <input type="text" id="CurrentPage" value="MA14" hidden>
+  <input type="text" id="CurrentPage" value="MA15" hidden>
   <script type="text/javascript">Right_GG();</script>
   <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
@@ -34,10 +34,10 @@
                     <td>
                       <center>
                         {{-- <button type="button" class="btn-defaults" onclick="showData('{{$fas->facid}}', '{{$fas->facname}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button> --}}
-                        <span class="MA14_update">
+                        <span class="MA15_update">
                           <button type="button" class="btn-defaults" onclick="showData('{{$pwStat->pworksid}}', '{{$pwStat->pworksname}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
                         </span>
-                        <span class="MA14_cancel">
+                        <span class="MA15_cancel">
                           <button type="button" class="btn-defaults" onclick="showDelete('{{$pwStat->pworksid}}', '{{$pwStat->pworksname}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
                         </span>
                       </center>
@@ -157,6 +157,7 @@
                         _token : $('#token').val(),
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
+                        mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {
@@ -191,7 +192,7 @@
                $.ajax({
                   url: "{{ asset('/mf/save_pworkstats') }}",
                   method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y},
+                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
                   success: function(data){
                       if (data == "DONE") {
                           alert('Successfully Edited Work Status');
@@ -207,7 +208,7 @@
           $.ajax({
             url : "{{ asset('/mf/del_pworkstats') }}",
             method: 'POST',
-            data: {_token:$('#token').val(),id:id},
+            data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
               alert('Successfully deleted '+name);
               window.location.href = "{{ asset('/employee/dashboard/mf/work_status') }}";

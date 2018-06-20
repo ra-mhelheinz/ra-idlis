@@ -89,21 +89,21 @@
                                 <li class="MA08_allow"><a href="{{ asset('/employee/dashboard/mf/class') }}">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
                                 <li class="MA06_allow"><a href="{{ asset('/employee/dashboard/mf/ownership') }}">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
                                 <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/faciservtype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facility/Service Type</a></li>
-                                <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/faciserv') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facilities/Services</a></li>
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/uploads') }}">&nbsp;&nbsp;&nbsp;&nbsp;Uploads</a></li>
+                                <li class="MA16_allow"><a href="{{ asset('/employee/dashboard/mf/faciserv') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facilities/Services</a></li>
+                                <li class="MA11_allow"><a href="{{ asset('/employee/dashboard/mf/uploads') }}">&nbsp;&nbsp;&nbsp;&nbsp;Uploads</a></li>
                             </ul>
                         </li>
                         <li><a href="#PersoMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-users"></i>&nbsp;Personnel</a>
                             <ul id="PersoMenu" class="list-unstyled collapse">
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/department') }}">&nbsp;&nbsp;&nbsp;&nbsp;Department</a></li>
-                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Section</a></li>
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/personnel') }}">&nbsp;&nbsp;&nbsp;&nbsp;Personnel</a></li>
+                                <li class="MA12_allow"><a href="{{ asset('/employee/dashboard/mf/department') }}">&nbsp;&nbsp;&nbsp;&nbsp;Department</a></li>
+                                <li class="MA13_allow"><a href="{{ asset('/employee/dashboard/mf/section') }}">&nbsp;&nbsp;&nbsp;&nbsp;Section</a></li>
+                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/personnel') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Personnel</a></li>
                                 <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Education/Trainings</a></li>
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/work') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work</a></li>
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/work_status') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work Status</a></li>
+                                <li class="MA14_allow"><a href="{{ asset('/employee/dashboard/mf/work') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work</a></li>
+                                <li class="MA15_allow"><a href="{{ asset('/employee/dashboard/mf/work_status') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work Status</a></li>
                                 <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Eligibility</a></li>
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/litype') }}">&nbsp;&nbsp;&nbsp;&nbsp;License Type</a></li>
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/training') }}">&nbsp;&nbsp;&nbsp;&nbsp;Training Type</a></li>
+                                <li class="MA09_allow"><a href="{{ asset('/employee/dashboard/mf/litype') }}">&nbsp;&nbsp;&nbsp;&nbsp;License Type</a></li>
+                                <li class="MA10_allow"><a href="{{ asset('/employee/dashboard/mf/training') }}">&nbsp;&nbsp;&nbsp;&nbsp;Training Type</a></li>
                             </ul>
                         </li>
                         <li><a href="#phil" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-flag"></i>&nbsp;Places</a>

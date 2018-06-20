@@ -10,6 +10,33 @@
 	
 	class DOHController extends Controller
 	{
+		public function InsertActLog($mod_id,$action){
+			$Cur_useData = $this->getCurrentUserAllData();
+			DB::table('activitylogs')->insert(
+		                [
+		                	'mod_id' => $mod_id,
+		                	'acttime' => $Cur_useData['time'],
+		                	'actdate' => $Cur_useData['date'],
+		                	'ipaddress' => $Cur_useData['ip'],
+		                	'act' => $action,
+		                    'uid' => $Cur_useData['cur_user']
+		                ]
+		            );
+			return 'DONE';
+		}
+		public function getCurrentUserAllData(){
+			$dt = Carbon::now();
+	        $dateNow = $dt->toDateString();
+	        $timeNow = $dt->toTimeString();
+	        $ip =  request()->ip();
+	        $employeeData = session('employee_login');
+			$uname  = $employeeData->uid;
+			$data['time'] = $timeNow;
+			$data['date'] = $dateNow;
+			$data['ip'] = $ip;
+			$data['cur_user'] = $uname;
+			return $data;
+		}
 		public function getSettings(){
 			$grpid = session()->get('employee_login');
 			$rights = DB::table('x06')
@@ -105,7 +132,6 @@
 						->get()
 						;
 						// $name = $employeeData->fname.' '.$mid.'. '.$employeeData->lname;
-      //               $users->name = $name;
 				}
 				return view('doh.persoreg',['region'=>$regions,'users'=>$users]);
 			}
@@ -175,6 +201,7 @@
 				return view('doh.phregion',['region'=>$regions]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('region')->insert(
 					[
 						'rgnid' => $request->id,
@@ -309,6 +336,7 @@
 				return view('doh.mfcls',['own'=>$own, 'class'=> $class]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('class')->insert([
 					'classid' => $request->id,
 					'classname'=> $request->name,
@@ -322,7 +350,8 @@
 				$apptype = DB::table('apptype')->get();
 				return view('doh.mfapptype',['apptype'=>$apptype]);
 			}
-			if ($request->isMethod('post')) {
+			if ($request->isMethod('post')) { 
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('apptype')->insert(
 				[
 					'aptid' => $request->id,
@@ -355,6 +384,7 @@
 				return view('doh.mfoship',['oShip'=>$oShip]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('ownership')->insert([
 						'ocid' => $request->id,
 						'ocdesc' => $request->name,
@@ -398,10 +428,11 @@
 						;
 					if ($users) {
 						$users = DB::table('x08')
-							->where('grpid', '=', 'FDA')
-							->select('*')
-							->get()
-							;
+						->join('region', 'x08.rgnid', '=', 'region.rgnid')
+						->where('grpid', '=', 'FDA')
+						->select('x08.*','region.*')
+						->get()
+						;
 					return view('doh.fda',['region'=>$regions,'users'=>$users]);
 				} 
 				return view('doh.fda',['region'=>$regions,'users'=>$users]);
@@ -414,9 +445,10 @@
 						;
 					if ($users) {
 						$users = DB::table('x08')
-							->where('grpid', '=', 'FDA')
-							->where('rgnid', '=', $testX->rgnid)
-							->select('*')
+							->join('region', 'x08.rgnid', '=', 'region.rgnid')
+							->where('x08.grpid', '=', 'FDA')
+							->where('region.rgnid', '=', $testX->rgnid)
+							->select('x08.*','region.*')
 							->get()
 							;
 				}
@@ -474,6 +506,7 @@
 				return view('doh.mflitype',['plitype'=>$pltype]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('plicensetype')->insert([
 					'plid' => $request->id,
 					'pldesc' => $request->name,
@@ -487,6 +520,7 @@
 				return view('doh.mftrain',['train'=>$train]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('ptrainings_trainingtype')->insert(['ptid'=>$request->id,'ptdesc'=>$request->name]);
 				return 'DONE';
 			}
@@ -498,6 +532,7 @@
 				return view('doh.mfupload',['facility'=>$fatype,'uploads'=>$ups]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('upload')->insert(['updesc'=>$request->name,'facid'=>$request->facid]);
 				return 'DONE';
 			}
@@ -508,6 +543,7 @@
 				return view('doh.mfdept',['depts'=>$depts]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('department')->insert([
 					'depid' => $request->id,
 					'depname' => $request->name,
@@ -522,6 +558,7 @@
 				return view('doh.mfsec',['depts'=>$depts, 'secs'=>$sec]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('section')->insert([
 					'secid' => $request->id,
 					'secname' => $request->name,
@@ -536,6 +573,7 @@
 				return view('doh.mfpworkStatus', ['pwStats'=>$pworkstatus]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('pwork_status')->insert([
 						'pworksid' => $request->id,
 						'pworksname' => $request->name,
@@ -549,6 +587,7 @@
 				return view('doh.mfpwork', ['works'=>$work]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('pwork')->insert([
 						'pworkid' => $request->id,
 						'pworkname' => $request->name,
@@ -562,6 +601,7 @@
 				return view('doh.mfpart', ['parts'=>$part]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('part')->insert([
 						'partid' => $request->id,
 						'partdesc' => $request->name,
@@ -576,6 +616,7 @@
 				return view('doh.mfasment', ['asments'=>$asMent, 'parts'=>$part]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('assessment')->insert([
 						'asmt_id' => $request->id,
 						'asmt_name' => $request->name,
@@ -600,6 +641,7 @@
 				return view('doh.mfFaServType', ['hfstypes'=>$hfstype]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('hfaci_serv_type')->insert([
 						'hfser_id' => $request->id,
 						'hfser_desc' => $request->name,
@@ -614,6 +656,7 @@
 				return view('doh.mfFaServ', ['hfstypes'=>$hfstype, 'fatypes'=>$fatype]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('facilitytyp')->insert([
 					'facid' => $request->id,
 					'facname'=> $request->name,
@@ -623,7 +666,28 @@
 			}
 		}
 		public function ActLogs(Request $request){
+			if ($request->isMethod('get')) {
+				// $employeeData = session('employee_login');
+				// $uname  = $employeeData->uid;					
+				// $actlogs = DB::table('activitylogs')
+				// 			->join('x05','activitylogs.mod_id','=','x05.mod_id')
+				// 			->select('activitylogs.*', 'x05.mod_desc')
+				// 			->where('activitylogs.uid','=',$uname)
+				// 			->get();
 
+				// for ($i=0; $i < count($actlogs); $i++) {
+				// 	$time = $actlogs[$i]->acttime;
+				// 	$newT = Carbon::parse($time);
+				// 	$actlogs[$i]->formattedTime = $newT->format('g:i A');
+
+				// 	$date = $actlogs[$i]->actdate;
+				// 	$newD = Carbon::parse($date);
+				// 	$actlogs[$i]->formattedDate = $newD->toFormattedDateString();
+				// 	// ->diffForHumans()
+				// }
+				// return response()->json($actlogs);
+				return view('doh.actlogs');
+			}
 		}	
 	}
 ?>
