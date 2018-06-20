@@ -32,42 +32,47 @@
 	   		}
 	   		if ($request->isMethod('post')) {
 	   			$uname = strtoupper($request->uname);
-	   			$data['pass'] = $request->pass;
-	   			$pass = Hash::check('pass', $data['pass']);
+	   			$pass= $request->pass;
 	   			$data = DB::table('x08')
-                    ->where([ ['uid', '=', $uname], ['pwd', '=', $pass], ['grpid', '!=', 'C'] ])
+                    ->where([ ['uid', '=', $uname], ['grpid', '!=', 'C'] ])
                     ->select('*')
                     ->first();
                 if ($data) {
-                	if ($data->isActive == 1) {
-                		$employeeData =	DB::table('x08')
-	                                ->join('region', 'x08.rgnid', '=', 'region.rgnid')
-	                                ->select('x08.*', 'region.rgn_desc')
-	                                ->where('x08.uid', '=', $data->uid)
-	                                ->first()
-	                                ;
-	                    $x = $employeeData->mname;
-	                    if ($x != "") {
-	                    	$mid = strtoupper($x[0]);
-	                    	$mid = $mid.'. ';
-	                    } else {
-	                    	$mid = ' ';
-	                    }
-	                    $rights = DB::table('x06')
-	                    			->where('grp_id', '=', $employeeData->grpid)
-	                    			->get();
-	                    $name = $employeeData->fname.' '.$mid.''.$employeeData->lname;
-	                    $employeeData->name = $name;
-	                	session()->put('employee_login',$employeeData);
-	                	
-	                	// return json_encode($rights);
-	                	$test = $this->getSettings();
-	                	session()->put('arr', $test);
+                	$chck = Hash::check($pass, $data->pwd);
+                	if ($chck == true) {
+	                		if ($data->isActive == 1) {
+	                		$employeeData =	DB::table('x08')
+		                                ->join('region', 'x08.rgnid', '=', 'region.rgnid')
+		                                ->select('x08.*', 'region.rgn_desc')
+		                                ->where('x08.uid', '=', $data->uid)
+		                                ->first()
+		                                ;
+		                    $x = $employeeData->mname;
+		                    if ($x != "") {
+		                    	$mid = strtoupper($x[0]);
+		                    	$mid = $mid.'. ';
+		                    } else {
+		                    	$mid = ' ';
+		                    }
+		                    $rights = DB::table('x06')
+		                    			->where('grp_id', '=', $employeeData->grpid)
+		                    			->get();
+		                    $name = $employeeData->fname.' '.$mid.''.$employeeData->lname;
+		                    $employeeData->name = $name;
+		                	session()->put('employee_login',$employeeData);
+		                	
+		                	// return json_encode($rights);
+		                	$test = $this->getSettings();
+		                	session()->put('arr', $test);
 
-	                	return redirect()->route('eDashboard');
+		                	return redirect()->route('eDashboard');
+	                	} else {
+	                		session()->flash('dohUser_login','Account Deactivate, Contact nearest Regional Administrator/National Administrator.');
+	                	return back();
+	                	}
                 	} else {
-                		session()->flash('dohUser_login','Account Deactivate, Contact nearest Regional Administrator/National Administrator.');
-                	return back();
+                		session()->flash('dohUser_login','Invalid Username/Password');
+                		return back();
                 	}
                 } else {
                 	session()->flash('dohUser_login','Invalid Username/Password');
@@ -601,6 +606,24 @@
 					]);
 				return 'DONE';
 			}
+		}
+		public function FaServ(Request $request){
+			if ($request->isMethod('get')) {
+				$hfstype = DB::table('hfaci_serv_type')->get();
+				$fatype = DB::table('facilitytyp')->get();
+				return view('doh.mfFaServ', ['hfstypes'=>$hfstype, 'fatypes'=>$fatype]);
+			}
+			if ($request->isMethod('post')) {
+				DB::table('facilitytyp')->insert([
+					'facid' => $request->id,
+					'facname'=> $request->name,
+					'hfser_id' => $request->hfser_id,
+				]);
+				return 'DONE';
+			}
+		}
+		public function ActLogs(Request $request){
+
 		}	
 	}
 ?>
