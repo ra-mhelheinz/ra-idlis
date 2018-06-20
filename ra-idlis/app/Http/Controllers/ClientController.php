@@ -28,6 +28,7 @@ class ClientController extends Controller
                                 ->join('region', 'x08.rgnid', '=', 'region.rgnid')
                                 ->join('province', 'x08.province', '=', 'province.provid')
                                 ->select('x08.*', 'region.rgn_desc', 'province.provname')
+                                ->where('x08.uid', '=', $uname)
                                 ->first()
                                 ;
                 session()->put('client_data',$clientUser);
@@ -81,7 +82,7 @@ class ClientController extends Controller
                     'uid' => $data['uname'],
                     'pwd' => $data['pass'],
                     'facilityname' => $data['facility_name'],
-                    'rgnid_address' => $data['regionadd'],
+                    // 'rgnid_address' => $data['regionadd'],
                     'rgnid' => $data['region'],
                     'province' => $data['province'],
                     'barangay' => $data['brgy'],
@@ -115,13 +116,20 @@ class ClientController extends Controller
         $ownsh = DB::table('ownership')->get();
         $aptyp = DB::table('apptype')->get();
         $clss = DB::table('class')->get();
-     		return view('client.apply', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss]);
+          $hfaci = DB::table('hfaci_serv_type')->get();
+     		return view('client.apply', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     	}
     }
      public function evaluate(Request $request){
     	if($request->isMethod('get')){
     		return view('client.evaluate');
     	}
+    }
+    public function apply2(Request $request){
+      if($request->isMethod('get')){
+         $hfaci = DB::table('hfaci_serv_type')->get();
+        return view('client.apply2', ['hfaci'=>$hfaci]);
+      }
     }
     public function inspection(Request $request){
     	if($request->isMethod('get')){
@@ -149,7 +157,7 @@ class ClientController extends Controller
         }
     }
     public function logout(){
-      session()->forget('client_data');
+      session()->flush();
       session()->flash('logout_notif','Successfully Logout');
       return redirect()->route('client');
     }
