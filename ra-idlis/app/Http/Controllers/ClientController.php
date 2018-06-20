@@ -18,26 +18,21 @@ class ClientController extends Controller
         if($request->isMethod('post')){
             $uname=strtoupper($request->input('log_uname'));
             $pass= $request->input('log_pass');
+            $pass = Hash::check('pass', $pass);
             $data = DB::table('x08')
-                    ->where([ ['uid', '=', $uname], ['grpid', '=', 'C'] ])
+                    ->where([ ['uid', '=', $uname], ['pwd', '=', $pass], ['grpid', '=', 'C'] ])
                     ->select('*')
                     ->first();
-            if ($data){ // Check Username
-                $chck = Hash::check($pass, $data->pwd);
-                if ($chck == true) {
-                      $clientUser  = DB::table('x08')
-                                    ->join('region', 'x08.rgnid', '=', 'region.rgnid')
-                                    ->join('province', 'x08.province', '=', 'province.provid')
-                                    ->select('x08.*', 'region.rgn_desc', 'province.provname')
-                                    ->where('x08.uid', '=', $data->uid)
-                                    ->first()
-                                    ;
-                    session()->put('client_data',$clientUser);
-                    return redirect('/client/home');
-                } else {
-                    session()->flash('client_login','Invalid Username/Password');
-                    return back();
-                }
+            if ($data){
+                $clientUser  = DB::table('x08')
+                                ->join('region', 'x08.rgnid', '=', 'region.rgnid')
+                                ->join('province', 'x08.province', '=', 'province.provid')
+                                ->select('x08.*', 'region.rgn_desc', 'province.provname')
+                                ->where('x08.uid', '=', $uname)
+                                ->first()
+                                ;
+                session()->put('client_data',$clientUser);
+                return redirect('/client/home');
             }
              else{
                 session()->flash('client_login','Invalid Username/Password');
@@ -106,7 +101,7 @@ class ClientController extends Controller
             );
             // return response()->json(['test'=>$data]);
             // return "Check";
-            return 'done';
+            return 'DONE';
           }
         }    
     }

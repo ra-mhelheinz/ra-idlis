@@ -4,7 +4,7 @@
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/jquery.js')}}"></script>
 @section('content')
 @include('client.nav')
-  <div class="modal" id="myModal" style="overflow: auto;">
+  <div class="modal" id="myModal" style="overflow: auto; z-index: 1041;">
 <div class="modal-dialog row content" style="max-width: 100% ! important;margin-bottom: 0;">
   <div class="col-sm-5 slideInLeft animated ord">
     <img src="{{asset('ra-idlis/public/img/loimg.png')}}" id="aniImg">
@@ -15,11 +15,11 @@
           <div id="guide" class="text-center">
             Need a guide for first-time visitors?
             <div>
-              <button class="btn-primarys" data-toggle="modal" onclick="yes()">Yes</button>
+              <button class="btn-primarys" data-dismiss="modal" aria-hidden="true" onclick="introJs().start();">Yes</button>
               <button class="btn-defaults" data-dismiss="modal" aria-hidden="true">No</button>
             </div>
           </div>
-<div id="wowslider-container1" style="display: none;">
+{{-- <div id="wowslider-container1" style="display: none;">
 <div class="ws_images"><ul>
     <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_1.png')}}" alt="Step 1. Apply " title="Step 1. Apply" id="wows1_0"/><p id="wows1_0"/>If you are using this for the first time, click on the Apply and fill out the form. </p></li>
     <li><img src="{{asset('ra-idlis/public/img/steps/client/Steps_2.png')}}" alt="Step 1. Apply " title=" " id="wows1_1"/><p id="wows1_1"/>After clicking apply this form will appear, you must fill up this form yourself.</p></li>
@@ -51,7 +51,7 @@
 <div class="ws_shadow"></div>
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/wowslider.js')}}"></script>
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/script.js')}}"></script>
-</div>
+</div> --}}
         </div>
         
       </div>
@@ -71,8 +71,11 @@
     $('#myModal').modal('toggle');
     $('#myModal2').modal('show').delay(3000);
   });
+  if(screen.width < 481) {
+    document.getElementById("navbarResponsive").classList.add("show");
+  }
 </script>
-<div class="container-fluid"> 
+<div class="container-fluid" style="z-index: 0; position:relative;"> 
     <div class="row">
       <div class="col-sm-12">
         <section id="services">

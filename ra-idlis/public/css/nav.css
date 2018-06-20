@@ -82,7 +82,7 @@
     width: 100%;
   }
   #navbarResponsive {
-    position: absolute; z-index: 10000; left: 0; top: 100%;background: repeating-linear-gradient(to top left, #228B22, #84bd82); width: 100%;
+    position: absolute; z-index: 10000; left: 0; top: 100%;background: repeating-linear-gradient(to top bottom, #228B22, #84bd82); width: 100%;
   }
 }
 @media only screen and (max-width: 729px){
