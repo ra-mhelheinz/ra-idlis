@@ -28,6 +28,7 @@ Route::get('client/inspection2', 'ClientController@inspection2');
 Route::get('client/inspection3', 'ClientController@inspection3');
 Route::get('client/issuance', 'ClientController@issuance');
 Route::post('client/logout', 'ClientController@logout');
+Route::get('client/apply2', 'ClientController@apply2');
 
 Route::get('/LOdashboard', 'LOController@LOdashboard');
 Route::get('/LOprocess', 'LOController@LOprocess');
