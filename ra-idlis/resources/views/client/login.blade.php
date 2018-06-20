@@ -6,7 +6,6 @@
 @extends('main')
 @section('style')
  <link rel="stylesheet" type="text/css" href="ra-idlis/public/css/login.css">
-
 @endsection
 <style type="text/css">
 html, body, #canvasMap{
@@ -118,7 +117,12 @@ html, body, #canvasMap{
 		<div class="row">
 			<div class="col-lg-7" style="margin: 3em auto">
 				<h3>DOH Licensing Process</h3>
-				<br>
+				<form>
+					<div class="input-group">
+						<input type="" name="" class="form-control" placeholder="Search for...">
+						<div class="input-group-prepend"><button type="button" class="btn-defaults" style="background-color: #28A55F;" name=""><i class="fa fa-search" style="color: #fff;"></i></button></div>
+					</div>
+				</form>
 				<div class="row">
 					<div class="col-sm-6">
 						<h4><i class="fa fa-registered"></i>&nbsp;<strong>Step 1.</strong> Registration</h4>
@@ -261,7 +265,7 @@ html, body, #canvasMap{
 					</div>
 						</div>
 					</div>		
-					<div class="col-sm-6" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
+					<div class="col-sm-12" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
 						<div class="input-group">
 							<div class="input-group-text" style="border-radius: 0 ;border-right-style: none;background-color: transparent;padding: 6;"><input type="radio" name="rad" id="rad2" onclick="firstradio([false, true], ['gsearch'])"></div>
 					<input id="rgnID" type="text" class="form-control idis" name="region" placeholder="Region" onchange="loadTbl(['province', 'rgnid', getDataTbl(this.id)], 'prov_list', ['provid', 'provname'], ['provID', 'prov_list'])" autocomplete="off"  style="border-left-style: none;padding-left: 0;" disabled>
@@ -273,7 +277,7 @@ html, body, #canvasMap{
 						@endforeach
 					</select> --}}
 					</div>
-					<div class="col-sm-6" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
+					<div class="col-sm-12" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
 					{{-- <select id="selectProvince4Cm" data-parsley-required-message="<strong>*</strong>Province <strong>Required</strong>" class="form-control" name="province"  required="">
 						<option disabled selected hidden>Province</option>
 					</select> --}}
@@ -289,13 +293,13 @@ html, body, #canvasMap{
 					{{-- <select id="selectbrgy4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Brgy. <strong>Required</strong>" required="">
 						<option disabled selected hidden>Brgy. Name</option>
 					</select> --}}
-					<input id="brgyID" type="text" class="form-control idis" placeholder="Brgy. Name" name="brgy" autocomplete="off" disabled>
+					<input id="brgyID" type="text" class="form-control idis" placeholder="Brgy. Name" name="brgy" autocomplete="off" onchange="" disabled>
 				</div>
 				<div class="col-sm-8" style="margin: 0 0 .8em 0;">
-					<input type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name"   data-parsley-required-message="<strong>*</strong>Street Name <strong>Required</strong>" required="">
+					<input id="strID" type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name"   data-parsley-required-message="<strong>*</strong>Street Name <strong>Required</strong>" required="">
 				</div>
 				<div class="col-sm-4" style="margin: 0 0 .8em 0;">
-					<input id="zipcode" type="text" class="input form-control" name="zipcode" autocomplete="off" placeholder="Zip Code"  required=""  data-parsley-type="digits" data-parsley-maxlength="4" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>">
+					<input id="zipID" type="text" class="input form-control" name="zipcode" autocomplete="off" placeholder="Zip Code"  required=""  data-parsley-type="digits" data-parsley-maxlength="4" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>">
 				</div>
 				<script type="text/javascript">
 					function firstradio(bool,getId){
@@ -333,12 +337,17 @@ html, body, #canvasMap{
 
 
 			          	place = autocomplete.getPlace();
-  						google.maps.event.addDomListener(document.getElementById('gsearch'), 'blur', route);
+  						google.maps.event.addDomListener(document.getElementById('gsearch'), 'click', route);
 
 					    function route() {
+							var dId = [];
+							var data = [];
+							document.getElementById("rgnID").value = "";
+							document.getElementById("provID").value = "";
+							document.getElementById("ctyID").value = "";
+							document.getElementById("brgyID").value = "";
 					    	autocomplete.addListener('place_changed', function() {
 					    		chgLd('gsearch', true);
-								document.getElementById('zipcode').value = "";
 						        place = autocomplete.getPlace();
 						        // if (!place.geometry) {
 						        //   return;
@@ -359,90 +368,54 @@ html, body, #canvasMap{
 						        });
 						        marker.setVisible(true);
 
-							    geocoder.geocode({'placeId': place.place_id}, function(results, status) {
-						            if (status === 'OK') 
-						            {
-						            	arr = [];
-						            	arr2 = [];
-						            	chgLd('gsearch', false);
-						            	arr = results[0]["address_components"];
-						            	if((results[0]["address_components"]).length > 5) {
-						            		if(isNaN(parseInt(arr[arr.length - 1]["short_name"])) == false) {
-						            			document.getElementById('zipcode').value = parseInt(arr[arr.length - 1]["short_name"]);
-						            			arr.pop();
-						            			if(arr[arr.length - 1]["short_name"] == "PH") {
-						            				arr.pop();
-						            				for(var x = 0; x < arr.length; x++) {
-						            					if(((arr[x]['short_name']).toUpperCase()).includes("BRGY") == true) {
-								            				arr2.push(((arr[x]['short_name']).toUpperCase()).replace("BRGY. ", ""));
-								            			} else {
-								            				arr2.push((arr[x]['short_name']).toUpperCase());
-								            			}	
-							            			}
-							            			if(arr2.length < 4) {
-							            				document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
-							            				myFunction();
-									    				document.getElementById('gsearch').value = "";
-							            			} else {
-							            				callBack(arr2);
-							            			}
-						            			} else {
-						            				for(var x = 0; x < arr.length; x++) {
-						            					if(((arr[x]['short_name']).toUpperCase()).includes("BRGY") == true) {
-								            				arr2.push(((arr[x]['short_name']).toUpperCase()).replace("BRGY. ", ""));
-								            			} else {
-								            				arr2.push((arr[x]['short_name']).toUpperCase());
-								            			}	
-							            			}
-							            			if(arr2.length < 4) {
-							            				document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
-							            				myFunction();
-									    				document.getElementById('gsearch').value = "";
-							            			} else {
-							            				callBack(arr2);
-							            			}
-						            			}
-						            			
-						            		}
-						            	} else {
-						            		if(arr[arr.length - 1]["short_name"] == "PH") {
-						            			arr.pop();
-						            			for(var x = 0; x < arr.length; x++) {
-						            				if(((arr[x]['short_name']).toUpperCase()).includes("BRGY") == true) {
-							            				arr2.push(((arr[x]['short_name']).toUpperCase()).replace("BRGY. ", ""));
-							            			} else {
-							            				arr2.push((arr[x]['short_name']).toUpperCase());
-							            			}	
-							            		}
-							            		if(arr2.length < 4) {
-							            			document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
-							            			myFunction();
-									    			document.getElementById('gsearch').value = "";
-							            		} else {
-							            			callBack(arr2);
-							            		}
-						            		} else {
-						            			for(var x = 0; x < arr.length; x++) {
-							            			if(((arr[x]['short_name']).toUpperCase()).includes("BRGY") == true) {
-							            				arr2.push(((arr[x]['short_name']).toUpperCase()).replace("BRGY. ", ""));
-							            			} else {
-							            				arr2.push((arr[x]['short_name']).toUpperCase());
-							            			}						            				
-							            		}
-							            		if(arr2.length < 4) {
-							            			document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
-							            			myFunction();
-									    			document.getElementById('gsearch').value = "";
-							            		} else {
+						        var componentForm = {
+							        street_number: 'strID, short_name',
+							        route: 'strID, short_name',
+							        neighborhood: 'brgyID, short_name',
+							        locality: 'ctyID, short_name',
+							        administrative_area_level_2: 'provID, short_name',
+							        administrative_area_level_1: 'rgnID, short_name',
+							        postal_code: 'zipID, short_name'
+							    };
 
-							            		}
-						            		}
-						            	}
-						            } 
-						            else {
+						        for(var i = 0; i < place.address_components.length; i++) {
+						        	var add_comp = place.address_components[i].types[0];
 
-						            }
-						        });
+						        	if(componentForm[add_comp]) {
+						        		var dcID = componentForm[add_comp].split(", ");
+						        		if(dcID[0] == "zipID" || dcID[0] == "strID") {
+						        			document.getElementById(dcID[0]).value = place.address_components[i][dcID[1]];
+						        		} else {
+						        			dId.unshift(dcID[0]);
+						        			data.unshift(place.address_components[i][dcID[1]]);
+						        		}
+						        	}
+						        }
+
+						   //      if(data.length < 4) {
+						   //      	document.getElementById('gsearch').value = "";
+									// document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
+									// myFunction();
+						   //      } else {
+						        	var col = ["rgn_list", "prov_list", "cty_list", "brgy_list"];
+						        	setInterval(function(){
+							        	for(var i = 0; i < col.length; i++) {
+							        		var val = document.getElementById(col[i]);
+							        		if(dId[i] != null || dId[i] != undefined) {
+							        			if(document.getElementById(dId[i]).value == "") {
+										        	for(var j = 0; j < val.options.length; j++) {
+													    if(((val.options[j].value).toUpperCase()).match(data[i].toUpperCase())) {
+													    	document.getElementById(dId[i]).value = val.options[j].value;
+													    	document.getElementById(dId[i]).onchange();
+													    	break;
+													    }
+									        		}
+								        		}
+								        	}
+							        	}
+						        	}, 1);
+						        	route();
+						        // }
 					        });
 					    }
 					    function chgLd(element, cond) {
@@ -475,11 +448,11 @@ html, body, #canvasMap{
 									    document.getElementById('ctyID').value = (extract[1][0] == undefined) ? "" : extract[1][0]["cmname"];
 									    document.getElementById('provID').value = (extract[2][0] == undefined) ? "" : extract[2][0]["provname"];
 									    document.getElementById('rgnID').value = (extract[3][0] == undefined) ? "" : extract[3][0]["rgn_desc"];
-									    if(extract[0][0] == undefined && extract[1][0] == undefined && extract[2][0] == undefined && extract[3][0] == undefined) {
-									    	document.getElementById('gsearch').value = "";
-									    	document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
-							            	myFunction();
-									    }
+									    // if(extract[0][0] == undefined && extract[1][0] == undefined && extract[2][0] == undefined && extract[3][0] == undefined) {
+									    // 	document.getElementById('gsearch').value = "";
+									    // 	document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
+							      //       	myFunction();
+									    // }
 									    chgLd('brgyID', false);
 									    chgLd('ctyID', false);
 									    chgLd('provID', false);
@@ -497,6 +470,12 @@ html, body, #canvasMap{
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="auth_name" autocomplete="off" placeholder="Authorized Signature" data-parsley-required-message="<strong>*</strong>Authorized Signature <strong>Required</strong>"  required="">
 				</div>
+				{{-- <div class="col-sm-12" style="margin: 0 0 .8em 0;">
+					<input type="text" class="input form-control" name="cel" autocomplete="off" placeholder="Cellphone No." data-parsley-required-message="<strong>*</strong>Cel No. <strong>Required</strong>"  required="">
+				</div>
+				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+					<input type="text" class="input form-control" name="tel" autocomplete="off" placeholder="Telphone No." data-parsley-required-message="<strong>*</strong>Tel No. <strong>Required</strong>"  required="">
+				</div> --}}
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="reg_uname" autocomplete="off" placeholder="Username" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" required="">
 
@@ -549,7 +528,7 @@ html, body, #canvasMap{
 				document.getElementById(dtlist).innerHTML = "";
 				for(var x = 0; x < extract.length; x++) {
 					document.getElementById(dtlist).innerHTML += "<option id='"+extract[x][data[0]]+"' value='"+extract[x][data[1]]+"'>";
-				}
+				} 
 				document.getElementById(dcid[0]).setAttribute("list", dcid[1]);
 			}
 		};
@@ -575,11 +554,11 @@ html, body, #canvasMap{
 	            if (form.parsley().isValid()){
 	                var token = $("#reg_csrf-token").val();
 	                var facility_name = $('input[name="facility_name"]').val();
-	                var region = $('select[name="region"').val();
-	                var province = $('select[name="province"]').val();
-	                var brgy = $('input[name="brgy"]').val();
+	                var region = getDataTbl("rgnID");
+	                var province = getDataTbl("provID");
+	                var brgy = getDataTbl("brgyID");
 	                var strt = $('input[name="street"]').val();
-	                var ctmuni = $('input[name="city_muni"]').val();
+	                var ctmuni = getDataTbl("ctyID");
 	                var zipcode = $('input[name="zipcode"]').val();
 	                var auth_name = $('input[name="auth_name"]').val();
 	                var uname = $('input[name="reg_uname"]').val();
@@ -618,7 +597,7 @@ html, body, #canvasMap{
 			          	} else if (data == 'sameFacility'){
 			          		$('input[name="facility_name"').removeClass('parsley-success');
 			          		$('input[name="facility_name"]').addClass('parsley-error');
-			          	} else {
+			          	} else if (data == 'DONE'){
 			          		window.location.href = "{{asset('/')}}";
 			          	}
 			          }

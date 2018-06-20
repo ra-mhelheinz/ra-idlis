@@ -31,12 +31,26 @@
 <script type="text/javascript">
 	  	document.getElementById('first').style = "color: blue;";
 </script>
-		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-radius: 0;padding: 2rem 2rem;margin-top: 1%;">
+		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-radius: 0;padding: 2rem 2rem;margin-top: 1%;padding-bottom: 7%;">
 			<div class="title"  style="text-align: center;border-bottom: 1px solid green;padding-bottom: 9px;position: relative;margin-bottom: 2%;"> 
-			<h2>APPLICATION FORM</h2>
+			{{-- <h2>APPLICATION FORM</h2>
+			<div class="btn-group" role="group" aria-label="Basic example" style="float: right;">
+			  <button type="button" class="btn btn-secondary"><i class="fa fa-pencil-square-o"></i>Application for change</button>
+			  <button type="button" class="btn btn-secondary"><i class="fa fa-history"></i>Revision of History</button>
+			</div> --}}
+			<div class="row">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4"><h2>APPLICATION FORM</h2></div>
+				<div class="col-sm-4">
+					<div class="btn-group" role="group" aria-label="Basic example">
+					  <button type="button" class="btn-defaults"><i class="fa fa-pencil-square-o"></i></button>
+					  <button type="button" class="btn-defaults"><i class="fa fa-history"></i></button>
+					</div>
+				</div>
 			</div>
-<form id="ApplyFoRm" data-parsley-validate>
-	  <div class="row">
+			</div>
+	<form id="ApplyFoRm" data-parsley-validate>
+	  {{-- <div class="row">
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
 		  		<label style="display:block;"><span >Name of Facility</span></label>
@@ -95,13 +109,13 @@
 	  			<option disabled selected hidden>Status of Application</option>
 	  			@foreach ($aptyps as $aptyp)
 	  				<option value="{{$aptyp->aptid}}">{{$aptyp->aptdesc}}</option>
-	  			@endforeach
-	  			{{-- <option>Initial</option>
-	  			<option>Renewal</option> --}}
+	  			@endforeach 
+	  			<option>Initial</option>
+	  			<option>Renewal</option>
 	  		</select>
 	</div>
-				</div>
-		<div class="text-center">
+				</div> --}}
+{{-- 		<div class="text-center">
 			<a href="{{asset('client/apply/lop')}}"><button type="button" style="background-color: #228B22 !important" class="btn-primarys"><i class="fa fa-list-alt"></i>&nbsp;List of Personnel</button>
 				</a>
 		</div>
@@ -111,7 +125,7 @@
 		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
 			<table class="attachments table table-hover" style="width: 100%;">
 				<tbody id="ApplyTable">
-				</tbody>
+				</tbody> --}}
 				{{-- <tr>
 					<td>Acknowledgement (Notarized) </td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
@@ -141,12 +155,118 @@
 					<td>Photographs of exterior and interior of the Health Facility</td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr> --}}
-				
+{{-- 				
 			</table>
 		</div>
 		</div>
+				</div> --}}
+				<div class="row">
+					<div class="col-sm-12"><div class="input-group">
+							Date:&nbsp;
+						<div class="input-group-prepend" id="date" style="border-bottom: 1px solid #b5c1c9;"></div>
+						</div></div>
+					<script type="text/javascript">
+						var today = new Date();
+						var dd = today.getDate();
+						var mm = today.getMonth()+1; //January is 0!
+						var yyyy = today.getFullYear();
+						if(dd<10) {
+						    dd = '0'+dd
+						} 
+						if(mm<10) {
+						    mm = '0'+mm
+						} 
+						today = mm + '/' + dd + '/' + yyyy;
+						document.getElementById('date').innerHTML = today;
+					</script>
+					<div class="col-sm-12">
+						<div class="input-group">Name of Health Facility/Service:&nbsp;
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->facilityname}}</div>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="input-group">Address:&nbsp;
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} </div>
+						</div>
+					</div>
 				</div>
-</form>
+				<div class="row">
+					<div class="col-sm-5">
+						<div class="input-group">Latest LTO/COA/ATO/COR No.&nbsp;
+						<div class="input-group-prepend"><input type="text" name="" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;"></div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="input-group">Validity Period from &nbsp;
+						<div class="input-group-prepend"><input type="date" name="" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;"></div>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group">to &nbsp;
+						<div class="input-group-prepend"><input type="date" name="" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;"></div>
+						</div></div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="input-group" style="font-size: 14px; ">Tel. Number (HF landline):&nbsp;
+						<div class="input-group-prepend" ></div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="input-group" style="font-size: 14px;margin-top: 2px;">Cellphone No:&nbsp;
+						<div class="input-group-prepend"></div>
+						</div></div>
+					<div class="col-sm-4">
+						<div class="input-group" style="font-size: 14px;margin-top: 2px;">Email Address:&nbsp;
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->email}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="input-group">Owner: &nbsp;
+							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->authorizedsignature}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="input-group">Permit to Construct No. (if applicable):&nbsp;
+							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">asd</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="input-group">Presenting/Existing ABC:&nbsp;
+							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">asd</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="input-group">validity period:&nbsp;
+							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">asd</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="input-group">Type of Health Facility/Service: &nbsp;
+							<div class="input-group-prepend">
+									<select id="HFacility" data-parsley-required-message="<strong>Health Facility</strong> required."  onchange="selectHealthFacility();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;" required>
+							  			<option disabled selected hidden></option>
+									  	@if ($hfaci)
+							  				@foreach ($hfaci as $hfacis)
+								  				<option value="{{$hfacis->hfser_id}}">{{$hfacis->hfser_desc}}</option>
+								  			@endforeach
+							  			@endif
+							  		</select>
+				  			</div>
+						</div>
+					</div>
+				</div>
+				<div id="LTOcontent" class="row">
+				</div>
+		</form>
+</div>	
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="border-radius: 0px;border: none;">
@@ -164,6 +284,7 @@
     </div>
   </div>
 </div>
+
 	<script> 
 $(document).ready(function(){
     $("#flip").click(function(){
@@ -300,4 +421,5 @@ $(document).ready(function(){
 		  }
 		});
 	</script>
+
 @endsection

@@ -2,6 +2,10 @@
  body {
   font: 16px/26px 'Roboto' , sans-serif;   color: #212529;}
   
+  .Gm4th {
+    position: relative;
+    display: -ms-flexbox;
+}
 
      .help-text > a {
         color: #666;
