@@ -181,22 +181,26 @@
 		}
 		public function chngPass(Request $request){
 			 $employeeData = session('employee_login');
-			 $id = $employeeData->uid;
-	   		$data['pass'] = $request->pass;
-	   		$pass = Hash::check('pass', $data['pass']);
+			 $uname  = $employeeData->uid;
+			 $pass= $request->nPass;
+	   		$newpass = Hash::make($request->nPass);
+	   		// $pass = Hash::check('pass', $data['pass']);
 	   		$data = DB::table('x08')
-                   ->where([ ['uid', '=', $id], ['pwd', '=', $pass], ['grpid', '!=', 'C'] ])
-                   ->select('*')
-                   ->first();
+                    ->where([ ['uid', '=', $uname], ['grpid', '!=', 'C'] ])
+                    ->select('*')
+                    ->first();
    			if ($data) {
-   				return 'SamePass';
-   			} else {
-   				$updateData = array('pwd'=>$pass);
-				DB::table('x08')
-					->where('uid', $id)
-					->update($updateData);
-				return 'DONE';
-   			}
+   				$chck = Hash::check($pass, $data->pwd);
+   				if ($chck == true) {
+   					return 'SAMEPASS';
+   				} else {
+   					$updateData = array('pwd'=>$newpass);
+					DB::table('x08')
+						->where('uid', $uname)
+						->update($updateData);
+					return 'DONE';
+   				}
+   			} 
 		}
 		// -------------------- EDIT -------------------- 
 		// -------------------- DELETE --------------------

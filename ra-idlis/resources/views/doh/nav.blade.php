@@ -196,7 +196,13 @@
                 method: 'POST',
                 data : {_token: $('#global-token').val(),nPass:newPass},
                 success : function(data){
-                    console.log(data);
+                   if (data == 'SAMEPASS') {
+                        alert('You inputted your old password.');
+                        $('#new_pass').focus();
+                   } else if (data == 'DONE') {
+                        alert('Successfully changed password');
+                        location.reload();
+                   }
                 }
             });
 
