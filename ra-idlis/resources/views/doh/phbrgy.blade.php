@@ -141,21 +141,21 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit City/Municipality</strong></h5>
+              <h5 class="modal-title text-center"><strong>Edit Barangay</strong></h5>
               <hr>
               <div class="container">
-                <div class="col-sm-4">Name:</div>
-                    <div class="col-sm-12">
-                    <input type="text" id="edit_name" class="form-control"  style="margin:0 0 .8em 0;" required>
-                    </div>
+                    <form id="EditNow" data-parsley-validate>
+                    <span id="EditBody">
+                    </span>
                     <div class="row">
                       <div class="col-sm-6">
-                      <button type="type" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
+                      <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
                     </div> 
                     <div class="col-sm-6">
                       <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
                     </div>
                     </div>
+                  </form>
               </div>
             </div>
           </div>
@@ -164,8 +164,17 @@
     </div>
     <script type="text/javascript">
         function showData(id,desc){
-          $('#edit_name').attr('value',id);
-          $('#edit_desc').attr('value',desc);
+          $('#EditBody').empty();
+          $('#EditBody').append(
+              '<div class="col-sm-4">ID:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<input type="text" id="edit_name" value="'+desc+'" class="form-control disabled" disabled>' +
+              '</div>' +
+              '<div class="col-sm-4">Name:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<input type="text" id="edit_desc" value="'+id+'" data-parsley-required-message="<strong>*</strong>Name  <strong>Required</strong>" placeholder="'+id+'" class="form-control" required>' +
+              '</div>' 
+            );
         }
         function filterGroup(){
         var id = $('#filterer').val();
@@ -265,17 +274,18 @@
                 var test = $.inArray(CM_name,arr);
                 if (test == -1) { // Not in Array
                     $.ajax({
-                      url: "{{asset('/employee/dashboard/ph/citymuni')}}",
+                      url: "{{asset('/employee/dashboard/ph/barangay')}}",
                       method: 'POST',
                       data: {
                         _token : $('#token').val(),
-                        id: $('#InsertProvHere').val(),
+                        id: $('#InsertCMHere').val(),
                         name : $('#CM_name').val(),
+                        mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {
-                            alert('Successfully Added New City/Municipality');
-                            window.location.href = "{{asset('/employee/dashboard/ph/citymuni')}}";
+                            alert('Successfully Added New Barangay');
+                            window.location.href = "{{asset('/employee/dashboard/ph/barangay')}}";
                         }
                       }
                   });
@@ -284,6 +294,26 @@
                   $('#CM_name').focus();
                 }
             }
+        });
+        $('#EditNow').on('submit',function(event){
+          event.preventDefault();
+            var form = $(this);
+            form.parsley().validate();
+             if (form.parsley().isValid()) {
+               var x = $('#edit_name').val();
+               var y = $('#edit_desc').val();
+               $.ajax({
+                  url: "{{ asset('/mf/save_phBarangay') }}",
+                  method: 'POST',
+                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
+                  success: function(data){
+                      if (data == "DONE") {
+                          alert('Successfully Edited Barangay');
+                          window.location.href = "{{ asset('/employee/dashboard/ph/barangay') }}";
+                      }
+                  }
+               });
+             }
         }); 
     </script>
 @endsection
