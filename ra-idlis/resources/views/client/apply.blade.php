@@ -28,6 +28,15 @@
 		@endforeach
 	</datalist>
 @endforeach
+@foreach ($hfaci as $hfacis)
+	<datalist  id="{{$hfacis->hfser_id}}_hfst">
+		@foreach ($fatypes as $fatype)
+			@if ($fatype->hfser_id == $hfacis->hfser_id)
+				<option value="{{$fatype->facname}}">{{$fatype->facid}}</option>
+			@endif
+		@endforeach
+	</datalist>
+@endforeach
 <script type="text/javascript">
 	  	document.getElementById('first').style = "color: blue;";
 </script>
@@ -248,16 +257,26 @@
 				</div>
 				<hr>
 				<div class="row">
-					<div class="col-sm-12">
+					<div class="col-sm-6">
 						<div class="input-group">Type of Health Facility/Service: &nbsp;
 							<div class="input-group-prepend">
-									<select id="HFacility" data-parsley-required-message="<strong>Health Facility</strong> required."  onchange="selectHealthFacility();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;" required>
+									<select id="HFacility" data-parsley-required-message="<strong>Health Facility Type</strong> required."  onchange="selectHealthFacility();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;" required>
 							  			<option disabled selected hidden></option>
 									  	@if ($hfaci)
 							  				@foreach ($hfaci as $hfacis)
 								  				<option value="{{$hfacis->hfser_id}}">{{$hfacis->hfser_desc}}</option>
 								  			@endforeach
 							  			@endif
+							  		</select>
+				  			</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group">Health Facility/Service: &nbsp;
+							<div class="input-group-prepend">
+									<select id="HealFaServ" data-parsley-required-message="<strong>Health Facility Type</strong> required."  onchange="CheckifHos();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;" required>
+							  			<option disabled selected hidden></option>
+									  	
 							  		</select>
 				  			</div>
 						</div>
@@ -308,53 +327,63 @@ $(document).ready(function(){
 			var selected = $('#HFacility').children(":selected").text();
 			var selectedVal = $('#HFacility').children(":selected").val();
 			var token = $('#global-token').val();
-			if (selected == "Hospital") {
-					$('#ServiceSpan').append(
-							'<div class="form-group">' +
-								'<select style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .55rem .75rem;width: 100%;" required>' +
-									'<option  disabled selected hidden>Services</option>' +
-									'<option>Clinical Services for In-Patients</option>' +
-									'<option>Ancillary Services</option>' +
-								'</select>' +
-							'</div>'
-						);
-			} else {
-				$('#ServiceSpan').empty();
+			var GetNames = $('#'+selectedVal+'_hfst option').map(function() {return $(this).val();}).get();
+			var Get_Ids = $('#'+selectedVal+'_hfst option').map(function() {return $(this).text();}).get();
+			$('#HealFaServ').empty();
+			$('#HealFaServ').append('<option disabled selected hidden></option>');
+			for (var i = 0; i < Get_Ids.length; i++) {
+				var id = Get_Ids[i],selectedText = GetNames[i];
+				$('#HealFaServ').append(
+						'<option id="'+id+'_healServ">'+selectedText+'</option>'
+					);
 			}
-			$.ajax({
-				url: '{{ asset('mf/getUploads') }}',
-				method: 'POST',
-				data: {_token:token,id:selectedVal},
-				success: function(data){
-					$('#ApplyTable').empty();
-					if (data!="NO") {
-						$('#ApplyTable').append('<tr><td colspan="2"><center><p><strong>Note: </strong>File should be not larger than 2 MB</p></td><center></tr>');
-						for (var i = 0; i < data.length; i++) {
-								var d = data[i];
-								$('#ApplyTable').append(
-										'<tr>' +
-											'<td>'+d.updesc+'<span style="color:red">*</span></td>' +
-											// '<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>' +
-											'<td><input name="'+d.upid+'" data-parsley-required-message="File required for assessment." data-parsley-max-file-size="22.5" data-parsley-trigger="change" class="form-control-file" type="file" required>' +
-											'</td>' +
-										'</tr>'
-									);
-						}
-						$('#ApplyTable').append(
-								'<tr>' +
-									'<td colspan="2" class="text-center"><button style="background-color: #228B22 !important" type="submit" class="btn-primarys"  {{-- data-toggle="modal" data-target="#exampleModalCenter" --}}>Submit</button></td>' +
-								'</tr>' +
-								'<tr>' +
-									'<td>Copy of OR for Application fee</td>' +
-									// '<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>' +
-									'<td><input class="form-control-file" type="file"></td>' +
-								'</tr>'
-							);
-					} else {
+			// if (selected == "Hospital") {
+			// 		$('#ServiceSpan').append(
+			// 				'<div class="form-group">' +
+			// 					'<select style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .55rem .75rem;width: 100%;" required>' +
+			// 						'<option  disabled selected hidden>Services</option>' +
+			// 						'<option>Clinical Services for In-Patients</option>' +
+			// 						'<option>Ancillary Services</option>' +
+			// 					'</select>' +
+			// 				'</div>'
+			// 			);
+			// } else {
+			// 	$('#ServiceSpan').empty();
+			// }
+			// $.ajax({
+			// 	url: '{{ asset('mf/getUploads') }}',
+			// 	method: 'POST',
+			// 	data: {_token:token,id:selectedVal},
+			// 	success: function(data){
+			// 		$('#ApplyTable').empty();
+			// 		if (data!="NO") {
+			// 			$('#ApplyTable').append('<tr><td colspan="2"><center><p><strong>Note: </strong>File should be not larger than 2 MB</p></td><center></tr>');
+			// 			for (var i = 0; i < data.length; i++) {
+			// 					var d = data[i];
+			// 					$('#ApplyTable').append(
+			// 							'<tr>' +
+			// 								'<td>'+d.updesc+'<span style="color:red">*</span></td>' +
+			// 								// '<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>' +
+			// 								'<td><input name="'+d.upid+'" data-parsley-required-message="File required for assessment." data-parsley-max-file-size="22.5" data-parsley-trigger="change" class="form-control-file" type="file" required>' +
+			// 								'</td>' +
+			// 							'</tr>'
+			// 						);
+			// 			}
+			// 			$('#ApplyTable').append(
+			// 					'<tr>' +
+			// 						'<td colspan="2" class="text-center"><button style="background-color: #228B22 !important" type="submit" class="btn-primarys"  {{-- data-toggle="modal" data-target="#exampleModalCenter" --}}>Submit</button></td>' +
+			// 					'</tr>' +
+			// 					'<tr>' +
+			// 						'<td>Copy of OR for Application fee</td>' +
+			// 						// '<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>' +
+			// 						'<td><input class="form-control-file" type="file"></td>' +
+			// 					'</tr>'
+			// 				);
+			// 		} else {
 
-					}
-				}
-			});
+			// 		}
+			// 	}
+			// });
 		}
 		function ClassOwner(){
 			if(document.getElementById('Class2Owner').selectedIndex < 1) {
@@ -405,21 +434,21 @@ $(document).ready(function(){
 			// 					}
 			// 				}
 			// 			}
-	window.Parsley.addValidator('maxFileSize', {
-		  validateString: function(_value, maxSize, parsleyInstance) {
-		    if (!window.FormData) {
-		      alert('You are making all developpers in the world cringe. Upgrade your browser!');
-		      return true;
-		    }
-		    var files = parsleyInstance.$element[0].files;
-		    return files.length != 1  || files[0].size <= (maxSize * 1024)*1024;
-		  },
-		  requirementType: 'integer',
-		  messages: {
-		  	// %s
-		    en: '<span style="color:red">This file should not be larger than 2 MB</span>',
-		  }
-		});
+	// window.Parsley.addValidator('maxFileSize', {
+	// 	  validateString: function(_value, maxSize, parsleyInstance) {
+	// 	    if (!window.FormData) {
+	// 	      alert('You are making all developpers in the world cringe. Upgrade your browser!');
+	// 	      return true;
+	// 	    }
+	// 	    var files = parsleyInstance.$element[0].files;
+	// 	    return files.length != 1  || files[0].size <= (maxSize * 1024)*1024;
+	// 	  },
+	// 	  requirementType: 'integer',
+	// 	  messages: {
+	// 	  	// %s
+	// 	    en: '<span style="color:red">This file should not be larger than 2 MB</span>',
+	// 	  }
+	// 	});
 	</script>
 
 @endsection
