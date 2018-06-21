@@ -59,6 +59,7 @@
             data: {_token:token,FilterDate:SelectedDate},
             success: function(data){
               if (data != 'NO') {
+                 $('#FilterdBody').empty();
                   for (var i = 0; i < data.length; i++) {
                       var d = data[i], action = '';
                       if (d.act == 'ad_d') {
@@ -68,7 +69,6 @@
                       } else if (d.act == 'del') {
                         action = '<strong><span style="color:red">Deleted an entry</span></strong>';
                       }
-
                       $('#FilterdBody').append(
                           '<tr>' +
                               '<td>'+ d.formattedTime +'</td>' +

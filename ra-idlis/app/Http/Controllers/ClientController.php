@@ -119,7 +119,7 @@ class ClientController extends Controller
         $ownsh = DB::table('ownership')->get();
         $aptyp = DB::table('apptype')->get();
         $clss = DB::table('class')->get();
-          $hfaci = DB::table('hfaci_serv_type')->get();
+        $hfaci = DB::table('hfaci_serv_type')->get();
      		return view('client.apply', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     	}
     }

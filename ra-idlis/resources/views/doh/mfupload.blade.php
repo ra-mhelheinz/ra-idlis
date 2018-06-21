@@ -5,10 +5,19 @@
 @section('content')
   <input type="text" id="CurrentPage" value="MA11" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @foreach ($facility as $facilitys)
-   <datalist id="{{$facilitys->facid}}_list">
+  @foreach ($hfsts as $hfst)
+   <datalist id="{{$hfst->hfser_id}}_hfst">
+     @foreach ($facilitys as $facility)
+        @if ($facility->hfser_id == $hfst->hfser_id)
+          <option data-id="{{$facility->facid}}" id="{{$facility->facid}}_heafaserv">{{$facility->facname}}</option>
+        @endif
+     @endforeach
+   </datalist>
+  @endforeach
+  @foreach ($facilitys as $facility)
+   <datalist id="{{$facility->facid}}_list">
      @foreach ($uploads as $upload)
-       @if ($facilitys->facid == $upload->facid)
+       @if ($facility->facid == $upload->facid)
           <option id="{{$upload->upid}}_pro" value="{{$upload->upid}}">{{$upload->updesc}}</option>
        @endif
      @endforeach
@@ -22,15 +31,18 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Uploads <a href="#" title="Add New Province" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Uploads <a href="#" title="Add New Uploads" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            <div style="float:right;display: inline-block;">
             <form class="form-inline">
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
-                <option value="">Select Facility Type ...</option>
-                @foreach ($facility as $facilitys)
-                  <option value="{{$facilitys->facid}}">{{$facilitys->facname}}</option>
+                <option value="">Select Health Facility/Service Type ...</option>
+                @foreach ($hfsts as $hfst)
+                  <option value="{{$hfst->hfser_id}}">{{$hfst->hfser_desc}}</option>
                 @endforeach
+              </select>&nbsp;
+              <select style="width: auto;" class="form-control" id="filterer2" onchange="filterGroup2()">
+                <option value="">Select Health Facility/Service ...</option>
               </select>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
@@ -61,13 +73,22 @@
                 <div class="container">
                   <form class="row" id="addCls" data-parsley-validate>
                     {{ csrf_field() }}
-                    <div class="col-sm-4">Facility Type:</div>
+                    <div class="col-sm-4">Health Facility/Service Type:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                      <select id="FACID" data-parsley-required-message="*<strong>Facility Type</strong> required" class="form-control" required>  
-                          <option value="">Select Facility ...</option>
-                          @foreach ($facility as $facilitys)
-                            <option value="{{$facilitys->facid}}">{{$facilitys->facname}}</option>
+                      <select id="FATYPE" onchange="filterGroup3();" data-parsley-required-message="*<strong>Health Facility/Servce Type</strong> required" class="form-control" required>
+                          <option value="">Select Health Facility/Service Type ...</option>
+                          @foreach ($hfsts as $hfst)
+                            <option value="{{$hfst->hfser_id}}">{{$hfst->hfser_desc}}</option>
                           @endforeach
+                      </select>
+                    </div>
+                    <div class="col-sm-4">Facility/Service:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <select id="FACID" data-parsley-required-message="*<strong>Facility/Service</strong> required" class="form-control" required>  
+                          <option value="">Select Facility/Service ...</option>
+                          {{-- @foreach ($facility as $facilitys)
+                            <option value="{{$facilitys->facid}}">{{$facilitys->facname}}</option>
+                          @endforeach --}}
                       </select>
                     </div>
                     {{-- <div class="col-sm-4">ID:</div>
@@ -151,9 +172,32 @@
             );
         }
         function filterGroup(){
-        var id = $('#filterer').val();
+          var id = $('#filterer').val();
+          var x = $('#'+id+'_hfst option').map(function() {return $(this).attr('data-id');}).get();
+          var d = $('#'+id+'_hfst option').map(function() {return $(this).val();}).get();
+          $('#filterer2').empty();
+          $('#filterer2').append('<option value="">Select Health Facility/Service ...</option>');
+          for (var i = 0; i < x.length; i++) {
+            var selectedID = x[i]; selectedText = d[i];
+             $('#filterer2').append('<option value="'+selectedID+'">'+selectedText+'</option>');
+          }
+        }
+        function filterGroup3(){
+          var id = $('#FATYPE').val();
+          var x = $('#'+id+'_hfst option').map(function() {return $(this).attr('data-id');}).get();
+          var d = $('#'+id+'_hfst option').map(function() {return $(this).val();}).get();
+          $('#FACID').empty();
+          $('#FACID').append('<option value="">Select Health Facility/Service ...</option>');
+          for (var i = 0; i < x.length; i++) {
+            var selectedID = x[i]; selectedText = d[i];
+             $('#FACID').append('<option value="'+selectedID+'">'+selectedText+'</option>');
+          }
+        }
+        function filterGroup2(){
+        var id = $('#filterer2').val();
         var token = $('#token').val();
         var x = $('#'+id+'_list option').map(function() {return $(this).val();}).get();
+        console.log(id);
         $('#FilterdBody').empty();
         // $('#FilterdBody').append('<option value="">Select Province ...</option>');
           for (var i = 0; i < x.length; i++) {
