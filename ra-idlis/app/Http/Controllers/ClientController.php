@@ -56,6 +56,8 @@ class ClientController extends Controller
           $data['city_muni'] = $request->city_muni;
           $data['zip'] = $request->zipcode;
           $data['authorized'] = $request->auth_name;
+          $data['tel'] = $request->tel;
+          $data['cel'] = $request->cel;
           $data['uname'] = strtoupper($request->uname);
           $data['pass'] = Hash::make($request->pass2);
           $data['email'] = $request->email;
@@ -90,9 +92,10 @@ class ClientController extends Controller
                     'city_muni' => $data['city_muni'],
                     'zipcode' => $data['zip'],
                     'contactperson' => $data['contact_p'],
-                    'contactpersonno' => $data['contact_pno'],
+                    'contactpersonno' => $data['contact_pno'].",".$data['cel'],
                     'email' => $data['email'],
                     'authorizedsignature' => $data['authorized'],
+                    'contact' => $data['tel'],
                     'ipaddress' => $data['ip'],
                     't_date' => $dateNow,
                     't_time' =>$timeNow,

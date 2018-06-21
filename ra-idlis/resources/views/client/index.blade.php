@@ -82,7 +82,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-3 col-md-12 col-lg-3">
-             <div class="card">
+             <div class="card introjs-showElement introjs-relativePosition"  data-intro="Announcements<br><small>Here is where new Announcements can be found.</small>" data-step="3" >
             <h5 class="card-header">Announcements</h5>
             <div class="cardb" style="max-height: 100%;padding: 1.25rem;flex: 1 1 auto;">
               <form>
@@ -93,22 +93,23 @@
               </form>
             </div>
           </div>
-          <div class="text-center">
+          <div class="text-center introjs-showElement introjs-relativePosition" data-intro="Hello world! I'm Intro.js" data-step="8">
               <img src="{{asset('ra-idlis/public/img/FAQ.png')}}">
           </div>
           </div>
           <div  class="col-sm-9 col-md-12 col-lg-9">
             <div class="row">
-          <div class="col-lg-6">
-            <div class="box wow fadeInLeft" id="textSample">
+          <div class="col-lg-6 introjs-showElement introjs-relativePosition">
+            <div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="4" >
               <div class="icon"><i class="fa fa-edit"></i></div>
               <h4 class="title"><a href="{{asset('client/apply')}}">Step 1. Apply</a></h4>
               <p class="description">Fill-in application form and submit requirements online.</p>
             </div>
           </div>
 
-          <div class="col-lg-6">
-            <div class="box wow fadeInRight">
+          <div class="col-lg-6 introjs-showElement introjs-relativePosition">
+            
+            <div class="box wow fadeInRight" data-intro="Step 2 <br><b>Evaluate</b><br><small>After submitting the application form, you'll have to wait for your application to be evaluated. Click the 'View your evaluation status' link to view your evaluation status</small>" data-step="5">
               <div class="icon"><i class="fa fa-check"></i></div>
               <h4 class="title"><a href="{{asset('client/evaluate')}}">Step 2. Evaluate</a></h4>
               <p class="description">DOH will evaluate your submitted documents and notify your schedule of inspection.</p>
@@ -116,16 +117,16 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
-            <div class="box wow fadeInLeft" data-wow-delay="0.2s">
+          <div class="col-lg-6 introjs-showElement introjs-relativePosition">
+            <div class="box wow fadeInLeft" data-intro="Step 3 <br><b>Inspection</b><br><small>After evaluating your application, DOH will then Inspect the application for approval to be issued</small>" data-step="6">
               <div class="icon"><i class="fa fa-search"></i></div>
               <h4 class="title"><a href="{{asset('client/inspection')}}">Step 3. Inspection</a></h4>
               <p class="description">DOH will conduct inspection and notify the status of your application.</p>
             </div>
           </div>
 
-          <div class="col-lg-6">
-            <div class="box wow fadeInRight" data-wow-delay="0.2s">
+          <div class="col-lg-6 introjs-showElement introjs-relativePosition">
+            <div class="box wow fadeInRight"  data-intro="Step 4 <br><b>Issuance</b><br><small>After evaluating and inspection, the application is good for Issuance</small>" data-step="7">
               <div class="icon"><i class="fa fa-print"></i></div>
               <h4 class="title"><a href="{{asset('client/issuance')}}">Step 4. Issuance</a></h4>
               <p class="description">You can now print your application online.</p>
