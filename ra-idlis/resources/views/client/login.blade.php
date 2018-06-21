@@ -147,7 +147,7 @@ html, body, #canvasMap{
 	<div class="form-wrapss">
 		<div class="tabss">
 			<h3 class="login-tab"><a class="active" href="#login-tab-content">Login</a></h3>
-			<h3 class="signup-tab"><a  href="#signup-tab-content">Sign Up</a></h3>
+			<h3 class="signup-tab" onclick="introJs().start();"><a  href="#signup-tab-content" >Sign Up</a></h3>
 		</div><!--.tabs-->
 		<div class="tabss-content" >
 			<div id="login-tab-content" class="active">
@@ -241,7 +241,7 @@ html, body, #canvasMap{
 						<h5>Address</h5>
 					</div>
 					<div class="col-sm-12" style="margin: 0 0 .8em 0;" onclick="firstradio([true, false], ['rgnID', 'provID', 'ctyID', 'brgyID'])">
-						<div class="input-group">
+						<div class="input-group introjs-showElement introjs-relativePosition"  data-intro="<img src='{{asset('ra-idlis/public/img/address.gif')}}' style='width: 100%;'>" data-step="1">
 							<div class="input-group-text" style="border-radius: 0 ;border-right-style: none;background-color: transparent;padding: 6;"><input type="radio" name="rad" id="rad1" onclick="firstradio([true, false], ['rgnID', 'provID', 'ctyID', 'brgyID'])"></div>
 						<input type="text" id="gsearch" class="form-control" name="regionadd" placeholder="Address (Barangay/City/Province/Region)" style="border-left-style: none;padding-left: 0;"	disabled>
 
@@ -308,7 +308,7 @@ html, body, #canvasMap{
 							document.getElementsByClassName('idis')[x].disabled = bool[0];
 						}
 						for(var x = 0; x < getId.length; x++) {
-							document.getElementById(getId[x]).value = "";
+							// document.getElementById(getId[x]).value = "";
 						}
 						document.getElementById('rad1').checked = bool[0];
 						document.getElementById('rad2').checked = bool[1];
@@ -470,12 +470,12 @@ html, body, #canvasMap{
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="auth_name" autocomplete="off" placeholder="Authorized Signature" data-parsley-required-message="<strong>*</strong>Authorized Signature <strong>Required</strong>"  required="">
 				</div>
-				{{-- <div class="col-sm-12" style="margin: 0 0 .8em 0;">
+				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="cel" autocomplete="off" placeholder="Cellphone No." data-parsley-required-message="<strong>*</strong>Cel No. <strong>Required</strong>"  required="">
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="tel" autocomplete="off" placeholder="Telphone No." data-parsley-required-message="<strong>*</strong>Tel No. <strong>Required</strong>"  required="">
-				</div> --}}
+				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="reg_uname" autocomplete="off" placeholder="Username" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" required="">
 
@@ -566,6 +566,9 @@ html, body, #canvasMap{
 	                var email = $('input[name="email"]').val();
 	                var contact_p = $('input[name="contact_p"]').val();
 	                var contact_pno = $('input[name="contact_pno"]').val();
+	                var cel = $('input[name="cel"]').val();
+	                var tel = $('input[name="tel"]').val();
+
 	               $.ajax({
 			          url: " {{asset('/register')}}",
 			          method: 'POST',
@@ -584,6 +587,8 @@ html, body, #canvasMap{
 			          	email : email,
 			          	contact_p : contact_p,
 			          	contact_pno : contact_pno,
+			          	cel : cel,
+			          	tel : tel
 			          },
 			          success: function(data) {
 			          	if (data == 'same') {
