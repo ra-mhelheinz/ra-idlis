@@ -18,7 +18,7 @@
 				padding: 1em;
 			}
 </style>
-@include('client.breadcrumb')
+{{-- @include('client.breadcrumb')
 @foreach ($ownshs as $ownsh)
 	<datalist id="{{$ownsh->ocid}}_owlist">
 		@foreach ($clss as $cls)
@@ -36,7 +36,7 @@
 			@endif
 		@endforeach
 	</datalist>
-@endforeach
+@endforeach --}}
 <script type="text/javascript">
 	  	document.getElementById('first').style = "color: blue;";
 </script>
@@ -49,7 +49,7 @@
 			</div> --}}
 			<div class="row">
 				<div class="col-sm-4"></div>
-				<div class="col-sm-4"><h2>APPLICATION FORM</h2></div>
+				<div class="col-sm-4"><h2>Certificate of Need for New General Hospitals</h2></div>
 				<div class="col-sm-4">
 					<div class="btn-group" role="group" aria-label="Basic example">
 					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn-defaults">CON</button></a>
@@ -171,7 +171,7 @@
 		</div>
 		</div>
 				</div> --}}
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-sm-12"><div class="input-group">
 							Date:&nbsp;
 						<div class="input-group-prepend" id="date" style="border-bottom: 1px solid #b5c1c9;"></div>
@@ -192,12 +192,12 @@
 					</script>
 					<div class="col-sm-12">
 						<div class="input-group">Name of Health Facility/Service:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->facilityname}}</div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->facilityname} --}}</div>
 						</div>
 					</div>
 					<div class="col-sm-12">
 						<div class="input-group">Address:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} </div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} --}} </div>
 						</div>
 					</div>
 				</div>
@@ -229,14 +229,14 @@
 						</div></div>
 					<div class="col-sm-4">
 						<div class="input-group" style="font-size: 14px;margin-top: 2px;">Email Address:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->email}}</div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->email}} --}}</div>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="input-group">Owner: &nbsp;
-							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->authorizedsignature}}</div>
+							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->authorizedsignature}} --}}</div>
 						</div>
 					</div>
 				</div>
@@ -264,11 +264,11 @@
 							<div class="input-group-prepend">
 									<select id="HFacility" data-parsley-required-message="<strong>Health Facility Type</strong> required."  onchange="selectHealthFacility();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;" required>
 							  			<option disabled selected hidden></option>
-									  	@if ($hfaci)
+									  	{{-- @if ($hfaci)
 							  				@foreach ($hfaci as $hfacis)
 								  				<option value="{{$hfacis->hfser_id}}">{{$hfacis->hfser_desc}}</option>
 								  			@endforeach
-							  			@endif
+							  			@endif --}}
 							  		</select>
 				  			</div>
 						</div>
@@ -285,7 +285,182 @@
 					</div>
 				</div>
 				<div id="LTOcontent" class="row">
+				</div> -->
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-3">
+							Name of Proposed Hospital:
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<center><strong>{{$clientData->facilityname}}</strong></center>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-4">
+							Complete Address of Proposed Hospital:
+						</div>
+						<div class="col-sm-8" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+						<center>
+							{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}} -  {{$clientData->rgn_desc}}
+						</center>
+							{{--< div class="row">
+								<div class="col-sm-4"><center>{{$clientData->streetname}}</center></div>
+								<div class="col-sm-4"><center>{{$clientData->barangay}}</center></div>
+							</div> --}}
+						</div>
+					</div>
+					{{-- <div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9">
+							<div class="row">
+								<div class="col-sm-2"><center>Number</center></div>
+								<div class="col-sm-2"><center>Street</center></div>
+								<div class="col-sm-2"><center>Barangay</center></div>
+							</div>
+						</div>
+					</div> --}}
+					<br>
+					{{-- <div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<div class="row">
+								<div class="col-sm-6"><center>{{$clientData->city_muni}}</center></div>
+								<div class="col-sm-4"><center>{{$clientData->rgn_desc}}</center></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9">
+							<div class="row">
+								<div class="col-sm-6"><center>City/Municipality</center></div>
+								<div class="col-sm-4"><center>Region</center></div>
+							</div>
+						</div>
+					</div> --}}
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Name of Proponent:
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<center>{{$clientData->authorizedsignature}}<center>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Address of Proponent: 
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<center>{{$clientData->email}}<center>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Contact Number: 
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<center>{{$clientData->contact}}<center>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Classification According to: 
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								{{-- <div class="col-sm-3">Ownership:</div> --}}
+								{{-- @foreach ($ownshs as $ownsh)
+									<div class="col-sm-4"><input class="form-check-input" type="checkbox" name=""> {{$ownsh->ocdesc}}</div>
+								@endforeach --}}
+								{{-- 
+								<div class="col-sm-4"><center>Barangay</center></div> --}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4">
+							Ownership:
+						</div>
+						<div class="col-sm-8" >
+							Service Capability:
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4" style="margin-left:2px">
+							<input class="form-check-input" type="checkbox" name=""> Government
+						</div>
+						<div class="col-sm-6" >
+							<div class="row">
+								<div class="col-sm-2"><input class="form-check-input" type="checkbox" name=""> Level 1</div>
+								<div class="col-sm-2"><input class="form-check-input" type="checkbox" name=""> Level 2</div>
+								<div class="col-sm-2"><input class="form-check-input" type="checkbox" name=""> Level 3</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4" style="margin-left:2px">
+							<input class="form-check-input" type="checkbox" name=""> Private
+						</div>
+						<div class="col-sm-6" >
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-6" style="margin-left:2px">
+							Total Capital Investment for the Proposed Hospital:
+						</div>
+						&#8369;
+						<div class="col-sm-5" >
+							<input type="text" class="form-control" name="">
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-6" style="margin-left:2px">
+							Total Lot Area of the Proposed Site:
+						</div>
+						&nbsp;&nbsp;&nbsp; 
+						<div class="col-sm-5" >
+							<input type="text" class="form-control" name="">
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-6">Proposed Total Bed Capacity
+						</div>
+						&nbsp;&nbsp;&nbsp; 
+						<div class="col-sm-5" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+							<input type="text" class="form-control" name="">
+						</div>
+					</div>
+					<br>
+					<br>
+					<br>
+					{{-- <div class="row"><div class="col-sm-12">Attachment: (incomplete attachment shall be a ground for the denial of this application)</div></div> --}}
+					{{-- <div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show CHECKLIST OF DOCUMENTS:</div>
+		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
+			<table class="attachments table table-hover" style="width: 100%;">
+				<tbody id="ApplyTable">
+				</tbody>
+				<tr>
+					<td></td>
+					<td></td>				
+				</tr>					
+			</table>
+		</div> --}}
+		{{-- <div class="col-sm-12">&nbsp;&nbsp;&nbsp;I hereby declare  that this Application  has been accomplished  by me, and that the foregoing  information  and attached documents required for the permit to construct are true and correct.</div> --}}
+		<center><button style="background-color: #228B22 !important" type="submit" class="btn-primarys"  {{-- data-toggle="modal" data-target="#exampleModalCenter" --}}>Submit</button></center>
+		</div>
 				</div>
+			</div>
 		</form>
 </div>	
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

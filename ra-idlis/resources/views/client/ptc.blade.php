@@ -18,7 +18,7 @@
 				padding: 1em;
 			}
 </style>
-@include('client.breadcrumb')
+{{-- @include('client.breadcrumb')
 @foreach ($ownshs as $ownsh)
 	<datalist id="{{$ownsh->ocid}}_owlist">
 		@foreach ($clss as $cls)
@@ -36,7 +36,7 @@
 			@endif
 		@endforeach
 	</datalist>
-@endforeach
+@endforeach --}}
 <script type="text/javascript">
 	  	document.getElementById('first').style = "color: blue;";
 </script>
@@ -49,7 +49,7 @@
 			</div> --}}
 			<div class="row">
 				<div class="col-sm-4"></div>
-				<div class="col-sm-4"><h2>APPLICATION FORM</h2></div>
+				<div class="col-sm-4"><h2>Permit to Construct</h2></div>
 				<div class="col-sm-4">
 					<div class="btn-group" role="group" aria-label="Basic example">
 					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn-defaults">CON</button></a>
@@ -171,7 +171,7 @@
 		</div>
 		</div>
 				</div> --}}
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-sm-12"><div class="input-group">
 							Date:&nbsp;
 						<div class="input-group-prepend" id="date" style="border-bottom: 1px solid #b5c1c9;"></div>
@@ -192,12 +192,12 @@
 					</script>
 					<div class="col-sm-12">
 						<div class="input-group">Name of Health Facility/Service:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->facilityname}}</div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->facilityname} --}}</div>
 						</div>
 					</div>
 					<div class="col-sm-12">
 						<div class="input-group">Address:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} </div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} --}} </div>
 						</div>
 					</div>
 				</div>
@@ -229,14 +229,14 @@
 						</div></div>
 					<div class="col-sm-4">
 						<div class="input-group" style="font-size: 14px;margin-top: 2px;">Email Address:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->email}}</div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->email}} --}}</div>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="input-group">Owner: &nbsp;
-							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->authorizedsignature}}</div>
+							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->authorizedsignature}} --}}</div>
 						</div>
 					</div>
 				</div>
@@ -264,11 +264,11 @@
 							<div class="input-group-prepend">
 									<select id="HFacility" data-parsley-required-message="<strong>Health Facility Type</strong> required."  onchange="selectHealthFacility();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;" required>
 							  			<option disabled selected hidden></option>
-									  	@if ($hfaci)
+									  	{{-- @if ($hfaci)
 							  				@foreach ($hfaci as $hfacis)
 								  				<option value="{{$hfacis->hfser_id}}">{{$hfacis->hfser_desc}}</option>
 								  			@endforeach
-							  			@endif
+							  			@endif --}}
 							  		</select>
 				  			</div>
 						</div>
@@ -285,7 +285,361 @@
 					</div>
 				</div>
 				<div id="LTOcontent" class="row">
+				</div> -->
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-3">
+							Name of Facility:
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<center><strong>{{$clientData->facilityname}}</strong></center>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Address of Health Facility:
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<div class="row">
+								<div class="col-sm-8"><center>{{$clientData->streetname}}</center></div>
+								<div class="col-sm-4"><center>{{$clientData->barangay}}</center></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9">
+							<div class="row">
+								<div class="col-sm-4"><center>Number</center></div>
+								<div class="col-sm-4"><center>Street</center></div>
+								<div class="col-sm-4"><center>Barangay</center></div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<div class="row">
+								<div class="col-sm-6"><center>{{$clientData->city_muni}}</center></div>
+								<div class="col-sm-4"><center>{{$clientData->rgn_desc}}</center></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9">
+							<div class="row">
+								<div class="col-sm-6"><center>City/Municipality</center></div>
+								<div class="col-sm-4"><center>Region</center></div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Name of Applicant:
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<center>{{$clientData->authorizedsignature}}<center>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9">
+							<center>Owner/ Head of Health Facility </center>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Mailing Address: 
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<center>{{$clientData->email}}<center>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Contact Number: 
+						</div>
+						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
+							<center>{{$clientData->contact}}<center>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Classification According to: 
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-3">Ownership:</div>
+								@foreach ($ownshs as $ownsh)
+									<div class="col-sm-4"><input class="form-check-input" type="checkbox" name=""> {{$ownsh->ocdesc}}</div>
+								@endforeach
+								{{-- 
+								<div class="col-sm-4"><center>Barangay</center></div> --}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-2">Capability:</div>
+								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Ambulatory Surgical Clinic </div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Birthing Home</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Dialysis Clinic</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Drug Testing Laboratory</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Drug Abuse Treatment and Rehabilitation Center</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Residential</div>
+								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Non-Residential</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Hospital</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2">Functional:</div>
+								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">General</div>
+								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Specialty</div>
+							</div>
+						</div>
+					</div>
+					<span>
+						<div class="row">
+							<div class="col-sm-3">
+							</div>
+							<div class="col-sm-9" >
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-2">(If General)</div>
+									<div class="col-sm-2"><input class="form-check-input" type="checkbox" name="">Level 1</div>
+									<div class="col-sm-2"><input class="form-check-input" type="checkbox" name="">Level 2</div>
+									<div class="col-sm-2"><input class="form-check-input" type="checkbox" name="">Level 3</div>
+								</div>
+							</div>
+						</div>
+					</span>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Infirmary</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Medical Facility for Overseas Workers and Seafarers</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Psychiatric Care Facility</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Acute-Chronic</div>
+								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Custodial</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-4">Proposed Bed Capacity (if applicable)
+						</div>
+						<div class="col-sm-4" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+							<input type="text" class="form-control" name="">
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-4">Type of Construction:
+						</div>
+						<div class="col-sm-4" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-3"><input class="form-check-input" type="checkbox" name=""> New, specify
+						</div>
+						<div class="col-sm-8" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+							<input type="text" class="form-control" name="">
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-3"><input class="form-check-input" type="checkbox" name=""> Expansion/Renovation (for existing health facility), specify 
+						</div>
+						<div class="col-sm-8" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+							<input type="text" class="form-control" name="">
+						</div>
+					</div>
+					<br>
+					<br>
+					<div class="row"><div class="col-sm-12">Attachment: (incomplete attachment shall be a ground for the denial of this application)</div></div>
+					<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show Attachments</div>
+		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
+			<table class="attachments table table-hover" style="width: 100%;">
+				<tbody id="ApplyTable">
+				</tbody>
+					<td><i>A.   Letter of Intent for new and existing health facility (background and scope of the project); </i></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>B.   For  new health facility;</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;1.	Certificate of Need from the DOH-Regional Office  (for hospital  below 100 Authorized Bed Capacity)</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				
+				<tr>
+					<td>&nbsp;&nbsp;2.  Proof of Registration of  Name of Health Facility</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;2.1.   DTI/ SEC Registration including Articles of Incorporation and By-Laws (for private health facility)</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;2.2.   Enabling Act/ Board Resolution (for government health facility)</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;2.3    Cooperative Development Authority Registration including Articles of Cooperation and By-Laws</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr> 
+				<tr>
+					<td>&nbsp;&nbsp;3.  Three (3) Sets of Site Development Plans and Architectural Floor Plans <strong>(in blue print 20” x 30”)</strong></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;3.1.     Signed and sealed by an Architect/Engineer</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;3.2.     Showing all areas with appropriate scale, dimension and labels</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;3.3.     Demonstrating proper spatial and functional relationships of areas (refer to Checklist  for Review of Floor Plan)</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>	
+			 	<tr>
+					<td>C.   For expansion/renovation of existing  health facility;</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;1.  Latest DOH Approved Permit to Construct and Approved Floor Plan with latest copy of LTO/COA</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;2.  Floor Plan indicating proposed change/s (refer to B.3)</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>D.    Feasibility Study (for non-hospital based dialysis clinic  only)</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>E.    Application Fee (refer to Schedule of Fees)</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>		
+			</table>
+
+		</div>
+		<div class="col-sm-12">&nbsp;&nbsp;&nbsp;I hereby declare  that this Application  has been accomplished  by me, and that the foregoing  information  and attached documents required for the permit to construct are true and correct.</div>
+		<center><button style="background-color: #228B22 !important" type="submit" class="btn-primarys"  {{-- data-toggle="modal" data-target="#exampleModalCenter" --}}>Submit</button></center>
+		</div>
 				</div>
+			</div>
 		</form>
 </div>	
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
