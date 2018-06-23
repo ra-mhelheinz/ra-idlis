@@ -1248,4 +1248,5 @@
 			</div>
 	</div>
 </div>
+@include('client.sitemap')
 @endsection

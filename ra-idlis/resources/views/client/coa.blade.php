@@ -294,16 +294,16 @@
 						<div class="col-sm-3">
 							Name of Facility:
 						</div>
-						<div class="col-sm-9">
+						<div class="col-sm-9" >
 							<strong>{{$clientData->facilityname}}</strong>
 						</div>
 					</div>
 					<br>
-					<div class="row">
-						<div class="col-sm-4">
-							Complete Address of Proposed Hospital:
+						<div class="row">
+						<div class="col-sm-3">
+							Address Health Facility:
 						</div>
-						<div class="col-sm-8">
+						<div class="col-sm-9">
 							{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}} -  {{$clientData->rgn_desc}}
 							{{--< div class="row">
 								<div class="col-sm-4"><center>{{$clientData->streetname}}</center></div>
@@ -314,19 +314,19 @@
 					<br>
 					<div class="row">
 						<div class="col-sm-3">
-							Name of Applicant:
+							Telephone/Fax No.:
 						</div>
-						<div class="col-sm-9" >
-						{{$clientData->authorizedsignature}}
+						<div class="col-sm-9">
+							{{$clientData->rgnid_address}}
 						</div>
 					</div>
 					<br>
 					<div class="row">
 						<div class="col-sm-3">
-							Mailing Address: 
+							Name of Owner: 
 						</div>
-						<div class="col-sm-9">
-							{{$clientData->email}}
+						<div class="col-sm-9" >
+							{{$clientData->authorizedsignature}}
 						</div>
 					</div>
 					<br>
@@ -334,7 +334,7 @@
 						<div class="col-sm-3">
 							Contact Number: 
 						</div>
-						<div class="col-sm-9">
+						<div class="col-sm-9" >
 							{{$clientData->contact}}
 						</div>
 					</div>
@@ -356,176 +356,79 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-3">
+					
 						</div>
 						<div class="col-sm-9" >
 							<div class="row">
-								<div class="col-sm-2">Capability:</div>
-								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Ambulatory Surgical Clinic </div>
+								<div class="col-sm-3">Character:</div>
+									<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Institution-Based
+									</div>
+									<div class="col-sm-4">
+										<input class="form-check-input" type="checkbox" name="">Free-Standing
+									</div>
+								{{-- 
+								<div class="col-sm-4"><center>Barangay</center></div> --}}
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3">
+					
 						</div>
 						<div class="col-sm-9" >
 							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Birthing Home</div>
+								<div class="col-sm-3">Service Capability:</div>
+									<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Residential
+									</div>
+									<div class="col-sm-4">
+										<input class="form-check-input" type="checkbox" name="">Non-Residential
+									</div>
+								{{-- 
+								<div class="col-sm-4"><center>Barangay</center></div> --}}
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3">
+					
 						</div>
 						<div class="col-sm-9" >
 							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Dialysis Clinic</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3">
-						</div>
-						<div class="col-sm-9" >
-							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Drug Testing Laboratory</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3">
-						</div>
-						<div class="col-sm-9" >
-							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Drug Abuse Treatment and Rehabilitation Center</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3">
-						</div>
-						<div class="col-sm-9" >
-							<div class="row">
-								<div class="col-sm-3"></div>
-								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Residential</div>
-								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Non-Residential</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3">
-						</div>
-						<div class="col-sm-9" >
-							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Hospital</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3">
-						</div>
-						<div class="col-sm-9" >
-							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-2">Functional:</div>
-								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">General</div>
-								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Specialty</div>
-							</div>
-						</div>
-					</div>
-					<span>
-						<div class="row">
-							<div class="col-sm-3">
-							</div>
-							<div class="col-sm-9" >
-								<div class="row">
-									<div class="col-sm-2"></div>
-									<div class="col-sm-2">(If General)</div>
-									<div class="col-sm-2"><input class="form-check-input" type="checkbox" name="">Level 1</div>
-									<div class="col-sm-2"><input class="form-check-input" type="checkbox" name="">Level 2</div>
-									<div class="col-sm-2"><input class="form-check-input" type="checkbox" name="">Level 3</div>
-								</div>
-							</div>
-						</div>
-					</span>
-					<div class="row">
-						<div class="col-sm-3">
-						</div>
-						<div class="col-sm-9" >
-							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Infirmary</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3">
-						</div>
-						<div class="col-sm-9" >
-							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Medical Facility for Overseas Workers and Seafarers</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3">
-						</div>
-						<div class="col-sm-9" >
-							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-6"><input class="form-check-input" type="checkbox" name="">Psychiatric Care Facility</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3">
-						</div>
-						<div class="col-sm-9" >
-							<div class="row">
-								<div class="col-sm-3"></div>
-								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Acute-Chronic</div>
-								<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Custodial</div>
+								<div class="col-sm-3">Status of Application:</div>
+									<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Initial
+									</div>
+									<div class="col-sm-4">
+										<input class="form-check-input" type="checkbox" name="">Renewal
+									</div>
+								{{-- 
+								<div class="col-sm-4"><center>Barangay</center></div> --}}
 							</div>
 						</div>
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-sm-4">Proposed Bed Capacity (if applicable)
+						<div class="col-sm-3">Accredetitation No.
 						</div>
-						<div class="col-sm-4" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+						<div class="col-sm-2" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
 							<input type="text" class="form-control" name="">
 						</div>
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-sm-4">Type of Construction:
+						<div class="col-sm-3">Date Issued
 						</div>
-						<div class="col-sm-4" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-1"></div>
-						<div class="col-sm-3"><input class="form-check-input" type="checkbox" name=""> New, specify
-						</div>
-						<div class="col-sm-8" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+						<div class="col-sm-2" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
 							<input type="text" class="form-control" name="">
 						</div>
-					</div>
+					</div>	
 					<br>
 					<div class="row">
-						<div class="col-sm-1"></div>
-						<div class="col-sm-3"><input class="form-check-input" type="checkbox" name=""> Expansion/Renovation (for existing health facility), specify 
+						<div class="col-sm-3">Expiry Date
 						</div>
-						<div class="col-sm-8" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+						<div class="col-sm-2" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
 							<input type="text" class="form-control" name="">
 						</div>
-					</div>
-					<br>
+					</div>					
 					<br>
 					<div class="row"><div class="col-sm-12">Attachment: (incomplete attachment shall be a ground for the denial of this application)</div></div>
 					<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show Attachments</div>
@@ -533,70 +436,63 @@
 			<table class="attachments table table-hover" style="width: 100%;">
 				<tbody id="ApplyTable">
 				</tbody>
-					<td><i>A.   Letter of Intent for new and existing health facility (background and scope of the project); </i></td>
+					<td><i>1. Notarized Application for Accreditation of Drug Abuse Treatment and Rehabilitation
+					Center (this form)
+					</i></td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
-					<td>B.   For  new health facility;</td>
+					<td>2.   Letter of Endorsement to the BHFS Director (if filed at CHD)</td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;1.	Certificate of Need from the DOH-Regional Office  (for hospital  below 100 Authorized Bed Capacity)</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				
-				<tr>
-					<td>&nbsp;&nbsp;2.  Proof of Registration of  Name of Health Facility</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+					<td>3.   List of Personnel (use attached form)</td>
+					<td></td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;2.1.   DTI/ SEC Registration including Articles of Incorporation and By-Laws (for private health facility)</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;2.2.   Enabling Act/ Board Resolution (for government health facility)</td>
+					<td>4. Photocopies of the following:
+						<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1 Proof of qualification	<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRC ID/ PRC Board Certificate, if applicable <br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specialty Board Certificate, if applicable <br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Certificate of Training/ Record of Work Experience <br>
+
+					</td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;2.3    Cooperative Development Authority Registration including Articles of Cooperation and By-Laws</td>
+					<td>5.  List of Equipment/ Instrument (use attached form)</strong></td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr> 
-				<tr>
-					<td>&nbsp;&nbsp;3.  Three (3) Sets of Site Development Plans and Architectural Floor Plans <strong>(in blue print 20” x 30”)</strong></td>
+				</tr>
+			 	<tr>
+					<td>6.   Duly accomplished Assessment Tool (use attached form)</td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;3.1.     Signed and sealed by an Architect/Engineer</td>
+					<td>7. Procedural Manual</td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;3.2.     Showing all areas with appropriate scale, dimension and labels</td>
+					<td>8.  Training Manual</td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;3.3.     Demonstrating proper spatial and functional relationships of areas (refer to Checklist  for Review of Floor Plan)</td>
+					<td>9.    Health Facility Geographic Form (Location Map)</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>10.    Photocopy of DOH Permit to Construct Floor Layout with appropriate scale reflecting properly labeled areas to include spatial relationship with adjacent areas if present </td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>	
-			 	<tr>
-					<td>C.   For expansion/renovation of existing  health facility;</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;1.  Latest DOH Approved Permit to Construct and Approved Floor Plan with latest copy of LTO/COA</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;2.  Floor Plan indicating proposed change/s (refer to B.3)</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>D.    Feasibility Study (for non-hospital based dialysis clinic  only)</td>
-					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr>
-				<tr>
-					<td>E.    Application Fee (refer to Schedule of Fees)</td>
+					<td>11.    DTI/ SEC Registration (for private facility) OR Issuance or Board Resolution (for government facility) 
+</td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>		
+				<tr>
+					<td>12.   Photocopy of DOH Certificate of Accreditatio</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>	
 			</table>
 
 		</div>
