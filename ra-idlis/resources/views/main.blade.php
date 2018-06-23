@@ -17,7 +17,29 @@
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/main.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/introjs.css')}}">
     @yield('style')
+    <script type="text/javascript">
+      function loader(bool) {
+        if(bool) {
+          $('body').append("<div id='pageload'></div>");
+        } else {
+          $('#pageload').fadeOut(1000);
+        }
+      }
+    </script>
 </head>
+<style type="text/css">
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+#pageload {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url("{{asset('ra-idlis/public/img/greenload.gif')}}") center no-repeat #fff;
+}
+</style>
 <body>
   @if(session()->exists('client_data'))
   @else
@@ -62,5 +84,6 @@
 <script type="text/javascript" src="{{asset('ra-idlis/public/js/intro.js')}}">
   // introJs().start();
 </script>
+
 </body>
 </html>
