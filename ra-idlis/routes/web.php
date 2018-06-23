@@ -105,6 +105,10 @@ Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@
 Route::post('/employee/get_date_actlogs', ['as'=>'get-ActLogs','uses'=>'ajaxController@getActLogs']);
 // -------------------------------------- GET
 // -------------------------------------- UPDATE
+Route::post('/mf/save_phRegion', ['as'=>'save-phRegion','uses'=>'ajaxController@savePhRegion']);
+Route::post('/mf/save_phProvince', ['as'=>'save-phProvince','uses'=>'ajaxController@savePhProvince']);
+Route::post('/mf/save_phCmB', ['as'=>'save-phCmB','uses'=>'ajaxController@savePhCmB']);
+Route::post('/mf/save_phBarangay', ['as'=>'save-phBarangay','uses'=>'ajaxController@savePhBarangay']);
 Route::post('/employee/changepass', ['as'=>'change-pass','uses'=>'ajaxController@chngPass']);
 Route::post('/employee/save_rights', ['as'=>'save-rights','uses'=>'ajaxController@saveRights']);
 Route::post('/personnel/isActive', ['as'=>'isActive','uses'=>'ajaxController@isActive']);

@@ -114,7 +114,31 @@
           	return back();
 		}
 		// -------------------- ADD --------------------
-		// -------------------- EDIT --------------------
+		// -------------------- EDIT -------------------
+		public function savePhBarangay(Request $request){
+			$data = $this->InsertActLog($request->mod_id,"upd");
+			$updateData = array('brgyname'=>$request->name);
+			DB::table('barangay')->where('brgyid',$request->id)->update($updateData);
+			return 'DONE';
+		}
+		public function savePhCmB(Request $request){
+			$data = $this->InsertActLog($request->mod_id,"upd");
+			$updateData = array('cmname'=>$request->name);
+			DB::table('city_muni')->where('cmid',$request->id)->update($updateData);
+			return 'DONE';
+		}
+		public function savePhProvince(Request $request){
+			$data = $this->InsertActLog($request->mod_id,"upd");
+			$updateData = array('provname' => $request->name);
+			DB::table('province')->where('provid',$request->id)->update($updateData);
+			return 'DONE';
+		}
+		public function savePhRegion(Request $request){ // Update Ph Region
+			$updateData = array('rgn_desc' => $request->name);
+			$data = $this->InsertActLog($request->mod_id,"upd");
+			DB::table('region')->where('rgnid',$request->id)->update($updateData);
+			return 'DONE';
+		}
 		public function isActive(Request $request){ // Update User Stat
 			$currentState = ($request->isActive == 1 ? 0 : 1);
 			$updateData = array('isActive'=> $currentState);

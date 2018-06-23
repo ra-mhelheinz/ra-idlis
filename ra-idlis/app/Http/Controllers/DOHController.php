@@ -217,6 +217,16 @@
 				$regions = DB::table('region')->get();
 				return view('doh.phprovince',['province'=>$province],['region'=>$regions]);
 			}
+			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
+				DB::table('province')->insert(
+					[
+						'rgnid' => $request->id,
+						'provname' => $request->name,
+					]
+				);
+				return 'DONE';
+			}
 		}
 		public function LOfficers(Request $request){ // Personnel/Licensing Officer Page
 			if ($request->isMethod('get')) {
@@ -400,6 +410,7 @@
 				return view('doh.phcm',['region'=>$region,'province'=>$province,'cm'=>$CiMu]);
 			}
 			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
 				DB::table('city_muni')->insert([
 					'provid' => $request->id,
 					'cmname' => $request->name,
@@ -414,6 +425,14 @@
 				$CiMu = DB::table('city_muni')->get();
 				$brgy = DB::table('barangay')->get();
 				return view('doh.phbrgy',['region'=>$region, 'province'=>$province, 'cm'=>$CiMu, 'brgy' => $brgy]);
+			}
+			if ($request->isMethod('post')) {
+				$data = $this->InsertActLog($request->mod_id,"ad_d");
+				DB::table('barangay')->insert([
+						'cmid' => $request->id,
+						'brgyname' => $request->name,
+					]);
+				return 'DONE';
 			}
 		}
 		public function FDAs(Request $request){ // Master File/Food and Drug Page
@@ -528,8 +547,9 @@
 		public function Upload(Request $request){ // Master File/Upload Page
 			if ($request->isMethod('get')) {
 				$fatype = DB::table('facilitytyp')->get();
+				$hfsts = DB::table('hfaci_serv_type')->get();
 				$ups = DB::table('upload')->get();
-				return view('doh.mfupload',['facility'=>$fatype,'uploads'=>$ups]);
+				return view('doh.mfupload',['facilitys'=>$fatype,'uploads'=>$ups,'hfsts'=>$hfsts]);
 			}
 			if ($request->isMethod('post')) {
 				$data = $this->InsertActLog($request->mod_id,"ad_d");
