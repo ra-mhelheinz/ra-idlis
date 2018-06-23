@@ -92,10 +92,11 @@ class ClientController extends Controller
                     'city_muni' => $data['city_muni'],
                     'zipcode' => $data['zip'],
                     'contactperson' => $data['contact_p'],
-                    'contactpersonno' => $data['contact_pno'].",".$data['cel'],
+                    'contactpersonno' => $data['contact_pno'],
+                    'rgnid_address' => $data['tel'],
                     'email' => $data['email'],
                     'authorizedsignature' => $data['authorized'],
-                    'contact' => $data['tel'],
+                    'contact' => $data['cel'],
                     'ipaddress' => $data['ip'],
                     't_date' => $dateNow,
                     't_time' =>$timeNow,
@@ -205,6 +206,22 @@ class ClientController extends Controller
 
 
       return $cur_tbl;
+    }
+    public function PTC(Request $request){
+      $fatype = DB::table('facilitytyp')->get();
+        $ownsh = DB::table('ownership')->get();
+        $aptyp = DB::table('apptype')->get();
+        $clss = DB::table('class')->get();
+        $hfaci = DB::table('hfaci_serv_type')->get();
+      return view('client.ptc', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
+    }
+    public function CON (REquest $request){
+      $fatype = DB::table('facilitytyp')->get();
+        $ownsh = DB::table('ownership')->get();
+        $aptyp = DB::table('apptype')->get();
+        $clss = DB::table('class')->get();
+        $hfaci = DB::table('hfaci_serv_type')->get();
+      return view('client.appcon', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     }
 
 }

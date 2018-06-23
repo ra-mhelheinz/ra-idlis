@@ -229,7 +229,7 @@ html, body, #canvasMap{
 						  <strong><i class="fas fa-exclamation"></i></strong> Password Mismatch
 						</div>
 					</div>	
-					<div class="row">
+					<div class="row ">
 						<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 							<input type="text" class="input form-control" autocomplete="off" name="facility_name" placeholder="Name of Facility (Complete Name)" data-parsley-required-message="<strong>*</strong>Facility name <strong>Required</strong>"  value="{{ old('facility_name') }}" required="">
 
@@ -240,8 +240,9 @@ html, body, #canvasMap{
 					<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 						<h5>Address</h5>
 					</div>
-					<div class="col-sm-12" style="margin: 0 0 .8em 0;" onclick="firstradio([true, false], ['rgnID', 'provID', 'ctyID', 'brgyID'])">
-						<div class="input-group introjs-showElement introjs-relativePosition"  data-intro="<img src='{{asset('ra-idlis/public/img/address.gif')}}' style='width: 100%;'>" data-step="1">
+
+					<div class="col-sm-12 " style="margin: 0 0 .8em 0;" onclick="firstradio([true, false], ['rgnID', 'provID', 'ctyID', 'brgyID'])">
+						<div class="input-group "  data-intro="<img src='{{asset('ra-idlis/public/img/address.gif')}}' style='width: 100%;'>Address <br> <small>Fill in the Address of the Facility</small" data-step="1">
 							<div class="input-group-text" style="border-radius: 0 ;border-right-style: none;background-color: transparent;padding: 6;"><input type="radio" name="rad" id="rad1" onclick="firstradio([true, false], ['rgnID', 'provID', 'ctyID', 'brgyID'])"></div>
 						<input type="text" id="gsearch" class="form-control" name="regionadd" placeholder="Address (Barangay/City/Province/Region)" style="border-left-style: none;padding-left: 0;"	disabled>
 
@@ -264,7 +265,9 @@ html, body, #canvasMap{
 					  </div>
 					</div>
 						</div>
-					</div>		
+					</div>	
+					</div>	
+					<div class="row introjs-showElement introjs-relativePosition"  data-intro="<img src='{{asset('ra-idlis/public/img/address2.gif')}}' style='width: 100%;'>Address <br> <small>If this fields are not yet filled after inputting your address, you can manually select on which address the facility can be located.</small>" data-step="2">
 					<div class="col-sm-12" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
 						<div class="input-group">
 							<div class="input-group-text" style="border-radius: 0 ;border-right-style: none;background-color: transparent;padding: 6;"><input type="radio" name="rad" id="rad2" onclick="firstradio([false, true], ['gsearch'])"></div>
@@ -295,6 +298,8 @@ html, body, #canvasMap{
 					</select> --}}
 					<input id="brgyID" type="text" class="form-control idis" placeholder="Brgy. Name" name="brgy" autocomplete="off" onchange="" disabled>
 				</div>
+				</div>
+				<div class="row">
 				<div class="col-sm-8" style="margin: 0 0 .8em 0;">
 					<input id="strID" type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name"   data-parsley-required-message="<strong>*</strong>Street Name <strong>Required</strong>" required="">
 				</div>
@@ -495,7 +500,7 @@ html, body, #canvasMap{
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="text" data-parsley-required-message="<strong>*</strong>Contact Person No.<strong>Required</strong>" class="input form-control" name="contact_pno" autocomplete="off" placeholder="Contact Person No."  required="">
 				</div>
-					</div>
+				</div>
 				<div class="help-text">
 					<p>By signing up, you agree to our</p>
 					<p><a href="#" data-toggle="modal" data-target="#exampleModalLong">Terms of service</a></p>
