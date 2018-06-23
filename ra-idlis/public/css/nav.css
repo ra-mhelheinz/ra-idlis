@@ -172,14 +172,13 @@
   margin-left: 55px;
 }
 .republic1 > .text-contentr{
+  margin-top: -5px;
   font-size: 9px;
 }
 .republic1 > .text-contentd{
-  margin-top: -18px;
   font-size: 11px;
 }
 .republic1 > .text-content{
-   margin-top: -18px;
   font-size: 9px;
 }
 .navbar-toggler{

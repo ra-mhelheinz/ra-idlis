@@ -1263,7 +1263,7 @@
           self._introExitCallback.call(self);
         }
 
-        self._introSkipCallback.call(self);
+        // self._introSkipCallback.call(self);
         _exitIntro.call(self, self._targetElement);
       };
 
