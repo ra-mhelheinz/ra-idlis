@@ -940,4 +940,5 @@
     });
 
 </script>
+@include('client.sitemap')
  @endsection

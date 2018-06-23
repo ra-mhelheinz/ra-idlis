@@ -82,16 +82,50 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-3 col-md-12 col-lg-3">
-             <div class="card introjs-showElement introjs-relativePosition"  data-intro="Announcements<br><small>Here is where new Announcements can be found.</small>" data-step="3" >
-            <h5 class="card-header">Announcements</h5>
-            <div class="cardb" style="max-height: 100%;padding: 1.25rem;flex: 1 1 auto;">
-              <form>
-                <div class="form-group">
-                  <img src="http://d3mrff4h76anp4.cloudfront.net/wp-content/uploads/2018/01/04183401/DOH.jpg">
-                  <p>sample text sample text</p>
-                </div>
-              </form>
+            <div class="card my-4">
+            <h5 class="card-header">Search</h5>
+            <div class="card-body" style="height: 80px;">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn-primarys" type="button"><i class="fa fa-search"> </i></button>
+                </span>
+              </div>
             </div>
+          </div>
+             <div class="card my-4 introjs-showElement introjs-relativePosition"  data-intro="Announcements<br><small>Here is where new Announcements can be found.</small>" data-step="3" >
+            <h5 class="card-header">Announcements</h5>
+            <div class="cardb" style="padding: 1.25rem;flex: 1 1 auto;">
+             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" >
+                <ol class="carousel-indicators">
+                  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner" >
+                  <div class="carousel-item active">
+                    <img class="d-block w-100" src="http://images.gmanews.tv/webpics/2018/01/ZZZ_013118_mmanila_2018_01_31_11_28_30.jpg" alt="First slide" style="height: 140px;">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="https://www.doh.gov.ph/sites/default/files/blood-donation.jpg" alt="Second slide" style="height: 140px;">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="https://www.vigorbuddy.com/wp-content/uploads/2016/06/doh.jpeg" alt="Third slide" style="height: 140px;">
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="card my-4 introjs-showElement introjs-relativePosition">
+            <p class="card-header"><small>Click for our <i class="fa fa-hand-o-right"></i>&nbsp;<a href="">Definition of Terms</a></small></p>
           </div>
           <div class="text-center introjs-showElement introjs-relativePosition" data-intro="Hello world! I'm Intro.js" data-step="8">
               <img src="{{asset('ra-idlis/public/img/FAQ.png')}}">
@@ -113,7 +147,7 @@
               <div class="icon"><i class="fa fa-check"></i></div>
               <h4 class="title"><a href="{{asset('client/evaluate')}}">Step 2. Evaluate</a></h4>
               <p class="description">DOH will evaluate your submitted documents and notify your schedule of inspection.</p>
-              <p><a href="{{asset('evaluate')}}">View your evaluation status</a></p>
+              <p><a href="{{asset('client/evaluate')}}">View your evaluation status</a></p>
             </div>
           </div>
 
@@ -147,7 +181,7 @@
       </div>
       <div class="col-sm-9"></div>
   </div>
- <center><hr style="width:75%;"></center>
+{{--  <center><hr style="width:75%;"></center>
     <table class="text-center tableimg">
         <td class="td"><img src="{{asset('ra-idlis/public/img/nosmoking.png')}}" width="50" height="60"></td>
 
@@ -156,7 +190,7 @@
         <td class="td"><img src="{{asset('ra-idlis/public/img/fix.PNG')}}"  width="50" height="60"></td>
 
         <td class="td"><img src="{{asset('ra-idlis/public/img/nobreak.jpg')}}"  width="125" height="60"></td> 
-    </table>
+    </table> --}}
   </div>
   <script type="text/javascript">
     setInterval(function(e){
@@ -179,4 +213,5 @@
       }
     }, 1);
   </script>
+  @include('client.sitemap')
 @endsection

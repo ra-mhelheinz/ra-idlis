@@ -48,15 +48,16 @@
 			  <button type="button" class="btn btn-secondary"><i class="fa fa-history"></i>Revision of History</button>
 			</div> --}}
 			<div class="row">
-				<div class="col-sm-4"></div>
-				<div class="col-sm-4"><h2>APPLICATION FORM</h2></div>
 				<div class="col-sm-4">
-					<div class="btn-group" role="group" aria-label="Basic example">
-					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn-defaults">CON</button></a>
-					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn-defaults">PTC</button></a>
 					  <button type="button" class="btn-defaults"><i class="fa fa-pencil-square-o"></i></button>
 					  <button type="button" class="btn-defaults"><i class="fa fa-history"></i></button>
-					</div>
+				</div>
+				<div class="col-sm-4"><h2>APPLICATION FORM</h2></div>
+				<div class="col-sm-4">
+					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn btn-primary">CON</button></a>
+					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn btn-primary">PTC</button></a>
+					  <a href="{{ asset('/client/apply/coa') }}"><button type="button" class="btn btn-primary">COA</button></a>
+					  <a href="{{ asset('/client/apply/ato') }}"><button type="button" class="btn btn-primary">ATO</button></a>
 				</div>
 			</div>
 			</div>
@@ -480,5 +481,5 @@ $(document).ready(function(){
 	// 	  }
 	// 	});
 	</script>
-
+@include('client.sitemap')
 @endsection

@@ -48,14 +48,17 @@
 			  <button type="button" class="btn btn-secondary"><i class="fa fa-history"></i>Revision of History</button>
 			</div> --}}
 			<div class="row">
-				<div class="col-sm-4"></div>
-				<div class="col-sm-4"><h2>Certificate of Need for New General Hospitals</h2></div>
 				<div class="col-sm-4">
-					<div class="btn-group" role="group" aria-label="Basic example">
-					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn-defaults">CON</button></a>
-					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn-defaults">PTC</button></a>
 					  <button type="button" class="btn-defaults"><i class="fa fa-pencil-square-o"></i></button>
 					  <button type="button" class="btn-defaults"><i class="fa fa-history"></i></button>
+				</div>
+				<div class="col-sm-4"><h2>APPLICATION FORM</h2></div>
+				<div class="col-sm-4">
+					<div class="btn-group" role="group" aria-label="Basic example">
+					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn btn-default">CON</button></a>
+					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn btn-default">PTC</button></a>
+					  <a href="{{ asset('/client/apply/coa') }}"><button type="button" class="btn btn-default">COA</button></a>
+					  <a href="{{ asset('/client/apply/ato') }}"><button type="button" class="btn btn-default">ATO</button></a>
 					</div>
 				</div>
 			</div>
@@ -291,8 +294,8 @@
 						<div class="col-sm-3">
 							Name of Proposed Hospital:
 						</div>
-						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
-							<center><strong>{{$clientData->facilityname}}</strong></center>
+						<div class="col-sm-9">
+							<strong>{{$clientData->facilityname}}</strong>
 						</div>
 					</div>
 					<br>
@@ -300,10 +303,8 @@
 						<div class="col-sm-4">
 							Complete Address of Proposed Hospital:
 						</div>
-						<div class="col-sm-8" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
-						<center>
+						<div class="col-sm-8">
 							{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}} -  {{$clientData->rgn_desc}}
-						</center>
 							{{--< div class="row">
 								<div class="col-sm-4"><center>{{$clientData->streetname}}</center></div>
 								<div class="col-sm-4"><center>{{$clientData->barangay}}</center></div>
@@ -321,7 +322,6 @@
 							</div>
 						</div>
 					</div> --}}
-					<br>
 					{{-- <div class="row">
 						<div class="col-sm-3">
 						</div>
@@ -347,8 +347,8 @@
 						<div class="col-sm-3">
 							Name of Proponent:
 						</div>
-						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
-							<center>{{$clientData->authorizedsignature}}<center>
+						<div class="col-sm-9">
+							{{$clientData->authorizedsignature}}
 						</div>
 					</div>
 					<br>
@@ -356,8 +356,8 @@
 						<div class="col-sm-3">
 							Address of Proponent: 
 						</div>
-						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
-							<center>{{$clientData->email}}<center>
+						<div class="col-sm-9">
+							{{$clientData->email}}
 						</div>
 					</div>
 					<br>
@@ -365,8 +365,8 @@
 						<div class="col-sm-3">
 							Contact Number: 
 						</div>
-						<div class="col-sm-9" style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;">
-							<center>{{$clientData->contact}}<center>
+						<div class="col-sm-9">
+						{{$clientData->contact}}
 						</div>
 					</div>
 					<br>
@@ -627,5 +627,5 @@ $(document).ready(function(){
 	// 	  }
 	// 	});
 	</script>
-
+@include('client.sitemap')
 @endsection
