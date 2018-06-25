@@ -85,10 +85,10 @@
                     <ul id="sm_base" class="list-unstyled collapse">
                         <li><a href="#AppMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-clipboard-list"></i>&nbsp;Application</a>
                             <ul id="AppMenu" class="list-unstyled collapse">
-                                <li class="MA07_allow"><a href="{{ asset('/employee/dashboard/mf/apptype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Type</a></li>
+                                <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/apptype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Type</a></li>
+                                <li class="MA07_allow"><a href="{{ asset('/employee/dashboard/mf/appstatus') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Status</a></li>
                                 <li class="MA08_allow"><a href="{{ asset('/employee/dashboard/mf/class') }}">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
                                 <li class="MA06_allow"><a href="{{ asset('/employee/dashboard/mf/ownership') }}">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
-                                <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/faciservtype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facility/Service Type</a></li>
                                 <li class="MA16_allow"><a href="{{ asset('/employee/dashboard/mf/faciserv') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facilities/Services</a></li>
                                 <li class="MA11_allow"><a href="{{ asset('/employee/dashboard/mf/uploads') }}">&nbsp;&nbsp;&nbsp;&nbsp;Uploads</a></li>
                             </ul>

@@ -18,7 +18,7 @@
 				padding: 1em;
 			}
 </style>
-@include('client.breadcrumb')
+{{-- @include('client.breadcrumb')
 @foreach ($ownshs as $ownsh)
 	<datalist id="{{$ownsh->ocid}}_owlist">
 		@foreach ($clss as $cls)
@@ -36,10 +36,11 @@
 			@endif
 		@endforeach
 	</datalist>
-@endforeach
+@endforeach --}}
 <script type="text/javascript">
 	  	document.getElementById('first').style = "color: blue;";
 </script>
+@include('client.breadcrumb')
 		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-radius: 0;padding: 2rem 2rem;margin-top: 1%;padding-bottom: 7%;">
 			<div class="title"  style="text-align: center;border-bottom: 1px solid green;padding-bottom: 9px;position: relative;margin-bottom: 2%;"> 
 			{{-- <h2>APPLICATION FORM</h2>
@@ -54,10 +55,8 @@
 				</div>
 				<div class="col-sm-4"><h2>APPLICATION FORM</h2></div>
 				<div class="col-sm-4">
-
 					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn btn-primary">CON</button></a>
 					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn btn-primary">PTC</button></a>
-					  <a href="{{ asset('/client/apply/lto') }}"><button type="button" class="btn btn-primary">LTO</button></a>
 					  <a href="{{ asset('/client/apply/coa') }}"><button type="button" class="btn btn-primary">COA</button></a>
 					  <a href="{{ asset('/client/apply/ato') }}"><button type="button" class="btn btn-primary">ATO</button></a>
 				</div>
@@ -169,12 +168,12 @@
 					<td>Photographs of exterior and interior of the Health Facility</td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr> --}}
-		{{-- 		
+{{-- 				
 			</table>
 		</div>
 		</div>
 				</div> --}}
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-sm-12"><div class="input-group">
 							Date:&nbsp;
 						<div class="input-group-prepend" id="date" style="border-bottom: 1px solid #b5c1c9;"></div>
@@ -195,51 +194,51 @@
 					</script>
 					<div class="col-sm-12">
 						<div class="input-group">Name of Health Facility/Service:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->facilityname}}</div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->facilityname} --}}</div>
 						</div>
 					</div>
 					<div class="col-sm-12">
 						<div class="input-group">Address:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} </div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} --}} </div>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-5">
 						<div class="input-group">Latest LTO/COA/ATO/COR No.&nbsp;
-						<div class="input-group-prepend"><input data-parsley-required-message="<strong>LTO/COA/ATO/COR No.</strong> required." type="text" name="lno" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;"></div>
+						<div class="input-group-prepend"><input type="text" name="" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;"></div>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="input-group">Validity Period from &nbsp;
-						<div class="input-group-prepend"><input data-parsley-required-message="<strong>Date</strong> required." type="date" name="vpf" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;"></div>
+						<div class="input-group-prepend"><input type="date" name="" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;"></div>
 						</div>
 					</div>
 					<div class="col-sm-3">
 						<div class="input-group">to &nbsp;
-						<div class="input-group-prepend"><input data-parsley-required-message="<strong>Date</strong> required." type="date" name="vpt" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;"></div>
+						<div class="input-group-prepend"><input type="date" name="" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;"></div>
 						</div></div>
 				</div>
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="input-group" style="font-size: 14px; ">Tel. Number (HF landline):&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->rgnid_address}}</div>
+						<div class="input-group-prepend" ></div>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="input-group" style="font-size: 14px;margin-top: 2px;">Cellphone No:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->contact}}</div>
+						<div class="input-group-prepend"></div>
 						</div></div>
 					<div class="col-sm-4">
 						<div class="input-group" style="font-size: 14px;margin-top: 2px;">Email Address:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->email}}</div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->email}} --}}</div>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="input-group">Owner: &nbsp;
-							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->authorizedsignature}}</div>
+							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{-- {{$clientData->authorizedsignature}} --}}</div>
 						</div>
 					</div>
 				</div>
@@ -262,41 +261,245 @@
 				</div>
 				<hr>
 				<div class="row">
-					<div class="col-sm-5">
-						<div class="input-group">Facility Type: &nbsp;
+					<div class="col-sm-6">
+						<div class="input-group">Type of Health Facility/Service: &nbsp;
 							<div class="input-group-prepend">
 									<select id="HFacility" data-parsley-required-message="<strong>Health Facility Type</strong> required."  onchange="selectHealthFacility();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;" required>
 							  			<option disabled selected hidden></option>
-									  	@if ($hfaci)
+									  	{{-- @if ($hfaci)
 							  				@foreach ($hfaci as $hfacis)
 								  				<option value="{{$hfacis->hfser_id}}">{{$hfacis->hfser_desc}}</option>
 								  			@endforeach
-							  			@endif
+							  			@endif --}}
 							  		</select>
 				  			</div>
 						</div>
 					</div>
-					<div class="col-sm-7">
+					<div class="col-sm-6">
 						<div class="input-group">Health Facility/Service: &nbsp;
 							<div class="input-group-prepend">
-									<select id="HealFaServ" data-parsley-required-message="<strong>Health Facility Service</strong> required."  onchange="CheckifHos();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;" required>
+									<select id="HealFaServ" data-parsley-required-message="<strong>Health Facility Type</strong> required."  onchange="CheckifHos();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;" required>
 							  			<option disabled selected hidden></option>
+									  	
 							  		</select>
 				  			</div>
 						</div>
 					</div>
 				</div>
-				<div id="hospital">
+				<div id="LTOcontent" class="row">
+				</div> -->
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-3">
+							Name of BCU/BS:
+						</div>
+						<div class="col-sm-9" >
+							<strong>{{$clientData->facilityname}}</strong>
+						</div>
+					</div>
+					<br>
+						<div class="row">
+						<div class="col-sm-3">
+							Address of BCU/BS:
+						</div>
+						<div class="col-sm-9">
+							{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}} -  {{$clientData->rgn_desc}}
+							{{--< div class="row">
+								<div class="col-sm-4"><center>{{$clientData->streetname}}</center></div>
+								<div class="col-sm-4"><center>{{$clientData->barangay}}</center></div>
+							</div> --}}
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Telephone/Fax No.:
+						</div>
+						<div class="col-sm-9">
+							{{$clientData->rgnid_address}}
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Name of Owner: 
+						</div>
+						<div class="col-sm-9" >
+							{{$clientData->authorizedsignature}}
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Contact Number: 
+						</div>
+						<div class="col-sm-9" >
+							{{$clientData->contact}}
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							Classification According to: 
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-3">Ownership:</div>
+								@foreach ($ownshs as $ownsh)
+									<div class="col-sm-4"><input class="form-check-input" type="checkbox" name=""> {{$ownsh->ocdesc}}</div>
+								@endforeach
+								{{-- 
+								<div class="col-sm-4"><center>Barangay</center></div> --}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
 					
-				</div>
-				<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer;margin-top: 20px;">Click to show Requirements</div>
-				<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
-						<table class="attachments table table-hover" style="width: 100%;">
-							<tbody id="ApplyTable">
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-3">Institutional Character:</div>
+									<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Institution-Based
+									</div>
+									<div class="col-sm-4">
+										<input class="form-check-input" type="checkbox" name="">Free-Standing
+									</div>
+								{{-- 
+								<div class="col-sm-4"><center>Barangay</center></div> --}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+					
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-3">Service Capability:</div>
+									<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Residential
+									</div>
+									<div class="col-sm-4">
+										<input class="form-check-input" type="checkbox" name="">Non-Residential
+									</div>
+								{{-- 
+								<div class="col-sm-4"><center>Barangay</center></div> --}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+					
+						</div>
+						<div class="col-sm-9" >
+							<div class="row">
+								<div class="col-sm-3">Status of Application:</div>
+									<div class="col-sm-4"><input class="form-check-input" type="checkbox" name="">Initial
+									</div>
+									<div class="col-sm-4">
+										<input class="form-check-input" type="checkbox" name="">Renewal
+									</div>
+								{{-- 
+								<div class="col-sm-4"><center>Barangay</center></div> --}}
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">Licensed No.
+						</div>
+						<div class="col-sm-2" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+							<input type="text" class="form-control" name="">
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">Date Issued
+						</div>
+						<div class="col-sm-2" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+							<input type="text" class="form-control" name="">
+						</div>
+					</div>	
+					<br>
+					<div class="row">
+						<div class="col-sm-3">Expiry Date
+						</div>
+						<div class="col-sm-2" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
+							<input type="text" class="form-control" name="">
+						</div>
+					</div>					
+					<br>
+					<div class="row"><div class="col-sm-12">Attachment: (incomplete attachment shall be a ground for the denial of this application)</div></div>
+					<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show Attachments</div>
+		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
+			<table class="attachments table table-hover" style="width: 100%;">
+				<tbody id="ApplyTable">
+				</tbody>
+					<td><i>1. Notarized Application for Accreditation of Drug Abuse Treatment and Rehabilitation
+					Center (this form)
+					</i></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>2.   Letter of Endorsement to the BHFS Director (if filed at CHD)</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>3.   List of Personnel (use attached form)</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>4. Photocopies of the following:
+						<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1 Proof of qualification	<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRC ID/ PRC Board Certificate, if applicable <br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specialty Board Certificate, if applicable <br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Certificate of Training/ Record of Work Experience <br>
 
-							</tbody>
-						</table>
+					</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>5.  List of Equipment/ Instrument (use attached form)</strong></td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+			 	<tr>
+					<td>6.   Duly accomplished Assessment Tool (use attached form)</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>7. Procedural Manual</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>8.  Training Manual</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>9.    Health Facility Geographic Form (Location Map)</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>
+				<tr>
+					<td>10.    Photocopy of DOH Permit to Construct Floor Layout with appropriate scale reflecting properly labeled areas to include spatial relationship with adjacent areas if present </td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>	
+				<tr>
+					<td>11.    DTI/ SEC Registration (for private facility) OR Issuance or Board Resolution (for government facility) 
+</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>		
+				<tr>
+					<td>12.   Photocopy of DOH Certificate of Accreditatio</td>
+					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
+				</tr>	
+			</table>
+
+		</div>
+		<div class="col-sm-12">&nbsp;&nbsp;&nbsp;I hereby declare  that this Application  has been accomplished  by me, and that the foregoing  information  and attached documents required for the permit to construct are true and correct.</div>
+		<center><button style="background-color: #228B22 !important" type="submit" class="btn-primarys"  {{-- data-toggle="modal" data-target="#exampleModalCenter" --}}>Submit</button></center>
+		</div>
 				</div>
+			</div>
 		</form>
 </div>	
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -331,6 +534,7 @@ $(document).ready(function(){
 			var form = $(this);
             form.parsley().validate();
             if (form.parsley().isValid()){
+
              } else {
 
              }
@@ -338,16 +542,15 @@ $(document).ready(function(){
 		function selectHealthFacility(){
 			var selected = $('#HFacility').children(":selected").text();
 			var selectedVal = $('#HFacility').children(":selected").val();
- 			var token = $('#global-token').val();
+			var token = $('#global-token').val();
 			var GetNames = $('#'+selectedVal+'_hfst option').map(function() {return $(this).val();}).get();
 			var Get_Ids = $('#'+selectedVal+'_hfst option').map(function() {return $(this).text();}).get();
 			$('#HealFaServ').empty();
-			$('#hospital').empty();
 			$('#HealFaServ').append('<option disabled selected hidden></option>');
 			for (var i = 0; i < Get_Ids.length; i++) {
 				var id = Get_Ids[i],selectedText = GetNames[i];
 				$('#HealFaServ').append(
-						'<option id="'+id+'_healServ" sixtynine="'+id+'">'+selectedText+'</option>'
+						'<option id="'+id+'_healServ">'+selectedText+'</option>'
 					);
 			}
 			// if (selected == "Hospital") {
@@ -363,7 +566,40 @@ $(document).ready(function(){
 			// } else {
 			// 	$('#ServiceSpan').empty();
 			// }
-			
+			// $.ajax({
+			// 	url: '{{ asset('mf/getUploads') }}',
+			// 	method: 'POST',
+			// 	data: {_token:token,id:selectedVal},
+			// 	success: function(data){
+			// 		$('#ApplyTable').empty();
+			// 		if (data!="NO") {
+			// 			$('#ApplyTable').append('<tr><td colspan="2"><center><p><strong>Note: </strong>File should be not larger than 2 MB</p></td><center></tr>');
+			// 			for (var i = 0; i < data.length; i++) {
+			// 					var d = data[i];
+			// 					$('#ApplyTable').append(
+			// 							'<tr>' +
+			// 								'<td>'+d.updesc+'<span style="color:red">*</span></td>' +
+			// 								// '<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>' +
+			// 								'<td><input name="'+d.upid+'" data-parsley-required-message="File required for assessment." data-parsley-max-file-size="22.5" data-parsley-trigger="change" class="form-control-file" type="file" required>' +
+			// 								'</td>' +
+			// 							'</tr>'
+			// 						);
+			// 			}
+			// 			$('#ApplyTable').append(
+			// 					'<tr>' +
+			// 						'<td colspan="2" class="text-center"><button style="background-color: #228B22 !important" type="submit" class="btn-primarys"  {{-- data-toggle="modal" data-target="#exampleModalCenter" --}}>Submit</button></td>' +
+			// 					'</tr>' +
+			// 					'<tr>' +
+			// 						'<td>Copy of OR for Application fee</td>' +
+			// 						// '<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>' +
+			// 						'<td><input class="form-control-file" type="file"></td>' +
+			// 					'</tr>'
+			// 				);
+			// 		} else {
+
+			// 		}
+			// 	}
+			// });
 		}
 		function ClassOwner(){
 			if(document.getElementById('Class2Owner').selectedIndex < 1) {
@@ -386,66 +622,13 @@ $(document).ready(function(){
 					}
 			}
 		}
-		function CheckifHos(){
-			var selected = $('#HealFaServ').children(":selected").val();
-			var selectedID = $('#HealFaServ').children(":selected").attr('sixtynine');
-			var token = $('#global-token').val();
-			console.log(selectedID);
-			switch(selected) {
-				case "Hospital":
-					$('#hospital').empty();
-					$('#hospital').append( 
-						 '<div class="form-group row text-center">' + '<label class="col-sm-3">General:</label>' + 
-						      '<div class="col-sm-3">' + '<div class="form-check">' + '<label class="form-check-label">' + '<input class="form-check-input"  type="checkbox">' + 'Level 1' + '</label>' + '</div>' + '</div>' + '<div class="col-sm-3">' + '<div class="form-check">' + '<label class="form-check-label">' + '<input class="form-check-input" type="checkbox">' + 'Level 2' + '</label>' + '</div>' + '</div>' + '<div class="col-sm-3">' + '<div class="form-check">' + '<label class="form-check-label">' + '<input class="form-check-input" type="checkbox">' + 'Level 3' + '</label>' + '</div>' + '</div>' + '</div>' + '<div class="form-group row text-center">' + '<label class="col-sm-3">Specially, Specify:</label>' + 
-						      '<div class="col-sm-9">' + '<input type="text" name="" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;">' + '</div>' + '</div>'
-					);
-					break;
-				case "Ambulance Service Provider":
-					$('#hospital').empty();
-					$('#hospital').append( 
-						 '<div class="form-group row text-center">' + '<label class="col-sm-4">Type:</label>' + 
-						      '<div class="col-sm-4">' + '<div class="form-check">' + '<label class="form-check-label">' + '<input class="form-check-input" type="checkbox">' + 'Type I Ambulance' + '</label>' + '</div>' + '</div>' + '<div class="col-sm-4">' + '<div class="form-check">' + '<label class="form-check-label">' + '<input class="form-check-input" type="checkbox">' + 'Type II Ambualnce' + '</label>' + '</div>' + '</div>' + '</div>' + '<div class="form-group row text-center">' + '<label class="col-sm-5">Ambulance unit/s approved, specify:</label>' + 
-						      '<div class="col-sm-7">' + '<input type="text" name="" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;">' + '</div>' + '</div>'
-					);
-					break;
-				default:
-					$('#hospital').empty();
-					break;
+		function ClassType(){
+			var selected = $('#anotherClassSelector').children(":selected").val();
+			if (selected == "Others") {
+				$('#OtherSpan').show();
+			} else {
+				$('#OtherSpan').hide();
 			}
-			$.ajax({
-				url: '{{ asset('mf/getUploads') }}',
-				method: 'POST',
-				data: {_token:token,id:selectedID},
-				success: function(data){
-					$('#ApplyTable').empty();
-					if (data!="NO") {
-						$('#ApplyTable').append('<tr><td colspan="2"><center><p><strong>Note: </strong>File should be not larger than 2 MB</p></td><center></tr>');
-						for (var i = 0; i < data.length; i++) {
-								var d = data[i];
-								$('#ApplyTable').append(
-										'<tr>' +
-											'<td>'+d.updesc+'<span style="color:red">*</span></td>' +
-											// '<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>' +
-											'<td><input name="'+d.upid+'" data-parsley-required-message="File required for assessment." data-parsley-max-file-size="22.5" data-parsley-trigger="change" class="form-control-file" type="file" required>' +
-											'</td>' +
-										'</tr>'
-									);
-						}
-						$('#ApplyTable').append(
-								'<tr>' +
-									'<td colspan="2" class="text-center"><button style="background-color: #228B22 !important" type="submit" class="btn-primarys"  {{-- data-toggle="modal" data-target="#exampleModalCenter" --}}>Submit</button></td>' +
-								'</tr>' +
-								'<tr>' +
-									'<td>Copy of OR for Application fee</td>' +
-									// '<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>' +
-									'<td><input class="form-control-file" type="file"></td>' +
-								'</tr>'
-							);
-					} else {
-
-					}
-				}
-			});
 		}
 		// function region() {
 			

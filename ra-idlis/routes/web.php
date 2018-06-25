@@ -21,6 +21,7 @@ Route::get('client/home', 'ClientController@home');
 Route::get('client/apply/lop','ClientController@LOP');
 Route::match(['get', 'post'], '/client/apply/ptc', 'ClientController@PTC');
 Route::match(['get', 'post'], '/client/apply/con', 'ClientController@CON');
+Route::match(['get', 'post'], '/client/apply/lto', 'ClientController@LTO');
 Route::match(['get', 'post'], '/client/apply/coa', 'ClientController@COA');
 Route::match(['get', 'post'], '/client/apply/ato', 'ClientController@ATO');
 Route::get('client/apply/sa','ClientController@SA');
@@ -73,10 +74,10 @@ Route::match(['get', 'post'],'/employee/dashboard/ph/citymuni','DOHController@Ci
 Route::match(['get', 'post'],'/employee/dashboard/ph/barangay','DOHController@Brgy')->name('philBarangay');
 Route::match(['get', 'post'],'/employee/dashboard/mf/class','DOHController@ClassType')->name('mfClass');
 Route::match(['get', 'post'],'/employee/dashboard/mf/facility','DOHController@FaType')->name('mfFacility');
-Route::match(['get', 'post'],'/employee/dashboard/mf/faciservtype','DOHController@FaServType')->name('mfFaServType');
+Route::match(['get', 'post'],'/employee/dashboard/mf/apptype','DOHController@FaServType')->name('mfAppType');
 Route::match(['get', 'post'],'/employee/dashboard/mf/faciserv','DOHController@FaServ')->name('mfFaServ');
 // con
-Route::match(['get', 'post'],'/employee/dashboard/mf/apptype','DOHController@AppType')->name('mfAppType');
+Route::match(['get', 'post'],'/employee/dashboard/mf/appstatus','DOHController@AppStatus')->name('mfAppStatus');
 Route::match(['get', 'post'],'/employee/dashboard/mf/ownership','DOHController@OwnShip')->name('mfOwnShip');
 Route::match(['get', 'post'],'/employee/dashboard/mf/litype','DOHController@LiType')->name('mfLiType');
 Route::match(['get', 'post'],'/employee/dashboard/mf/training','DOHController@Train')->name('mfTrain');

@@ -54,10 +54,8 @@
 				</div>
 				<div class="col-sm-4"><h2>APPLICATION FORM</h2></div>
 				<div class="col-sm-4">
-
 					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn btn-primary">CON</button></a>
 					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn btn-primary">PTC</button></a>
-					  <a href="{{ asset('/client/apply/lto') }}"><button type="button" class="btn btn-primary">LTO</button></a>
 					  <a href="{{ asset('/client/apply/coa') }}"><button type="button" class="btn btn-primary">COA</button></a>
 					  <a href="{{ asset('/client/apply/ato') }}"><button type="button" class="btn btn-primary">ATO</button></a>
 				</div>
