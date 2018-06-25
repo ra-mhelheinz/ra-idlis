@@ -7,6 +7,7 @@
 @section('style')
  <link rel="stylesheet" type="text/css" href="ra-idlis/public/css/login.css">
 @endsection
+@section('content')
 <style type="text/css">
 html, body, #canvasMap{
 	width: 100%;
@@ -83,7 +84,6 @@ html, body, #canvasMap{
 	    to {bottom: 0; opacity: 0;}
 	}
 </style>
-@section('content')
 {{-- <div hidden>
 <datalist id="rgn_list">
 	@foreach($regions as $region)
@@ -117,7 +117,7 @@ html, body, #canvasMap{
 		<div class="row">
 			<div class="col-lg-7" style="margin: 3em auto">
 				<h3>DOH Licensing Process</h3>
-				<form>
+				<form style="margin-bottom: 10px;">
 					<div class="input-group">
 						<input type="" name="" class="form-control" placeholder="Search for...">
 						<div class="input-group-prepend"><button type="button" class="btn-defaults" style="background-color: #28A55F;" name=""><i class="fa fa-search" style="color: #fff;"></i></button></div>
@@ -336,158 +336,46 @@ html, body, #canvasMap{
 						document.getElementById('rad1').checked = bool[0];
 						document.getElementById('rad2').checked = bool[1];
 					}
-					function secradio(){
-						
-					}
-
 				</script>
   				<script type="text/javascript">
   					var map, place, arr, marker;
   					var arr2 = [];
       				function initMap() {
-        				map = new google.maps.Map(document.getElementById('canvasMap'), {
+        				map = new google.maps.Map;(document.getElementById('canvasMap'), {
 				          center: {lat: 12.8797, lng: 121.7740},
 				          zoom: 6
 				        });
-
-				        marker = new google.maps.Marker({map: map});
-
-				        var geocoder = new google.maps.Geocoder();
-				    
-				        var input = document.getElementById('gsearch');
-				    	var autocomplete = new google.maps.places.Autocomplete(input);
-        				autocomplete.bindTo('bounds', map);
+				 //        var input = document.getElementById('gsearch');
+				 //    	var autocomplete = new google.maps.places.Autocomplete(input);
+     //    				autocomplete.bindTo('bounds', map);
 
 
-			          	place = autocomplete.getPlace();
-  						google.maps.event.addDomListener(document.getElementById('gsearch'), 'click', route);
+					//     function route() {
+					// 	        place = autocomplete.getPlace();
+					// 	        if (place.geometry) {
 
-					    function route() {
-							var dId = [];
-							var data = [];
-							document.getElementById("rgnID").value = "";
-							document.getElementById("provID").value = "";
-							document.getElementById("ctyID").value = "";
-							document.getElementById("brgyID").value = "";
-					    	autocomplete.addListener('place_changed', function() {
-					    		chgLd('gsearch', true);
-						        place = autocomplete.getPlace();
-						        // if (!place.geometry) {
-						        //   return;
-						        // }
+					// 	          	map.setCenter(place.geometry.location);
+					// 	          	map.setZoom(17);
+					// 	            chgLd('gsearch', false);
+					// 	        }
+					// 	        marker.setPlace({
+					// 	          	placeId: place.place_id,
+					// 	          	location: place.geometry.location
+					// 	        });
+					// 	        marker.setVisible(true);
 
-						        if (place.geometry) {
-						       	//		.viewport
-						        //   	map.fitBounds(place.geometry.viewport);
-						        //   	chgLd();
-						        // } else {
-						          	map.setCenter(place.geometry.location);
-						          	map.setZoom(17);
-						            chgLd('gsearch', false);
-						        }
-						        marker.setPlace({
-						          	placeId: place.place_id,
-						          	location: place.geometry.location
-						        });
-						        marker.setVisible(true);
+					// 	        var componentForm = {
+					// 		        street_number: 'strID, short_name',
+					// 		        route: 'strID, short_name',
+					// 		        neighborhood: 'brgyID, short_name',
+					// 		        locality: 'ctyID, short_name',
+					// 		        administrative_area_level_2: 'provID, short_name',
+					// 		        administrative_area_level_1: 'rgnID, short_name',
+					// 		        postal_code: 'zipID, short_name'
+					// 		    };
 
-						        var componentForm = {
-							        street_number: 'strID, short_name',
-							        route: 'strID, short_name',
-							        neighborhood: 'brgyID, short_name',
-							        locality: 'ctyID, short_name',
-							        administrative_area_level_2: 'provID, short_name',
-							        administrative_area_level_1: 'rgnID, short_name',
-							        postal_code: 'zipID, short_name'
-							    };
-
-						        for(var i = 0; i < place.address_components.length; i++) {
-						        	var add_comp = place.address_components[i].types[0];
-
-						        	if(componentForm[add_comp]) {
-						        		var dcID = componentForm[add_comp].split(", ");
-						        		if(dcID[0] == "zipID" || dcID[0] == "strID") {
-						        			document.getElementById(dcID[0]).value = place.address_components[i][dcID[1]];
-						        		} else {
-						        			dId.unshift(dcID[0]);
-						        			data.unshift(place.address_components[i][dcID[1]]);
-						        		}
-						        	}
-						        }
-
-						   //      if(data.length < 4) {
-						   //      	document.getElementById('gsearch').value = "";
-									// document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
-									// myFunction();
-						   //      } else {
-						        	var col = ["rgn_list", "prov_list", "cty_list", "brgy_list"];
-						        	setInterval(function(){
-							        	for(var i = 0; i < col.length; i++) {
-							        		var val = document.getElementById(col[i]);
-							        		if(dId[i] != null || dId[i] != undefined) {
-							        			if(document.getElementById(dId[i]).value == "") {
-										        	for(var j = 0; j < val.options.length; j++) {
-													    if(((val.options[j].value).toUpperCase()).match(data[i].toUpperCase())) {
-													    	document.getElementById(dId[i]).value = val.options[j].value;
-													    	document.getElementById(dId[i]).onchange();
-													    	break;
-													    }
-									        		}
-								        		}
-								        	}
-							        	}
-						        	}, 1);
-						        	route();
-						        // }
-					        });
-					    }
-					    function chgLd(element, cond) {
-					    	if(cond == false) {
-					    		document.getElementById(element).classList.remove('loading');
-					    	} else {
-					    		document.getElementById(element).classList.add('loading');
-					    	}
-					    }
-					    function callBack(data) {
-					    	chgLd('gsearch', true);
-					    	chgLd('brgyID', true);
-					    	chgLd('ctyID', true);
-					    	chgLd('provID', true);
-					    	chgLd('rgnID', true);
-					    	document.getElementById('brgyID').value = "";
-							document.getElementById('ctyID').value = "";
-							document.getElementById('provID').value = "";
-							document.getElementById('rgnID').value = "";
-					    	var xhttp = new XMLHttpRequest();
-					    	// if(data != null) {
-					    		xhttp.onprogress = function() {
-
-					    		};
-					    		xhttp.onreadystatechange = function() {
-								    if (this.readyState == 4 && this.status == 200) {
-								       	chgLd('gsearch', false);
-								       	var extract = JSON.parse(this.responseText);
-									    document.getElementById('brgyID').value = (extract[0][0] == undefined) ? "" : extract[0][0]["brgyname"];
-									    document.getElementById('ctyID').value = (extract[1][0] == undefined) ? "" : extract[1][0]["cmname"];
-									    document.getElementById('provID').value = (extract[2][0] == undefined) ? "" : extract[2][0]["provname"];
-									    document.getElementById('rgnID').value = (extract[3][0] == undefined) ? "" : extract[3][0]["rgn_desc"];
-									    // if(extract[0][0] == undefined && extract[1][0] == undefined && extract[2][0] == undefined && extract[3][0] == undefined) {
-									    // 	document.getElementById('gsearch').value = "";
-									    // 	document.getElementById('snackbar').innerHTML = "Please follow the pattern in searching (BARANGAY/CITY/PROVINCE/REGION)";
-							      //       	myFunction();
-									    // }
-									    chgLd('brgyID', false);
-									    chgLd('ctyID', false);
-									    chgLd('provID', false);
-									    chgLd('rgnID', false);
-								    }
-								};
-								xhttp.open("POST", "{{ asset('/getRPMB') }}", true);
-								xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-								xhttp.send('data='+data+'&_token={{ Session::token() }}');
-					    	// }
-					    }
-				    }
+					// }
+				}
 				    
   				</script>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">

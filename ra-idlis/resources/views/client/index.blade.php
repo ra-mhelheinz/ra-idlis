@@ -87,8 +87,8 @@
             <div class="card-body" style="height: 80px;">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
-                  <button class="btn-primarys" type="button"><i class="fa fa-search"> </i></button>
+                <span class="input-group-prepend">
+                  <button class="btn btn-primary" type="button"><i class="fa fa-search"> </i></button>
                 </span>
               </div>
             </div>
