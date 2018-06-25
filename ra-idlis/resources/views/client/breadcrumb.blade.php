@@ -1,5 +1,5 @@
  		<div class="btn-group breadcrumb-success btn-breadcrumb sticky-top">
-            <a href="#" class="btn btn-successs"><i class="fa fa-home"></i></a>
+            <a href="{{asset('client/home')}}" class="btn btn-successs"><i class="fa fa-home"></i></a>
             <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="first">APPLY</a>
             <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="second">EVALUATION STATUS</a>
             <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="third">INSPECTION STATUS</a>

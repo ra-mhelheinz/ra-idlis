@@ -21,6 +21,7 @@ Route::get('client/home', 'ClientController@home');
 Route::get('client/apply/lop','ClientController@LOP');
 Route::match(['get', 'post'], '/client/apply/ptc', 'ClientController@PTC');
 Route::match(['get', 'post'], '/client/apply/con', 'ClientController@CON');
+Route::match(['get', 'post'], '/client/apply/lto', 'ClientController@LTO');
 Route::match(['get', 'post'], '/client/apply/coa', 'ClientController@COA');
 Route::match(['get', 'post'], '/client/apply/ato', 'ClientController@ATO');
 Route::get('client/apply/sa','ClientController@SA');

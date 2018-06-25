@@ -40,6 +40,7 @@
 <script type="text/javascript">
 	  	document.getElementById('first').style = "color: blue;";
 </script>
+@include('client.breadcrumb')
 		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-radius: 0;padding: 2rem 2rem;margin-top: 1%;padding-bottom: 7%;">
 			<div class="title"  style="text-align: center;border-bottom: 1px solid green;padding-bottom: 9px;position: relative;margin-bottom: 2%;"> 
 			{{-- <h2>APPLICATION FORM</h2>
@@ -53,13 +54,11 @@
 					  <button type="button" class="btn-defaults"><i class="fa fa-history"></i></button>
 				</div>
 				<div class="col-sm-4"><h2>APPLICATION FORM</h2></div>
-				<div class="col-sm-4">
-					<div class="btn-group" role="group" aria-label="Basic example">
-					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn btn-default">CON</button></a>
-					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn btn-default">PTC</button></a>
-					  <a href="{{ asset('/client/apply/coa') }}"><button type="button" class="btn btn-default">COA</button></a>
-					  <a href="{{ asset('/client/apply/ato') }}"><button type="button" class="btn btn-default">ATO</button></a>
-					</div>
+				<div class="col-sm-4">					
+					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn btn-primary">CON</button></a>
+					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn btn-primary">PTC</button></a>
+					  <a href="{{ asset('/client/apply/coa') }}"><button type="button" class="btn btn-primary">COA</button></a>
+					  <a href="{{ asset('/client/apply/ato') }}"><button type="button" class="btn btn-primary">ATO</button></a>
 				</div>
 			</div>
 			</div>

@@ -239,5 +239,13 @@ class ClientController extends Controller
         $hfaci = DB::table('hfaci_serv_type')->get();
       return view('client.ato', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     }
+     public function LTO (REquest $request){
+      $fatype = DB::table('facilitytyp')->get();
+        $ownsh = DB::table('ownership')->get();
+        $aptyp = DB::table('apptype')->get();
+        $clss = DB::table('class')->get();
+        $hfaci = DB::table('hfaci_serv_type')->get();
+      return view('client.lto', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
+    }
 
 }

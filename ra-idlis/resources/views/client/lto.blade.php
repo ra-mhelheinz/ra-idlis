@@ -42,7 +42,7 @@
 </script>
 		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-radius: 0;padding: 2rem 2rem;margin-top: 1%;padding-bottom: 7%;">
 			<div class="title"  style="text-align: center;border-bottom: 1px solid green;padding-bottom: 9px;position: relative;margin-bottom: 2%;"> 
-			{{-- <h2>APPLICATION FORM</h2>
+{{-- 			<h2>APPLICATION FORM</h2>
 			<div class="btn-group" role="group" aria-label="Basic example" style="float: right;">
 			  <button type="button" class="btn btn-secondary"><i class="fa fa-pencil-square-o"></i>Application for change</button>
 			  <button type="button" class="btn btn-secondary"><i class="fa fa-history"></i>Revision of History</button>
@@ -57,14 +57,14 @@
 
 					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn btn-primary">CON</button></a>
 					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn btn-primary">PTC</button></a>
-					  <a href="{{ asset('/client/apply/lto') }}"><button type="button" class="btn btn-primary">LTO</button></a>
+					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn btn-primary">LTO</button></a>
 					  <a href="{{ asset('/client/apply/coa') }}"><button type="button" class="btn btn-primary">COA</button></a>
 					  <a href="{{ asset('/client/apply/ato') }}"><button type="button" class="btn btn-primary">ATO</button></a>
 				</div>
 			</div>
 			</div>
 	<form id="ApplyFoRm" data-parsley-validate>
-	  {{-- <div class="row">
+	  <div class="row">
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
 		  		<label style="display:block;"><span >Name of Facility</span></label>
@@ -128,8 +128,8 @@
 	  			<option>Renewal</option>
 	  		</select>
 	</div>
-				</div> --}}
-{{-- 		<div class="text-center">
+				</div>
+		<div class="text-center">
 			<a href="{{asset('client/apply/lop')}}"><button type="button" style="background-color: #228B22 !important" class="btn-primarys"><i class="fa fa-list-alt"></i>&nbsp;List of Personnel</button>
 				</a>
 		</div>
@@ -139,8 +139,8 @@
 		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
 			<table class="attachments table table-hover" style="width: 100%;">
 				<tbody id="ApplyTable">
-				</tbody> --}}
-				{{-- <tr>
+				</tbody>
+				<tr>
 					<td>Acknowledgement (Notarized) </td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
 				</tr>
@@ -168,13 +168,13 @@
 				<tr>
 					<td>Photographs of exterior and interior of the Health Facility</td>
 					<td><button type="button" class="btn-primarys"><i class="fa fa-upload"></i>&nbsp;Upload</button></td>
-				</tr> --}}
-		{{-- 		
+				</tr>
+				
 			</table>
 		</div>
 		</div>
-				</div> --}}
-				<div class="row">
+				</div>
+	{{-- 			<div class="row">
 					<div class="col-sm-12"><div class="input-group">
 							Date:&nbsp;
 						<div class="input-group-prepend" id="date" style="border-bottom: 1px solid #b5c1c9;"></div>
@@ -296,7 +296,7 @@
 
 							</tbody>
 						</table>
-				</div>
+				</div> --}}
 		</form>
 </div>	
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
