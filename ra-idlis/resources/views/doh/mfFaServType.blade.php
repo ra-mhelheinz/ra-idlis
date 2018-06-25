@@ -14,7 +14,7 @@
     </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Health Facility/Service Type <span class="MA16_add"><a href="#" title="Add New Health Facility/Service Type" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
+           Application Type <span class="MA16_add"><a href="#" title="Add New Health Facility/Service Type" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
 
         </div>
         <div class="card-body">
@@ -185,7 +185,7 @@
                   data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
                   success: function(data){
                       if (data == "DONE") {
-                          alert('Successfully Edited Health Facility/Service Type');
+                          alert('Successfully Edited Application Type');
                           window.location.href = "{{ asset('/employee/dashboard/mf/faciservtype') }}";
                       }
                   }

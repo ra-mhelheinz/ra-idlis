@@ -355,7 +355,7 @@
 				return 'DONE';
 			}
 		}
-		public function AppType(Request $request) { // Master File/Application Type Page
+		public function AppStatus(Request $request) { // Master File/Application Type Page
 			if ($request->isMethod('get')) {
 				$apptype = DB::table('apptype')->get();
 				return view('doh.mfapptype',['apptype'=>$apptype]);
@@ -371,7 +371,7 @@
 				return "DONE";
 			}
 		}
-		public function FaType(Request $request){ // Master File/Facility Type Page
+		public function AppType(Request $request){ // Master File/Facility Type Page
 			if ($request->isMethod('get')) {
 				$fatype = DB::table('facilitytyp')->get();
 				return view('doh.mffatype',['fa'=>$fatype]);
@@ -553,7 +553,7 @@
 			}
 			if ($request->isMethod('post')) {
 				$data = $this->InsertActLog($request->mod_id,"ad_d");
-				DB::table('upload')->insert(['updesc'=>$request->name,'facid'=>$request->facid]);
+				DB::table('upload')->insert(['updesc'=>$request->name,'facid'=>$request->facid,'hfser_id'=>$request->id]);
 				return 'DONE';
 			}
 		}
@@ -680,7 +680,7 @@
 				DB::table('facilitytyp')->insert([
 					'facid' => $request->id,
 					'facname'=> $request->name,
-					'hfser_id' => $request->hfser_id,
+					// 'hfser_id' => $request->hfser_id,
 				]);
 				return 'DONE';
 			}

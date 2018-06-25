@@ -5,7 +5,7 @@
 @section('content')
   <input type="text" id="CurrentPage" value="MA05" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @foreach ($hfstypes as $hfstype)
+  {{-- @foreach ($hfstypes as $hfstype)
    <datalist id="{{$hfstype->hfser_id}}_list">
      @foreach ($fatypes as $fatype)
        @if ($hfstype->hfser_id == $fatype->hfser_id)
@@ -13,7 +13,7 @@
        @endif
      @endforeach
    </datalist>
-  @endforeach
+  @endforeach --}}
    {{-- $('#new_rgnid').val() --}}
  <datalist id="rgn_list">
    @foreach ($fatypes as $fatype)
@@ -23,9 +23,10 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Health Facility/Service <a href="#" title="Add New Health Facility/Service" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Facility/Service <a href="#" title="Add New Health Facility/Service" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            <div style="float:right;display: inline-block;">
-            <form class="form-inline">
+            <input type="" id="token" value="{{ Session::token() }}" hidden>
+            {{-- <form class="form-inline">
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Health Facility/Service Type ...</option>
@@ -33,8 +34,8 @@
                   <option value="{{$hfstype->hfser_id}}">{{$hfstype->hfser_desc}}</option>
                 @endforeach
               </select>
-              <input type="" id="token" value="{{ Session::token() }}" hidden>
-              </form>
+              
+              </form> --}}
            </div>
         </div>
         <div class="card-body">
@@ -47,6 +48,20 @@
                 </tr>
               </thead>
               <tbody id="FilterdBody">
+                @foreach ($fatypes as $fatype)
+                  <tr>
+                          <td>{{$fatype->facid}}</td>
+                          <td>{{$fatype->facname}}</td>
+                          <td><center>
+                          <span class="MA05_update">
+                          <button type="button" class="btn-defaults" onclick="showData('{{$fatype->facid}}','{{$fatype->facname}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;
+                          </span>
+                          <span class="MA05_cancel">
+                          <button type="button" class="btn-defaults" onclick="showDelete('{{$fatype->facid}}', '{{$fatype->facname}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                       </span>
+                          </center></td>
+                        </tr>
+                @endforeach
               </tbody>
             </table>
         </div>
@@ -57,12 +72,12 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Health Facility/Service</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Facility/Service</strong></h5>
                 <hr>
                 <div class="container">
                   <form class="row" id="addCls" data-parsley-validate>
                     {{ csrf_field() }}
-                    <div class="col-sm-4">Facility/Service Type:</div>
+                    {{-- <div class="col-sm-4">Facility/Service Type:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                       <select id="hfser_id" data-parsley-required-message="*<strong>Facility/Service</strong> required" class="form-control" required>  
                           <option value="">Select Facility/Service Type ...</option>
@@ -70,7 +85,7 @@
                             <option value="{{$hfstype->hfser_id}}">{{$hfstype->hfser_desc}}</option>
                           @endforeach
                       </select>
-                    </div>
+                    </div> --}}
                     <div class="col-sm-4">ID:</div>
                     <div class="col-sm-8"  style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required" name="fname" class="form-control" required>
@@ -197,7 +212,7 @@
                         _token : $('#token').val(),
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
-                        hfser_id : $('#hfser_id').val(),
+                        // hfser_id : $('#hfser_id').val(),
                         mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {

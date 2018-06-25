@@ -14,7 +14,7 @@
     </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Facility Type <a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Application Type <a href="#" title="Add New Application Type" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
 
         </div>
         <div class="card-body">
@@ -54,7 +54,7 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Facility Type</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Application Type</strong></h5>
                 <hr>
                 <div class="container">
                   <form id="addRgn" class="row"  data-parsley-validate>
@@ -81,7 +81,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Facility Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Edit Application Type</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>

@@ -5,7 +5,7 @@
 @section('content')
   <input type="text" id="CurrentPage" value="MA11" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @foreach ($hfsts as $hfst)
+  {{-- @foreach ($hfsts as $hfst)
    <datalist id="{{$hfst->hfser_id}}_hfst">
      @foreach ($facilitys as $facility)
         @if ($facility->hfser_id == $hfst->hfser_id)
@@ -13,19 +13,19 @@
         @endif
      @endforeach
    </datalist>
-  @endforeach
+  @endforeach --}}
   @foreach ($facilitys as $facility)
    <datalist id="{{$facility->facid}}_list">
      @foreach ($uploads as $upload)
        @if ($facility->facid == $upload->facid)
-          <option id="{{$upload->upid}}_pro" value="{{$upload->upid}}">{{$upload->updesc}}</option>
+          <option class="{{$upload->hfser_id}}_cls" id="{{$upload->upid}}_pro_{{$upload->hfser_id}}" value="{{$upload->upid}}">{{$upload->updesc}}</option>
        @endif
      @endforeach
    </datalist>
   @endforeach
  <datalist id="rgn_list">
    @foreach ($uploads as $upload)
-     <option id="{{$upload->upid}}_pro" value="{{$upload->upid}}">{{$upload->updesc}}</option>
+     <option id="{{$upload->upid}}_pro_{{$upload->hfser_id}}" value="{{$upload->upid}}">{{$upload->updesc}}</option>
    @endforeach
  </datalist>
 <div class="content p-4">
@@ -35,14 +35,17 @@
            <div style="float:right;display: inline-block;">
             <form class="form-inline">
               <label>Filter : &nbsp;</label>
-              <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
+              <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup2()">
                 <option value="">Select Health Facility/Service Type ...</option>
                 @foreach ($hfsts as $hfst)
                   <option value="{{$hfst->hfser_id}}">{{$hfst->hfser_desc}}</option>
                 @endforeach
               </select>&nbsp;
-              <select style="width: auto;" class="form-control" id="filterer2" onchange="filterGroup2()">
+                <select style="width: auto;" class="form-control" id="filterer2" onchange="filterGroup2()">
                 <option value="">Select Health Facility/Service ...</option>
+                @foreach ($facilitys as $facility)
+                  <option value="{{$facility->facid}}">{{$facility->facname}}</option>
+                @endforeach
               </select>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
@@ -75,7 +78,7 @@
                     {{ csrf_field() }}
                     <div class="col-sm-4">Health Facility/Service Type:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                      <select id="FATYPE" onchange="filterGroup3();" data-parsley-required-message="*<strong>Health Facility/Servce Type</strong> required" class="form-control" required>
+                      <select id="FATYPE" {{-- onchange="filterGroup3();" --}} data-parsley-required-message="*<strong>Health Facility/Servce Type</strong> required" class="form-control" required>
                           <option value="">Select Health Facility/Service Type ...</option>
                           @foreach ($hfsts as $hfst)
                             <option value="{{$hfst->hfser_id}}">{{$hfst->hfser_desc}}</option>
@@ -86,6 +89,9 @@
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                       <select id="FACID" data-parsley-required-message="*<strong>Facility/Service</strong> required" class="form-control" required>  
                           <option value="">Select Facility/Service ...</option>
+                          @foreach ($facilitys as $facility)
+                            <option value="{{$facility->facid}}">{{$facility->facname}}</option>
+                          @endforeach
                           {{-- @foreach ($facility as $facilitys)
                             <option value="{{$facilitys->facid}}">{{$facilitys->facname}}</option>
                           @endforeach --}}
@@ -194,15 +200,16 @@
           }
         }
         function filterGroup2(){
+        var id2 = $('#filterer').val();
         var id = $('#filterer2').val();
         var token = $('#token').val();
-        var x = $('#'+id+'_list option').map(function() {return $(this).val();}).get();
-        console.log(id);
+        var x = $('#'+id+'_list option[class="'+id2+'_cls"]').map(function() {return $(this).val();}).get();
+        // console.log(x);
         $('#FilterdBody').empty();
         // $('#FilterdBody').append('<option value="">Select Province ...</option>');
           for (var i = 0; i < x.length; i++) {
-            var d = $('#'+x[i]+'_pro').text();
-            var e = $('#'+x[i]+'_pro').attr('value');
+            var d = $('#'+x[i]+'_pro_'+id2).text();
+            var e = $('#'+x[i]+'_pro_'+id2).attr('value');
             $('#FilterdBody').append(
                         '<tr>'+
                           // '<td>'+e+'</td>' +
@@ -219,9 +226,9 @@
                         );
           }
       }
-      function getData(provname){
-          $('#edit_name').attr("value",provname);
-      } 
+      // function getData(provname){
+      //     $('#edit_name').attr("value",provname);
+      // } 
       $('#addCls').on('submit',function(event){
             event.preventDefault();
             var form = $(this);
@@ -239,6 +246,7 @@
                       data: {
                         _token : $('#token').val(),
                         // id: $('#new_rgnid').val(),
+                        id : $('#FATYPE').val(),
                         name : $('#new_rgn_desc').val(),
                         facid : $('#FACID').val(),
                         mod_id : $('#CurrentPage').val(),
