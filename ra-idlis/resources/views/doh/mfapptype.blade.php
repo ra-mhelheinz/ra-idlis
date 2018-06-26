@@ -14,7 +14,7 @@
     </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Application Type <span class="MA07_add"><a href="#" title="Add New Application Type" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
+           Application Status <span class="MA07_add"><a href="#" title="Add New Application Status" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
 
         </div>
         <div class="card-body">
@@ -53,7 +53,7 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Appplication Type</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Appplication Status</strong></h5>
                 <hr>
                 <div class="container">
                   <form id="addRgn" class="row"  data-parsley-validate>
@@ -80,7 +80,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Edit Application Status</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
