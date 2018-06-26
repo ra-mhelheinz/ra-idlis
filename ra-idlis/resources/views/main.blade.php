@@ -11,7 +11,7 @@
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 	   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js"></script>
-    <script type="text/javascript" src="asset('ra-idlis/public/js/loader.js')"></script>
+    <script type="text/javascript" src="{{asset('ra-idlis/public/js/loader.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/button.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/fa.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/animate.css')}}">
