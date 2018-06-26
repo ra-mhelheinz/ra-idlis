@@ -31,6 +31,29 @@
   z-index: 9999;
   background: url("{{asset('ra-idlis/public/img/greenload.gif')}}") center no-repeat #fff;
 }
+.footer-bottom {
+   background: linear-gradient(to bottom left,#228B22, #84bd82);
+    min-height: 30px;
+    width: 100%;
+}
+.copyright {
+    color: #fff;
+    line-height: 30px;
+    min-height: 30px;
+    padding: 7px 0;
+}
+.design {
+    color: #fff;
+    line-height: 30px;
+    min-height: 30px;
+    padding: 7px 0;
+    text-align: right;
+}
+.design a {
+    color: #fff;
+}
+
+
 </style>
 <body>
   @if(session()->exists('client_data'))
