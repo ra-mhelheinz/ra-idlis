@@ -56,6 +56,7 @@
 
 </style>
 <body>
+  <script type="text/javascript">loader(true);</script>
   @if(session()->exists('client_data'))
   @else
       <div class="back">
@@ -121,6 +122,9 @@
 </div>
 </div>
   <script type="text/javascript">
+      $(document).ready(function(){
+        loader(false);
+      });
       function loader(bool) {
         if(bool) {
           $('body').append("<div id='pageload'></div>");

@@ -21,6 +21,7 @@
 <input type="text" id="CurrentAppTypeSelected" hidden="" value="{{$id_type}}">
 <script type="text/javascript">
 	  	document.getElementById('first').style = "color: blue;";
+	  	loader(true);
 </script>
 @include('client.breadcrumb')
 		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-radius: 0;padding: 2rem 2rem;margin-top: 1%;padding-bottom: 7%;">
@@ -140,7 +141,7 @@
 							Health Facility Type:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
-							<select class="form-control">
+							<select class="form-control" id="HFATYPE" onchange="getFacilityType();" required>
 								<option value=""></option>
 								@foreach ($fatypes as $fatype)
 									<option value="{{$fatype->facid}}">{{$fatype->facname}}</option>
@@ -162,11 +163,11 @@
 					<br>
 					<span id="HideLevel1" style="display:none;">
 						<div class="row">
-							<div class="col-sm-3 ForA">
+							<div class="col-sm-3" id="HideLevel1_Title">
 								Services:<span style="color:red">*</span>
 							</div>
-							<div class="col-sm-3 ForA">
-								<select class="form-control">
+							<div class="col-sm-3" id="HideLevel1_Content">
+								{{-- <select class="form-control">
 									<option value=""></option>
 									<option>Colorectal Surgery</option>
 									<option>General Surgery</option>
@@ -180,7 +181,7 @@
 									<option>Reproductive Health Surgery</option>
 									<option>Thoracic Surgery</option>
 									<option>Urologic Surgery</option>
-								</select>
+								</select> --}}
 							</div>
 							<div class="col-sm-3" >
 								Class:<span style="color:red">*</span>
@@ -189,6 +190,37 @@
 								<select class="form-control">
 									<option value=""></option>
 								</select>
+							</div>
+						</div>
+						<br>
+					</span>
+					<span id="HideLevel2" style="display:none;">
+						<div class="row">
+							<div class="col-sm-3 ForA">
+								{{-- Services:<span style="color:red">*</span> --}}
+							</div>
+							<div class="col-sm-3 ForA">
+								{{-- <select class="form-control">
+									<option value=""></option>
+									<option>Colorectal Surgery</option>
+									<option>General Surgery</option>
+									<option>Pediatric Surgery</option>
+									<option>Opthalmolgic Surgery</option>
+									<option>Oral and Maxillo-facial Surgery</option>
+									<option>Orthodopedic Surgery</option>
+									<option>Otolaryngologic Surgery</option>
+									<option>Pediatric Surgery</option>
+									<option>Plastic and Reconstructive Surgery</option>
+									<option>Reproductive Health Surgery</option>
+									<option>Thoracic Surgery</option>
+									<option>Urologic Surgery</option>
+								</select> --}}
+							</div>
+							<div class="col-sm-3" >
+								Others:<span style="color:red">*</span>
+							</div>
+							<div class="col-sm-3" >
+								<input type="text" class="form-control" name="">
 							</div>
 						</div>
 						<br>
@@ -312,7 +344,7 @@
   </div>
 </div>
 
-	<script> 
+	<script>
 $(document).ready(function(){
     $("#flip").click(function(){
         $("#panel").slideToggle("slow");
@@ -320,6 +352,10 @@ $(document).ready(function(){
 });
 </script>
 	<script type="text/javascript">
+		function getFacilityType(){
+			var selectedFaType = $('#HFATYPE').val();
+			$('#HideLevel1').toggle();
+		}
 		$('#ApplyFoRm').on('submit',function(e){
 			e.preventDefault();
 			var token = $('#global-token').val();
