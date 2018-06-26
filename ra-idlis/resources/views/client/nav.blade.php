@@ -28,7 +28,7 @@
               </a>
             </li>
             <li class="nav-item dropdown"> 
-              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Notifications <br><small>Click here to view your notifications such as updates or changes.</small>" data-step="1"><span class="fa fa-bell" style="font-size:  20px;"></span>1
+              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Notifications <br><small>Click here to view your notifications such as updates or changes.</small>" data-step="1"><span class="fa fa-bell" style="font-size:  18px;"></span>1
                 <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
                   <div class="navbar-login">
                     <p>Welcome to DOH OLORS.</p>

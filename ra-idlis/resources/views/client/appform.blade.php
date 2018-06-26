@@ -37,10 +37,21 @@
 				</div>
 				<div class="col-sm-4"><h3>APPLICATION FORM</h3></div>
 				<div class="col-sm-4">
-					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn btn-primary">CON</button></a>
-					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn btn-primary">PTC</button></a>
-					  <a href="{{ asset('/client/apply/coa') }}"><button type="button" class="btn btn-primary">COA</button></a>
-					  <a href="{{ asset('/client/apply/ato') }}"><button type="button" class="btn btn-primary">ATO</button></a>
+					 <div class="dropdown ">
+					  <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					    Application Type
+					  </button>
+					  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+					    <a class="dropdown-item" href="#">Certificate of Need (CON)</a>
+					    <div class="dropdown ">
+					    <a class="dropdown-item dropdown-toggle" id="dropdownsubMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Permit to Construct (PTC)</a>
+					    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownsubMenuButton">
+					    <a class="dropdown-item" href="#">Certificate of Need (CON)</a>
+					    <a class="dropdown-item" href="#">Permit to Construct (PTC)</a>
+					  	</div>
+					    </div>
+					  </div>
+					</div>
 				</div>
 			</div>
 			</div>
