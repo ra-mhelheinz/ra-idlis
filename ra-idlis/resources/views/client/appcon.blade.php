@@ -53,7 +53,7 @@
 					  <button type="button" class="btn-defaults"><i class="fa fa-pencil-square-o"></i></button>
 					  <button type="button" class="btn-defaults"><i class="fa fa-history"></i></button>
 				</div>
-				<div class="col-sm-4"><h2>APPLICATION FORM</h2></div>
+				<div class="col-sm-4"><h3>APPLICATION FORM</h3></div>
 				<div class="col-sm-4">
 					  <a href="{{ asset('/client/apply/con') }}"><button type="button" class="btn btn-primary">CON</button></a>
 					  <a href="{{ asset('/client/apply/ptc') }}"><button type="button" class="btn btn-primary">PTC</button></a>
@@ -62,8 +62,11 @@
 				</div>
 			</div>
 			</div>
+
 	<form id="ApplyFoRm" data-parsley-validate>
-	  {{-- <div class="row">
+		<div class="col-sm-"><center><h2>CERTIFICATE OF NEED FOR NEW GENERAL HOSPITALS</h2></center></div>
+		<br
+>	  {{-- <div class="row">
 	  	<div class="col-xs-12 col-md-6 fname">
 		  	<div class=" form-group">
 		  		<label style="display:block;"><span >Name of Facility</span></label>
@@ -290,10 +293,10 @@
 				</div> -->
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-3">
+						<div class="col-sm-4">
 							Name of Proposed Hospital:
 						</div>
-						<div class="col-sm-9">
+						<div class="col-sm-8">
 							<strong>{{$clientData->facilityname}}</strong>
 						</div>
 					</div>
@@ -343,28 +346,28 @@
 					</div> --}}
 					<br>
 					<div class="row">
-						<div class="col-sm-3">
+						<div class="col-sm-4">
 							Name of Proponent:
 						</div>
-						<div class="col-sm-9">
+						<div class="col-sm-8">
 							{{$clientData->authorizedsignature}}
 						</div>
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-sm-3">
+						<div class="col-sm-4">
 							Address of Proponent: 
 						</div>
-						<div class="col-sm-9">
+						<div class="col-sm-8">
 							{{$clientData->email}}
 						</div>
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-sm-3">
+						<div class="col-sm-4">
 							Contact Number: 
 						</div>
-						<div class="col-sm-9">
+						<div class="col-sm-8">
 						{{$clientData->contact}}
 						</div>
 					</div>
@@ -386,77 +389,95 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-4">
-							Ownership:
+							Ownership:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-8" >
-							Service Capability:
+							Service Capability:<span style="color:red">*</span>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-4" style="margin-left:2px">
-							<input class="form-check-input" type="checkbox" name=""> Government
+							<span>
+								@foreach ($ownshs as $ownsh)
+									<input class="" type="radio" name="Ownership" value="{{$ownsh->ocid}}" data-parsley-required-message="<strong>Ownership</strong> required." required> {{$ownsh->ocdesc}}
+								&nbsp;&nbsp; 
+								@endforeach
+								{{-- <input class="" type="radio" name="Ownership" value="Government" data-parsley-required-message="<strong>Ownership</strong> required." required> Government
+								&nbsp;&nbsp; 
+								<input class="" type="radio" name="Ownership" value="Private"> Private
+								&nbsp;&nbsp;  --}}
+							</span>
 						</div>
 						<div class="col-sm-6" >
-							<div class="row">
-								<div class="col-sm-2"><input class="form-check-input" type="checkbox" name=""> Level 1</div>
-								<div class="col-sm-2"><input class="form-check-input" type="checkbox" name=""> Level 2</div>
-								<div class="col-sm-2"><input class="form-check-input" type="checkbox" name=""> Level 3</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-4" style="margin-left:2px">
-							<input class="form-check-input" type="checkbox" name=""> Private
-						</div>
-						<div class="col-sm-6" >
+							<span>
+								{{-- <div class="col-sm-2"> --}}
+									<input class="" type="radio" name="HospitalLevel" id="HospitalLevel1" data-parsley-required-message="<strong>Service Capability</strong> required." value="L1" required> Level 1
+									&nbsp;&nbsp; 
+								{{-- </div> --}}
+								{{-- <div class="col-sm-2"> --}}
+									<input class="" type="radio" name="HospitalLevel" id="HospitalLevel2" value="L2"> Level 2
+									&nbsp;&nbsp;
+								{{-- </div> --}}
+								{{-- <div class="col-sm-2"> --}}
+									<input class="" type="radio" name="HospitalLevel" id="HospitalLevel3" value="L3"> Level 3
+								{{-- </div> --}}
+							</span>
 						</div>
 					</div>
 					<br>
 					<div class="row">
 						<div class="col-sm-6" style="margin-left:2px">
-							Total Capital Investment for the Proposed Hospital:
+							Total Capital Investment for the Proposed Hospital:<span style="color:red">*</span>
 						</div>
 						&#8369;
 						<div class="col-sm-5" >
-							<input type="text" class="form-control" name="">
+							<input type="text" class="form-control" data-parsley-required-message="<strong>Total Capital Investment</strong> required." name="totalcap" required required>
 						</div>
 					</div>
 					<br>
 					<div class="row">
 						<div class="col-sm-6" style="margin-left:2px">
-							Total Lot Area of the Proposed Site:
+							Total Lot Area of the Proposed Site:<span style="color:red">*</span>
 						</div>
 						&nbsp;&nbsp;&nbsp; 
 						<div class="col-sm-5" >
-							<input type="text" class="form-control" name="">
+							<input type="text" data-parsley-required-message="<strong>Total Lot Area</strong> required." class="form-control" name="lotArea" required>
 						</div>
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-sm-6">Proposed Total Bed Capacity
+						<div class="col-sm-6">Proposed Total Bed Capacity:<span style="color:red">*</span>
 						</div>
 						&nbsp;&nbsp;&nbsp; 
 						<div class="col-sm-5" {{-- style="border-width: 2px;border-bottom-color:black; border-bottom-style: solid;" --}}>
-							<input type="text" class="form-control" name="">
+							<input type="text" class="form-control" data-parsley-required-message="<strong>Proposed Total Bed Capacity</strong> required." name="propTotalBedCap" required>
 						</div>
 					</div>
 					<br>
 					<br>
 					<br>
 					{{-- <div class="row"><div class="col-sm-12">Attachment: (incomplete attachment shall be a ground for the denial of this application)</div></div> --}}
-					{{-- <div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show CHECKLIST OF DOCUMENTS:</div>
-		<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
-			<table class="attachments table table-hover" style="width: 100%;">
-				<tbody id="ApplyTable">
-				</tbody>
-				<tr>
-					<td></td>
-					<td></td>				
-				</tr>					
-			</table>
-		</div> --}}
+					<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show CHECKLIST OF DOCUMENTS:</div>
+						<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
+							<table class="attachments table table-hover" style="width: 100%;">
+								<tbody id="ApplyTable">
+									<tr><td colspan="2"><center><p><strong>Note: </strong>File should be not larger than <strong>2 MB</strong></p></td><center></tr>
+									@foreach ($uplds as $upld)
+										<tr>
+											<td width="50%">{{$upld->updesc}}</td>
+											<td>
+												<input name="" class="form-control-file" id="{{$upld->upid}}" data-parsley-required-message="File required for assessment." data-parsley-max-file-size="2.5" data-parsley-trigger="change" class="form-control" type="file">
+											</td>				
+										</tr>
+									@endforeach
+								</tbody>													
+							</table>
+						</div>
+						<br>
 		{{-- <div class="col-sm-12">&nbsp;&nbsp;&nbsp;I hereby declare  that this Application  has been accomplished  by me, and that the foregoing  information  and attached documents required for the permit to construct are true and correct.</div> --}}
-		<center><button style="background-color: #228B22 !important" type="submit" class="btn-primarys"  {{-- data-toggle="modal" data-target="#exampleModalCenter" --}}>Submit</button></center>
+		<div class="container">
+			<center><button style="background-color: #228B22 !important" type="submit" class="btn-primarys"  {{-- data-toggle="modal" data-target="#exampleModalCenter" --}}>Submit</button></center>
+		</div>
 		</div>
 				</div>
 			</div>
@@ -492,9 +513,15 @@ $(document).ready(function(){
 			e.preventDefault();
 			var token = $('#global-token').val();
 			var form = $(this);
+			
+			// console.log(Test);
             form.parsley().validate();
             if (form.parsley().isValid()){
-
+            	// var ownship = $("input[name='Ownership']:checked").val();
+            	// var serv_cap = $('input[name="HospitalLevel"]:checked').val();
+            	// var total_cap = $('input[name="totalcap"]').val();
+            	// var total_lot = $('input[name="lotArea"]').val();
+            	// var bedCap = $('input[name="propTotalBedCap"]').val();
              } else {
 
              }
@@ -610,21 +637,21 @@ $(document).ready(function(){
 			// 					}
 			// 				}
 			// 			}
-	// window.Parsley.addValidator('maxFileSize', {
-	// 	  validateString: function(_value, maxSize, parsleyInstance) {
-	// 	    if (!window.FormData) {
-	// 	      alert('You are making all developpers in the world cringe. Upgrade your browser!');
-	// 	      return true;
-	// 	    }
-	// 	    var files = parsleyInstance.$element[0].files;
-	// 	    return files.length != 1  || files[0].size <= (maxSize * 1024)*1024;
-	// 	  },
-	// 	  requirementType: 'integer',
-	// 	  messages: {
-	// 	  	// %s
-	// 	    en: '<span style="color:red">This file should not be larger than 2 MB</span>',
-	// 	  }
-	// 	});
+	window.Parsley.addValidator('maxFileSize', {
+		  validateString: function(_value, maxSize, parsleyInstance) {
+		    if (!window.FormData) {
+		      alert('You are making all developpers in the world cringe. Upgrade your browser!');
+		      return true;
+		    }
+		    var files = parsleyInstance.$element[0].files;
+		    return files.length != 1  || files[0].size <= (maxSize * 1024)*1024;
+		  },
+		  requirementType: 'integer',
+		  messages: {
+		  	// %s
+		    en: '<span style="color:red">This file should not be larger than 2 MB</span>',
+		  }
+		});
 	</script>
 @include('client.sitemap')
 @endsection

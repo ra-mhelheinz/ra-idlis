@@ -207,6 +207,14 @@ class ClientController extends Controller
 
       return $cur_tbl;
     }
+    public function FORM(Request $request){
+        $fatype = DB::table('facilitytyp')->get(); // Facility Type
+        $ownsh = DB::table('ownership')->get(); // Ownership Type
+        $aptyp = DB::table('apptype')->get(); // Application Stype
+        $clss = DB::table('class')->get(); // Class
+        $hfaci = DB::table('hfaci_serv_type')->get();
+      return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
+    }
     public function PTC(Request $request){
       $fatype = DB::table('facilitytyp')->get();
         $ownsh = DB::table('ownership')->get();
@@ -215,13 +223,15 @@ class ClientController extends Controller
         $hfaci = DB::table('hfaci_serv_type')->get();
       return view('client.ptc', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     }
-    public function CON (REquest $request){
+    public function CON (Request $request){
       $fatype = DB::table('facilitytyp')->get();
         $ownsh = DB::table('ownership')->get();
         $aptyp = DB::table('apptype')->get();
         $clss = DB::table('class')->get();
         $hfaci = DB::table('hfaci_serv_type')->get();
-      return view('client.appcon', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
+        $upld = DB::table('upload')->where([['hfser_id','=','CON'],['facid','=','H']])->get();
+        // return dd($upld);
+      return view('client.appcon', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci, 'uplds'=> $upld]);
     }
     public function COA (REquest $request){
       $fatype = DB::table('facilitytyp')->get();
