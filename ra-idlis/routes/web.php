@@ -19,7 +19,8 @@ Route::match(['get', 'post'], '/register', 'ClientController@registerclient');
 
 Route::get('client/home', 'ClientController@home');
 Route::get('client/apply/lop','ClientController@LOP');
-Route::match(['get', 'post'], '/client/apply/form', 'ClientController@FORM');
+Route::match(['get', 'post'], '/client/apply/form/{id_type}', 'ClientController@FORM');
+// Route::match(['get', 'post'], '/client/apply/form', 'ClientController@FORM');
 Route::match(['get', 'post'], '/client/apply/ptc', 'ClientController@PTC');
 Route::match(['get', 'post'], '/client/apply/con', 'ClientController@CON');
 Route::match(['get', 'post'], '/client/apply/lto', 'ClientController@LTO');

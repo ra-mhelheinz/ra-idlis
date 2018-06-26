@@ -46,14 +46,14 @@
 		<div class="card-body">
 	<div class="row">
 		<div class="col-sm-4"></div>
-		<div class="col-sm-4"><a href="{{ asset('/client/apply/con') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Certificate of Need (CON)</button></a></div>
+		<div class="col-sm-4"><a href="{{ asset('/client/apply/form/con') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Certificate of Need (CON)</button></a></div>
 		<div class="col-sm-4"></div>
 	</div> 
 	<center><div style="width: 1px;height: 100px;top: 0;background-color: #000;"></div></center>
 	<div class="row">
 		<div class="col-sm-4"></div>
 		<div class="col-sm-4">
-			<a href="{{ asset('/client/apply/ptc') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Permit to Construct (PTC)</button></a>
+			<a href="{{ asset('/client/apply/form/ptc') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Permit to Construct (PTC)</button></a>
 		</div>
 		<div class="col-sm-4"></div>
 	</div>
@@ -66,13 +66,13 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-4">
-			<a href="{{ asset('/client/apply/lto') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">License to Operate (LTO)</button></a>
+			<a href="{{ asset('/client/apply/form/lto') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">License to Operate (LTO)</button></a>
 		</div>
 		<div class="col-sm-4">
-			<a href="{{ asset('/client/apply/coa') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Certificate of Accreditation (COA)</button></a>
+			<a href="{{ asset('/client/apply/form/coa') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Certificate of Accreditation (COA)</button></a>
 		</div>
 	<div class="col-sm-4">
-		<a href="{{ asset('/client/apply/ato') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Authority to Operate (ATO)</button></a>
+		<a href="{{ asset('/client/apply/form/ato') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Authority to Operate (ATO)</button></a>
 	</div>
 	</div>
 	</div>

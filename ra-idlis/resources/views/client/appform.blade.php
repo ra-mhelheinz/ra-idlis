@@ -18,6 +18,7 @@
 				padding: 1em;
 			}
 </style>
+<input type="text" id="CurrentAppTypeSelected" hidden="" value="{{$id_type}}">
 <script type="text/javascript">
 	  	document.getElementById('first').style = "color: blue;";
 </script>

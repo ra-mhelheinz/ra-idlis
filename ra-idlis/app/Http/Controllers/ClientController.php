@@ -207,13 +207,13 @@ class ClientController extends Controller
 
       return $cur_tbl;
     }
-    public function FORM(Request $request){
+    public function FORM(Request $request, $id_type){
         $fatype = DB::table('facilitytyp')->get(); // Facility Type
         $ownsh = DB::table('ownership')->get(); // Ownership Type
         $aptyp = DB::table('apptype')->get(); // Application Stype
         $clss = DB::table('class')->get(); // Class
         $hfaci = DB::table('hfaci_serv_type')->get();
-      return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
+      return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci,'id_type'=>$id_type]);
     }
     public function PTC(Request $request){
       $fatype = DB::table('facilitytyp')->get();
