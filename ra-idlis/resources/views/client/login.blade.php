@@ -281,19 +281,19 @@ html, body, #canvasMap{
 						@endforeach
 					</select> --}}
 					</div>
-					<div class="col-sm-12" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
+					<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					{{-- <select id="selectProvince4Cm" data-parsley-required-message="<strong>*</strong>Province <strong>Required</strong>" class="form-control" name="province"  required="">
 						<option disabled selected hidden>Province</option>
 					</select> --}}
 					<input id="provID" type="text" class="form-control idis" name="province" placeholder="Province" onchange="loadTbl(['city_muni', 'provid', getDataTbl(this.id)], 'cty_list', ['cmid', 'cmname'], ['ctyID', 'cty_list'])" autocomplete="off">
 					</div>
-				<div class="col-sm-6" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
+				<div class="col-sm-6" style="margin: 0 0 .8em 0;" >
 					{{-- <select id="selectCM4Cm" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>City/Municipality <strong>Required</strong>" required="">
 						<option disabled selected hidden>City/Municipality</option>
 					</select> --}}
 					<input id="ctyID" type="text" class="form-control idis" name="city_muni" placeholder="City/Municipality" onchange="loadTbl(['barangay', 'cmid', getDataTbl(this.id)], 'brgy_list', ['brgyid', 'brgyname'], ['brgyID', 'brgy_list'])" autocomplete="off">
 				</div>
-				<div class="col-sm-6" style="margin: 0 0 .8em 0;" onclick="firstradio([false, true], ['gsearch'])">
+				<div class="col-sm-6" style="margin: 0 0 .8em 0;">
 					{{-- <select id="selectbrgy4CM" name="region" class="form-control"  data-parsley-required-message="<strong>*</strong>Brgy. <strong>Required</strong>" required="">
 						<option disabled selected hidden>Brgy. Name</option>
 					</select> --}}
@@ -325,7 +325,7 @@ html, body, #canvasMap{
 					  </div>
 					</div>
 				</div>
-				<script type="text/javascript">
+{{-- 				<script type="text/javascript">
 					function firstradio(bool,getId){
 						document.getElementById('gsearch').disabled = bool[1];
 						for(var x = 0; x < document.getElementsByClassName('idis').length; x++) {
@@ -337,15 +337,25 @@ html, body, #canvasMap{
 						document.getElementById('rad1').checked = bool[0];
 						document.getElementById('rad2').checked = bool[1];
 					}
-				</script>
+				</script> --}}
   				<script type="text/javascript">
   					var map, place, arr, marker;
   					var arr2 = [];
+  					var componentForm = {
+					        street_number: 'short_name',
+					        route: 'long_name',
+					        locality: 'long_name',
+					        administrative_area_level_1: 'short_name',
+					        country: 'long_name',
+					        postal_code: 'short_name'
+					      };
+					 var components = componentForm.address_components;
       				function initMap() {
-        				map = new google.maps.Map;(document.getElementById('canvasMap'), {
+        				map = new google.maps.Map(document.getElementById('canvasMap'), {
 				          center: {lat: 12.8797, lng: 121.7740},
 				          zoom: 6
 				        });
+        				console.log(components)
 				 //        var input = document.getElementById('gsearch');
 				 //    	var autocomplete = new google.maps.places.Autocomplete(input);
      //    				autocomplete.bindTo('bounds', map);

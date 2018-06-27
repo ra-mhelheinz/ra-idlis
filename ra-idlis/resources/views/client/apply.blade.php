@@ -49,7 +49,7 @@
 		<div class="col-sm-4"><a href="{{ asset('/client/apply/form/con') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Certificate of Need (CON)</button></a></div>
 		<div class="col-sm-4"></div>
 	</div> 
-	<center><div style="width: 1px;height: 100px;top: 0;background-color: #000;"></div></center>
+	<center><div style="width: 1px;height: 100px;top: 0;background-color: rgba(0,0,0,.2);"></div></center>
 	<div class="row">
 		<div class="col-sm-4"></div>
 		<div class="col-sm-4">
@@ -57,11 +57,11 @@
 		</div>
 		<div class="col-sm-4"></div>
 	</div>
-	<center><div style="width: 1px;height: 50px;top: 0;background-color: #000;"></div></center>
+	<center><div style="width: 1px;height: 50px;top: 0;background-color: rgba(0,0,0,.2);"></div></center>
 	<div class="row">
 		<div class="col-sm-2"></div>
-		<div class="col-sm-4" style="border-top: 1px solid #000;border-right: 1px solid #000;border-left: 1px solid #000;height: 50px;"></div>
-		<div class="col-sm-4" style="border-top: 1px solid #000;border-right: 1px solid #000;"></div>
+		<div class="col-sm-4" style="border-top: 1px solid rgba(0,0,0,.2);border-right: 1px solid rgba(0,0,0,.2);border-left: 1px solid rgba(0,0,0,.2);height: 50px;"></div>
+		<div class="col-sm-4" style="border-top: 1px solid rgba(0,0,0,.2);border-right: 1px solid rgba(0,0,0,.2);"></div>
 		<div class="col-sm-2"></div>
 	</div>
 	<div class="row">

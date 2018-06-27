@@ -15,9 +15,9 @@
                 <tr>
                     <th scope="col">Application No.</th>
                     <th scope="col">Name of Facility</th>
-                    <th scope="col">Status of Application</th>
+                    <th scope="col">Status of Applicant</th>
                     <th scope="col">Evaluate</th>
-                    <th scope="col">Upload OR Copy</th>
+                    <th scope="col">Uploaded OR Copy</th>
                     <th scope="col">Recommended for Inspection</th>
                     <th scope="col">Date of Inspection</th>
                     <th scope="col">Issuance Status: Approval/Disapproval</th>
@@ -26,10 +26,10 @@
                 <tbody>
                 <tr>
                     <td><a href="#">00000077</a></td>
-                    <td>Praesent eu viverra leo</td>
-                    <td>Kevin Dion</td>
+                    <td>Hospital</td>
+                    <td></td>
                     <td><a href="{{asset('/employee/dashboard/lps/evalute')}}"><span class="badge badge-info">Evaluate</span></a></td>
-                     <td><a href="#">00000077</a></td>
+                     <td><a href="#"></a></td>
                       <td><a href="{{asset('/employee/dashboard/lps/evalute/ins/1')}}"><span class="badge badge-pill badge-success">Yes</span></a></td>
                        <td><a href="#">00000077</a></td>
                        <script type="text/javascript">
@@ -38,30 +38,30 @@
                 </tr>
                 <tr>
                     <td><a href="#">00000078</a></td>
-                    <td>Lorem ipsum dolor</td>
-                    <td>Mark Otto</td>
+                    <td>Ambulatory Surgical Center</td>
+                    <td></td>
                     <td><a href="{{asset('/employee/dashboard/lps/evalute')}}"><span class="badge badge-info">Evaluate</span></a></td>
-                     <td><a href="#">00000077</a></td>
+                     <td><a href="#"></a></td>
                       <td><a href="#"><span class="badge badge-pill badge-warning">No</span></a></td>
                        <td><a href="#">00000077</a></td>
                        <td><span class="badge badge-danger">Dissapproved</span></td>
                 </tr>
                 <tr>
                     <td><a href="#">00000079</a></td>
-                    <td>Etiam eleifend elit</td>
-                    <td>Jacob Thornton</td>
+                    <td>Doctor’s Office</td>
+                    <td></td>
                     <td><a href="{{asset('/employee/dashboard/lps/evalute')}}"><span class="badge badge-info">Evaluate</span></a></td>
-                     <td><a href="#">00000077</a></td>
+                     <td><a href="#"></a></td>
                       <td><a href="#"><span class="badge badge-pill badge-warning">No</span></a></td>
                        <td><a href="#">00000077</a></td>
                      <td><span class="badge badge-danger">Dissapproved</span></td>
                 </tr>
                 <tr>
                     <td><a href="#">00000080</a></td>
-                    <td>Donec vitae ante egestas</td>
-                    <td>Larry the Bird</td>
+                    <td>Urgent Care Clinic</td>
+                    <td></td>
                     <td><a href="{{asset('/employee/dashboard/lps/evalute')}}"><span class="badge badge-info">Evaluate</span></a></td>
-                     <td><a href="#">00000077</a></td>
+                     <td><a href="#"></a></td>
                       <td><a href="#"><span class="badge badge-pill badge-warning">No</span></a></td>
                        <td><a href="#">00000077</a></td>
                         <td><span class="badge badge-danger">Dissapproved</span></td>

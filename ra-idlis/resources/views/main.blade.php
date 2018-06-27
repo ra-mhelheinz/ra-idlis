@@ -12,6 +12,7 @@
 	   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js"></script>
     <script type="text/javascript" src="{{asset('ra-idlis/public/js/loader.js')}}"></script>
+    <script type="text/javascript" src="{{asset('ra-idlis/public/js/intro.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/button.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/fa.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/animate.css')}}">
@@ -120,12 +121,7 @@
   </div>
 
 </div>
-</div>
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5Eq93e_E7Jjj6aGqhUATjFnzXecUk5Hc&libraries=places&callback=initMap"
-    async defer></script>
-<script type="text/javascript" src="{{asset('ra-idlis/public/js/intro.js')}}">
-  // introJs().start();
-</script>
-
+</div> 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmE5U7nzF7cU16HzYicYy7pbXn1-uTb1g&callback=initMap" async defer></script>
 </body>
 </html>

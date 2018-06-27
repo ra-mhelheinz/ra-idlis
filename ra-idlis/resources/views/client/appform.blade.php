@@ -314,6 +314,10 @@
 							<input type="text" class="form-control" data-parsley-required-message="<strong>Proposed Total Bed Capacity</strong> required." name="propTotalBedCap" required>
 						</div>
 					</div> --}}
+					<div class="text-center">
+						<a href="{{asset('client/apply/lop')}}"><button type="button" style="background-color: #228B22 !important" class="btn-primarys"><i class="fa fa-list-alt"></i>&nbsp;List of Personnel</button>
+							</a>
+					</div>
 					<hr>
 					{{-- <div class="row"><div class="col-sm-12">Attachment: (incomplete attachment shall be a ground for the denial of this application)</div></div> --}}
 					<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show CHECKLIST OF DOCUMENTS:</div>
