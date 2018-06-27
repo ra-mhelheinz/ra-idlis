@@ -42,14 +42,11 @@
 					    Application Type
 					  </button>
 					  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-					    <a class="dropdown-item" href="#">Certificate of Need (CON)</a>
-					    <div class="dropdown ">
-					    <a class="dropdown-item dropdown-toggle" id="dropdownsubMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Permit to Construct (PTC)</a>
-					    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownsubMenuButton">
-					    <a class="dropdown-item" href="#">Certificate of Need (CON)</a>
-					    <a class="dropdown-item" href="#">Permit to Construct (PTC)</a>
-					  	</div>
-					    </div>
+					    <a class="dropdown-item" href="{{ asset('/client/apply/form/con') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>Certificate of Need (CON)</small></a>
+					    <a class="dropdown-item" href="{{ asset('/client/apply/form/ptc') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>Permit to Construct (PTC)</small></a>
+					    <a class="dropdown-item" href="{{ asset('/client/apply/form/lto') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>License to Operate (LTO)</small></a>
+					    <a class="dropdown-item" href="{{ asset('/client/apply/form/coa') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Certificate of Accreditation (COA)</small></a>
+					    <a class="dropdown-item" href="{{ asset('/client/apply/form/ato') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Authority to Operate (ATO)</small></a>
 					  </div>
 					</div>
 				</div>
