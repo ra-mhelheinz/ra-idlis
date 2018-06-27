@@ -10,15 +10,26 @@
     window.location.href = "{{asset('/')}}";
   </script>
 @endif
-@foreach ($ownshs as $ownsh)
-	<datalist id="{{$ownsh->ocid}}_oShip">
-		@foreach ($clss as $cls)
-			@if ($cls->ocid == $ownsh->ocid)
-				<option value="{{$cls->classname}}">{{$cls->classid}}</option>
-			@endif
-		@endforeach
-	</datalist>
-@endforeach
+<span hidden>
+	@foreach ($ownshs as $ownsh)
+		<datalist id="{{$ownsh->ocid}}_oShip">
+			@foreach ($clss as $cls)
+				@if ($cls->ocid == $ownsh->ocid)
+					<option value="{{$cls->classname}}">{{$cls->classid}}</option>
+				@endif
+			@endforeach
+		</datalist>
+	@endforeach
+	@foreach ($fatypes as $fatype)
+		<datalist id="{{$fatype->facid}}_facid">
+			@foreach ($uploads as $upload)
+				@if($upload->facid == $fatype->facid)
+				<option value="{{$upload->updesc}}">{{$upload->upid}}</option>
+				@endif
+			@endforeach
+		</datalist>
+	@endforeach
+</span>
 <style type="text/css">
 	table.attachments > tr{
 		width: 50%;
@@ -158,7 +169,7 @@
 							Health Facility:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
-							<select class="form-control" id="HFATYPE" onchange="getFacilityType();" required>
+							<select class="form-control" id="HFATYPE" onchange="{{--getFacilityType();--}}getUploads()" required>
 								<option value=""></option>
 								@foreach ($fatypes as $fatype)
 									<option value="{{$fatype->facid}}">{{$fatype->facname}}</option>
@@ -212,10 +223,10 @@
 					</span>
 					<span id="HideLevel2" style="display:none;">
 						<div class="row">
-							<div class="col-sm-3 ForA">
+							<div class="col-sm-3" id="Main2Sub1Name">
 								{{-- Services:<span style="color:red">*</span> --}}
 							</div>
-							<div class="col-sm-3 ForA">
+							<div class="col-sm-3" id="Main2Sub1DrpDown">
 								{{-- <select class="form-control">
 									<option value=""></option>
 									<option>Colorectal Surgery</option>
@@ -243,6 +254,12 @@
 					</span>
 					<div class="row">
 						<div class="col-sm-3" >
+							
+						</div>
+						<div class="col-sm-3" >
+							
+						</div>
+						<div class="col-sm-3" >
 							Status of Application:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
@@ -253,14 +270,6 @@
 								@endforeach
 							</select>
 						</div>
-						{{-- <div class="col-sm-3" >
-							Ownership:<span style="color:red">*</span>
-						</div>
-						<div class="col-sm-3" >
-							<select class="form-control">
-								<option value=""></option>
-							</select>
-						</div> --}}
 					</div>
 					<div class="row">
 						<div class="col-sm-4" style="margin-left:2px">
@@ -324,7 +333,7 @@
 						<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
 							<table class="attachments table table-hover" style="width: 100%;">
 								<tbody id="ApplyTable">
-									<tr><td colspan="2"><center><p><strong>Note: </strong>File should be not larger than <strong>2 MB</strong></p></td><center></tr>
+									
 									{{-- @foreach ($uplds as $upld)
 										<tr>
 											<td width="50%">{{$upld->updesc}}</td>
@@ -377,6 +386,24 @@ $(document).ready(function(){
 });
 </script>
 	<script type="text/javascript">
+		function getUploads(){
+			var selectedFaType = $('#HFATYPE').val();
+			var GetNames = $('#'+selectedFaType+'_facid option').map(function() {return $(this).val();}).get();
+			var Get_Ids = $('#'+selectedFaType+'_facid option').map(function() {return $(this).text();}).get();
+			$('#ApplyTable').empty();
+			$('#ApplyTable').append('<tr><td colspan="2"><center><p><strong>Note: </strong>File should be not larger than <strong>2 MB</strong></p></td><center></tr>');
+			for (var i = 0; i < Get_Ids.length; i++) {
+					var id = Get_Ids[i],selectedText = GetNames[i];
+					$('#ApplyTable').append(
+							'<tr>'+
+								'<td width="50%">'+selectedText+'</td>'+
+											'<td>'+
+												'<input class="form-control-file" id="'+id+'" data-parsley-required-message="File required for assessment." data-parsley-max-file-size="2.5" data-parsley-trigger="change" class="form-control" type="file">'+
+											'</td>'	+		
+							'</tr>'
+						);
+				}
+		}
 		var Main1 = 0, Sub1 = 0, Sub2 = 0;
 		var Main2 = 0, Main2Sub1 = 0, MainSub2 = 0;
 		function chckOwnOther(){
@@ -428,14 +455,16 @@ $(document).ready(function(){
 					}
 				}
 			} else {
+
+				if (Sub1 != 1) {
+					console.log(Sub1);
+					$('#HideLevel1').hide();
+					Main1 = 0;
+				}
 				if (Sub2 == 1) {
 					$('#Main1Sub2Name').hide();
 					$('#Main1Sub2DrpDown').hide();
 					Sub2 = 0;
-				}
-				if (Sub1 == 0) {
-					$('#HideLevel1').hide();
-						Main1 = 0;
 				}
 				if (MainSub2 == 1) {
 					$('#Main2Sub2Name').hide();
@@ -449,25 +478,47 @@ $(document).ready(function(){
 			}
 
 		}
+		function getHospitaType(){
+			// Main2Sub1Name
+			// MainSub1DrpDown
+		}
 		function selectedHospital(){
-
+			if (Main1 == 0) {
+				$('#HideLevel1').show();
+						Main1 = 1;
+			}
+			if (Sub1 == 0) {
+				$('#Main1Sub1Name').empty();
+				$('#Main1Sub1DrpDown').empty();
+				$('#Main1Sub1Name').append('Type:<span style="color:red">*</span>');
+				$('#Main1Sub1DrpDown').append(
+						'<select class="form-control" onchange="getHospitaType()" required>' +
+							'<option value=""></option>' +
+							'<option value="G">General</option>' +
+							'<option value="S">Specialty</option>' +
+						'</select>'
+					);
+				Sub1 = 1;
+			}
+			
 		}
 		function getFacilityType(){
 			var selectedFaType = $('#HFATYPE').val();
 			var CurrentAppType = $('#CurrentAppTypeSelected').val();
 			switch(selectedFaType){
-				case "ASC":
-					break;
 				case "H":
 						selectedHospital();
 					break;
 				case "":
 					break;
-				case "":
-					break;
-				case "":
-					break;
 				default :
+						$('#Main1Sub1Name').empty();
+						$('#Main1Sub1DrpDown').empty();
+						Sub1 = 0;
+						if (Sub2 == 0) {
+							$('#HideLevel1').hide();
+							Main1 = 0;
+						}
 					break;
 			}
 		}

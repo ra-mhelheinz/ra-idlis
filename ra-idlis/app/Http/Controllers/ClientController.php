@@ -256,8 +256,8 @@ class ClientController extends Controller
         $clss = DB::table('class')->get(); // Class
         $selectedType = strtoupper($id_type);
         $hfaci = DB::table('hfaci_serv_type')->where('hfser_id','=',$selectedType)->first();
-        // $idName = DB::table()
-      return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type]);
+        $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
+        return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld]);
     }
 
 }
