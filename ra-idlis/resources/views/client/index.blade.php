@@ -133,6 +133,26 @@
           </div>
           <div  class="col-sm-9 col-md-12 col-lg-9">
             <div class="row">
+              <div class="col-sm-12">
+              <div class="card my-4">
+              <div class="cardb" style="flex: 1 1 auto;padding: 1.25rem;">
+                <div class="row">
+                  <div class="col-sm-4"><small>List of Applications Status:</small></div>
+                  <div class="col-sm-4"><small>Application Type:</small></div>
+                  <div class="col-sm-4"><small>Date Applied:</small></div>
+                  <div class="col-sm-4"><small>Date Evaluated:</small></div>
+                  <div class="col-sm-4"><small>Date Inspected:</small></div>
+                  <div class="col-sm-4"><small>Date Issued:</small></div>
+                  <div class="col-sm-4"><small>Date Printed:</small></div>
+                  <div class="col-sm-4"><small>Status:</small></div>
+                  <div class="col-sm-4"><small>LTO No:</small></div>
+                  <div class="col-sm-4 offset-4"><small>Validity Date:</small></div>
+                </div>
+              </div>
+            </div>
+            </div>
+            </div>
+            <div class="row">
           <div class="col-lg-6 introjs-showElement introjs-relativePosition">
             <div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="4" >
               <div class="icon"><i class="fa fa-edit"></i></div>

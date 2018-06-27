@@ -27,14 +27,23 @@
               <a class="nav-link" href="{{asset('client/home')}}" data-toggle="tooltip" title="HOME"><i class="fa fa-home" style="font-size:  20px;" ></i>
               </a>
             </li>
+             <li class="nav-item dropdown"> 
+              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Notifications <br><small>Click here to view your notifications such as updates or changes.</small>" data-step="1"><span class="fa fa-edit" style="font-size:  20px;"></span></a>
+                <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
+                     <a class="dropdown-item" href="{{ asset('/client/apply/form/con') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>Certificate of Need (CON)</small></a>
+                      <a class="dropdown-item" href="{{ asset('/client/apply/form/ptc') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>Permit to Construct (PTC)</small></a>
+                      <a class="dropdown-item" href="{{ asset('/client/apply/form/lto') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>License to Operate (LTO)</small></a>
+                      <a class="dropdown-item" href="{{ asset('/client/apply/form/coa') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Certificate of Accreditation (COA)</small></a>
+                      <a class="dropdown-item" href="{{ asset('/client/apply/form/ato') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Authority to Operate (ATO)</small></a>
+                </div>
+            </li>
             <li class="nav-item dropdown"> 
-              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Notifications <br><small>Click here to view your notifications such as updates or changes.</small>" data-step="1"><span class="fa fa-bell" style="font-size:  20px;"></span>1
+              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Notifications <br><small>Click here to view your notifications such as updates or changes.</small>" data-step="1"><span class="fa fa-bell" style="font-size:  18px;"></span>1</a>
                 <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
                   <div class="navbar-login">
                     <p>Welcome to DOH OLORS.</p>
                   </div>
                 </div>
-              </a>
             </li>
             <li class="nav-item dropdown">
              <a class="nav-link dropdown-toggle introjs-showElement introjs-relativePosition"  data-intro="Account Button <br><small>In this button you can find some options that might help you while browsing (About, Help, Logout)</small>" data-step="2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
