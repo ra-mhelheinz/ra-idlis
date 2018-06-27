@@ -207,14 +207,6 @@ class ClientController extends Controller
 
       return $cur_tbl;
     }
-    public function FORM(Request $request, $id_type){
-        $fatype = DB::table('facilitytyp')->get(); // Facility Type
-        $ownsh = DB::table('ownership')->get(); // Ownership Type
-        $aptyp = DB::table('apptype')->get(); // Application Stype
-        $clss = DB::table('class')->get(); // Class
-        $hfaci = DB::table('hfaci_serv_type')->get();
-      return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci,'id_type'=>$id_type]);
-    }
     public function PTC(Request $request){
       $fatype = DB::table('facilitytyp')->get();
         $ownsh = DB::table('ownership')->get();
@@ -241,7 +233,7 @@ class ClientController extends Controller
         $hfaci = DB::table('hfaci_serv_type')->get();
       return view('client.coa', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     }
-    public function ATO (REquest $request){
+    public function ATO (Request $request){
       $fatype = DB::table('facilitytyp')->get();
         $ownsh = DB::table('ownership')->get();
         $aptyp = DB::table('apptype')->get();
@@ -256,6 +248,16 @@ class ClientController extends Controller
         $clss = DB::table('class')->get();
         $hfaci = DB::table('hfaci_serv_type')->get();
       return view('client.lto', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
+    }
+    public function FORM(Request $request, $id_type){
+        $fatype = DB::table('facilitytyp')->get(); // Facility Type
+        $ownsh = DB::table('ownership')->get(); // Ownership Type
+        $aptyp = DB::table('apptype')->get(); // Application Stype
+        $clss = DB::table('class')->get(); // Class
+        $selectedType = strtoupper($id_type);
+        $hfaci = DB::table('hfaci_serv_type')->where('hfser_id','=',$selectedType)->first();
+        // $idName = DB::table()
+      return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type]);
     }
 
 }

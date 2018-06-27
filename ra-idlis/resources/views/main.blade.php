@@ -57,7 +57,6 @@
 
 </style>
 <body>
-  <script type="text/javascript">loader(true);</script>
   @if(session()->exists('client_data'))
   @else
       <div class="back">

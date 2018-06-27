@@ -10,6 +10,15 @@
     window.location.href = "{{asset('/')}}";
   </script>
 @endif
+@foreach ($ownshs as $ownsh)
+	<datalist id="{{$ownsh->ocid}}_oShip">
+		@foreach ($clss as $cls)
+			@if ($cls->ocid == $ownsh->ocid)
+				<option value="{{$cls->classname}}">{{$cls->classid}}</option>
+			@endif
+		@endforeach
+	</datalist>
+@endforeach
 <style type="text/css">
 	table.attachments > tr{
 		width: 50%;
@@ -58,7 +67,7 @@
 			</div>
 
 	<form id="ApplyFoRm" data-parsley-validate>
-		{{-- <div class="col-sm-"><center><h2>CERTIFICATE OF NEED FOR NEW GENERAL HOSPITALS</h2></center></div> --}}
+		<div class="col-sm-"><center><h2>{{$hfaci}}</h2></center></div>
 		<br>
 				<div class="container">
 					<div class="row">
@@ -149,7 +158,7 @@
 					<hr>
 					<div class="row">
 						<div class="col-sm-3" >
-							Health Facility Type:<span style="color:red">*</span>
+							Health Facility:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
 							<select class="form-control" id="HFATYPE" onchange="getFacilityType();" required>
@@ -163,7 +172,7 @@
 							Ownership:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
-							<select class="form-control">
+							<select class="form-control" id="OWNSHP" onchange="getOwnship();" required>>
 								<option value=""></option>
 								@foreach ($ownshs as $ownsh)
 									<option value="{{$ownsh->ocid}}">{{$ownsh->ocdesc}}</option>
@@ -174,10 +183,10 @@
 					<br>
 					<span id="HideLevel1" style="display:none;">
 						<div class="row">
-							<div class="col-sm-3" id="HideLevel1_Title">
-								Services:<span style="color:red">*</span>
+							<div class="col-sm-3" id="Main1Sub1Name">
+								{{-- Services:<span style="color:red">*</span> --}}
 							</div>
-							<div class="col-sm-3" id="HideLevel1_Content">
+							<div class="col-sm-3" id="Main1Sub1DrpDown">
 								{{-- <select class="form-control">
 									<option value=""></option>
 									<option>Colorectal Surgery</option>
@@ -194,12 +203,11 @@
 									<option>Urologic Surgery</option>
 								</select> --}}
 							</div>
-							<div class="col-sm-3" >
+							<div class="col-sm-3" id="Main1Sub2Name" style="display: none">
 								Class:<span style="color:red">*</span>
 							</div>
-							<div class="col-sm-3" >
-								<select class="form-control">
-									<option value=""></option>
+							<div class="col-sm-3" id="Main1Sub2DrpDown" style="display: none">
+								<select class="form-control" id="CLS" onchange="chckOwnOther();">
 								</select>
 							</div>
 						</div>
@@ -227,10 +235,10 @@
 									<option>Urologic Surgery</option>
 								</select> --}}
 							</div>
-							<div class="col-sm-3" >
-								Others:<span style="color:red">*</span>
+							<div class="col-sm-3" id="Main2Sub2Name" style="display: none">
+								Others (Ownership), Specify<span style="color:red">*</span>
 							</div>
-							<div class="col-sm-3" >
+							<div class="col-sm-3" id="Main2Sub2DrpDown" style="display: none">
 								<input type="text" class="form-control" name="">
 							</div>
 						</div>
@@ -241,7 +249,7 @@
 							Status of Application:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
-							<select class="form-control">
+							<select class="form-control" required>
 								<option value=""></option>
 								@foreach ($aptyps as $aptyp)
 									<option value="{{$aptyp->aptid}}">{{$aptyp->aptdesc}}</option>
@@ -329,8 +337,12 @@
 						</div>
 						<br>
 		{{-- <div class="col-sm-12">&nbsp;&nbsp;&nbsp;I hereby declare  that this Application  has been accomplished  by me, and that the foregoing  information  and attached documents required for the permit to construct are true and correct.</div> --}}
+		{{-- data-toggle="modal" data-target="#exampleModalCenter" --}}
 		<div class="container">
-			<center><button style="background-color: #228B22 !important" type="submit" class="btn-primarys"  {{-- data-toggle="modal" data-target="#exampleModalCenter" --}}>Submit</button></center>
+			<center>
+				<button style="background-color: #ff9600 !important" type="button" class="btn-primarys">Save as Draft</button>
+				<button style="background-color: #228B22 !important" type="submit" class="btn-primarys">Submit</button>
+			</center>
 		</div>
 		</div>
 				</div>
@@ -357,15 +369,106 @@
 
 	<script>
 $(document).ready(function(){
+	loader(false);
     $("#flip").click(function(){
         $("#panel").slideToggle("slow");
     });
 });
 </script>
 	<script type="text/javascript">
+		var Main1 = 0, Sub1 = 0, Sub2 = 0;
+		var Main2 = 0, Main2Sub1 = 0, MainSub2 = 0;
+		function chckOwnOther(){
+			if ($('#CLS').val() == "OTHER") {
+				if (MainSub2 == 0) {
+					$('#Main2Sub2Name').show();
+					$('#Main2Sub2DrpDown').show();
+					MainSub2 = 1;
+					if (Main2 == 0) {
+						$('#HideLevel2').show();
+						Main2 = 1;
+					}
+				}
+			} else {
+				if (MainSub2 == 1) {
+					$('#Main2Sub2Name').hide();
+					$('#Main2Sub2DrpDown').hide();
+					MainSub2 = 0;
+				}
+				if (Main2Sub1 == 0) {
+					$('#HideLevel2').hide();
+						Main2 = 0;
+				}
+			}
+		}
+		function getOwnship(){
+			var selectedOwnship = $('#OWNSHP').val();
+			if (selectedOwnship != "") {
+				var GetNames = $('#'+selectedOwnship+'_oShip option').map(function() {return $(this).val();}).get();
+				var Get_Ids = $('#'+selectedOwnship+'_oShip option').map(function() {return $(this).text();}).get();
+				$('#CLS').empty();
+				$('#CLS').append('<option value=""></option>');
+				for (var i = 0; i < Get_Ids.length; i++) {
+					var id = Get_Ids[i],selectedText = GetNames[i];
+					$('#CLS').append(
+							'<option value="'+id+'">'+selectedText+'</option>'
+						);
+				}
+				$('#CLS').append(
+							'<option value="OTHER">OTHERS</option>'
+						);
+				if (Sub2 == 0) {
+					$('#Main1Sub2Name').show();
+					$('#Main1Sub2DrpDown').show();
+					Sub2 =1;
+					if (Main1 == 0) { // Show Table
+						$('#HideLevel1').show();
+						Main1 = 1;
+					}
+				}
+			} else {
+				if (Sub2 == 1) {
+					$('#Main1Sub2Name').hide();
+					$('#Main1Sub2DrpDown').hide();
+					Sub2 = 0;
+				}
+				if (Sub1 == 0) {
+					$('#HideLevel1').hide();
+						Main1 = 0;
+				}
+				if (MainSub2 == 1) {
+					$('#Main2Sub2Name').hide();
+					$('#Main2Sub2DrpDown').hide();
+					MainSub2 = 0;
+				}
+				if (Main2Sub1 == 0) {
+					$('#HideLevel2').hide();
+						Main2 = 0;
+				}
+			}
+
+		}
+		function selectedHospital(){
+
+		}
 		function getFacilityType(){
 			var selectedFaType = $('#HFATYPE').val();
-			$('#HideLevel1').toggle();
+			var CurrentAppType = $('#CurrentAppTypeSelected').val();
+			switch(selectedFaType){
+				case "ASC":
+					break;
+				case "H":
+						selectedHospital();
+					break;
+				case "":
+					break;
+				case "":
+					break;
+				case "":
+					break;
+				default :
+					break;
+			}
 		}
 		$('#ApplyFoRm').on('submit',function(e){
 			e.preventDefault();

@@ -8,6 +8,7 @@
  <link rel="stylesheet" type="text/css" href="ra-idlis/public/css/login.css">
 @endsection
 @section('content')
+<script type="text/javascript">loader(true);</script>
 <style type="text/css">
 html, body, #canvasMap{
 	width: 100%;
@@ -610,5 +611,6 @@ html, body, #canvasMap{
 	    x.className = "show";
 	    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 	}
+	loader(false);
 </script>
 @endsection

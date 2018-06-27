@@ -19,7 +19,7 @@
 			}
 </style>
 @include('client.breadcrumb')
-@foreach ($ownshs as $ownsh)
+{{-- @foreach ($ownshs as $ownsh)
 	<datalist id="{{$ownsh->ocid}}_owlist">
 		@foreach ($clss as $cls)
 			@if ($cls->ocid == $ownsh->ocid)
@@ -36,7 +36,7 @@
 			@endif
 		@endforeach
 	</datalist>
-@endforeach
+@endforeach --}}
 <script type="text/javascript">
 	  	document.getElementById('first').style = "color: blue;";
 </script>
