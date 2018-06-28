@@ -104,10 +104,10 @@
                 </ol>
                 <div class="carousel-inner" >
                   <div class="carousel-item active">
-                    <img class="d-block w-100" src="http://images.gmanews.tv/webpics/2018/01/ZZZ_013118_mmanila_2018_01_31_11_28_30.jpg" alt="First slide" style="height: 140px;">
+                    <img class="d-block w-100" src="https://www.vigorbuddy.com/wp-content/uploads/2016/06/doh.jpeg" alt="First slide" style="height: 140px;">
                   </div>
                   <div class="carousel-item">
-                    <img class="d-block w-100" src="https://www.doh.gov.ph/sites/default/files/blood-donation.jpg" alt="Second slide" style="height: 140px;">
+                    <img class="d-block w-100" src="https://www.vigorbuddy.com/wp-content/uploads/2016/06/doh.jpeg" alt="Second slide" style="height: 140px;">
                   </div>
                   <div class="carousel-item">
                     <img class="d-block w-100" src="https://www.vigorbuddy.com/wp-content/uploads/2016/06/doh.jpeg" alt="Third slide" style="height: 140px;">
