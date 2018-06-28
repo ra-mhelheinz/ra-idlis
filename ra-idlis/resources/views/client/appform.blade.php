@@ -60,7 +60,7 @@
 				<div class="col-sm-4">
 					 <div class="dropdown ">
 					  <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					    Application Type
+					    <i class="fa fa-list"></i>&nbsp;Application Type
 					  </button>
 					  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
 					    <a class="dropdown-item" href="{{ asset('/client/apply/form/con') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>Certificate of Need (CON)</small></a>
@@ -350,8 +350,8 @@
 		{{-- data-toggle="modal" data-target="#exampleModalCenter" --}}
 		<div class="container">
 			<center>
-				<button style="background-color: #ff9600 !important" type="button" class="btn-primarys">Save as Draft</button>
-				<button style="background-color: #228B22 !important" type="submit" class="btn-primarys">Submit</button>
+				<button style="background-color: #ff9600 !important" type="button" class="btn-primarys"><i class="fa fa-save"></i>&nbsp;Save as Draft</button>
+				<button style="background-color: #228B22 !important" type="submit" class="btn-primarys"><i class="fa fa-send-o"></i>&nbsp;Submit</button>
 			</center>
 		</div>
 		</div>

@@ -308,7 +308,7 @@ html, body, #canvasMap{
 					<input id="zipID" type="text" class="input form-control" name="zipcode" autocomplete="off" placeholder="Zip Code"  required=""  data-parsley-type="digits" data-parsley-maxlength="4" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>">
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
-					<button type="button" class="btn-defaults" data-toggle="modal" data-target="#exampleModal" style="background-color: #28A55F;width: 100%;color: #fff;" name="">View Map Address&nbsp;<i class="fa fa-map-marker" style="color: #fff;"></i></button>
+					<button type="button" class="btn-defaults" data-toggle="modal" data-target="#exampleModal" style="background-color: #28A55F;width: 100%;color: #fff;" name="" onclick="initMap()">View Map Address&nbsp;<i class="fa fa-map-marker" style="color: #fff;"></i></button>
 						<div class="modal slideInRight animated" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="		exampleModalCenterTitle" aria-hidden="true">
 						  <div class="modal-dialog modal-dialog-centered" role="">
 						    <div class="modal-content text-center" >
@@ -342,51 +342,53 @@ html, body, #canvasMap{
   					var map, place, arr, marker;
   					var arr2 = [];
   					var componentForm = {
-					        street_number: 'short_name',
-					        route: 'long_name',
-					        locality: 'long_name',
-					        administrative_area_level_1: 'short_name',
-					        country: 'long_name',
-					        postal_code: 'short_name'
-					      };
-					 var components = componentForm.address_components;
+					    street_number: 'short_name',
+					    route: 'long_name',
+					    locality: 'long_name',
+					    administrative_area_level_1: 'short_name',
+					    country: 'long_name',
+					    postal_code: 'short_name'
+					};
+					var components = componentForm.address_components;
       				function initMap() {
+      					var geocoder = new google.maps.Geocoder();
         				map = new google.maps.Map(document.getElementById('canvasMap'), {
 				          center: {lat: 12.8797, lng: 121.7740},
 				          zoom: 6
 				        });
-        				console.log(components)
-				 //        var input = document.getElementById('gsearch');
-				 //    	var autocomplete = new google.maps.places.Autocomplete(input);
-     //    				autocomplete.bindTo('bounds', map);
+        				getAddress();
 
 
-					//     function route() {
-					// 	        place = autocomplete.getPlace();
-					// 	        if (place.geometry) {
-
-					// 	          	map.setCenter(place.geometry.location);
-					// 	          	map.setZoom(17);
-					// 	            chgLd('gsearch', false);
-					// 	        }
-					// 	        marker.setPlace({
-					// 	          	placeId: place.place_id,
-					// 	          	location: place.geometry.location
-					// 	        });
-					// 	        marker.setVisible(true);
-
-					// 	        var componentForm = {
-					// 		        street_number: 'strID, short_name',
-					// 		        route: 'strID, short_name',
-					// 		        neighborhood: 'brgyID, short_name',
-					// 		        locality: 'ctyID, short_name',
-					// 		        administrative_area_level_2: 'provID, short_name',
-					// 		        administrative_area_level_1: 'rgnID, short_name',
-					// 		        postal_code: 'zipID, short_name'
-					// 		    };
-
-					// }
-				}
+					 	// function route() {
+						//     place = autocomplete.getPlace();
+						//     if (place.geometry) {
+						//       	map.setCenter(place.geometry.location);
+						//       	map.setZoom(17);
+						//         // chgLd('gsearch', false);
+						//     }
+						//     marker.setPlace({
+						//       	placeId: place.place_id,
+						//       	location: place.geometry.location
+						//     });
+						//     marker.setVisible(true);
+						// }
+						function getAddress() {
+							var arrComp = [document.getElementById('zipID').value, document.getElementById('provID').value, document.getElementById('rgnID').value, document.getElementById('provID').value, document.getElementById('ctyID').value, document.getElementById('brgyID').value, document.getElementById('strID').value];
+						    var address = arrComp.join(", ");
+						    geocoder.geocode( { 'address': address}, function(results, status) {
+						      	if (status == 'OK') {
+							        map.setCenter(results[0].geometry.location);
+							        map.setZoom(17);
+							        var marker = new google.maps.Marker({
+							            map: map,
+							            position: results[0].geometry.location
+							        });
+						      	} else {
+						        	// alert('Geocode was not successful for the following reason: ' + status);
+						      	}
+						    });
+						}
+					}
 				    
   				</script>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">

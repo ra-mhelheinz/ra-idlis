@@ -161,14 +161,14 @@
                                 <h1 class="title-widget">Useful links</h1>
                                 
                                 <ul>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i> RightApps</a></li>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  RightApps</a></li>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  RightApps</a></li>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  RightApps</a></li>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  RightApps</a></li>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  RightApps</a></li>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  RightApps</a></li>
-                                    <li><a  href="#" target="_blank"><i class="fa fa-angle-double-right"></i> RightApps</a></li>
+                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i> Sample</a></li>
+                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Sample</a></li>
+                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Sample</a></li>
+                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Sample</a></li>
+                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Sample</a></li>
+                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Sample</a></li>
+                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Sample</a></li>
+                                    <li><a  href="#" target="_blank"><i class="fa fa-angle-double-right"></i> Sample</a></li>
                                     
                                 </ul>
                     
@@ -192,14 +192,14 @@
                                 <ul>
 
 
-                <li><a href="#"><i class="fa fa-angle-double-right"></i> RightApps</a></li>
-        <li><a href="#"><i class="fa fa-angle-double-right"></i> RightApps</a></li>
-        <li><a href="#"><i class="fa fa-angle-double-right"></i> RightApps</a></li>
-        <li><a href="#"><i class="fa fa-angle-double-right"></i> RightApps</a></li>
-        <li><a href="#"><i class="fa fa-angle-double-right"></i> RightApps</a></li>
-        <li><a href="#"><i class="fa fa-angle-double-right"></i> RightApps</a></li>
-        <li><a href="#"><i class="fa fa-angle-double-right"></i>  RightApps</a></li>
-        <li><a href="#"><i class="fa fa-angle-double-right"></i>  RightApps</a></li>
+                <li><a href="#"><i class="fa fa-angle-double-right"></i> Sample</a></li>
+        <li><a href="#"><i class="fa fa-angle-double-right"></i> Sample</a></li>
+        <li><a href="#"><i class="fa fa-angle-double-right"></i> Sample</a></li>
+        <li><a href="#"><i class="fa fa-angle-double-right"></i> Sample</a></li>
+        <li><a href="#"><i class="fa fa-angle-double-right"></i> Sample</a></li>
+        <li><a href="#"><i class="fa fa-angle-double-right"></i> Sample</a></li>
+        <li><a href="#"><i class="fa fa-angle-double-right"></i>  Sample</a></li>
+        <li><a href="#"><i class="fa fa-angle-double-right"></i>  Sample</a></li>
 
                                 </ul>
                     

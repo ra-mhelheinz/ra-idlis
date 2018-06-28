@@ -124,7 +124,7 @@
               </div>
             </div>
           </div>
-          <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="Announcements<br><small>Here is where new Announcements can be found.</small>" data-step="12">
+          <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="Definition of Terms<br><small>Click this link to read our Definition of Terms</small>" data-step="12">
             <p class="card-header"><small>Click for our <i class="fa fa-hand-o-right"></i>&nbsp;<a href="">Definition of Terms</a></small></p>
           </div>
           <div class="text-center introjs-showElement introjs-relativePosition" data-intro="Announcements<br><small>Here is where new Announcements can be found.</small>" data-step="11">

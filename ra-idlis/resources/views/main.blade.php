@@ -100,7 +100,7 @@
 
         <div class="copyright">
 
-          © 2018, RIGHTAPPS, All rights reserved
+          © 2018 All rights reserved
 
         </div>
 
@@ -110,7 +110,7 @@
 
         <div class="design">
 
-           <a href="#">Department of Health  </a> |  <a target="_blank" href="http://www.webenlance.com">Web Design & Development by RIGHTAPPS</a>
+           <a href="#">Department of Health  </a> |  <a target="_blank" href="http://www.webenlance.com">Web Design & Development by</a>
 
         </div>
 

@@ -11,10 +11,10 @@
   </script>
 @endif
 <style type="text/css">
-	.close .fa-window-close{
+	.close .fa-times{
 		       transition: transform .3s ease-in-out;
 	}
-	.fa-window-close:hover{
+	.fa-times:hover{
 		       transform: rotate(180deg);
 	}
 </style>
@@ -53,7 +53,7 @@
         <!-- Modal Header -->
         <div class="modal-header " style="background-color: #28a745;">
           <h4 class="modal-title" style="color: #fff;text-shadow: 2px 2px 4px #000000;">ADD PERSONNEL</h4>
-          <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close" style="color: #fff;"></i></button>
+          <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" style="color: #fff;"></i></button>
         </div>
         
         <!-- Modal body -->
