@@ -24,11 +24,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive" style="z-index: 1039; position: relative;">
           <ul class="navbar-nav ml-auto" style="text-align: center;">
             <li class="nav-item">
-              <a class="nav-link" href="{{asset('client/home')}}" data-toggle="tooltip" title="HOME"><i class="fa fa-home" style="font-size:  20px;" ></i>
-              </a>
+              <a class="nav-link" href="{{asset('client/home')}}" data-toggle="tooltip" title="HOME">Home</a>
             </li>
              <li class="nav-item dropdown"> 
-              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Notifications <br><small>Click here to view your notifications such as updates or changes.</small>" data-step="1"><span class="fa fa-edit" style="font-size:  20px;"></span></a>
+              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Application Types <br><small>Click this to toggle/choose your Application Type</small>" data-step="1">Application</a>
                 <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
                      <a class="dropdown-item" href="{{ asset('/client/apply/form/con') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>Certificate of Need (CON)</small></a>
                       <a class="dropdown-item" href="{{ asset('/client/apply/form/ptc') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>Permit to Construct (PTC)</small></a>
@@ -38,7 +37,7 @@
                 </div>
             </li>
             <li class="nav-item dropdown"> 
-              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Notifications <br><small>Click here to view your notifications such as updates or changes.</small>" data-step="1"><span class="fa fa-bell" style="font-size:  18px;"></span>1</a>
+              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Notifications <br><small>Click here to view your notifications such as updates or changes.</small>" data-step="2"><span class="fa fa-bell" style="font-size:  18px;"></span>1</a>
                 <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
                   <div class="navbar-login">
                     <p>Welcome to DOH OLORS.</p>
@@ -46,7 +45,7 @@
                 </div>
             </li>
             <li class="nav-item dropdown">
-             <a class="nav-link dropdown-toggle introjs-showElement introjs-relativePosition"  data-intro="Account Button <br><small>In this button you can find some options that might help you while browsing (About, Help, Logout)</small>" data-step="2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <a class="nav-link dropdown-toggle introjs-showElement introjs-relativePosition"  data-intro="Account Button <br><small>In this button you can find some options that might help you while browsing (About, Help, Logout)</small>" data-step="3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <i class="fa fa-user-circle" style="font-size:  20px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right bg-light" id="acc" aria-labelledby="navbarDropdown">

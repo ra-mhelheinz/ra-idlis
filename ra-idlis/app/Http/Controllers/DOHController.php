@@ -179,6 +179,14 @@
 				}
 			}			
 		}
+		public function TypeFacility (Request $request){
+			if ($request->isMethod('get')) {
+				$type = DB::table('hfaci_serv_type')->get();
+				$facility = DB::table('facilitytyp')->get();
+				//,['rights'=>$groupRights, 'groups'=>$group, 'modules'=>$module]
+				return view('doh.mftypefa',['types'=>$type,'facilitys'=>$facility]); 
+			}
+		}
 		public function groupRights(Request $request){ // GROUP RIGHTS PAGE
 			if ($request->isMethod('get')) {
 				$group = DB::table('x07')->select('*')->get();

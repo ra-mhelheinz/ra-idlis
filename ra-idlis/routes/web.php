@@ -78,6 +78,7 @@ Route::match(['get', 'post'],'/employee/dashboard/mf/class','DOHController@Class
 Route::match(['get', 'post'],'/employee/dashboard/mf/facility','DOHController@FaType')->name('mfFacility');
 Route::match(['get', 'post'],'/employee/dashboard/mf/apptype','DOHController@FaServType')->name('mfAppType');
 Route::match(['get', 'post'],'/employee/dashboard/mf/faciserv','DOHController@FaServ')->name('mfFaServ');
+Route::match(['get', 'post'],'/employee/dashboard/mf/typefa','DOHController@TypeFacility')->name('mfTypeFacility');
 // con
 Route::match(['get', 'post'],'/employee/dashboard/mf/appstatus','DOHController@AppStatus')->name('mfAppStatus');
 Route::match(['get', 'post'],'/employee/dashboard/mf/ownership','DOHController@OwnShip')->name('mfOwnShip');
@@ -107,7 +108,8 @@ Route::get('/employee/dashboard/lps/evalute/ins/3','DOHController@ins3');
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
 Route::post('/ph/get_brgy', ['as'=>'select-brgy','uses'=>'ajaxController@selectBrgy']);
 Route::post('mf/getUploads',['as'=>'select-uploads','uses'=>'ajaxController@selectUploads']);
-Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass']);\
+Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass']);
+Route::post('/mf/getTypeFaci', ['as'=>'get-typefacility','uses'=>'ajaxController@getTypeFaci']);
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
 Route::post('/employee/get_date_actlogs', ['as'=>'get-ActLogs','uses'=>'ajaxController@getActLogs']);
 // -------------------------------------- GET
