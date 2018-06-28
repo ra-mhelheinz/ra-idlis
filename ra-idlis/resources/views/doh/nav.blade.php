@@ -89,7 +89,9 @@
                                 <li class="MA07_allow"><a href="{{ asset('/employee/dashboard/mf/appstatus') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Status</a></li>
                                 <li class="MA08_allow"><a href="{{ asset('/employee/dashboard/mf/class') }}">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
                                 <li class="MA06_allow"><a href="{{ asset('/employee/dashboard/mf/ownership') }}">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
-                                <li class="MA16_allow"><a href="{{ asset('/employee/dashboard/mf/faciserv') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facilities/Services</a></li>
+                                <li class="MA16_allow"><a href="{{ asset('/employee/dashboard/mf/faciserv') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facilities/Services</a>
+                                </li>
+                                <li><a href="{{ asset('/employee/dashboard/mf/typefa') }}">&nbsp;&nbsp;&nbsp;&nbsp;Manage Facilities/Services</a></li>
                                 <li class="MA11_allow"><a href="{{ asset('/employee/dashboard/mf/uploads') }}">&nbsp;&nbsp;&nbsp;&nbsp;Uploads</a></li>
                             </ul>
                         </li>

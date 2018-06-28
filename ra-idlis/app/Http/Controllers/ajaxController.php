@@ -101,6 +101,19 @@
 				return 'NO';
 			}
 		}
+		public function getTypeFaci(Request $request){
+			$TypeFace = DB::table('type_facility')
+								->join('hfaci_serv_type', 'type_facility.hfser_id','=','hfaci_serv_type.hfser_id')
+								->join('facilitytyp', 'type_facility.facid', '=', 'facilitytyp.facid')
+								->select('type_facility.*', 'hfaci_serv_type.*', 'facilitytyp.*')
+								->where('type_facility.hfser_id', '=', $request->hfser_id)
+								->get();
+			if ($TypeFace) {
+				return $TypeFace;
+			} else {
+				return "NONE";
+			}
+		}
 		// -------------------- SELECT --------------------
 		// -------------------- ADD --------------------
 		public function addCM(Request $request){ // Add New City/ Municipality
