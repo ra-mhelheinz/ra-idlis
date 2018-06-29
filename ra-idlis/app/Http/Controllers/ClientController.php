@@ -316,7 +316,7 @@ class ClientController extends Controller
       Mail::send('mail', $data1, function($message) use ($data) {
          $message->to($data->email, $data->facilityname)->subject
             ('Verify your Account in DOH OLRS');
-         $message->from('dohsupport@gmail.com', 'DOH OLRS Support');
+         $message->from('doholrs@gmail.com', 'DOH OLRS Support');
       });
       return redirect()->route('client');;
     }      
