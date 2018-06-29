@@ -250,14 +250,35 @@ class ClientController extends Controller
       return view('client.lto', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     }
     public function FORM(Request $request, $id_type){
-        $fatype = DB::table('facilitytyp')->get(); // Facility Type
+      // ->join('region', 'x08.rgnid', '=', 'region.rgnid')
+      //                           ->join('province', 'x08.province', '=', 'province.provid')
+      //                           ->select('x08.*', 'region.rgn_desc', 'province.provname')
+      //                           ->where('x08.uid', '=', $uname)
+      //                           ->first()
+        $selectedType = strtoupper($id_type);
+        $fatype = DB::table('type_facility')
+                          ->join('facilitytyp','type_facility.facid', '=', 'facilitytyp.facid')
+                          ->select('type_facility.*','facilitytyp.*')
+                          ->where('type_facility.hfser_id','=', $selectedType)
+                          ->get(); // Facility Type
         $ownsh = DB::table('ownership')->get(); // Ownership Type
         $aptyp = DB::table('apptype')->get(); // Application Stype
         $clss = DB::table('class')->get(); // Class
-        $selectedType = strtoupper($id_type);
+        
         $hfaci = DB::table('hfaci_serv_type')->where('hfser_id','=',$selectedType)->first();
-        $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
+        $upld = DB::table('facility_requirements')
+                          ->join('upload','facility_requirements.upid','=','upload.upid')
+                          ->join('type_facility','facility_requirements.typ_id', '=', 'type_facility.tyf_id')
+                          ->select('facility_requirements.*','upload.*','type_facility.*')
+                          ->where('type_facility.hfser_id','=', $selectedType)
+                          ->get();
+           // return dd($upld);               
+        // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
         return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld]);
     }
-
+      // select `facility_requirements`.*, `upload`.*, `type_facility`.* 
+      // from `facility_requirements` 
+      // inner join `upload` on `facility_requirements`.`upid` = `upload`.`upid` 
+      // inner join `type_facility` on `facility_requirements`.`typ_id` = `type_facility`.`typ_id` 
+      // where `type_facility`.`hfser_id` = CON)
 }

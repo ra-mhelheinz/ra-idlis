@@ -181,10 +181,44 @@
 		}
 		public function TypeFacility (Request $request){
 			if ($request->isMethod('get')) {
+				// $d = "";
+				// INSERT INTO facility_requirements (`typ_id`,`upid`,`fr_alw`) 
+				// SELECT (SELECT tyf_id FROM type_facility WHERE tyf_id = '21'), upid, COALESCE(0) 
+				// FROM upload;
+				
+				///////////////////////// DO NOT DELETE PLEASE!!! - MHEL
+				// $test = DB::table('type_facility')->select('tyf_id')->get();
+				// for ($i=0; $i < count($test); $i++) { 
+				// 	$d = $test[$i]->tyf_id;
+				// 	DB::insert('INSERT INTO facility_requirements (`typ_id`,`upid`,`fr_alw`) 
+				// 				SELECT (SELECT tyf_id FROM type_facility WHERE tyf_id = ?), upid, COALESCE(0)
+				// 				FROM upload', [$d]);
+				// }
+				// return 'DONE';
+				///////////////////////// DO NOT DELETE PLEASE!!!! - MHEL
+
 				$type = DB::table('hfaci_serv_type')->get();
 				$facility = DB::table('facilitytyp')->get();
+				$uploads = DB::table('upload')->get();
 				//,['rights'=>$groupRights, 'groups'=>$group, 'modules'=>$module]
-				return view('doh.mftypefa',['types'=>$type,'facilitys'=>$facility]); 
+				return view('doh.mftypefa',['types'=>$type,'facilitys'=>$facility,'uploads'=>$uploads]); 
+			}
+			if ($request->isMethod('post')) {
+				$chckSameData = DB::table('type_facility')
+									->where('hfser_id','=',$request->hfser_id)
+									->where('facid','=',$request->facid)
+									->first();
+				if (!$chckSameData) {
+						DB::table('type_facility')->insert(
+										[
+											'hfser_id'=>$request->hfser_id,
+											'facid'=>$request->facid,
+										]
+									);
+						return "DONE";
+				} else{
+					return "SAME";
+				}
 			}
 		}
 		public function groupRights(Request $request){ // GROUP RIGHTS PAGE

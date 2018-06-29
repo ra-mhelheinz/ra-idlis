@@ -107,9 +107,32 @@
 								->join('facilitytyp', 'type_facility.facid', '=', 'facilitytyp.facid')
 								->select('type_facility.*', 'hfaci_serv_type.*', 'facilitytyp.*')
 								->where('type_facility.hfser_id', '=', $request->hfser_id)
-								->get();
+								->first();
 			if ($TypeFace) {
-				return $TypeFace;
+				$getAllData = DB::table('type_facility')
+								->join('hfaci_serv_type', 'type_facility.hfser_id','=','hfaci_serv_type.hfser_id')
+								->join('facilitytyp', 'type_facility.facid', '=', 'facilitytyp.facid')
+								->select('type_facility.*', 'hfaci_serv_type.*', 'facilitytyp.*')
+								->where('type_facility.hfser_id', '=', $request->hfser_id)
+								->get();
+				return $getAllData;
+			} else {
+				return "NONE";
+			}
+		}
+		public function getRequirements(Request $request){
+			$Requirements = DB::table('facility_requirements')
+								->join('upload','facility_requirements.upid','=','upload.upid')
+								->select('facility_requirements.*','upload.*')
+								->where('facility_requirements.typ_id', '=', $request->tyf_id)
+								->first();
+			if ($Requirements) {
+				$getAllData = DB::table('facility_requirements')
+								->join('upload','facility_requirements.upid','=','upload.upid')
+								->select('facility_requirements.*','upload.*')
+								->where('facility_requirements.typ_id', '=', $request->tyf_id)
+								->get();
+				return $getAllData;
 			} else {
 				return "NONE";
 			}
@@ -125,6 +148,21 @@
             ]
         );
           	return back();
+		}
+		public function addTypeFa(Request $request){
+			$ChckData = DB::table('facility_requirements')
+							->where('typ_id','=',$request->typeID)
+							->where('upid','=', $request->id)
+							->first();
+			if (!$ChckData) {
+				DB::table('facility_requirements')->insert([
+		            'typ_id' =>$request->typeID,
+		            'upid' =>$request->id
+		            		]);
+	            return "DONE";
+			} else {
+				return 'SAME';
+			}
 		}
 		// -------------------- ADD --------------------
 		// -------------------- EDIT -------------------
@@ -158,6 +196,14 @@
 			DB::table('x08')
 				->where('uid', $request->id)
 				->update($updateData);
+			return 'DONE';
+		}
+		public function isEnabled(Request $request){
+			$currentState = ($request->isEnabled == 1 ? 0 :1);
+			$updatedata = array('tyf_alw'=>$currentState);
+			DB::table('type_facility')
+				->where('tyf_id',$request->id)
+				->update($updatedata);
 			return 'DONE';
 		}
 		public function saveRights(Request $request){ // Update User Rights
