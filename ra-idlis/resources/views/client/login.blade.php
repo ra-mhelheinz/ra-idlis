@@ -116,14 +116,14 @@ html, body, #canvasMap{
 	<div id="forpush" style="position: absolute; right: 0; top: 0; left: 1; bottom: 1; margin-right: 10px; margin-top: 10px; max-width: 1000px; z-index: 100000000000000000000000000000000000000000;">
 		@if (session()->has('client_login'))
 		<div class="alert alert-danger alert-dismissible fade show" role="alert">
-		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('client_login')}}
+		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('client_login')}} <a href="{{ asset('/resend') }}/{{session()->get('acc_id')}}">Resend Verification</a>
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
 		  </button>
 		</div>
 		@endif
 		@if (session()->has('logout_notif'))
-		<div class="alert alert-info alert-dismissible fade show" role="alert">
+		<div id="asdf" class="alert alert-info alert-dismissible fade show" role="alert">
 		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('logout_notif')}}
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
@@ -135,7 +135,8 @@ html, body, #canvasMap{
 		@endphp --}}
 	</div>
 	<script type="text/javascript">
-		function remLd() { setTimeout(function(){$('#forpush').fadeOut(500);}, 5000) };
+
+		function remLd() { setTimeout(function(){$('#asdf').fadeOut(500);}, 5000) };
 		remLd();
 	</script>
 	<div class="jumbotron" style="padding: 0 !important;border-radius:0;background-color: #fff !important;margin-bottom: 0;">
