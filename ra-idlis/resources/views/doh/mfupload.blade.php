@@ -14,7 +14,7 @@
      @endforeach
    </datalist>
   @endforeach --}}
-  @foreach ($facilitys as $facility)
+ {{--  @foreach ($facilitys as $facility)
    <datalist id="{{$facility->facid}}_list">
      @foreach ($uploads as $upload)
        @if ($facility->facid == $upload->facid)
@@ -22,18 +22,14 @@
        @endif
      @endforeach
    </datalist>
-  @endforeach
- <datalist id="rgn_list">
-   @foreach ($uploads as $upload)
-     <option id="{{$upload->upid}}_pro_{{$upload->hfser_id}}" value="{{$upload->upid}}">{{$upload->updesc}}</option>
-   @endforeach
- </datalist>
+  @endforeach --}}
+{{-- i --}}
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
            Uploads <a href="#" title="Add New Uploads" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            <div style="float:right;display: inline-block;">
-            <form class="form-inline">
+            {{-- <form class="form-inline">
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup2()">
                 <option value="">Select Health Facility/Service Type ...</option>
@@ -49,18 +45,35 @@
               </select>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
-           </div>
+           </div> --}}
         </div>
         <div class="card-body">
                <table class="table" style="overflow-x: scroll;" >
               <thead>
                 <tr>
                   {{-- <th style="width: 40%">ID</th> --}}
-                  <th style="width: 35%">Name</th>
-                  <th style="width: 25%"><center>Options</center></th>
+                  <th style="width: 40%">Name</th>
+                  <th style="width: 25%"><center>Required</center></th>
+                  <th style="width: 35%"><center>Options</center></th>
                 </tr>
               </thead>
               <tbody id="FilterdBody">
+                @foreach ($uploads as $upl)
+                <tr>
+                    <td>{{$upl->updesc}}</td>
+                          <td><center> 
+                          <?php $test = ($upl->isRequired == 1)? '<span style="color:green;font-weight:bold">YES</span>':'<span style="color:red;font-weight:bold">NO</span>';echo $test; ?>                           
+                          </center></td>
+                          <td><center>
+                          <span class="MA11_update">
+                          <button type="button"  class="btn-defaults" onclick="showData({{$upl->upid}},'{{$upl->updesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;
+                          </span>
+                          <span class="MA11_cancel">
+                          <button type="button" class="btn-defaults" onclick="showDelete({{$upl->upid}},'{{$upl->updesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                        </span>
+                          </center></td>
+                        </tr>
+                @endforeach
               </tbody>
             </table>
         </div>
@@ -76,27 +89,24 @@
                 <div class="container">
                   <form class="row" id="addCls" data-parsley-validate>
                     {{ csrf_field() }}
-                    <div class="col-sm-4">Health Facility/Service Type:</div>
+                    {{-- <div class="col-sm-4">Health Facility/Service Type:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                      <select id="FATYPE" {{-- onchange="filterGroup3();" --}} data-parsley-required-message="*<strong>Health Facility/Servce Type</strong> required" class="form-control" required>
+                      <select id="FATYPE" data-parsley-required-message="*<strong>Health Facility/Servce Type</strong> required" class="form-control" required>
                           <option value="">Select Health Facility/Service Type ...</option>
                           @foreach ($hfsts as $hfst)
                             <option value="{{$hfst->hfser_id}}">{{$hfst->hfser_desc}}</option>
                           @endforeach
                       </select>
-                    </div>
-                    <div class="col-sm-4">Facility/Service:</div>
+                    </div> --}}
+                    {{-- <div class="col-sm-4">Facility/Service:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                       <select id="FACID" data-parsley-required-message="*<strong>Facility/Service</strong> required" class="form-control" required>  
                           <option value="">Select Facility/Service ...</option>
                           @foreach ($facilitys as $facility)
                             <option value="{{$facility->facid}}">{{$facility->facname}}</option>
                           @endforeach
-                          {{-- @foreach ($facility as $facilitys)
-                            <option value="{{$facilitys->facid}}">{{$facilitys->facname}}</option>
-                          @endforeach --}}
                       </select>
-                    </div>
+                    </div> --}}
                     {{-- <div class="col-sm-4">ID:</div>
                     <div class="col-sm-8"  style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required" name="fname" class="form-control" required>
@@ -104,6 +114,10 @@
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgn_desc" name="fname" data-parsley-required-message="*<strong>Name</strong> required" class="form-control"  required>
+                    </div>
+                    <div class="col-sm-4">Required:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <input type="checkbox" class="form-control" id="new_required">
                     </div>
                     <div class="col-sm-12">
                       <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
@@ -236,6 +250,7 @@
             if (form.parsley().isValid()) {
                 var id = $('#new_rgnid').val();
                 var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
+                var x = $('');
                 // console.log(arr);
                 var test = $.inArray(id,arr);
                 // console.log($('#OCID').val());
