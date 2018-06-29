@@ -129,7 +129,10 @@ html, body, #canvasMap{
 		    <span aria-hidden="true">&times;</span>
 		  </button>
 		</div>
-		@endif
+		@endif{{-- 
+		@php 
+		session()->flush();
+		@endphp --}}
 	</div>
 	<script type="text/javascript">
 		function remLd() { setTimeout(function(){$('#forpush').fadeOut(500);}, 5000) };
@@ -175,7 +178,7 @@ html, body, #canvasMap{
 		<div class="tabss-content" >
 			<div id="login-tab-content" class="active">
 				<form class="login-form" action="{{asset('/')}}" method="post" data-parsley-validate>
-					
+					{{csrf_field()}}
 					<input type="hidden" name="token" value="{{csrf_token()}}" hidden/>
 					<input type="text" style="margin: 0 0 .8em 0;" class="input form-control" name="log_uname" autocomplete="off" placeholder="Username" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" value="{{ old('log_uname')}}" required="">
 					<input type="password" style="margin: 0 0 .8em 0;" class="input form-control" name="log_pass" autocomplete="off" placeholder="Password" data-parsley-required-message="<strong>*</strong>Password <strong>Required</strong>" required="">
