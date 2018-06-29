@@ -27,15 +27,22 @@ class ClientController extends Controller
                     ->select('*')
                     ->first();
             if ($data){
-                $clientUser  = DB::table('x08')
-                                ->join('region', 'x08.rgnid', '=', 'region.rgnid')
-                                ->join('province', 'x08.province', '=', 'province.provid')
-                                ->select('x08.*', 'region.rgn_desc', 'province.provname')
-                                ->where('x08.uid', '=', $uname)
-                                ->first()
-                                ;
-                session()->put('client_data',$clientUser);
-                return redirect('/client/home');
+              $val_ver = DB::table('x08')->select('token', 'uid')->where('uid', '=', $uname)->first();
+              if($val_ver->token != NULL) {
+                session()->flash('client_login','Not yet verified. Please check your email account');
+                session()->flash('acc_id',$val_ver->uid);
+                return back();
+              } else {
+                  $clientUser  = DB::table('x08')
+                                  ->join('region', 'x08.rgnid', '=', 'region.rgnid')
+                                  ->join('province', 'x08.province', '=', 'province.provid')
+                                  ->select('x08.*', 'region.rgn_desc', 'province.provname')
+                                  ->where('x08.uid', '=', $uname)
+                                  ->first()
+                                  ;
+                  session()->put('client_data',$clientUser);
+                  return redirect('/client/home');
+              }
             }
              else{
                 session()->flash('client_login','Invalid Username/Password');
@@ -300,5 +307,17 @@ class ClientController extends Controller
         session()->flash('client_login','Account not verified! Error on verifying account. Account may have been verified or email doesnt exists');
         return redirect()->route('client');
       }
+    }
+
+    public function resend_ver(Request $req, $id) {
+      $data = DB::table('x08')->where('uid', '=', $id)->first();
+      $data1 = array('name'=>$data->facilityname, 'token'=>$data->token);
+   
+      Mail::send('mail', $data1, function($message) use ($data) {
+         $message->to($data->email, $data->facilityname)->subject
+            ('Verify your Account in DOH OLRS');
+         $message->from('dohsupport@gmail.com', 'DOH OLRS Support');
+      });
+      return redirect()->route('client');;
     }      
 }
