@@ -74,24 +74,25 @@
 			</div>
 			</div>
 
-	<form id="ApplyFoRm" data-parsley-validate>
+	<form id="ApplyFoRm" action="{{asset('client/file')}}"  data-parsley-validate enctype="multipart/form-data"  method="post">
+		<input type="" name="_token" value="{{csrf_token()}}" hidden>
 		<div class="col-sm-"><center><h2>{{$hfaci}}</h2></center></div>
 		<br>
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-4">
+						<div class="col-sm-3">
 							Name of Health Facility:
 						</div>
-						<div class="col-sm-8">
+						<div class="col-sm-9">
 							<strong>{{$clientData->facilityname}}</strong>
 						</div>
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-sm-4">
+						<div class="col-sm-3">
 							Complete Address:
 						</div>
-						<div class="col-sm-8">
+						<div class="col-sm-9">
 							{{-- {{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}} -  {{$clientData->rgn_desc}} --}}
 						</div>
 					</div>
@@ -130,26 +131,26 @@
 					</div>
 					<hr>
 					<div class="row">
-						<div class="col-sm-4">
+						<div class="col-sm-3">
 							Owner:
 						</div>
-						<div class="col-sm-8">
+						<div class="col-sm-9">
 							<strong>{{$clientData->authorizedsignature}}</strong>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-sm-4">
+						<div class="col-sm-3">
 							Contact Number:
 						</div>
-						<div class="col-sm-8">
+						<div class="col-sm-9">
 							{{$clientData->contact}}
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-sm-4">
+						<div class="col-sm-3">
 							Email Address: 
 						</div>
-						<div class="col-sm-8">
+						<div class="col-sm-9">
 						{{$clientData->email}}
 						</div>
 					</div>
@@ -355,10 +356,8 @@
 			</center>
 		</div>
 		</div>
+				</form>
 				</div>
-			</div>
-		</form>
-</div>	
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="border-radius: 0px;border: none;">
@@ -398,7 +397,7 @@ $(document).ready(function(){
 							'<tr>'+
 								'<td width="50%">'+selectedText+'</td>'+
 											'<td>'+
-												'<input class="form-control-file" id="'+id+'" data-parsley-required-message="File required for assessment." data-parsley-max-file-size="2.5" data-parsley-trigger="change" class="form-control" type="file">'+
+												'<input class="form-control-file" id="'+id+'" name="upfile" data-parsley-required-message="File required for assessment." data-parsley-max-file-size="2.5" data-parsley-trigger="change" class="form-control" type="file">'+
 											'</td>'	+		
 							'</tr>'
 						);

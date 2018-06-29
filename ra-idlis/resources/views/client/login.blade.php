@@ -113,6 +113,28 @@ html, body, #canvasMap{
   @endforeach
 </div> --}}
 <header>
+	<div id="forpush" style="position: absolute; right: 0; top: 0; left: 1; bottom: 1; margin-right: 10px; margin-top: 10px; max-width: 1000px; z-index: 100000000000000000000000000000000000000000;">
+		@if (session()->has('client_login'))
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('client_login')}}
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		@endif
+		@if (session()->has('logout_notif'))
+		<div class="alert alert-info alert-dismissible fade show" role="alert">
+		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('logout_notif')}}
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		@endif
+	</div>
+	<script type="text/javascript">
+		function remLd() { setTimeout(function(){$('#forpush').fadeOut(500);}, 5000) };
+		remLd();
+	</script>
 	<div class="jumbotron" style="padding: 0 !important;border-radius:0;background-color: #fff !important;margin-bottom: 0;">
 		<div class="container">
 		<div class="row">
@@ -154,23 +176,7 @@ html, body, #canvasMap{
 			<div id="login-tab-content" class="active">
 				<form class="login-form" action="{{asset('/')}}" method="post" data-parsley-validate>
 					
-					{{ csrf_field()}}
-					@if (session()->has('client_login'))
-					<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('client_login')}}
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					    <span aria-hidden="true">&times;</span>
-					  </button>
-					</div>
-					@endif
-					@if (session()->has('logout_notif'))
-					<div class="alert alert-info alert-dismissible fade show" role="alert">
-					  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('logout_notif')}}
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					    <span aria-hidden="true">&times;</span>
-					  </button>
-					</div>
-					@endif
+					<input type="hidden" name="token" value="{{csrf_token()}}" hidden/>
 					<input type="text" style="margin: 0 0 .8em 0;" class="input form-control" name="log_uname" autocomplete="off" placeholder="Username" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" value="{{ old('log_uname')}}" required="">
 					<input type="password" style="margin: 0 0 .8em 0;" class="input form-control" name="log_pass" autocomplete="off" placeholder="Password" data-parsley-required-message="<strong>*</strong>Password <strong>Required</strong>" required="">
 					<input type="checkbox" class="checkbox" id="remember_me">
