@@ -42,7 +42,7 @@
 					<input type="submit" class="button" value="Login">
 				</form><!--.login-form-->
 				<div class="help-text">
-					<p>Not a DOH employee?<a href="{{asset('/')}}">&nbsp;Go back home</a></p>
+					<p>Not a DOH employee?&nbsp;<a href="{{asset('/')}}">Go back home</a></p>
 				</div><!--.help-text-->
 			</div><!--.login-tab-content-->
 		</div><!--.tabs-content-->

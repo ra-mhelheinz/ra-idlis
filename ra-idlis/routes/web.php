@@ -10,9 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::match(['get', 'post'], '/store', 'ClientController@store');
 Route::post('/getRPMB', ['as'=>'reancy','uses'=>'ClientController@loadAllRPMB']);
 Route::get('loadTbl/{tbl}/{col}/{id}', 'ClientController@loadCurrTbl');
+Route::get('/register/verify/{id}','ClientController@verify_account');
 
 Route::match(['get', 'post'], '/', 'ClientController@clientlogin')->name('client');
 Route::match(['get', 'post'], '/register', 'ClientController@registerclient');
@@ -35,6 +36,7 @@ Route::get('client/inspection2', 'ClientController@inspection2');
 Route::get('client/inspection3', 'ClientController@inspection3');
 Route::get('client/issuance', 'ClientController@issuance');
 Route::post('client/logout', 'ClientController@logout');
+Route::post('client/store', 'ClientController@store');
 Route::get('client/apply2', 'ClientController@apply2');
 
 Route::get('/LOdashboard', 'LOController@LOdashboard');
@@ -104,6 +106,9 @@ Route::get('/employee/dashboard/lps/evalute/ins/2','DOHController@ins2');
 Route::get('/employee/dashboard/lps/evalute/ins/3','DOHController@ins3');
 // ----------------------------------------------- DOH Controller
 // ----------------------------------------------- Ajax Controller
+// -------------------------------------- ADD
+Route::post('/mf/add_typefa', ['as'=>'add-typefa','uses'=>'ajaxController@addTypeFa']);
+// -------------------------------------- ADD
 // -------------------------------------- GET
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
 Route::post('/ph/get_brgy', ['as'=>'select-brgy','uses'=>'ajaxController@selectBrgy']);
@@ -112,6 +117,8 @@ Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass'
 Route::post('/mf/getTypeFaci', ['as'=>'get-typefacility','uses'=>'ajaxController@getTypeFaci']);
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
 Route::post('/employee/get_date_actlogs', ['as'=>'get-ActLogs','uses'=>'ajaxController@getActLogs']);
+Route::post('/mf/facility/getRequirements', ['as'=>'get-Requirements','uses'=>'ajaxController@getRequirements']);
+//getRequirements
 // -------------------------------------- GET
 // -------------------------------------- UPDATE
 Route::post('/mf/save_phRegion', ['as'=>'save-phRegion','uses'=>'ajaxController@savePhRegion']);
@@ -121,6 +128,8 @@ Route::post('/mf/save_phBarangay', ['as'=>'save-phBarangay','uses'=>'ajaxControl
 Route::post('/employee/changepass', ['as'=>'change-pass','uses'=>'ajaxController@chngPass']);
 Route::post('/employee/save_rights', ['as'=>'save-rights','uses'=>'ajaxController@saveRights']);
 Route::post('/personnel/isActive', ['as'=>'isActive','uses'=>'ajaxController@isActive']);
+Route::post('/mf/facility/isEnabled', ['as'=>'isEnabled','uses'=>'ajaxController@isEnabled']);
+//mf/facility/isEnabled
 Route::post('/mf/save_aptype', ['as'=>'save-AppType','uses'=>'ajaxController@saveAppType']);
 Route::post('/mf/save_class', ['as'=>'save-Class','uses'=>'ajaxController@saveClass']);
 Route::post('/mf/save_faaptype', ['as'=>'save-FaType','uses'=>'ajaxController@saveFaType']);
@@ -153,3 +162,6 @@ Route::post('/mf/del_asmt', ['as'=>'del-AsMt','uses'=>'ajaxController@delAsMt'])
 Route::post('/mf/del_hfst', ['as'=>'del-HfsT','uses'=>'ajaxController@delHfst']);
 // -------------------------------------- DELETE
 // ----------------------------------------------- Ajax Controller
+Route::get('sendbasicemail','MailController@basic_email');
+Route::get('sendhtmlemail','MailController@html_email');
+Route::get('sendattachmentemail','MailController@attachment_email');
