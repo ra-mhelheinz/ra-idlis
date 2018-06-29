@@ -10,9 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::match(['get', 'post'], '/store', 'ClientController@store');
 Route::post('/getRPMB', ['as'=>'reancy','uses'=>'ClientController@loadAllRPMB']);
 Route::get('loadTbl/{tbl}/{col}/{id}', 'ClientController@loadCurrTbl');
+Route::get('/register/verify/{id}','ClientController@verify_account');
 
 Route::match(['get', 'post'], '/', 'ClientController@clientlogin')->name('client');
 Route::match(['get', 'post'], '/register', 'ClientController@registerclient');
@@ -35,6 +36,7 @@ Route::get('client/inspection2', 'ClientController@inspection2');
 Route::get('client/inspection3', 'ClientController@inspection3');
 Route::get('client/issuance', 'ClientController@issuance');
 Route::post('client/logout', 'ClientController@logout');
+Route::post('client/store', 'ClientController@store');
 Route::get('client/apply2', 'ClientController@apply2');
 
 Route::get('/LOdashboard', 'LOController@LOdashboard');
@@ -160,3 +162,6 @@ Route::post('/mf/del_asmt', ['as'=>'del-AsMt','uses'=>'ajaxController@delAsMt'])
 Route::post('/mf/del_hfst', ['as'=>'del-HfsT','uses'=>'ajaxController@delHfst']);
 // -------------------------------------- DELETE
 // ----------------------------------------------- Ajax Controller
+Route::get('sendbasicemail','MailController@basic_email');
+Route::get('sendhtmlemail','MailController@html_email');
+Route::get('sendattachmentemail','MailController@attachment_email');

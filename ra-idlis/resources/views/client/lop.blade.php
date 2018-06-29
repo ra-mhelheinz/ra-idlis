@@ -149,27 +149,6 @@
 							                    <hr>
 							                </div>
 				                        </div>
-													<script>
-															var i = 0;
-															var i_last = 0;
-															var original = document.getElementById('cloneOther');
-															var cloneother = document.getElementById('other');
-
-															function add() {
-															    var clone = original.cloneNode(true); // "deep" clone
-															    clone.id = 'clone' + i;
-															    clone.classList.add("removeClone");
-															    // or clone.id = ""; if the divs don't need an ID
-															    cloneother.appendChild(clone);
-															    i++;
-															}
-															function removeClone(){
-																for(j = i_last; j < i; j++){
-																	document.getElementById('other').removeChild(document.getElementById('clone' + j));
-																}
-																i_last = i;
-															}
-													</script>
                     			</div>
                     			<div class="col-sm-3"></div>
                     		</div>
@@ -204,10 +183,10 @@
 
 				        </div>
 				        <br>
-				        <div class="text-center"><button style="background-color:#28a745 ; " class="btn-primarys" onclick="add()"><i class="fa fa-plus-circle" ></i> Add Others</button> <button class="btn-primarys" onclick="removeClone()"><i class="fa fa-undo"></i>Reset</button></div>
+				        <div class="text-center"><button style="background-color:#28a745 ; " class="btn-primarys" onclick="add1()"><i class="fa fa-plus-circle" ></i> Add Others</button> <button class="btn-primarys" onclick="removeClone1()"><i class="fa fa-undo"></i>Reset</button></div>
 				        <br>
-				        <div id="other">
-				          	<div id="cloneOther">
+				        <div id="other1">
+				          	<div id="cloneOther1">
 							     <input type="text" name="" placeholder="School" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 							     <input type="text" name="" placeholder="Training" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
 							     <input type="date" name="" placeholder="Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
@@ -228,6 +207,31 @@
       </div>
     </div>
 	</div>
+	<script>
+															var i = 0;
+															var i_last = 0;
+															var original = document.getElementById('cloneOther');
+															var cloneother = document.getElementById('other');
+															var original1 = document.getElementById('cloneOther1');
+															var cloneother1 = document.getElementById('other1');
+
+															function add() {
+															    var clone = original.cloneNode(true); // "deep" clone
+															    clone.id = 'clone' + i;
+															    clone.classList.add("removeClone");
+															    // or clone.id = ""; if the divs don't need an ID
+															    cloneother.appendChild(clone);
+															    i++;
+															}
+															function removeClone(){
+																for(j = i_last; j < i; j++){
+																	document.getElementById('other').removeChild(document.getElementById('clone' + j));
+																}
+																i_last = i;
+															}
+															
+													</script>
+
 {{-- 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content" style="border-radius: 0px;border: none;">

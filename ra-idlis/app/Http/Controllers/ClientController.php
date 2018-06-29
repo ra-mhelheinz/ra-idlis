@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use Mail;
 
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Hash;
 use DB;
@@ -64,6 +67,7 @@ class ClientController extends Controller
           $data['contact_p'] = $request->contact_p;
           $data['contact_pno'] = $request->contact_pno;
           $data['ip'] = request()->ip();
+          $data['token'] = $token = bin2hex(random_bytes(24));
           // Check Username
           $checkUser = DB::table('x08')
                         ->where('uid', '=' ,$data['uname'])
@@ -79,6 +83,14 @@ class ClientController extends Controller
               return 'sameFacility';
           }
           else {
+            $data1 = array('name'=>$data['facility_name'], 'token'=>$data['token']);
+   
+            Mail::send('mail', $data1, function($message) use ($data) {
+               $message->to($data['email'], $data['facility_name'])->subject
+                  ('Verify your Account in DOH OLRS');
+               $message->from('dohsupport@gmail.com', 'DOH OLRS Support');
+            });
+
             DB::table('x08')->insert(
                 [
                     'uid' => $data['uname'],
@@ -101,6 +113,7 @@ class ClientController extends Controller
                     't_date' => $dateNow,
                     't_time' =>$timeNow,
                     'grpid' => 'C',
+                    'token' => $data['token']
                 ]
             );
             // return response()->json(['test'=>$data]);
@@ -275,10 +288,17 @@ class ClientController extends Controller
            // return dd($upld);               
         // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
         return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld]);
-    }
-      // select `facility_requirements`.*, `upload`.*, `type_facility`.* 
-      // from `facility_requirements` 
-      // inner join `upload` on `facility_requirements`.`upid` = `upload`.`upid` 
-      // inner join `type_facility` on `facility_requirements`.`typ_id` = `type_facility`.`typ_id` 
-      // where `type_facility`.`hfser_id` = CON)
+
+    } 
+    public function verify_account(Request $request, $id){
+      $updateData = array('token'=>NULL);
+      $table = DB::table("x08")->where("token", "=", $id)->update($updateData);
+      if($table) {
+        session()->flash('logout_notif','Successfully verified account');
+        return redirect()->route('client');
+      } else {
+        session()->flash('client_login','Account not verified! Error on verifying account. Account may have been verified or email doesnt exists');
+        return redirect()->route('client');
+      }
+    }      
 }
