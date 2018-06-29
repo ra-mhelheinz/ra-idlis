@@ -202,7 +202,7 @@
                           $('#GodModal').modal('toggle');
                           AddMenu=0;
                       } else if (data == "SAME") {
-                          alert('Upload is already listed as a Requirement.');
+                          alert('Selected upload is already listed as a Requirement.');
                           $('#requirementData').focus();
                       }
                   }
@@ -210,6 +210,9 @@
           }
            
         }
+      }
+      function DelRequirement (id){
+        
       }
       function  showData(id,facname,hfser_id,hfser_name){
           $('#GodModalTitle').text('Requirements for '+hfser_name+' ('+hfser_id+') in '+facname);
@@ -229,7 +232,7 @@
                                   '<tr>' +
                                     '<td>'+data[i].updesc+'</td>'+
                                     '<td><center><strong>'+required+'</strong></center></td>' +
-                                    '<td><center><button type="button" class="btn-defaults" onclick="editRequirement();"><i class="fa fa-fw fa-edit"></i></button></center></td>' +
+                                    '<td><center><button type="button" class="btn-defaults" onclick="DelRequirement('+data[i].fr_id+');"><i class="fa fa-fw fa-trash"></i></button></center></td>' +
                                   '</tr>'
                               );
                         }

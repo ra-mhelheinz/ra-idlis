@@ -588,10 +588,11 @@
 		}
 		public function Upload(Request $request){ // Master File/Upload Page
 			if ($request->isMethod('get')) {
-				$fatype = DB::table('facilitytyp')->get();
-				$hfsts = DB::table('hfaci_serv_type')->get();
+				// $fatype = DB::table('facilitytyp')->get();
+				// $hfsts = DB::table('hfaci_serv_type')->get();
 				$ups = DB::table('upload')->get();
-				return view('doh.mfupload',['facilitys'=>$fatype,'uploads'=>$ups,'hfsts'=>$hfsts]);
+				// 'facilitys'=>$fatype,'hfsts'=>$hfsts
+				return view('doh.mfupload',['uploads'=>$ups]);
 			}
 			if ($request->isMethod('post')) {
 				$data = $this->InsertActLog($request->mod_id,"ad_d");
