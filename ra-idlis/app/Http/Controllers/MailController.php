@@ -52,7 +52,7 @@
               return 'sameFacility';
           }
           else {
-            $data1 = array('name'=>"DOH Support", 'token'=>$request->token);
+            $data1 = array('name'=>$request->facility_name, 'token'=>$data['token']);
             Mail::send('mail', $data1, function($message) use ($request) {
                $message->to($request->email, $request->facility_name)->subject
                   ('Verify Email Account');

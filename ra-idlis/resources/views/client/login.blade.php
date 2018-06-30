@@ -434,7 +434,7 @@ html, body, #canvasMap{
 					<p>By signing up, you agree to our</p>
 					<p><a href="#" data-toggle="modal" data-target="#exampleModalLong">Terms of service</a></p>
 				</div><!--.help-text-->	
-					<button  type="submit" class="button" value="Sign Up">Sign Up</button>
+					<button id="reg_sign" type="submit" class="button" value="Sign Up">Sign Up</button>
 					</form>
 			</div><!--.signup-tab-content-->
 		</div><!--.tabs-content-->
@@ -482,6 +482,7 @@ html, body, #canvasMap{
 
 		 $(document).ready(function() {
 	        $("#rform").on('submit', function(e){
+	        	document.getElementById('reg_sign').innerHTML = "Sending email verification <img style='max-height: 48px;' src='{{ asset('ra-idlis/public/img/load.gif') }}'>";
 	            e.preventDefault();
 	            var form = $(this);
 	            form.parsley().validate();
@@ -533,11 +534,14 @@ html, body, #canvasMap{
 			          		$('#Samelert').focus();
 			          		// $('input[name="reg_uname"]').focus();
 			          		// alert(test);	
+			          		document.getElementById('reg_sign').innerHTML = "Sign Up";
 			          	} else if (data == 'sameFacility'){
 			          		$('input[name="facility_name"').removeClass('parsley-success');
 			          		$('input[name="facility_name"]').addClass('parsley-error');
+			          		document.getElementById('reg_sign').innerHTML = "Sign Up";
 			          	} else if (data == 'DONE'){
 			          		window.location.href = "{{asset('/')}}";
+			          		document.getElementById('reg_sign').innerHTML = "Successfully registered";
 			          	}
 			          }
 			      });
