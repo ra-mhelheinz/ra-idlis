@@ -6,6 +6,7 @@ use Mail;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Hash;
 use DB;
 use Carbon\Carbon;
@@ -54,7 +55,7 @@ class ClientController extends Controller
     	if($request->isMethod('get')){
     		return view('client.register');
     	}
-        if($request->isMethod('post')){
+      if($request->isMethod('post')){
           $dt = Carbon::now();
           $dateNow = $dt->toDateString();
           $timeNow = $dt->toTimeString();
@@ -74,7 +75,7 @@ class ClientController extends Controller
           $data['contact_p'] = $request->contact_p;
           $data['contact_pno'] = $request->contact_pno;
           $data['ip'] = request()->ip();
-          $data['token'] = $token = bin2hex(random_bytes(24));
+          $data['token'] = Str::random(40);
           // Check Username
           $checkUser = DB::table('x08')
                         ->where('uid', '=' ,$data['uname'])
@@ -92,7 +93,7 @@ class ClientController extends Controller
           else {
             $data1 = array('name'=>$data['facility_name'], 'token'=>$data['token']);
    
-            Mail::send('mail', $data1, function($message) use ($data) {
+            Mail::send(['text'=>'mail'], $data1, function($message) use ($data) {
                $message->to($data['email'], $data['facility_name'])->subject
                   ('Verify your Account in DOH OLRS');
                $message->from('dohsupport@gmail.com', 'DOH OLRS Support');
@@ -308,16 +309,4 @@ class ClientController extends Controller
         return redirect()->route('client');
       }
     }
-
-    public function resend_ver(Request $req, $id) {
-      $data = DB::table('x08')->where('uid', '=', $id)->first();
-      $data1 = array('name'=>$data->facilityname, 'token'=>$data->token);
-   
-      Mail::send('mail', $data1, function($message) use ($data) {
-         $message->to($data->email, $data->facilityname)->subject
-            ('Verify your Account in DOH OLRS');
-         $message->from('doholrs@gmail.com', 'DOH OLRS Support');
-      });
-      return redirect()->route('client');;
-    }      
 }

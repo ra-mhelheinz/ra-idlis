@@ -14,10 +14,10 @@ Route::match(['get', 'post'], '/store', 'ClientController@store');
 Route::post('/getRPMB', ['as'=>'reancy','uses'=>'ClientController@loadAllRPMB']);
 Route::get('loadTbl/{tbl}/{col}/{id}', 'ClientController@loadCurrTbl');
 Route::get('/register/verify/{id}','ClientController@verify_account');
-Route::get('/resend/{id}','ClientController@resend_ver');
+Route::get('/resend/{id}','MailController@resend_ver');
 
 Route::match(['get', 'post'], '/', 'ClientController@clientlogin')->name('client');
-Route::match(['get', 'post'], '/register', 'ClientController@registerclient');
+Route::match(['get', 'post'], '/register', 'MailController@auto_mailer');
 
 Route::get('client/home', 'ClientController@home');
 Route::get('client/apply/lop','ClientController@LOP');
