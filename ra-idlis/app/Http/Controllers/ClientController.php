@@ -322,7 +322,7 @@ class ClientController extends Controller
               // Tested
               DB::table('appform')->insert($insertData);
               $NewId = DB::getPdo()->lastInsertId();
-              if (count($request->UpID) < 0) {
+              if (count($request->UpID) . 0) {
                         for ($i=0; $i < count($request->UpID); $i++) { 
                         if (isset($request->upLoad[$i])) {
                             $FileUploaded = $request->upLoad[$i];
