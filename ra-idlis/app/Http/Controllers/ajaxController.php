@@ -270,7 +270,7 @@
 		}
 		public function saveUpload(Request $request){ // Update Uploads
 			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('updesc'=>$request->name);
+			$updateData = array('updesc'=>$request->name, 'isRequired' => $request->isRequiredNow);
 			DB::table('upload')
 				->where('upid',$request->id)
 				->update($updateData);

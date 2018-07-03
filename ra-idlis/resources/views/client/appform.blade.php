@@ -24,7 +24,7 @@
 		<datalist id="{{$fatype->facid}}_facid">
 			@foreach ($uploads as $upload)
 				@if($upload->facid == $fatype->facid)
-				<option value="{{$upload->updesc}}">{{$upload->upid}}</option>
+				<option value="{{$upload->updesc}}" isRequired="{{$upload->isRequired}}">{{$upload->upid}}</option>
 				@endif
 			@endforeach
 		</datalist>
@@ -44,6 +44,18 @@
 	  	loader(true);
 </script>
 @include('client.breadcrumb')
+@if (session()->has('apply_succes'))
+		<div id="asdf" class="alert alert-info alert-dismissible fade show" role="alert">
+		  <center><strong><i class="fas fa-exclamation"></i></strong> {{session()->get('apply_succes')}}</center>
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+@endif
+<script type="text/javascript">
+		function remLd() { setTimeout(function(){$('#asdf').fadeOut(500);}, 5000) };
+		remLd();
+	</script>
 		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-radius: 0;padding: 2rem 2rem;margin-top: 1%;padding-bottom: 7%;">
 			<div class="title"  style="text-align: center;border-bottom: 1px solid green;padding-bottom: 9px;position: relative;margin-bottom: 2%;"> 
 			{{-- <h2>APPLICATION FORM</h2>
@@ -74,7 +86,7 @@
 			</div>
 			</div>
 
-	<form id="ApplyFoRm" action="{{asset('client/file')}}"  data-parsley-validate enctype="multipart/form-data"  method="post">
+	<form id="ApplyFoRm" action="{{ asset('/client/apply/form/') }}/{{$id_type}}"  data-parsley-validate enctype="multipart/form-data"  method="post" data-parsley-validate>
 		<input type="" name="_token" value="{{csrf_token()}}" hidden>
 		<div class="col-sm-"><center><h2>{{$hfaci}}</h2></center></div>
 		<br>
@@ -170,7 +182,7 @@
 							Health Facility:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
-							<select class="form-control" id="HFATYPE" onchange="{{--getFacilityType();--}}getUploads()" required>
+							<select class="form-control" id="HFATYPE" name="facid" onchange="{{--getFacilityType();--}}getUploads()" data-parsley-required-message="<strong>Health Facility</strong> required." required>
 								<option value=""></option>
 								@foreach ($fatypes as $fatype)
 									<option value="{{$fatype->facid}}">{{$fatype->facname}}</option>
@@ -181,7 +193,7 @@
 							Ownership:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
-							<select class="form-control" id="OWNSHP" onchange="getOwnship();" required>>
+							<select class="form-control" id="OWNSHP" name="OWNSHP" data-parsley-required-message="<strong>Ownership</strong> required." onchange="getOwnship();" required>>
 								<option value=""></option>
 								@foreach ($ownshs as $ownsh)
 									<option value="{{$ownsh->ocid}}">{{$ownsh->ocdesc}}</option>
@@ -216,7 +228,7 @@
 								Class:<span style="color:red">*</span>
 							</div>
 							<div class="col-sm-3" id="Main1Sub2DrpDown" style="display: none">
-								<select class="form-control" id="CLS" onchange="chckOwnOther();">
+								<select class="form-control" id="CLS" name="CLS" onchange="chckOwnOther();">
 								</select>
 							</div>
 						</div>
@@ -248,7 +260,7 @@
 								Others (Ownership), Specify<span style="color:red">*</span>
 							</div>
 							<div class="col-sm-3" id="Main2Sub2DrpDown" style="display: none">
-								<input type="text" class="form-control" name="">
+								<input type="text" id="SelectedisOthers" data-parsley-required-message="<strong>Others</strong> required." class="form-control" name="OthersSelected">
 							</div>
 						</div>
 						<br>
@@ -264,7 +276,7 @@
 							Status of Application:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
-							<select class="form-control" required>
+							<select class="form-control" id="STATS_APP" name="strateMap" data-parsley-required-message="<strong>Status of Application</strong> required." required >
 								<option value=""></option>
 								@foreach ($aptyps as $aptyp)
 									<option value="{{$aptyp->aptid}}">{{$aptyp->aptdesc}}</option>
@@ -356,6 +368,7 @@
 			</center>
 		</div>
 		</div>
+		<input type="text" name="numberOfUploads" hidden>
 				</form>
 				</div>
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -385,23 +398,30 @@ $(document).ready(function(){
 });
 </script>
 	<script type="text/javascript">
+		var Number_of_Files = 0;
 		function getUploads(){
 			var selectedFaType = $('#HFATYPE').val();
 			var GetNames = $('#'+selectedFaType+'_facid option').map(function() {return $(this).val();}).get();
 			var Get_Ids = $('#'+selectedFaType+'_facid option').map(function() {return $(this).text();}).get();
+			var GetRequired = $('#'+selectedFaType+'_facid option').map(function() {return $(this).attr('isrequired');}).get();
 			$('#ApplyTable').empty();
-			$('#ApplyTable').append('<tr><td colspan="2"><center><p><strong>Note: </strong>File should be not larger than <strong>2 MB</strong></p></td><center></tr>');
+			$('#ApplyTable').append('<tr><td colspan="2"><center><p><strong>Note: </strong>File should be not larger than <strong>5 MB</strong></p></td><center></tr>');
 			for (var i = 0; i < Get_Ids.length; i++) {
-					var id = Get_Ids[i],selectedText = GetNames[i];
+					var id = Get_Ids[i],selectedText = GetNames[i],requirement = GetRequired[i];
+					requiredOrNot = (requirement == 1) ? 'required=""' : "";
 					$('#ApplyTable').append(
 							'<tr>'+
 								'<td width="50%">'+selectedText+'</td>'+
 											'<td>'+
-												'<input class="form-control-file" id="'+id+'" name="upfile" data-parsley-required-message="File required for assessment." data-parsley-max-file-size="2.5" data-parsley-trigger="change" class="form-control" type="file">'+
+												'<input class="form-control-file" data-id="'+id+'" id="input'+i+'" name="upLoad[]" data-parsley-required-message="File <strong>required</strong> for assessment." data-parsley-max-file-size="5" data-parsley-trigger="change" class="form-control" type="file" '+requiredOrNot+'>'+
+												'<input name="UpID[]" value="'+id+'" hidden>'+
 											'</td>'	+		
 							'</tr>'
 						);
+					Number_of_Files++;
 				}
+			$('input[name="numberOfUploads"]').val(Number_of_Files);
+				
 		}
 		var Main1 = 0, Sub1 = 0, Sub2 = 0;
 		var Main2 = 0, Main2Sub1 = 0, MainSub2 = 0;
@@ -415,6 +435,7 @@ $(document).ready(function(){
 						$('#HideLevel2').show();
 						Main2 = 1;
 					}
+					$('#SelectedisOthers').attr("required",'');
 				}
 			} else {
 				if (MainSub2 == 1) {
@@ -426,6 +447,7 @@ $(document).ready(function(){
 					$('#HideLevel2').hide();
 						Main2 = 0;
 				}
+				$('#SelectedisOthers').removeAttr('required');
 			}
 		}
 		function getOwnship(){
@@ -434,6 +456,8 @@ $(document).ready(function(){
 				var GetNames = $('#'+selectedOwnship+'_oShip option').map(function() {return $(this).val();}).get();
 				var Get_Ids = $('#'+selectedOwnship+'_oShip option').map(function() {return $(this).text();}).get();
 				$('#CLS').empty();
+				$('#CLS').attr("required","");
+				$('#CLS').attr("data-parsley-required-message","<strong>Class</strong> required.");
 				$('#CLS').append('<option value=""></option>');
 				for (var i = 0; i < Get_Ids.length; i++) {
 					var id = Get_Ids[i],selectedText = GetNames[i];
@@ -442,7 +466,7 @@ $(document).ready(function(){
 						);
 				}
 				$('#CLS').append(
-							'<option value="OTHER">OTHERS</option>'
+							'<option value="OTHER">Others</option>'
 						);
 				if (Sub2 == 0) {
 					$('#Main1Sub2Name').show();
@@ -456,7 +480,6 @@ $(document).ready(function(){
 			} else {
 
 				if (Sub1 != 1) {
-					console.log(Sub1);
 					$('#HideLevel1').hide();
 					Main1 = 0;
 				}
@@ -521,23 +544,41 @@ $(document).ready(function(){
 					break;
 			}
 		}
-		$('#ApplyFoRm').on('submit',function(e){
-			e.preventDefault();
-			var token = $('#global-token').val();
-			var form = $(this);
+		// $('#ApplyFoRm').on('submit',function(e){ // FOR SUBMIT
+		// 	e.preventDefault();
+		// 	var token = $('#global-token').val();
+		// 	var form = $(this);
 			
-			// console.log(Test);
-            form.parsley().validate();
-            if (form.parsley().isValid()){
-            	// var ownship = $("input[name='Ownership']:checked").val();
-            	// var serv_cap = $('input[name="HospitalLevel"]:checked').val();
-            	// var total_cap = $('input[name="totalcap"]').val();
-            	// var total_lot = $('input[name="lotArea"]').val();
-            	// var bedCap = $('input[name="propTotalBedCap"]').val();
-             } else {
+		// 	// console.log(Test);
+  //           form.parsley().validate();
+  //           if (form.parsley().isValid()){
+  //           	var formData = new FormData();
+  //           	formData.append('heatype',$('#HFATYPE').val()); // Health Facilty
+  //           	formData.append('OWNSHP',$('#OWNSHP').val()); // Ownership
+  //           	formData.append('CLS',$('#CLS').val()); // Class
+  //           	formData.append('strateMap', $('#STATS_APP').val()); // Status of Application
+  //           	formData.append('_token',$('#global-token').val()); // Token
+  //           	formData.append('numOfFiles',Number_of_Files); // Number of Files
+  //           	for (var i = 0; i < Number_of_Files; i++) {
+  //           		formData.append('file_no_'+i, document.getElementById("input"+i).files[0]); // files
+  //           		formData.append('file_no'+i+'_id',$('#input'+i).attr('data-id'));
+  //           	}
+  //           	$.ajax({
+  //           		url: '{{ asset('/client/apply/form/') }}/{{$id_type}}',
+  //           		method: 'POST',
+  //           		data : formData,
+  //           		enctype: 'multipart/form-data',
+  //           		cache: false,
+		// 	        contentType: false,
+		// 	        processData: false,
+		// 	        success : function(event){
 
-             }
-		});
+		// 	        }
+  //           	});
+  //            } else {
+
+  //            }
+		// });
 		function selectHealthFacility(){
 			var selected = $('#HFacility').children(":selected").text();
 			var selectedVal = $('#HFacility').children(":selected").val();
@@ -614,7 +655,7 @@ $(document).ready(function(){
 		  requirementType: 'integer',
 		  messages: {
 		  	// %s
-		    en: '<span style="color:red">This file should not be larger than 2 MB</span>',
+		    en: '<span style="color:red">This file should not be larger than <strong>5 MB</strong></span>',
 		  }
 		});
 	</script>
