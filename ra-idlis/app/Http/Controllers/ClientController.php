@@ -322,39 +322,42 @@ class ClientController extends Controller
               // Tested
               DB::table('appform')->insert($insertData);
               $NewId = DB::getPdo()->lastInsertId();
-              for ($i=0; $i < count($request->UpID); $i++) { 
-                if (isset($request->upLoad[$i])) {
-                    $FileUploaded = $request->upLoad[$i];
-                    $SelectedUPID = $request->UpID[$i];
-                    $filename = $FileUploaded->getClientOriginalName();
-                      // $FileUploaded->store('public/uploaded');
-                      // FILENAME
-                      $filenameOnly = pathinfo($filename,PATHINFO_FILENAME ); // FILE NAME ONLY
-                      // EXTENSION
-                      $fileExtension = $FileUploaded->getClientOriginalExtension();
-                      // FILENAME TO STORE
-                      $fileNameToStore = $filename.'_'.time().'.'.$fileExtension; 
-                      // UPLOAD FILE
-                      $path = $FileUploaded->storeAs('public/uploaded', $fileNameToStore); // UPLOAD FILE
-                      // FILE SIZE
-                      $fileSize = $FileUploaded->getClientSize();    
-                      /////////////////////////////////////////////////////// UPLOAD FILE
-                      $InsertUpload = array(
-                                              'app_id' => $NewId,
-                                              'upid'=>   $SelectedUPID,
-                                              'filepath'=> $fileNameToStore,
-                                              'fileExten' => $fileExtension,
-                                              'fileSize' => $fileSize,
-                                              't_date' => $dateNow,
-                                              't_time' => $timeNow,
-                                              'ipaddress' =>request()->ip(),
-                                            );
-                      DB::table('app_upload')->insert($InsertUpload);
+              if (count($request->UpID) < 0) {
+                        for ($i=0; $i < count($request->UpID); $i++) { 
+                        if (isset($request->upLoad[$i])) {
+                            $FileUploaded = $request->upLoad[$i];
+                            $SelectedUPID = $request->UpID[$i];
+                            $filename = $FileUploaded->getClientOriginalName();
+                              // $FileUploaded->store('public/uploaded');
+                              // FILENAME
+                              $filenameOnly = pathinfo($filename,PATHINFO_FILENAME ); // FILE NAME ONLY
+                              // EXTENSION
+                              $fileExtension = $FileUploaded->getClientOriginalExtension();
+                              // FILENAME TO STORE
+                              $fileNameToStore = $filename.'_'.time().'.'.$fileExtension; 
+                              // UPLOAD FILE
+                              $path = $FileUploaded->storeAs('public/uploaded', $fileNameToStore); // UPLOAD FILE
+                              // FILE SIZE
+                              $fileSize = $FileUploaded->getClientSize();    
+                              /////////////////////////////////////////////////////// UPLOAD FILE
+                              $InsertUpload = array(
+                                                      'app_id' => $NewId,
+                                                      'upid'=>   $SelectedUPID,
+                                                      'filepath'=> $fileNameToStore,
+                                                      'fileExten' => $fileExtension,
+                                                      'fileSize' => $fileSize,
+                                                      't_date' => $dateNow,
+                                                      't_time' => $timeNow,
+                                                      'ipaddress' =>request()->ip(),
+                                                    );
+                              DB::table('app_upload')->insert($InsertUpload);
+                        }
+                      }
+                      session()->flash('apply_succes','Success! Application Submitted.');
+                      return back();
                 }
               }
-              session()->flash('apply_succes','Success! Application Submitted.');
-              return back();
-        }
+              
     } 
     public function verify_account(Request $request, $id){
       $updateData = array('token'=>NULL);
