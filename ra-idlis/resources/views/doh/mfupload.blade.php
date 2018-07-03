@@ -5,6 +5,7 @@
 @section('content')
   <input type="text" id="CurrentPage" value="MA11" hidden>
   <script type="text/javascript">Right_GG();</script>
+  <input type="" id="token" value="{{ Session::token() }}" hidden>
   {{-- @foreach ($hfsts as $hfst)
    <datalist id="{{$hfst->hfser_id}}_hfst">
      @foreach ($facilitys as $facility)
@@ -43,7 +44,7 @@
                   <option value="{{$facility->facid}}">{{$facility->facname}}</option>
                 @endforeach
               </select>
-              <input type="" id="token" value="{{ Session::token() }}" hidden>
+              
               </form>
            </div> --}}
         </div>
@@ -66,7 +67,7 @@
                           </center></td>
                           <td><center>
                           <span class="MA11_update">
-                          <button type="button"  class="btn-defaults" onclick="showData({{$upl->upid}},'{{$upl->updesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;
+                          <button type="button"  class="btn-defaults" onclick="showData({{$upl->upid}},'{{$upl->updesc}}',{{$upl->isRequired}});" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;
                           </span>
                           <span class="MA11_cancel">
                           <button type="button" class="btn-defaults" onclick="showDelete({{$upl->upid}},'{{$upl->updesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
@@ -178,7 +179,8 @@
       </div> 
     </div>
     <script type="text/javascript">
-        function showData(id,desc){
+        function showData(id,desc,IsRequired){
+          var checked = (IsRequired == 1) ? 'checked' : '';
           $('#EditBody').empty();
           $('#EditBody').append(
               '<div class="col-sm-4" hidden>ID:</div>' +
@@ -188,6 +190,10 @@
               '<div class="col-sm-4">Description:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
                 '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
+              '</div>' +
+              '<div class="col-sm-4">Required:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<input type="checkbox" id="edit_required" class="form-control" '+checked+'>' +
               '</div>' 
             );
         }
@@ -250,6 +256,7 @@
             if (form.parsley().isValid()) {
                 var id = $('#new_rgnid').val();
                 var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
+                var TestRequired = ($('#new_required').is(":checked") == true) ? 1 : 0;
                 var x = $('');
                 // console.log(arr);
                 var test = $.inArray(id,arr);
@@ -261,9 +268,9 @@
                       data: {
                         _token : $('#token').val(),
                         // id: $('#new_rgnid').val(),
-                        id : $('#FATYPE').val(),
+                        // id : $('#FATYPE').val(),
                         name : $('#new_rgn_desc').val(),
-                        facid : $('#FACID').val(),
+                        required : TestRequired,
                         mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {
@@ -286,10 +293,11 @@
              if (form.parsley().isValid()) {
                var x = $('#edit_name').val();
                var y = $('#edit_desc').val();
+               var TestRequired = ($('#edit_required').is(":checked") == true) ? 1 : 0;
                $.ajax({
                   url: "{{ asset('/mf/save_upload') }}",
                   method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
+                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val(),isRequiredNow : TestRequired},
                   success: function(data){
                       if (data == "DONE") {
                           alert('Successfully Edited Upload');

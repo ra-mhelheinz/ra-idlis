@@ -122,9 +122,9 @@ html, body, #canvasMap{
 		  </button>
 		</div>
 		@endif
-		@if (session()->has('logout_notif'))
+		@if (session()->has('apply_succes'))
 		<div id="asdf" class="alert alert-info alert-dismissible fade show" role="alert">
-		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('logout_notif')}}
+		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('apply_succes')}}
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
 		  </button>

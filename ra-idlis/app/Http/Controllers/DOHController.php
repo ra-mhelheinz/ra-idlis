@@ -590,13 +590,13 @@
 			if ($request->isMethod('get')) {
 				// $fatype = DB::table('facilitytyp')->get();
 				// $hfsts = DB::table('hfaci_serv_type')->get();
-				$ups = DB::table('upload')->get();
+				$ups = DB::table('upload')->orderBy('updesc', 'asc')->get();
 				// 'facilitys'=>$fatype,'hfsts'=>$hfsts
 				return view('doh.mfupload',['uploads'=>$ups]);
 			}
 			if ($request->isMethod('post')) {
 				$data = $this->InsertActLog($request->mod_id,"ad_d");
-				DB::table('upload')->insert(['updesc'=>$request->name,'facid'=>$request->facid,'hfser_id'=>$request->id]);
+				DB::table('upload')->insert(['updesc'=>$request->name,'isRequired'=>$request->required]);
 				return 'DONE';
 			}
 		}

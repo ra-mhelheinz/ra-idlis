@@ -271,32 +271,90 @@ class ClientController extends Controller
       return view('client.lto', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     }
     public function FORM(Request $request, $id_type){
-      // ->join('region', 'x08.rgnid', '=', 'region.rgnid')
-      //                           ->join('province', 'x08.province', '=', 'province.provid')
-      //                           ->select('x08.*', 'region.rgn_desc', 'province.provname')
-      //                           ->where('x08.uid', '=', $uname)
-      //                           ->first()
-        $selectedType = strtoupper($id_type);
-        $fatype = DB::table('type_facility')
-                          ->join('facilitytyp','type_facility.facid', '=', 'facilitytyp.facid')
-                          ->select('type_facility.*','facilitytyp.*')
-                          ->where('type_facility.hfser_id','=', $selectedType)
-                          ->get(); // Facility Type
-        $ownsh = DB::table('ownership')->get(); // Ownership Type
-        $aptyp = DB::table('apptype')->get(); // Application Stype
-        $clss = DB::table('class')->get(); // Class
-        
-        $hfaci = DB::table('hfaci_serv_type')->where('hfser_id','=',$selectedType)->first();
-        $upld = DB::table('facility_requirements')
-                          ->join('upload','facility_requirements.upid','=','upload.upid')
-                          ->join('type_facility','facility_requirements.typ_id', '=', 'type_facility.tyf_id')
-                          ->select('facility_requirements.*','upload.*','type_facility.*')
-                          ->where('type_facility.hfser_id','=', $selectedType)
-                          ->get();
-           // return dd($upld);               
-        // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
-        return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld]);
-
+      if ($request->isMethod('get')) {
+          // ->join('region', 'x08.rgnid', '=', 'region.rgnid')
+          //                           ->join('province', 'x08.province', '=', 'province.provid')
+          //                           ->select('x08.*', 'region.rgn_desc', 'province.provname')
+          //                           ->where('x08.uid', '=', $uname)
+          //                           ->first()
+            $selectedType = strtoupper($id_type);
+            $fatype = DB::table('type_facility')
+                              ->join('facilitytyp','type_facility.facid', '=', 'facilitytyp.facid')
+                              ->select('type_facility.*','facilitytyp.*')
+                              ->where('type_facility.hfser_id','=', $selectedType)
+                              ->get(); // Facility Type
+            $ownsh = DB::table('ownership')->get(); // Ownership Type
+            $aptyp = DB::table('apptype')->get(); // Application Stype
+            $clss = DB::table('class')->get(); // Class
+            
+            $hfaci = DB::table('hfaci_serv_type')->where('hfser_id','=',$selectedType)->first();
+            $upld = DB::table('facility_requirements')
+                              ->join('upload','facility_requirements.upid','=','upload.upid')
+                              ->join('type_facility','facility_requirements.typ_id', '=', 'type_facility.tyf_id')
+                              ->select('facility_requirements.*','upload.*','type_facility.*')
+                              ->where('type_facility.hfser_id','=', $selectedType)
+                              ->get();
+               // return dd($upld);               
+            // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
+            return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld]);
+      }
+        if ($request->isMethod('post')) {
+              $employeeData = session('client_data');
+              //OthersSelected
+              $Cls = ($request->CLS == "OTHER") ? $request->OthersSelected : $request->CLS;
+              $test1  = $employeeData->uid; /// UID
+              $dt = Carbon::now();
+              $dateNow = $dt->toDateString(); /// Date
+              $timeNow = $dt->toTimeString(); /// Time
+              // Tested
+              $insertData = array(
+                                  'uid'=>   $test1,
+                                  'hfser_id' => strtoupper($id_type),
+                                  'facid'=> $request->facid,
+                                  'ocid'=>  $request->OWNSHP,
+                                  'aptid'=> $request->strateMap,
+                                  'classid'=> $Cls,
+                                  'draft'=> 0,
+                                  't_time'=> $timeNow,
+                                  't_date' => $dateNow,
+                                  'ipaddress'=> request()->ip(),
+                                );
+              // Tested
+              DB::table('appform')->insert($insertData);
+              $NewId = DB::getPdo()->lastInsertId();
+              for ($i=0; $i < count($request->UpID); $i++) { 
+                if (isset($request->upLoad[$i])) {
+                    $FileUploaded = $request->upLoad[$i];
+                    $SelectedUPID = $request->UpID[$i];
+                    $filename = $FileUploaded->getClientOriginalName();
+                      // $FileUploaded->store('public/uploaded');
+                      // FILENAME
+                      $filenameOnly = pathinfo($filename,PATHINFO_FILENAME ); // FILE NAME ONLY
+                      // EXTENSION
+                      $fileExtension = $FileUploaded->getClientOriginalExtension();
+                      // FILENAME TO STORE
+                      $fileNameToStore = $filename.'_'.time().'.'.$fileExtension; 
+                      // UPLOAD FILE
+                      $path = $FileUploaded->storeAs('public/uploaded', $fileNameToStore); // UPLOAD FILE
+                      // FILE SIZE
+                      $fileSize = $FileUploaded->getClientSize();    
+                      /////////////////////////////////////////////////////// UPLOAD FILE
+                      $InsertUpload = array(
+                                              'app_id' => $NewId,
+                                              'upid'=>   $SelectedUPID,
+                                              'filepath'=> $fileNameToStore,
+                                              'fileExten' => $fileExtension,
+                                              'fileSize' => $fileSize,
+                                              't_date' => $dateNow,
+                                              't_time' => $timeNow,
+                                              'ipaddress' =>request()->ip(),
+                                            );
+                      DB::table('app_upload')->insert($InsertUpload);
+                }
+              }
+              session()->flash('apply_succes','Success! Application Submitted.');
+              return back();
+        }
     } 
     public function verify_account(Request $request, $id){
       $updateData = array('token'=>NULL);
