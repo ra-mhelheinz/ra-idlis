@@ -1,6 +1,7 @@
 @include('session.clientSession')
 <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/nav.css')}}">
-@if (session()->exists('client_data'))
+@if (session('client_data') != null)
+{{-- session()->exists('client_data') ||  --}}
    @php
      $clientData = session('client_data');
    @endphp
@@ -86,7 +87,8 @@
         </div>
       </div>
 </nav>
-  @else
+@else
+  <?php session()->flush(); session()->flash('client_login','Invalid Username/Password'); ?>
   <script type="text/javascript">
     window.location.href = "{{asset('/')}}";
   </script>
