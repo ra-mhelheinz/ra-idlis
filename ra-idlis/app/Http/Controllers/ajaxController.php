@@ -1,10 +1,11 @@
-<?php 
+3<?php 
 	namespace App\Http\Controllers;
 
 	use Illuminate\Http\Request;
 	use Illuminate\Support\Facades\DB;
 	use Illuminate\Database\Query\Builder;
 	use Illuminate\Support\Facades\Hash;
+	use Illuminate\Support\Facades\Storage;
 	use Carbon\Carbon;
 	class ajaxController extends Controller
 	{
@@ -136,6 +137,77 @@
 			} else {
 				return "NONE";
 			}
+		}
+		public function getLPS(Request $request){
+			$getData = DB::table('appform')
+								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+								->join('x08', 'appform.uid', '=', 'x08.uid')
+								->join('region', 'x08.rgnid', '=', 'region.rgnid')
+								->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+								->join('province', 'x08.province', '=', 'province.provid')
+								->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname' )
+								->where('appform.hfser_id', '=', $request->hfser_ID)
+								->where('appform.facid', '=', $request->facID)
+								->where('x08.rgnid', '=', $request->rgnID)
+								->where('appform.draft', '=', 0)
+								->first();
+			if (!$getData) {
+				return 'NONE';
+			} else {
+				$anotherData = DB::table('appform')
+								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+								->join('x08', 'appform.uid', '=', 'x08.uid')
+								->join('region', 'x08.rgnid', '=', 'region.rgnid')
+								->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+								->join('province', 'x08.province', '=', 'province.provid')
+								->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+								->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+								->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+								->join('class', 'appform.classid', '=', 'class.classid')
+								->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname')
+								->where('appform.hfser_id', '=', $request->hfser_ID)
+								->where('appform.facid', '=', $request->facID)
+								->where('x08.rgnid', '=', $request->rgnID)
+								->where('appform.draft', '=', 0)
+								->get();
+					for ($i=0; $i < count($anotherData); $i++) {
+						$time = $anotherData[$i]->t_time;
+						$newT = Carbon::parse($time);
+						$anotherData[$i]->formattedTime = $newT->format('g:i A');
+
+						$date = $anotherData[$i]->t_date;
+						$newD = Carbon::parse($date);
+						$anotherData[$i]->formattedDate = $newD->toFormattedDateString();
+						// ->diffForHumans()
+					}
+				return $anotherData;
+			}
+			
+			// return 'TEST';
+		}
+		public function getLPSUploads(Request $request){
+			$data = DB::table('appform')
+							   ->join('app_upload', 'appform.appid', '=', 'app_upload.app_id')
+							   ->where('appform.appid', '=', $request->appid)
+							   ->first();
+			if (!$data) {
+				return 'NONE';
+			} else {
+				$data2 =DB::table('appform')
+							   ->join('app_upload', 'appform.appid', '=', 'app_upload.app_id')
+							   ->join('upload', 'app_upload.upid', '=', 'upload.upid')
+							   ->select('appform.appid', 'upload.*')
+							   ->where('appform.appid', '=', $request->appid)
+							   ->get();
+				return $data2;
+			}
+			// return $request->appid;
+		}
+		public function DownloadFile($id){
+			// $dl = File::find($id);
+			return Storage::download('public/uploaded/'.$id);
 		}
 		// -------------------- SELECT --------------------
 		// -------------------- ADD --------------------

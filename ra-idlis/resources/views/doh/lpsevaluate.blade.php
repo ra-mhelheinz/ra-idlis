@@ -7,7 +7,7 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Licensing Process Status
+           Evaluate Applicants
         </div>
         <div class="card-body table-responsive">
             <div style="float:left;margin-bottom: 5px">
@@ -59,10 +59,10 @@
     </div>
 @endsection
 <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog {{-- modal-lg --}}" role="document">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>View Application</strong></h5>
+              <h5 class="modal-title text-center"><strong>Evaluate Uploaded Application</strong></h5>
               <hr>
               <div class="container">
                     <form id="ViewNow" data-parsley-validate>
@@ -70,10 +70,10 @@
                     </span>
                     <hr>
                     <div class="row">
-                      <div class="col-sm-6">
+                      <div class="col-sm-8">
                       {{-- <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button> --}}
                     </div> 
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                       <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
                     </div>
                     </div>
@@ -157,11 +157,13 @@
                           var status = '';
                           var paid = data[i].appid_payment;
                           var reco = data[i].isrecommended;
-                          if (data[i].isrecommended == null) {
-                              status = "For Evaluation";
+                          var ifdisabled = '';
+                          if (data[i].isrecommended == null || data[i].isrecommended == 0) {
+                              status = '<span style="color:green;font-weight:bold;">For Evaluation</span>';
                           }
-                          if (paid == null) {
+                          if (paid == null || paid == 0) {
                               status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
+                              ifdisabled = 'disabled';
                           }
                           
                           // var app = data[i].approved
@@ -175,8 +177,9 @@
                                   '<td>'+data[i].aptdesc+'</td>' +
                                   '<td>'+status+'</td>'+
                                   '<td>'+
-                                        '<button type="button" title="View detailed information for '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>'+
+                                        '<button type="button" title="Evaluate '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+');"  '+ifdisabled+'><i class="fa fa-fw fa-clipboard-check"></i></button>'+
                                   '</td>'+
+                                  // data-toggle="modal" data-target="#GodModal"
                                 '</tr>'
                             );
                       }
@@ -189,54 +192,72 @@
         }        
     }
     function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment){
-        var status = '';
-        var paid = appid_payment;
-        if (isrecommended == null) {
-            tatus = "For Evaluation";
-          }
-        if (paid == null) {
-             status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
-          }
-        $('#ViewBody').empty();
-        $('#ViewBody').append(
-            '<div class="row">'+
-                '<div class="col-sm-4">Facility Name:' +
-                '</div>' +
-                '<div class="col-sm-8">' + facilityname +
-                '</div>' +
-            '</div>' +
-            // '<br>' + 
-            '<div class="row">'+
-                '<div class="col-sm-4">Address:' +
-                '</div>' +
-                '<div class="col-sm-8">' + streetname + ', ' + brgyname + ', ' + cmname + ', ' + provname + ' - ' + zipcode +
-                '</div>' +
-            '</div>' +
-            '<div class="row">'+
-                '<div class="col-sm-4">Owner:' +
-                '</div>' +
-                '<div class="col-sm-8">' + authorizedsignature + 
-                '</div>' +
-            '</div>' +
-            '<div class="row">'+
-                '<div class="col-sm-4">Applying for:' +
-                '</div>' +
-                '<div class="col-sm-8">' + hfser_id + ' ('+hfser_desc+') - ' + aptdesc +
-                '</div>' +
-            '</div>' +
-            '<div class="row">'+
-                '<div class="col-sm-4">Time and Date:' +
-                '</div>' +
-                '<div class="col-sm-8">' + formattedTime + ' - ' + formattedDate +
-                '</div>' +
-            '</div>' +
-            '<div class="row">'+
-                '<div class="col-sm-4">Status:' +
-                '</div>' +
-                '<div class="col-sm-8">' +status +
-                '</div>' +
-            '</div>'
-          );
+        window.location.href = "{{ asset('/employee/dashboard/lps/evalute') }}/" + appid;
+        // var status = '';
+        // var paid = appid_payment;
+        // var ifdisabled = '';
+        // if (isrecommended == null) {
+        //     tatus = "For Evaluation";
+        //   }
+        // if (paid == null) {
+        //      status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
 
+        //   }
+        // $('#ViewBody').empty();
+        // $('#ViewBody').append(
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Facility Name:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' + facilityname +
+        //         '</div>' +
+        //     '</div>' +
+        //     // '<br>' + 
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Address:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' + streetname + ', ' + brgyname + ', ' + cmname + ', ' + provname + ' - ' + zipcode +
+        //         '</div>' +
+        //     '</div>' +
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Owner:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' + authorizedsignature + 
+        //         '</div>' +
+        //     '</div>' +
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Applying for:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' + hfser_id + ' ('+hfser_desc+') - ' + aptdesc +
+        //         '</div>' +
+        //     '</div>' +
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Time and Date:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' + formattedTime + ' - ' + formattedDate +
+        //         '</div>' +
+        //     '</div>' +
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Status:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' +status +
+        //         '</div>' +
+        //     '</div>'
+        //   );
+
+        // $.ajax({
+        //     url : '{{ asset('/lps/getLPSUploads') }}' ,
+        //     method : 'POST',
+        //     data : {_token:$('#token').val(),appid: appid},
+        //     success : function (data){
+        //         if (data != 'NONE') {
+        //                 $('#ViewBody').empty();
+        //                 for (var i = 0; i < data.length; i++) {
+        //                   // data[i]
+        //                 }
+        //         } else{
+        //           /// ERROR / EMPTY
+        //         }
+        //     },  
+        // });
     } 
 </script>
