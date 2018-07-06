@@ -49,10 +49,14 @@ class ClientController extends Controller
                                   ->join('barangay', 'x08.barangay', '=', 'barangay.brgyid')
                                   ->select('x08.*', 'region.rgn_desc', 'province.provname', 'city_muni.cmname', 'barangay.brgyname')
                                   ->where('x08.uid', '=', $uname)
-                                  ->first()
-                                  ;
-                  session()->put('client_data',$clientUser);
-                  return redirect('/client/home');
+                                  ->first();
+                  if($clientUser == null) {
+                    session()->flash('client_login','Invalid Username/Password');
+                    return back();
+                  } else {
+                    session()->put('client_data',$clientUser);
+                    return redirect('/client/home');
+                  }
               }
              }
         }
