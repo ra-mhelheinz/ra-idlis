@@ -128,7 +128,7 @@
                 <li><a href="#ProFlowMenu" data-toggle="collapse"><i class="fa fa-sitemap"></i> Process Flow</a>
                     <ul id="ProFlowMenu" class="list-unstyled collapse">
                         <li class=""><a href="{{asset('/employee/dashboard/lps')}}">&nbsp;&nbsp;&nbsp;&nbsp;View Applications</a></li>
-                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/evalute')}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>

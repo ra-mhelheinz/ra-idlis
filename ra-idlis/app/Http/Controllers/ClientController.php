@@ -325,7 +325,12 @@ class ClientController extends Controller
                                   'ocid'=>  $request->OWNSHP,
                                   'aptid'=> $request->strateMap,
                                   'classid'=> $Cls,
+<<<<<<< HEAD
                                   'draft'=> $request->draft,
+=======
+                                  'draft'=> 0,
+                                  'isrecommended' => 0,
+>>>>>>> daba3f230c57c95c960ddf120b7fb209407ef7c6
                                   't_time'=> $timeNow,
                                   't_date' => $dateNow,
                                   'ipaddress'=> request()->ip(),
