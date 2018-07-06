@@ -315,6 +315,7 @@ class ClientController extends Controller
                                   'aptid'=> $request->strateMap,
                                   'classid'=> $Cls,
                                   'draft'=> 0,
+                                  'isrecommended' => 0,
                                   't_time'=> $timeNow,
                                   't_date' => $dateNow,
                                   'ipaddress'=> request()->ip(),

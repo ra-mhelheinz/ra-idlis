@@ -367,10 +367,43 @@
 			return "DONE";			
 		}
 		public function lps(){ // Licensing Status Page
-			return view('doh.lps');
+			// $bigChunkOfData = DB::table('appform')->get();
+			$employeeData = session('employee_login');
+
+			// if ($employeeData->grpid == 'NA') {
+			// 	$region 
+			// }
+			$region = DB::table('region')->get();
+			$type = DB::table('hfaci_serv_type')->get();
+			$facility = DB::table('facilitytyp')->get();
+			return view('doh.lps',['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
 		}
-		public function evalute(){
-			return view('doh.evalute');
+		public function evalute(Request $request){
+			if ($request->isMethod('get')) {
+				$employeeData = session('employee_login');
+				$region = DB::table('region')->get();
+				$type = DB::table('hfaci_serv_type')->get();
+				$facility = DB::table('facilitytyp')->get();
+				return view('doh.lpsevaluate', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
+			}
+		}
+		public function  EvalOne(Request $request, $appid){
+			$data0 = DB::table('appform')
+									->join('x08', 'appform.uid', '=', 'x08.uid')
+									->join('barangay', 'x08.barangay', '=', 'barangay.brgyid')
+									->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+									->join('province', 'x08.province', '=', 'province.provid') 
+									->select('appform.uid', 'appform.appid', 'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname')
+									->where('appform.appid', '=', $appid)
+									->first();
+			$data1 = DB::table('appform')
+									->join('app_upload', 'appform.appid', '=', 'app_upload.app_id')
+									->join('upload', 'app_upload.upid', '=', 'upload.upid')
+									->select('appform.appid', 'app_upload.*', 'upload.updesc')
+									->where('appform.appid', '=', $appid)
+									->get();
+			// return dd($data1);
+			return view('doh.lpsevaluteOne', ['AppData'=> $data0, 'UploadData' => $data1]);
 		}
 		public function ins1(){
 			return view('doh.ins1');

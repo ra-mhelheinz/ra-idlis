@@ -96,6 +96,7 @@ Route::match(['get', 'post'],'/employee/dashboard/mf/part','DOHController@Part')
 Route::match(['get', 'post'],'/employee/dashboard/mf/assessment','DOHController@AsMent')->name('mfAsMent');
 Route::match(['get', 'post'],'/employee/dashboard/mf/personnel','DOHController@PerSoNel')->name('mfPersonnel');
 Route::match(['get', 'post'],'/employee/dashboard/pf/view','DOHController@PfView')->name('pfView');
+Route::match(['get','post'], '/employee/dashboard/lps/evalute/{appid}', 'DOHController@EvalOne');
 Route::post('/employee/logout','DOHController@logout');
 Route::post('employee/getRights', 'DOHController@getSettings2');
 Route::post('/employee/grprights/check','DOHController@chckgr');
@@ -105,6 +106,7 @@ Route::get('/employee/dashboard/lps/evalute','DOHController@evalute');
 Route::get('/employee/dashboard/lps/evalute/ins/1','DOHController@ins1');
 Route::get('/employee/dashboard/lps/evalute/ins/2','DOHController@ins2');
 Route::get('/employee/dashboard/lps/evalute/ins/3','DOHController@ins3');
+Route::get('/file/download/{id}','ajaxController@DownloadFile')->name('DownloadFile');
 // ----------------------------------------------- DOH Controller
 // ----------------------------------------------- Ajax Controller
 // -------------------------------------- ADD
@@ -119,6 +121,8 @@ Route::post('/mf/getTypeFaci', ['as'=>'get-typefacility','uses'=>'ajaxController
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
 Route::post('/employee/get_date_actlogs', ['as'=>'get-ActLogs','uses'=>'ajaxController@getActLogs']);
 Route::post('/mf/facility/getRequirements', ['as'=>'get-Requirements','uses'=>'ajaxController@getRequirements']);
+Route::post('/lps/getLPS', ['as'=>'get-LPS','uses'=>'ajaxController@getLPS']);
+Route::post('/lps/getLPSUploads', ['as'=>'get-LPS','uses'=>'ajaxController@getLPSUploads']);
 //getRequirements
 // -------------------------------------- GET
 // -------------------------------------- UPDATE
