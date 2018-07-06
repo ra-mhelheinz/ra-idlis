@@ -15,6 +15,7 @@ Route::post('/getRPMB', ['as'=>'reancy','uses'=>'ClientController@loadAllRPMB'])
 Route::get('loadTbl/{tbl}/{col}/{id}', 'ClientController@loadCurrTbl');
 Route::get('/register/verify/{id}','ClientController@verify_account');
 Route::get('/resend/{id}','MailController@resend_ver');
+Route::get('client/deleteform/{id}','ClientController@del_form');
 
 Route::match(['get', 'post'], '/', 'ClientController@clientlogin')->name('client');
 Route::match(['get', 'post'], '/register', 'MailController@auto_mailer');
@@ -22,6 +23,7 @@ Route::match(['get', 'post'], '/register', 'MailController@auto_mailer');
 Route::get('client/home', 'ClientController@home');
 Route::get('client/apply/lop','ClientController@LOP');
 Route::match(['get', 'post'], '/client/apply/form/{id_type}', 'ClientController@FORM');
+
 // Route::match(['get', 'post'], '/client/apply/form', 'ClientController@FORM');
 Route::match(['get', 'post'], '/client/apply/ptc', 'ClientController@PTC');
 Route::match(['get', 'post'], '/client/apply/con', 'ClientController@CON');

@@ -116,7 +116,10 @@ html, body, #canvasMap{
 	<div id="forpush" style="position: absolute; right: 0; top: 0; left: 1; bottom: 1; margin-right: 10px; margin-top: 10px; max-width: 1000px; z-index: 100000000000000000000000000000000000000000;">
 		@if (session()->has('client_login'))
 		<div class="alert alert-danger alert-dismissible fade show" role="alert">
-		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('client_login')}} <a href="{{ asset('/resend') }}/{{session()->get('acc_id')}}">Resend Verification</a>
+		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('client_login')}} 
+		  @if(session()->has('acc_id'))
+		  <a href="{{ asset('/resend') }}/{{session()->get('acc_id')}}">Resend Verification</a>
+		  @endif
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
 		  </button>

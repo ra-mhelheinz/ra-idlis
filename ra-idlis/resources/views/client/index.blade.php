@@ -3,6 +3,14 @@
 <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/engine1/style.css')}}" />
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/jquery.js')}}"></script>
 @section('content')
+<style type="text/css">
+  td{
+    font-size: 13px;
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+    white-space:nowrap;
+  }
+</style>
 @include('client.nav')
   <div class="modal" id="myModal" style="overflow: auto; z-index: 1041;">
 <div class="modal-dialog row content" style="max-width: 100% ! important;margin-bottom: 0;">
@@ -124,17 +132,17 @@
               </div>
             </div>
           </div>
-          <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="Definition of Terms<br><small>Click this link to read our Definition of Terms</small>" data-step="12">
+          <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="Definition of Terms<br><small>Click this link to read our Definition of Terms</small>" data-step="11">
             <p class="card-header"><small>Click for our <i class="fa fa-hand-o-right"></i>&nbsp;<a href="">Definition of Terms</a></small></p>
           </div>
-          <div class="text-center introjs-showElement introjs-relativePosition" data-intro="Announcements<br><small>Here is where new Announcements can be found.</small>" data-step="11">
+          <div class="text-center introjs-showElement introjs-relativePosition" data-intro="FAQs<br><small></small>" data-step="12">
               <img src="{{asset('ra-idlis/public/img/FAQ.png')}}">
           </div>
           </div>
           <div  class="col-sm-9 col-md-12 col-lg-9">
             <div class="row">
               <div class="col-sm-12">
-              <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="<b>Status Banner</b><br><small>In this banner is where you can see the status of your Application/s.</small>" data-step="4">
+              {{-- <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="<b>Status Banner</b><br><small>In this banner is where you can see the status of your Application/s.</small>" data-step="4">
               <div class="cardb" style="flex: 1 1 auto;padding: 1.25rem;">
                 <div class="row">
                   <div class="col-sm-4"><small>List of Applications Status:</small></div>
@@ -147,6 +155,36 @@
                   <div class="col-sm-4"><small>Status:</small></div>
                   <div class="col-sm-4"><small>LTO No:</small></div>
                   <div class="col-sm-4 offset-4"><small>Validity Date:</small></div>
+                </div>
+              </div>
+            </div> --}}
+              <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="<b>Status Banner</b><br><small>In this banner is where you can see the status of your Application/s.</small>" data-step="4">
+              <div class="card-header" id="headingOne">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Click to View Status
+                  </button>
+              </div>
+
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div style="flex: 1 1 auto;padding: 1.25rem;" class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                       
+                        <td>List of Application Status</td>
+                        <td>Application Type</td>
+                        <td>Date Applied</td>
+                        <td>Date Evaluated</td>
+                        <td>Date Inspected</td>
+                        <td>Date Issued</td>
+                        <td>Date Printed</td>
+                        <td>Status</td>
+                        <td>LTO No</td>
+                        <td>Validity Date</td>
+
+                      </tr>
+                    </thead>
+                  </table>
                 </div>
               </div>
             </div>

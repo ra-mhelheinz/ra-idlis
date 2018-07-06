@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Hash;
+use Illuminate\Support\Facades\Storage;
 use DB;
 use Carbon\Carbon;
 class ClientController extends Controller
@@ -17,9 +18,11 @@ class ClientController extends Controller
         $regions = DB::table('region')->get();
         $province = DB::table('province')->get();
         $city_muni = DB::table('city_muni')->get();
-   			return view('client.login',['regions' => $regions, 'province' => $province, 'citymuni' => $city_muni]);
+         $brgy = DB::table('barangay')->get();
+   			return view('client.login',['regions' => $regions, 'province' => $province, 'citymuni' => $city_muni, 'brgy' => $brgy]);
    		} 
         if($request->isMethod('post')){
+            session()->flush();
             $uname=strtoupper($request->input('log_uname'));
             $pass= $request->input('log_pass');
             $pass = Hash::check('pass', $pass);
@@ -27,7 +30,12 @@ class ClientController extends Controller
                     ->where([ ['uid', '=', $uname], ['pwd', '=', $pass], ['grpid', '=', 'C'] ])
                     ->select('*')
                     ->first();
-            if ($data){
+            if ($data == null){
+              
+                session()->flash('client_login','Invalid Username/Password');
+                return back();
+            }
+             else{
               $val_ver = DB::table('x08')->select('token', 'uid')->where('uid', '=', $uname)->first();
               if($val_ver->token != NULL) {
                 session()->flash('client_login','Not yet verified. Please check your email account');
@@ -37,17 +45,15 @@ class ClientController extends Controller
                   $clientUser  = DB::table('x08')
                                   ->join('region', 'x08.rgnid', '=', 'region.rgnid')
                                   ->join('province', 'x08.province', '=', 'province.provid')
-                                  ->select('x08.*', 'region.rgn_desc', 'province.provname')
+                                  ->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+                                  ->join('barangay', 'x08.barangay', '=', 'barangay.brgyid')
+                                  ->select('x08.*', 'region.rgn_desc', 'province.provname', 'city_muni.cmname', 'barangay.brgyname')
                                   ->where('x08.uid', '=', $uname)
                                   ->first()
                                   ;
                   session()->put('client_data',$clientUser);
                   return redirect('/client/home');
               }
-            }
-             else{
-                session()->flash('client_login','Invalid Username/Password');
-                return back();
              }
         }
     }
@@ -91,13 +97,13 @@ class ClientController extends Controller
               return 'sameFacility';
           }
           else {
-            $data1 = array('name'=>$data['facility_name'], 'token'=>$data['token']);
+            // $data1 = array('name'=>$data['facility_name'], 'token'=>$data['token']);
    
-            Mail::send(['text'=>'mail'], $data1, function($message) use ($data) {
-               $message->to($data['email'], $data['facility_name'])->subject
-                  ('Verify your Account in DOH OLRS');
-               $message->from('dohsupport@gmail.com', 'DOH OLRS Support');
-            });
+            // Mail::send(['text'=>'mail'], $data1, function($message) use ($data) {
+            //    $message->to($data['email'], $data['facility_name'])->subject
+            //       ('Verify your Account in DOH OLRS');
+            //    $message->from('dohsupport@gmail.com', 'DOH OLRS Support');
+            // });
 
             DB::table('x08')->insert(
                 [
@@ -270,6 +276,7 @@ class ClientController extends Controller
         $hfaci = DB::table('hfaci_serv_type')->get();
       return view('client.lto', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     }
+    
     public function FORM(Request $request, $id_type){
       if ($request->isMethod('get')) {
           // ->join('region', 'x08.rgnid', '=', 'region.rgnid')
@@ -277,7 +284,10 @@ class ClientController extends Controller
           //                           ->select('x08.*', 'region.rgn_desc', 'province.provname')
           //                           ->where('x08.uid', '=', $uname)
           //                           ->first()
+            session()->flash('taeform', $id_type);
             $selectedType = strtoupper($id_type);
+            $asd = session('client_data');
+            $appform = DB::table('appform')->where("uid", "=", $asd->uid)->where([["draft", "!=", "0"], ["hfser_id", "=", $selectedType]])->get();
             $fatype = DB::table('type_facility')
                               ->join('facilitytyp','type_facility.facid', '=', 'facilitytyp.facid')
                               ->select('type_facility.*','facilitytyp.*')
@@ -296,10 +306,11 @@ class ClientController extends Controller
                               ->get();
                // return dd($upld);               
             // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
-            return view('client.appform', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld]);
+            return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld]);
       }
         if ($request->isMethod('post')) {
               $employeeData = session('client_data');
+              $msg_dr = (($request->draft != "0") ? 'Successfully saved as draft' : 'Success! Application Submitted.');
               //OthersSelected
               $Cls = ($request->CLS == "OTHER") ? $request->OthersSelected : $request->CLS;
               $test1  = $employeeData->uid; /// UID
@@ -314,11 +325,12 @@ class ClientController extends Controller
                                   'ocid'=>  $request->OWNSHP,
                                   'aptid'=> $request->strateMap,
                                   'classid'=> $Cls,
-                                  'draft'=> 0,
+                                  'draft'=> $request->draft,
                                   't_time'=> $timeNow,
                                   't_date' => $dateNow,
                                   'ipaddress'=> request()->ip(),
                                 );
+
               // Tested
               DB::table('appform')->insert($insertData);
               $NewId = DB::getPdo()->lastInsertId();
@@ -353,12 +365,13 @@ class ClientController extends Controller
                               DB::table('app_upload')->insert($InsertUpload);
                         }
                       }
-                      session()->flash('apply_succes','Success! Application Submitted.');
+                      session()->flash('apply_succes',$msg_dr);
                       return back();
                 }
               }
               
     } 
+
     public function verify_account(Request $request, $id){
       $updateData = array('token'=>NULL);
       $table = DB::table("x08")->where("token", "=", $id)->update($updateData);
@@ -368,6 +381,30 @@ class ClientController extends Controller
       } else {
         session()->flash('client_login','Account not verified! Error on verifying account. Account may have been verified or email doesnt exists');
         return redirect()->route('client');
+      }
+    }
+    public function del_form(Request $req, $id) {
+      $table = DB::table("appform")->where("appid", "=", $id)->delete();
+      if($table) {
+        $data1 = DB::table("app_upload")->where("app_id", "=", $id)->get();
+        foreach($data1 as $data) {
+          if(Storage::delete('public/uploaded/'.$data->filepath)) {
+            $sqw = DB::table("app_upload")->where("app_id", "=", $id)->delete();
+            if($sqw) {
+              session()->flash('apply_succes','Successfully deleted file and form');
+              return back();
+            } else {
+              session()->flash('apply_succes','Successfully deleted file and form, but error on deleting file record of upload');
+              return back();
+            }
+          } else {
+            session()->flash('apply_succes','Error on deleting file but successfully deleted form');
+            return back();
+          }
+        }
+      } else {
+        session()->flash('apply_succes','Error on deleting form');
+        return back();
       }
     }
 }

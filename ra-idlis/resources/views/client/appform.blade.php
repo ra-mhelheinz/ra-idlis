@@ -37,10 +37,83 @@
 			table.attachments > td {
 				padding: 1em;
 			}
+			.draftcontainer{
+			  color: #1a1a1a;
+			  text-align: center;
+			  margin-bottom: 10px;
+			}
+
+			.draftcontent {
+			  position: relative;
+			  width: 90%;
+			  max-width: 400px;
+			  margin: auto;
+			  overflow: hidden;
+			}
+
+			.draftcontent .content-overlay {
+			  background: rgba(0,0,0,0.7);
+			  position: absolute;
+			  height: 99%;
+			  width: 100%;
+			  left: 0;
+			  top: 0;
+			  bottom: 0;
+			  right: 0;
+			  opacity: 0;
+			  -webkit-transition: all 0.4s ease-in-out 0s;
+			  -moz-transition: all 0.4s ease-in-out 0s;
+			  transition: all 0.4s ease-in-out 0s;
+			}
+
+			.draftcontent:hover .content-overlay{
+			  opacity: 1;
+			}
+
+			.content-details {
+			  position: absolute;
+			  text-align: center;
+			  padding-left: 1em;
+			  padding-right: 1em;
+			  width: 100%;
+			  top: 50%;
+			  left: 50%;
+			  opacity: 0;
+			  -webkit-transform: translate(-50%, -50%);
+			  -moz-transform: translate(-50%, -50%);
+			  transform: translate(-50%, -50%);
+			  -webkit-transition: all 0.3s ease-in-out 0s;
+			  -moz-transition: all 0.3s ease-in-out 0s;
+			  transition: all 0.3s ease-in-out 0s;
+			}
+
+			.draftcontent:hover .content-details{
+			  top: 50%;
+			  left: 50%;
+			  opacity: 1;
+			}
+
+			.content-details span{
+			  color: #fff;
+			  font-weight: 500;
+			  letter-spacing: 0.15em;
+			  margin-bottom: 0.5em;
+			  text-transform: uppercase;
+			}
+
+			.content-details p{
+			  color: #fff;
+			  font-size: 0.8em;
+			}
+
+			.fadeIn-bottom{
+			  top: 80%;
+			}
+
 </style>
 <input type="text" id="CurrentAppTypeSelected" hidden="" value="{{$id_type}}">
+
 <script type="text/javascript">
-	  	document.getElementById('first').style = "color: blue;";
 	  	loader(true);
 </script>
 @include('client.breadcrumb')
@@ -52,6 +125,7 @@
 		  </button>
 		</div>
 @endif
+
 <script type="text/javascript">
 		function remLd() { setTimeout(function(){$('#asdf').fadeOut(500);}, 5000) };
 		remLd();
@@ -86,7 +160,7 @@
 			</div>
 			</div>
 
-	<form id="ApplyFoRm" action="{{ asset('/client/apply/form/') }}/{{$id_type}}"  data-parsley-validate enctype="multipart/form-data"  method="post" data-parsley-validate>
+	<form action="{{ asset('/client/apply/form/') }}/{{$id_type}}"  data-parsley-validate enctype="multipart/form-data"  method="post" data-parsley-validate id="ApplyFoRm">
 		<input type="" name="_token" value="{{csrf_token()}}" hidden>
 		<div class="col-sm-"><center><h2>{{$hfaci}}</h2></center></div>
 		<br>
@@ -122,7 +196,7 @@
 							Barangay : 
 						</div>
 						<div class="col-sm-2">
-							<strong>{{$clientData->barangay}}</strong>
+							<strong>{{$clientData->brgyname}}</strong>
 						</div>
 					</div>
 					<div class="row">
@@ -132,7 +206,7 @@
 							City/Municipality : 
 						</div>
 						<div class="col-sm-3">
-							<strong>{{$clientData->city_muni}}</strong>
+							<strong>{{$clientData->cmname}}</strong>
 						</div>
 						<div class="col-sm-2">
 							Region : 
@@ -183,7 +257,7 @@
 						</div>
 						<div class="col-sm-3" >
 							<select class="form-control" id="HFATYPE" name="facid" onchange="{{--getFacilityType();--}}getUploads()" data-parsley-required-message="<strong>Health Facility</strong> required." required>
-								<option value=""></option>
+								<option value="" hidden></option>
 								@foreach ($fatypes as $fatype)
 									<option value="{{$fatype->facid}}">{{$fatype->facname}}</option>
 								@endforeach
@@ -194,7 +268,7 @@
 						</div>
 						<div class="col-sm-3" >
 							<select class="form-control" id="OWNSHP" name="OWNSHP" data-parsley-required-message="<strong>Ownership</strong> required." onchange="getOwnship();" required>>
-								<option value=""></option>
+								<option value="" hidden></option>
 								@foreach ($ownshs as $ownsh)
 									<option value="{{$ownsh->ocid}}">{{$ownsh->ocdesc}}</option>
 								@endforeach
@@ -277,7 +351,7 @@
 						</div>
 						<div class="col-sm-3" >
 							<select class="form-control" id="STATS_APP" name="strateMap" data-parsley-required-message="<strong>Status of Application</strong> required." required >
-								<option value=""></option>
+								<option value="" hidden></option>
 								@foreach ($aptyps as $aptyp)
 									<option value="{{$aptyp->aptid}}">{{$aptyp->aptdesc}}</option>
 								@endforeach
@@ -337,13 +411,174 @@
 						</div>
 					</div> --}}
 					<div class="text-center">
-						<a href="{{asset('client/apply/lop')}}"><button type="button" style="background-color: #228B22 !important" class="btn-primarys"><i class="fa fa-list-alt"></i>&nbsp;List of Personnel</button>
-							</a>
+						<button type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="background-color: #5bc0de !important" class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add Personnel</button>
+					</div>
+					<div class="collapse" id="collapseExample">
+					  <div class="card card-body">
+					             <ul id="tabsJustified" class="nav nav-tabs">
+                    <li class="nav-item"><a href="" data-target="#profile" data-toggle="tab" class="nav-link small text-uppercase active">Profile</a></li>
+                    <li class="nav-item"><a href="" data-target="#work" data-toggle="tab" class="nav-link small text-uppercase ">Work</a></li>
+                    <li class="nav-item"><a href="" data-target="#eligibility" data-toggle="tab" class="nav-link small text-uppercase">Eligibility</a></li>
+                    <li class="nav-item"><a href="" data-target="#trainings" data-toggle="tab" class="nav-link small text-uppercase">Trainings</a></li>
+                </ul>
+                <br>
+                <div id="tabsJustifiedContent" class="tab-content">
+                    <div id="profile" class="tab-pane fade active show">
+                         <form id="contact-form" method="post" role="form">
+                         	<div class="container">
+				            <div class="row">
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <input type="text" name="" placeholder="Last Name" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <input type="text" name="" placeholder="Middle Name" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <input type="text" name="" placeholder="First Name" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				            </div>
+				            <div class="row">
+				            	<div class="col-sm-6">
+				                       <input type="date" name="" placeholder="Birthday" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                    </div>
+				            	<div class="col-sm-6">
+				                        <select style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .55rem .75rem;width: 100%;">
+				                        	<option disabled selected hidden>Gender</option>
+				                        	<option>Female</option>
+				                        	<option>Male</option>
+				                        </select>
+				            </div>
+				        </div>
+				        </div>
+   						 </form>
+                    </div>
+                    <div id="work" class="tab-pane fade">
+                    	<div class="container">
+                       		<div class="row">
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <input type="text" name="" placeholder="Position" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <input type="text" name="" placeholder="Department" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <input type="text" name="" placeholder="Section" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				            </div>
+				             <div class="row">
+				            	<div class="col-sm-6"><input type="date" name="" placeholder="Assigned Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;"></div>
+								<div class="col-sm-6"><input type="date" name="" placeholder="End Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;"></div>
+				        </div>
+				        </div>
+                    </div>
+                    <div id="eligibility" class="tab-pane fade">
+                    	<div class="container">
+                    		<div class="row">
+                    			<div class="col-sm-3"></div>
+                    			<div class="col-sm-6">
+                    				<input type="text" name="" placeholder="PRC ID" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                    <input type="date" name="" placeholder="Expiration/Validity Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div style="margin-top: 5%;margin-bottom: 5%;"></div>
+				                        <div class="text-center"><button style="background-color:#28a745 ; " class="btn-primarys" onclick="add()"><i class="fa fa-plus-circle" ></i> Add Others</button> <button class="btn-primarys" onclick="removeClone()"><i class="fa fa-undo"></i>Reset</button></div>
+				                        <br>	
+				                        <div id="other">
+				                        	<div id="cloneOther">
+							                    <input type="text" name="" placeholder="Other Licensed ID" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+							                    <input type="date" name="" placeholder="Licensed ID Expiration Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+							                    <hr>
+							                </div>
+				                        </div>
+                    			</div>
+                    			<div class="col-sm-3"></div>
+                    		</div>
+                    	</div>
+                    </div>
+                    <div id="trainings" class="tab-pane fade">
+                         	<div class="container">
+                       		<div class="row">
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <input type="text" name="" placeholder="School Graduated" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <input type="text" name="" placeholder="Year Graduated" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        <input type="text" name="" placeholder="Course" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+				                        <div class="help-block with-errors"></div>
+				                    </div>
+				                </div>
+				            </div>
+				             <div class="row">
+				            	<div class="col-sm-12"><input type="text" name="" placeholder="Masteral School" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;"></div>
+								<div class="col-sm-12"><input type="text" name="" placeholder="Masteral Course" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;"></div>
+				               <div class="col-sm-12"><input type="text" name="" placeholder="Year Graduated" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;"></div> 
+
+				        </div>
+				        <br>
+				        <div class="text-center"><button style="background-color:#28a745 ; " class="btn-primarys" onclick="add1()"><i class="fa fa-plus-circle" ></i> Add Others</button> <button class="btn-primarys" onclick="removeClone1()"><i class="fa fa-undo"></i>Reset</button></div>
+				        <br>
+				        <div id="other1">
+				          	<div id="cloneOther1">
+							     <input type="text" name="" placeholder="School" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+							     <input type="text" name="" placeholder="Training" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+							     <input type="date" name="" placeholder="Date" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;padding: .375rem .75rem;width: 100%;">
+							     <hr>
+							 </div>
+				        </div>
+				        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-defaults" style="color: #fff;background-color: #28a745;margin-top: 20px;"><i class="fa fa-plus"></i> Add</button>
+                <div class="card" style="margin-top: 5%;">
+                	<div class="card-header" style="background-color: #5bc0de;color: #fff;"><i class="fa fa-list"></i> List of Personnel</div>
+		                <table class="table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Position</th>
+									<th>Options</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td></td>
+									<td></td>
+									<td><button class="btn btn-info"><i class="fa fa-eye"></i></button><button class="btn btn-danger"><i class="fa fa-trash-o"></i></button></td>
+								</tr>
+							</tbody>
+						</table>
+				</div>
+					  </div>
 					</div>
 					<hr>
 					{{-- <div class="row"><div class="col-sm-12">Attachment: (incomplete attachment shall be a ground for the denial of this application)</div></div> --}}
 					<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer">Click to show CHECKLIST OF DOCUMENTS:</div>
-						<div id="panel" class="container" style="display: none;background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
+						<div id="panel" class="container" style="background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
 							<table class="attachments table table-hover" style="width: 100%;">
 								<tbody id="ApplyTable">
 									
@@ -359,31 +594,103 @@
 							</table>
 						</div>
 						<br>
+						<input type="hidden" name="draft">
 		{{-- <div class="col-sm-12">&nbsp;&nbsp;&nbsp;I hereby declare  that this Application  has been accomplished  by me, and that the foregoing  information  and attached documents required for the permit to construct are true and correct.</div> --}}
 		{{-- data-toggle="modal" data-target="#exampleModalCenter" --}}
 		<div class="container">
 			<center>
-				<button style="background-color: #ff9600 !important" type="button" class="btn-primarys"><i class="fa fa-save"></i>&nbsp;Save as Draft</button>
-				<button style="background-color: #228B22 !important" type="submit" class="btn-primarys"><i class="fa fa-send-o"></i>&nbsp;Submit</button>
+				<button onmouseover="document.getElementsByName('draft')[0].value = ((document.getElementsByName('draft')[0].value == '0') ? '1': document.getElementsByName('draft')[0].value);" style="background-color: #ff9600 !important" type="button" class="btn-primarys" data-toggle="modal" data-target="#savedrafts"><i class="fa fa-save"></i>&nbsp;Save as Draft</button>
+				<button onmouseover="document.getElementsByName('draft')[0].value = '0';" style="background-color: #228B22 !important" type="submit" class="btn-primarys"><i class="fa fa-send-o"></i>&nbsp;Submit</button>
 			</center>
 		</div>
 		</div>
 		<input type="text" name="numberOfUploads" hidden>
-				</form>
+		</form>
+				<div class="row">
+					<div class="col-sm-4"></div>
+					<div class="col-sm-4">
+				<button style="margin-top: 10px;" data-toggle="modal" data-target="#draftmodal" class="btn-primarys btn-block"><i class="fa fa-file"></i>&nbsp;Open recent Drafts</button>
+					</div>
+					<div class="col-sm-4"></div>
 				</div>
-	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content" style="border-radius: 0px;border: none;">
-      <div class="modal-body text-justify" style=" background-color: #0f8845;
-    color: white;">
-        <h5 class="modal-title text-center" id="exampleModalLongTitle"><strong>Thank You for uploading your requirements.</strong></h5>
-        <hr>
-        <p>Our Licensing Officer (LO) is now reviewing and evaluating the completeness of the documents that you've submitted and please wait within the day (8:00 am - 5:00 pm working hour).</p>
-	        <div class="alert alert-primary" role="alert">
-				<p class="alert-heading"><i class="far fa-sticky-note"></i> Note:</p>
-				<p>&nbsp;- Proceed to Cashier for payment and submit a photocopy of official receipt to the Licensing Officer;</p>
-				<p>&nbsp;- Team Leader sets Schedule for Inspection (you may check through your online account)</p>
+				</div>
+		{{--Notice--}}
+			<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content" style="border-radius: 0px;border: none;">
+			      <div class="modal-body text-justify" style=" background-color: #0f8845;
+			    color: white;">
+			        <h5 class="modal-title text-center" id="exampleModalLongTitle"><strong>Thank You for uploading your requirements.</strong></h5>
+			        <hr>
+			        <p>Our Licensing Officer (LO) is now reviewing and evaluating the completeness of the documents that you've submitted and please wait within the day (8:00 am - 5:00 pm working hour).</p>
+				        <div class="alert alert-primary" role="alert">
+							<p class="alert-heading"><i class="far fa-sticky-note"></i> Note:</p>
+							<p>&nbsp;- Proceed to Cashier for payment and submit a photocopy of official receipt to the Licensing Officer;</p>
+							<p>&nbsp;- Team Leader sets Schedule for Inspection (you may check through your online account)</p>
+						</div>
+			      </div>
+			    </div>
+			  </div>
 			</div>
+			  <div class="modal fade" id="draftmodal" role="dialog">
+			    <div class="modal-dialog modal-lg">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			        	<h4 class="modal-title">Choose Saves Drafts</h4>
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			          
+			        </div>
+			        <div class="modal-body">
+			         	<div class="row">
+			         		@foreach($appform as $appforms)
+			         		<div class="col-sm-4">
+				         				<div class="draftcontainer" >
+				         					{{$appforms->draft}}.txt
+										  <div class="draftcontent" style="border: 1px solid rgba(0,0,0,.2);">
+										      <div class="content-overlay"></div>
+										      <div class="content-body" >
+										     	<img style="width: 100%;" src="{{asset('ra-idlis/public/img/draft.png')}}">
+										  	  </div>
+										      <div class="content-details fadeIn-bottom">
+										        <a href="" ><i class="fa fa-eye" style="font-size: 30px;color: #fff;"></i></a>
+										        <a href="{{ asset('client/deleteform') }}/{{ $appforms->appid }}"><i class="fa fa-trash-o" style="font-size: 30px;color: #fff;"></i></a>
+										        <p>Date: {{ $appforms->t_date }} {{ $appforms->t_time }}</p>
+										      </div>
+										  </div>
+										</div>
+			         		</div>
+			         		@endforeach
+			         	</div> 
+			        </div>
+			        <div class="modal-footer">
+			          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+
+<div id="savedrafts" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Save as</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label>Save name as</label>
+        <input id="draftchg" type="text" onkeyup="keyyy()" class="form-control">
+        <script type="text/javascript">
+        	function keyyy() {
+        		var e = window.event || e;
+        		if(e.keyCode > 64 && e.keyCode <91) { document.getElementsByName('draft')[0].value = document.getElementById('draftchg').value; }
+        	}
+        </script>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" form="ApplyFoRm">Save changes as</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -458,7 +765,7 @@ $(document).ready(function(){
 				$('#CLS').empty();
 				$('#CLS').attr("required","");
 				$('#CLS').attr("data-parsley-required-message","<strong>Class</strong> required.");
-				$('#CLS').append('<option value=""></option>');
+				$('#CLS').append('<option value="" hidden></option>');
 				for (var i = 0; i < Get_Ids.length; i++) {
 					var id = Get_Ids[i],selectedText = GetNames[i];
 					$('#CLS').append(
@@ -515,7 +822,7 @@ $(document).ready(function(){
 				$('#Main1Sub1Name').append('Type:<span style="color:red">*</span>');
 				$('#Main1Sub1DrpDown').append(
 						'<select class="form-control" onchange="getHospitaType()" required>' +
-							'<option value=""></option>' +
+							'<option value="" hidden></option>' +
 							'<option value="G">General</option>' +
 							'<option value="S">Specialty</option>' +
 						'</select>'
