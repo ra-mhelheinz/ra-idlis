@@ -12,7 +12,7 @@
 					<div class="btn-group">
 					  <a href="{{asset('client/inspection')}}"><button type="button"  class="btn-primarys">Part I</button></a>
 					  <a href="#"><button type="button"  class="btn-primarys active">Part II</button></a>
-					  <a href="{{asset('client/nspection3')}}"><button type="button"  class="btn-primarys">Part III</button></a>
+					  <a href="{{asset('client/inspection3')}}"><button type="button"  class="btn-primarys">Part III</button></a>
 					</div>
 				</span>
 			</div>

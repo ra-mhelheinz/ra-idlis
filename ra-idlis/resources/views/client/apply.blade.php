@@ -41,19 +41,19 @@
 	  	document.getElementById('first').style = "color: blue;";
 </script>
 <div class="container">
-	<div class="card" style="margin-top: 5%;margin-bottom: 10%;">
+	<div class="card" style="margin-top: 5%;margin-bottom: 10%;border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;">
 		<div class="card-header text-center">Application Type</div>
 		<div class="card-body">
 	<div class="row">
 		<div class="col-sm-4"></div>
-		<div class="col-sm-4"><a href="{{ asset('/client/apply/form/con') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Certificate of Need (CON)</button></a></div>
+		<div class="col-sm-4"><a href="{{ asset('/client/apply/form/con') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-outline-success" style="border-radius: 0;">Certificate of Need (CON)</button></a></div>
 		<div class="col-sm-4"></div>
 	</div> 
 	<center><div style="width: 1px;height: 100px;top: 0;background-color: rgba(0,0,0,.2);"></div></center>
 	<div class="row">
 		<div class="col-sm-4"></div>
 		<div class="col-sm-4">
-			<a href="{{ asset('/client/apply/form/ptc') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Permit to Construct (PTC)</button></a>
+			<a href="{{ asset('/client/apply/form/ptc') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-outline-success" style="border-radius: 0;">Permit to Construct (PTC)</button></a>
 		</div>
 		<div class="col-sm-4"></div>
 	</div>
@@ -66,13 +66,13 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-4">
-			<a href="{{ asset('/client/apply/form/lto') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">License to Operate (LTO)</button></a>
+			<a href="{{ asset('/client/apply/form/lto') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-outline-success" style="border-radius: 0;">License to Operate (LTO)</button></a>
 		</div>
 		<div class="col-sm-4">
-			<a href="{{ asset('/client/apply/form/coa') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Certificate of Accreditation (COA)</button></a>
+			<a href="{{ asset('/client/apply/form/coa') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-outline-success" style="border-radius: 0;">Certificate of Accreditation (COA)</button></a>
 		</div>
 	<div class="col-sm-4">
-		<a href="{{ asset('/client/apply/form/ato') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-primary">Authority to Operate (ATO)</button></a>
+		<a href="{{ asset('/client/apply/form/ato') }}" style="text-decoration: none;"><button class="btn btn-lg btn-block btn-outline-success" style="border-radius: 0;">Authority to Operate (ATO)</button></a>
 	</div>
 	</div>
 	</div>

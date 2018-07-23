@@ -16,6 +16,7 @@ Route::get('loadTbl/{tbl}/{col}/{id}', 'ClientController@loadCurrTbl');
 Route::get('/register/verify/{id}','ClientController@verify_account');
 Route::get('/resend/{id}','MailController@resend_ver');
 Route::get('client/deleteform/{id}','ClientController@del_form');
+Route::get('client/apply/form/{col}/{id}','ClientController@op_form');
 
 Route::match(['get', 'post'], '/', 'ClientController@clientlogin')->name('client');
 Route::match(['get', 'post'], '/register', 'MailController@auto_mailer');
@@ -23,6 +24,7 @@ Route::match(['get', 'post'], '/register', 'MailController@auto_mailer');
 Route::get('client/home', 'ClientController@home');
 Route::get('client/apply/lop','ClientController@LOP');
 Route::match(['get', 'post'], '/client/apply/form/{id_type}', 'ClientController@FORM');
+Route::match(['get', 'post'], '/client/personnel/form/{id_type}', 'ClientController@addpersonnel');
 
 // Route::match(['get', 'post'], '/client/apply/form', 'ClientController@FORM');
 Route::match(['get', 'post'], '/client/apply/ptc', 'ClientController@PTC');
@@ -32,6 +34,8 @@ Route::match(['get', 'post'], '/client/apply/coa', 'ClientController@COA');
 Route::match(['get', 'post'], '/client/apply/ato', 'ClientController@ATO');
 Route::get('client/apply/sa','ClientController@SA');
 Route::get('client/apply', 'ClientController@apply');
+Route::get('client/status', 'ClientController@status');
+Route::match(['get', 'post'], 'client/preassessment', 'ClientController@preassessment');
 Route::get('client/evaluate', 'ClientController@evaluate');
 Route::get('client/orderofpaymentc', 'ClientController@orderofpaymentc');
 Route::get('client/inspection', 'ClientController@inspection');
@@ -40,7 +44,7 @@ Route::get('client/inspection3', 'ClientController@inspection3');
 Route::get('client/issuance', 'ClientController@issuance');
 Route::post('client/logout', 'ClientController@logout');
 Route::post('client/store', 'ClientController@store');
-Route::get('client/apply2', 'ClientController@apply2');
+Route::match(['get', 'post'], 'client/payment', 'ClientController@payment');
 
 Route::get('/LOdashboard', 'LOController@LOdashboard');
 Route::get('/LOprocess', 'LOController@LOprocess');

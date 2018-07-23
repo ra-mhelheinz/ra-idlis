@@ -1,10 +1,24 @@
 @include('session.clientSession')
 <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/nav.css')}}">
-@if (session('client_data') != null)
+@if (session()->exists('client_data') || session('client_data') != null)
 {{-- session()->exists('client_data') ||  --}}
    @php
      $clientData = session('client_data');
    @endphp
+
+<script type="text/javascript">
+        if(localStorage.getItem("doholrs") == null && localStorage.getItem("client_data") == null) {
+          localStorage.setItem("doholrs", "true");
+          localStorage.setItem("client_data", "{{$clientData->uid}}");
+        } else {
+          if(localStorage.getItem("client_data") == "{{$clientData->uid}}") {
+
+          } else {
+            localStorage.setItem("doholrs", "true");
+            localStorage.setItem("client_data", "{{$clientData->uid}}");
+          }
+        }
+</script>
 
       <input type="hidden" id="global-token" value="{{ Session::token() }}" />
        <nav id="paraTagoNav" class="navbar navbar-expand-lg navbar-dark bg-dark" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);padding: 1px 1px 1px 1px;">
@@ -90,6 +104,6 @@
 @else
   <?php session()->flush(); session()->flash('client_login','Invalid Username/Password'); ?>
   <script type="text/javascript">
-    window.location.href = "{{asset('/')}}";
+    window.location.href = "{{asset('/client/logout')}}";
   </script>
 @endif
