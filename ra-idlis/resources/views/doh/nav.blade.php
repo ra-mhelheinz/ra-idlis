@@ -87,10 +87,14 @@
                             <ul id="AppMenu" class="list-unstyled collapse">
                                 <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/apptype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Type</a></li>
                                 <li class="MA07_allow"><a href="{{ asset('/employee/dashboard/mf/appstatus') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Status</a></li>
+                                <li><a href="{{ asset('/employee/dashboard/mf/charges') }}">&nbsp;&nbsp;&nbsp;&nbsp;Charges</a></li>
                                 <li class="MA08_allow"><a href="{{ asset('/employee/dashboard/mf/class') }}">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
-                                <li class="MA06_allow"><a href="{{ asset('/employee/dashboard/mf/ownership') }}">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/orderofpayment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Order of Payment</a></li>
+                                <li class="MA06_allow"><a href
+                                    ="{{ asset('/employee/dashboard/mf/ownership') }}">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
                                 <li class="MA16_allow"><a href="{{ asset('/employee/dashboard/mf/faciserv') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facilities/Services</a>
                                 </li>
+                                <li><a href="{{ asset('/employee/dashboard/mf/chg_oop') }}">&nbsp;&nbsp;&nbsp;&nbsp;Manage Charges</a></li>
                                 <li><a href="{{ asset('/employee/dashboard/mf/typefa') }}">&nbsp;&nbsp;&nbsp;&nbsp;Manage Facilities/Services</a></li>
                                 <li class="MA11_allow"><a href="{{ asset('/employee/dashboard/mf/uploads') }}">&nbsp;&nbsp;&nbsp;&nbsp;Uploads</a></li>
                             </ul>
@@ -103,7 +107,7 @@
                                 <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Education/Trainings</a></li>
                                 <li class="MA14_allow"><a href="{{ asset('/employee/dashboard/mf/work') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work</a></li>
                                 <li class="MA15_allow"><a href="{{ asset('/employee/dashboard/mf/work_status') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work Status</a></li>
-                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Eligibility</a></li>
+                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/eligibility') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Eligibility</a></li>
                                 <li class="MA09_allow"><a href="{{ asset('/employee/dashboard/mf/litype') }}">&nbsp;&nbsp;&nbsp;&nbsp;License Type</a></li>
                                 <li class="MA10_allow"><a href="{{ asset('/employee/dashboard/mf/training') }}">&nbsp;&nbsp;&nbsp;&nbsp;Training Type</a></li>
                             </ul>
@@ -128,7 +132,10 @@
                 <li><a href="#ProFlowMenu" data-toggle="collapse"><i class="fa fa-sitemap"></i> Process Flow</a>
                     <ul id="ProFlowMenu" class="list-unstyled collapse">
                         <li class=""><a href="{{asset('/employee/dashboard/lps')}}">&nbsp;&nbsp;&nbsp;&nbsp;View Applications</a></li>
-                        <li class=""><a href="{{asset('/employee/dashboard/lps/evalute')}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
+                          @if ($employeeData->grpid == 'NA' || $employeeData->grpid == "RA")  
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/assign')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assign Applications</a></li>
+                        @endif
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/evaluate')}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
                         <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>

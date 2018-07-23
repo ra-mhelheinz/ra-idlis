@@ -215,7 +215,7 @@
 										[
 											'hfser_id'=>$request->hfser_id,
 											'facid'=>$request->facid,
-											// 'oop_id' => 'N',
+											'oop_id' => 'N',
 										]
 									);
 						return "DONE";
@@ -398,9 +398,8 @@
 										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
 										->join('province', 'x08.province', '=', 'province.provid')
 										->join('type_facility', 'appform.hfser_id', '=', 'type_facility.hfser_id') 
-										// ->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
-										// , 'orderofpayment.*'
-										->select('appform.uid', 'appform.appid', 'appform.isrecommended', 'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'appform.recommendedtime', 'appform.recommendeddate', 'type_facility.*')
+										->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
+										->select('appform.uid', 'appform.appid', 'appform.isrecommended', 'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'appform.recommendedtime', 'appform.recommendeddate', 'type_facility.*', 'orderofpayment.*')
 										->where('appform.appid', '=', $appid)
 										// , 'type_facility.*', 'orderofpayment.*'
 										// ->where('type_facility.facid', '=', 'appform.facid')
@@ -445,21 +444,18 @@
 										->where('appform.appid', '=', $appid)
 										->where('app_upload.evaluation', '=', null)
 										->get();
-				// $data6 = DB::table('appform')
-										// ->join('type_facility', 'appform.hfser_id', '=', 'type_facility.hfser_id')
-										// ->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
-										// ->where('type_facility.facid', '=', $data1[0]->facid)
-										// ->where('appform.appid', '=', $appid)
+				$data6 = DB::table('appform')
+										->join('type_facility', 'appform.hfser_id', '=', 'type_facility.hfser_id')
+										->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
+										->where('type_facility.facid', '=', $data1[0]->facid)
+										->where('appform.appid', '=', $appid)
 										//,['appform.facid', '=', 'type_facility.facid']
-										// ->first();
-										// , 'OOPs' => $data6
-										// 
-				$data6 = DB::table('orderofpayment')->where('oop_id', '<>', 'N')->get();
+										->first();
 				$data7 = DB::table('appform_orderofpayment')
 										->where('appid', '=', $appid)
 										->first();						
-				// return dd($data7);
-				return view('doh.lpsevaluteOne', ['AppData'=> $data0, 'UploadData' => $data1, 'appID' => $appid, 'numOfX' => count($data2), 'numOfApp' => count($data3), 'numOfAprv'=> count($data4), 'numOfNull' => count($data5), 'OOPS'=>$data6, 'OPPok' => $data7]);
+				// return dd($data6);
+				return view('doh.lpsevaluteOne', ['AppData'=> $data0, 'UploadData' => $data1, 'appID' => $appid, 'numOfX' => count($data2), 'numOfApp' => count($data3), 'numOfAprv'=> count($data4), 'numOfNull' => count($data5), 'OOPs' => $data6, 'OPPok' => $data7]);
 			}
 			if ($request->isMethod('post')) {
 				$addedby = session()->get('employee_login');
@@ -873,43 +869,133 @@
 									->join('province', 'x08.province', '=', 'province.provid')
 									->join('region', 'x08.rgnid', '=', 'region.rgnid')
 									->join('type_facility', 'appform.hfser_id', '=', 'type_facility.hfser_id') 
-									// ->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
-									// , 'orderofpayment.*'
-									->select('appform.uid', 'appform.appid', 'appform.isrecommended', 'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'appform.recommendedtime', 'appform.recommendeddate', 'type_facility.*', 'region.rgn_desc')
+									->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
+									->select('appform.uid', 'appform.appid', 'appform.isrecommended', 'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'appform.recommendedtime', 'appform.recommendeddate', 'type_facility.*', 'orderofpayment.*', 'region.rgn_desc')
 									->where('appform.appid', '=', $appid)
 											// , 'type_facility.*', 'orderofpayment.*'
 											// ->where('type_facility.facid', '=', 'appform.facid')
 									->first();
-				$data1 = DB::table('orderofpayment')->where('oop_id', '=', $oop_id)->first();
-				$data2 = DB::table('chg_oop')
-								->join('charges', 'chg_oop.chg_code', '=', 'charges.chg_code')
-								->join('chg_app', 'chg_oop.chgapp_id', '=', 'chg_app.chgapp_id')
-								->where('chg_oop.oop_id', '=', $oop_id)
-								->orderBy('chg_oop.chgopp_seq','asc')
-								->get();
-				// return dd($data2);
 				$employeeData = session('employee_login');
-				return view('doh.oopADD',['AppData'=>$data0, 'EmployeeData' => $employeeData, 'appid' => $appid, 'oop_id' => $oop_id,'oop_data'=>$data1, 'Bills'=>$data2]);
-				// switch ($oop_id) {
-				// 	case 'CONPTC':
-				// 			return view('doh.oopCONPTCadd',['AppData'=>$data0, 'EmployeeData' => $employeeData, 'appid' => $appid, 'oop_id' => $oop_id]);
-				// 		break;
-				// 	case 'OSSGHPN':
-				// 			return view('doh.oopOSSGHPNadd',['AppData'=>$data0, 'EmployeeData' => $employeeData, 'appid' => $appid, 'oop_id' => $oop_id]);
-				// 		break;
-				// 	case 'DL':
-				// 			return view('doh.oopDLadd',['AppData'=>$data0, 'EmployeeData' => $employeeData, 'appid' => $appid, 'oop_id' => $oop_id]);
-				// 		break;
-				// 	default:
-				// 			return back();
-				// 		break;
-				// }
+				switch ($oop_id) {
+					case 'CONPTC':
+							return view('doh.oopCONPTCadd',['AppData'=>$data0, 'EmployeeData' => $employeeData, 'appid' => $appid, 'oop_id' => $oop_id]);
+						break;
+					case 'OSSGHPN':
+							return view('doh.oopOSSGHPNadd',['AppData'=>$data0, 'EmployeeData' => $employeeData, 'appid' => $appid, 'oop_id' => $oop_id]);
+						break;
+					case 'DL':
+							return view('doh.oopDLadd',['AppData'=>$data0, 'EmployeeData' => $employeeData, 'appid' => $appid, 'oop_id' => $oop_id]);
+						break;
+					default:
+							return back();
+						break;
+				}
 			} /// END
 			if ($request->isMethod('post')) {
 				$Cur_useData = $this->getCurrentUserAllData();
-				DB::table('appform_orderofpayment')->insert([
+				switch ($oop_id) {
+					case 'CONPTC':
+							DB::table('appform_orderofpayment')->insert([
 									'appid' => $appid,
 									'oop_id' => $oop_id,
+									'data1' => $request->data1,
+									'data1r' => $request->data1r,
+									'data2' => $request->data2,
+									'data2r' => $request->data2r,
+									'data3' => $request->data3,
+									'data3r' => $request->data3r,
+									'data4' => $request->data4,
+									'data4r' => $request->data4r,
+									'data5' => $request->data5,
+									'data5r' => $request->data5r,
+									'data6' => $request->data6,
+									'data6r' => $request->data6r,
+									'data7' => $request->data7,
+									'data7r' => $request->data7r,
+									'data8' => $request->data8,
+									'data8r' => $request->data8r,
+									'data9' => $request->data9,
+									'data9r' => $request->data9r,
+									'data10' => $request->data10,
+									'data10r' => $request->data10r,
+									'data11' => $request->data11,
+									'data11r' => $request->data11r,
+									'data12' => $request->data12,
+									'data12r' => $request->data12r,
+									'data13' => $request->data13,
+									'data13r' => $request->data13r,
+									'data14' => $request->data14,
+									'data14r' => $request->data14r,
+									'oop_total' => $request->total,
+									'oop_totalword' => $request->totalword,
+									'oop_time' => $Cur_useData['time'],
+									'oop_date' => $Cur_useData['date'],
+									'oop_ip' => $Cur_useData['ip'],
+									'uid' => $Cur_useData['cur_user'],
+								]);
+							return 'DONE';
+						break;
+					case 'OSSGHPN':
+							DB::table('appform_orderofpayment')->insert([
+									'appid' => $appid,
+									'oop_id' => $oop_id,
+									'data1' => $request->data1,
+									'data2' => $request->data2,
+									'data3' => $request->data3,
+									'data4' => $request->data4,
+									'data5' => $request->data5,
+									'data6' => $request->data6,
+									'data7' => $request->data7,
+									'data8' => $request->data8,
+									'data9' => $request->data9,
+									'data10' => $request->data10,
+									'data11' => $request->data11,
+									'data12' => $request->data12,
+									'data13' => $request->data13,
+									'data14' => $request->data14,
+									'data15' => $request->data15,
+									'data16' => $request->data16,
+									'data17' => $request->data17,
+									'data18' => $request->data18,
+									'data19' => $request->data19,
+									'data20' => $request->data20,
+									'data21' => $request->data21,
+									'data22' => $request->data22,
+									'data23' => $request->data23,
+									'data24' => $request->data24,
+									'data25' => $request->data25,
+									'data26' => $request->data26,
+									'data27' => $request->data27,
+									'data28' => $request->data28,
+									'data29' => $request->data29,
+									'data30' => $request->data30,
+									'data31' => $request->data31,
+									'data32' => $request->data32,
+									'data33' => $request->data33,
+									'data34' => $request->data34,
+									'data35' => $request->data35,
+									'data36' => $request->data36,
+									'data37' => $request->data37,
+									'data38' => $request->data38,
+									'data39' => $request->data39,
+									'data40' => $request->data40,
+									'data41' => $request->data41,
+									'data42' => $request->data42,
+									'data43' => $request->data43,
+									'data44' => $request->data44,
+									'data45' => $request->data45,
+									'data46' => $request->data46,
+									'data47' => $request->data47,
+									'data48' => $request->data48,
+									'data49' => $request->data49,
+									'data50' => $request->data50,
+									'data51' => $request->data51,
+									'data52' => $request->data52,
+									'data53' => $request->data53,
+									'data54' => $request->data54,
+									'data55' => $request->data55,
+									'data56' => $request->data56,
+									'oop_subtotal' => $request->subtotal,
 									'oop_total' => $request->grandtotal,
 									'oop_totalword' => $request->totalword,
 									'oop_time' => $Cur_useData['time'],
@@ -917,14 +1003,12 @@
 									'oop_ip' => $Cur_useData['ip'],
 									'uid' => $Cur_useData['cur_user'],
 								]);
-				$last = DB::getPdo()->lastInsertId();
-				for ($i=0; $i < count($request->data); $i++) { 
-					DB::table('appform_oopdata')->insert([
-									'appop_id' => $last,
-									'chgopp_id' => $request->data[$i],
-								]);
+							return 'DONE';
+						break;
+					default:
+						# code...
+						break;
 				}
-				return 'DONE';
 			}
 		}
 		public function EvalViewOOP(Request $request, $appid, $oop_id){
@@ -936,9 +1020,8 @@
 									->join('province', 'x08.province', '=', 'province.provid')
 									->join('region', 'x08.rgnid', '=', 'region.rgnid')
 									->join('type_facility', 'appform.hfser_id', '=', 'type_facility.hfser_id') 
-									// ->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
-									// , 'orderofpayment.*'
-									->select('appform.uid', 'appform.appid', 'appform.isrecommended', 'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'appform.recommendedtime', 'appform.recommendeddate', 'type_facility.*', 'region.rgn_desc')
+									->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
+									->select('appform.uid', 'appform.appid', 'appform.isrecommended', 'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'appform.recommendedtime', 'appform.recommendeddate', 'type_facility.*', 'orderofpayment.*', 'region.rgn_desc')
 									->where('appform.appid', '=', $appid)
 									->first();
 				$data1 = DB::table('appform_orderofpayment')
@@ -947,14 +1030,6 @@
 				$newD = Carbon::parse($data1->oop_date);
 				$data1->formattedPropDate = $newD->toFormattedDateString();
 				$data2 = DB::table('x08')->select()->where('uid', '=', $data1->uid)->first();
-				$data3 = DB::table('orderofpayment')->where('oop_id', '=', $oop_id)->first();
-				$data4 = DB::table('appform_oopdata')
-									->join('appform_orderofpayment', 'appform_oopdata.appop_id', '=', 'appform_orderofpayment.appop_id')
-									->join('chg_oop', 'appform_oopdata.chgopp_id', '=', 'chg_oop.chgopp_id')
-									->join('charges', 'chg_oop.chg_code', '=', 'charges.chg_code')
-									->join('chg_app', 'chg_oop.chgapp_id', '=', 'chg_app.chgapp_id')
-									->orderBy('chg_oop.chgopp_seq', 'asc')
-									->get();
 				$x = $data2->mname;
 		            if ($x != "") {
 		                $mid = strtoupper($x[0]);
@@ -964,19 +1039,18 @@
 		                }
 		             $name = $data2->fname.' '.$mid.''.$data2->lname;
 		             $data2->name = $name;
-				// return dd($data4);
-				return view('doh.oopVIEW', ['AppData'=>$data0, 'EmployeeData' =>$data2, 'OOPDATA' => $data1, 'appid' => $appid, 'oop_id' => $oop_id, 'oop_data' => $data3,'Bills'=>$data4]);
-				// switch ($oop_id) {
-				// 	case 'CONPTC':
-				// 			return view('doh.oopCONPTCview', ['AppData'=>$data0, 'EmployeeData' =>$data2, 'OOPDATA' => $data1, 'appid' => $appid, 'oop_id' => $oop_id]);
-				// 		break;
-				// 	case 'OSSGHPN':
-				// 			return view('doh.oopOSSGHPNview', ['AppData'=>$data0, 'EmployeeData' =>$data2, 'OOPDATA' => $data1, 'appid' => $appid, 'oop_id' => $oop_id]);
-				// 		break;	
-				// 	default:
-				// 		# code...
-				// 		break;
-				// }
+				// return dd($data2);
+				switch ($oop_id) {
+					case 'CONPTC':
+							return view('doh.oopCONPTCview', ['AppData'=>$data0, 'EmployeeData' =>$data2, 'OOPDATA' => $data1, 'appid' => $appid, 'oop_id' => $oop_id]);
+						break;
+					case 'OSSGHPN':
+							return view('doh.oopOSSGHPNview', ['AppData'=>$data0, 'EmployeeData' =>$data2, 'OOPDATA' => $data1, 'appid' => $appid, 'oop_id' => $oop_id]);
+						break;	
+					default:
+						# code...
+						break;
+				}
 			}
 			if ($request->isMethod('post')) {
 				
@@ -1006,8 +1080,8 @@
 			if ($request->isMethod('post')) {
 				/// oop_id
 				/// chg_code
-				// $data1 = DB::table('chg_oop')->where([['chg_code','=',$request->chg_code],['oop_id', '=', $request->oop_id]])->first();
-				// if (!$data1) {
+				$data1 = DB::table('chg_oop')->where([['chg_code','=',$request->chg_code],['oop_id', '=', $request->oop_id]])->first();
+				if (!$data1) {
 					DB::table('chg_app')->insert(['chg_code'=>$request->chg_code,'amt'=>0]);
 					$last = DB::getPdo()->lastInsertId();
 					$data2 = DB::table('chg_oop')
@@ -1023,24 +1097,12 @@
 					// return dd($data3);
 					DB::table('chg_oop')->insert(['chg_code'=>$request->chg_code,'oop_id'=>$request->oop_id,'chgopp_seq'=>$data3,'chgapp_id'=>$last]);
 					return 'DONE';
-				// } else {
-				// 	return 'SAME';
-				// }
+				} else {
+					return 'SAME';
+				}
 				// return response()->json($data1);
 				// return 'Hello';
 			}
 		}
-		public function assignNow(Request $request){
-			// $bigChunkOfData = DB::table('appform')->get();
-			$employeeData = session('employee_login');
-
-			// if ($employeeData->grpid == 'NA') {
-			// 	$region 
-			// }
-			$region = DB::table('region')->get();
-			$type = DB::table('hfaci_serv_type')->get();
-			$facility = DB::table('facilitytyp')->get();
-			return view('doh.lpsAssign',['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
-;		}
 	}
 ?>
