@@ -1,4 +1,4 @@
-@extends('main3')
+  @extends('main3')
 @section('style')
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
@@ -26,12 +26,14 @@
               &nbsp;
               @if ($employeeGRP == "NA")
               <input type="text" class="form-control" id="filtererReg" list="rgn_list" onchange="" placeholder="Select Region">
+              @else
+              <input type="text" id="filtererReg" name="" value="{{$employeeREGION}}" hidden> 
+              @endif
               <datalist id="rgn_list">
                 @foreach ($regions as $region)
                   <option value="{{$region->rgn_desc}}">{{$region->rgnid}}</option>
                 @endforeach
               </datalist>
-              @endif
               &nbsp;
               <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});">Filter</button>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
@@ -40,7 +42,8 @@
             <table class="table table-hover" style="font-size:13px;">
                 <thead>
                 <tr>
-                    <th scope="col">Application Code</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Code</th>
                     <th scope="col">Name of Health Facility</th>
                     <th scope="col">Type of Health Facility</th>
                     <th scope="col">Date</th>
@@ -111,6 +114,7 @@
             });
       }
     function FilterData(grpID,rgnID){
+
         var hfser_id = '';
         var facid = $('#fa_list').val();
         var rgnid = '';
@@ -127,6 +131,7 @@
             console.log('FACILITY/SERVICE NOT FOUND');
             ok = 0;
         }else {
+
             hfser_id = appTypeID[testAppType];
             if (grpID == 'NA') {
               var selected = $('#filtererReg').val(); // Selected
@@ -140,7 +145,7 @@
                 rgnid = id[test];
               }
           } else {
-            rgnid = rgnID;
+            rgnid = '{{$employeeREGION}}';
           } 
         }
 
@@ -158,16 +163,18 @@
                           var paid = data[i].appid_payment;
                           var reco = data[i].isrecommended;
                           if (data[i].isrecommended == null) {
-                              status = "For Evaluation";
+                              status = '<span style="font-weight:bold;">For Evaluation</span>';
+                          }else if (data[i].isrecommended == 1) {
+                            status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
                           }
                           if (paid == null) {
                               status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
                           }
-                          
                           // var app = data[i].approved
                           $('#FilterdBody').append(
                                 '<tr>'+
                                 /// 'R'+data[i].rgnid+'
+                                  '<td>' + data[i].hfser_id +'</td>' + 
                                   '<td>' + data[i].hfser_id + 'R'+data[i].rgnid+'-' + data[i].appid + '</td>' +
                                   '<td><strong>'+data[i].facilityname+'</strong></td>' +
                                   '<td>'+data[i].facname+'</td>'+
@@ -192,11 +199,13 @@
         var status = '';
         var paid = appid_payment;
         if (isrecommended == null) {
-            tatus = "For Evaluation";
+            status = "For Evaluation";
+          }else if (isrecommended == 1) {
+            status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
           }
         if (paid == null) {
              status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
-          }
+          } 
         $('#ViewBody').empty();
         $('#ViewBody').append(
             '<div class="row">'+

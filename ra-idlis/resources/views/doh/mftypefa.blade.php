@@ -41,7 +41,7 @@
               <thead>
                 <tr>
                   <th style="width: 75%">Health Facility/Service</th>
-                  {{-- <th style="width: 25%"><center>Status</center></th> --}}
+                  {{-- <th style="width: 35%"><center>Order of Payment</center></th> --}}
                   <th style="width: 25%"><center>Option</center></th>
                 </tr>
               </thead>
@@ -57,21 +57,31 @@
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;
           color: white;">
-              <h5 class="modal-title text-center"><strong><span id="ifActiveTitle"></span></strong></h5>
+              <h5 class="modal-title text-center"><strong><span id="ifActiveTitle">Add Order of Payment</span></strong></h5>
               <hr>
               <div class="container">
-                <form  class="row" >
+                <form  id="AddOOP" class="row" data-parsley-validate>
                   <div class="col-sm-12" id="Error"></div>
-                  <div class="col-sm-12" id="IfActiveModalBody">
+                  <div class="col-sm-4">
+                    Order of Payment:
+                  </div>
+                  <div class="col-sm-8">
+                    <input type="text" id="PutTypeIDhere" name="" hidden>
+                      <select class="form-control" id="selectedOOP" data-parsley-required-message="*<strong>Order of Payment</strong> required." required>
+                        <option value=""></option>
+                        @foreach ($oops as $oop)
+                          <option value="{{$oop->oop_id}}">{{$oop->oop_desc}}</option>
+                        @endforeach
+                      </select>
                   </div>
                   <div class="col-sm-12">
                     <hr>
                     <div class="row">
                       <div class="col-sm-6">
-                        <button type="button" onclick="ChangeStateNow()" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Yes</button>
+                        <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add</button>
                       </div>
                       <div class="col-sm-6">
-                        <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>No</button>
+                        <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
                       </div>
                     </div>
                   </div> 
@@ -208,7 +218,6 @@
                   }
               });
           }
-           
         }
       }
       function DelRequirement (id){
@@ -288,17 +297,23 @@
                   } else {
                     $('#FilterdBody').empty();
                     for (var i = 0; i < data.length; i++) {
-                      var option = "", settings = "";
+                      var option = "", settings = "", addOOP = "";
                        // option = '<a href="#"><button data-toggle="modal" onclick="showIfActive('+data[i].tyf_alw+','+data[i].tyf_id+',\''+data[i].facname+'\',\''+data[i].hfser_id+'\',\''+data[i].hfser_desc+'\');" data-target="#IfActiveModal" class="btn btn-danger" title="Disable Facility/Service">&nbsp;<i class="fa fa-toggle-off"></i>&nbsp;</button></a>';
                        settings = '<a href="#" ><button data-toggle="modal" data-target="#GodModal" onclick="showData('+data[i].tyf_id+',\''+data[i].facname+'\',\''+data[i].hfser_id+'\',\''+data[i].hfser_desc+'\')" class="btn btn-primary" title="Manage Requirements">&nbsp;<i class="fa fa-cog"></i>&nbsp;</button></a>';
+                       if (data[i].oop_id == "N" || data[i].oop_id === null ) {
+                          addOOP = '<a href="#"><button data-toggle="modal" data-target="#IfActiveModal" onclick="AddOOP('+data[i].tyf_id+',\'Add\')" class="btn btn-success" title="Add Order of Payment">&nbsp;<i class="fa fa-plus"></i></button></a>';
+                       }  else {
+                          addOOP = '<a href="#"><button data-toggle="modal" data-target="#IfActiveModal" onclick="AddOOP('+data[i].tyf_id+',\'Edit\')" class="btn btn-warning" title="Change Order of Payment">&nbsp;<i class="fa fa-edit" aria-hidden="true"></i></button></a>';
+                       }
                      
                       $('#FilterdBody').append(
                           '<tr>'+
                               '<td>'+data[i].facname+'</td>' +
-                              // '<td><center><strong>'+status+'</strong></center></td>' +
+                              // '<td><center><strong>'+data[i].oop_desc +'</strong></center></td>' +
+                              // '+addOOP+ '&nbsp;' +
                               '<td><center>'+
                                   option+ '&nbsp;'+
-                                  settings+ 
+                                  settings+
                               '</center></td>'+
                               // '<td><center><button type="button" class="btn-defaults" onclick="getData();" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center></td>' +
                           '<tr>'
@@ -336,6 +351,33 @@
                       }
                   });
           }
+      });
+      function AddOOP(typ_id, type){
+        $('#ifActiveTitle').empty();
+          $('#PutTypeIDhere').attr('value',typ_id);
+          if (type == 'Add') {
+              $('#ifActiveTitle').append('Add Order of Payment');
+          } else { $('#ifActiveTitle').append('Change Order of Payment');}
+      }
+      $('#AddOOP').on('submit',function(event){
+        event.preventDefault();
+        var form = $(this);
+        form.parsley().validate();
+        if (form.parsley().isValid()) {
+          $.ajax({
+            url : '{{ asset('/mf/save_oop') }}',
+            method : 'POST',
+            data : {_token:$('input[name="_token"]').val(), appID : $('#PutTypeIDhere').val(), OopID : $("#selectedOOP").val() },
+            success : function(data){
+              if (data == 'DONE') {
+                alert('Successfully Added Order of Payment');
+                filterGroup();
+                $('#IfActiveModal').modal('toggle');
+
+              }
+            }
+          });
+        }
       });
     </script>
 @endsection

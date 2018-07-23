@@ -26,12 +26,12 @@
               &nbsp;
               @if ($employeeGRP == "NA")
               <input type="text" class="form-control" id="filtererReg" list="rgn_list" onchange="" placeholder="Select Region">
+              @endif
               <datalist id="rgn_list">
                 @foreach ($regions as $region)
                   <option value="{{$region->rgn_desc}}">{{$region->rgnid}}</option>
                 @endforeach
               </datalist>
-              @endif
               &nbsp;
               <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});">Filter</button>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
@@ -40,11 +40,12 @@
             <table class="table table-hover" style="font-size:13px;">
                 <thead>
                 <tr>
+                    <th scope="col">Type</th>
                     <th scope="col">Application Code</th>
                     <th scope="col">Name of Health Facility</th>
                     <th scope="col">Type of Health Facility</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Type</th>
+                    <th scope="col">&nbsp;</th>
                     <th scope="col">Current Status</th>
                     <th scope="col">Options</th>
                 </tr>
@@ -140,7 +141,7 @@
                 rgnid = id[test];
               }
           } else {
-            rgnid = rgnID;
+            rgnid = '{{$employeeREGION}}';
           } 
         }
 
@@ -148,7 +149,7 @@
           $.ajax({
               url: '{{asset('/lps/getLPS')}}',
               method: 'POST',
-              data : {_token : $('#token').val(), hfser_ID : hfser_id, facID : facid, rgnID : rgnid},
+              data : {_token : $('#token').val(), hfser_ID : hfser_id, facID : facid, rgnID : rgnid, grpid : grpID},
               success : function(data){
                 // console.log(data);
                   if (data != 'NONE') {
@@ -158,9 +159,15 @@
                           var paid = data[i].appid_payment;
                           var reco = data[i].isrecommended;
                           var ifdisabled = '';
-                          if (data[i].isrecommended == null || data[i].isrecommended == 0) {
-                              status = '<span style="color:green;font-weight:bold;">For Evaluation</span>';
+                          if (data[i].isrecommended === null) {
+                              status = '<span style="color:blue;font-weight:bold;">For Evaluation</span>';
+                          } else if (data[i].isrecommended == 0){
+                            status = '<span style="color:red;font-weight:bold;">Application Rejected</span>';
                           }
+                          else {
+                              status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
+                          }
+
                           if (paid == null || paid == 0) {
                               status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
                               ifdisabled = 'disabled';
@@ -170,6 +177,7 @@
                           $('#FilterdBody').append(
                                 '<tr>'+
                                 /// 'R'+data[i].rgnid+'
+                                  '<td>' + data[i].hfser_id + '</td>' +
                                   '<td>' + data[i].hfser_id + 'R'+data[i].rgnid+'-' + data[i].appid + '</td>' +
                                   '<td><strong>'+data[i].facilityname+'</strong></td>' +
                                   '<td>'+data[i].facname+'</td>'+
@@ -192,7 +200,7 @@
         }        
     }
     function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment){
-        window.location.href = "{{ asset('/employee/dashboard/lps/evalute') }}/" + appid;
+        window.location.href = "{{ asset('/employee/dashboard/lps/evaluate') }}/" + appid;
         // var status = '';
         // var paid = appid_payment;
         // var ifdisabled = '';
