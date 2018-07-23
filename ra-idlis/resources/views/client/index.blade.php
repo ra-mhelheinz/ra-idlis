@@ -74,7 +74,10 @@
           $('.visitor').addClass('animated');
           $('#guide').hide();
         }
+        if(localStorage.getItem("doholrs") != null && localStorage.getItem("doholrs") == "true"){
          $('#myModal').modal('toggle');
+         localStorage.setItem("doholrs", "false");
+        }
   $('#yes').on('click', function(){
     $('#myModal').modal('toggle');
     $('#myModal2').modal('show').delay(3000);
@@ -90,7 +93,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-3 col-md-12 col-lg-3">
-            <div class="card my-4">
+            <div class="card my-4" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;">
             <h5 class="card-header">Search</h5>
             <div class="card-body" style="height: 80px;">
               <div class="input-group">
@@ -101,7 +104,7 @@
               </div>
             </div>
           </div>
-             <div class="card my-4 introjs-showElement introjs-relativePosition"  data-intro="Announcements<br><small>Here is where new Announcements can be found.</small>" data-step="10" >
+             <div class="card my-4 introjs-showElement introjs-relativePosition"  data-intro="Announcements<br><small>Here is where new Announcements can be found.</small>" data-step="10" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;">
             <h5 class="card-header">Announcements</h5>
             <div class="cardb" style="padding: 1.25rem;flex: 1 1 auto;">
              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" >
@@ -132,7 +135,7 @@
               </div>
             </div>
           </div>
-          <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="Definition of Terms<br><small>Click this link to read our Definition of Terms</small>" data-step="11">
+          <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="Definition of Terms<br><small>Click this link to read our Definition of Terms</small>" data-step="11" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;">
             <p class="card-header"><small>Click for our <i class="fa fa-hand-o-right"></i>&nbsp;<a href="">Definition of Terms</a></small></p>
           </div>
           <div class="text-center introjs-showElement introjs-relativePosition" data-intro="FAQs<br><small></small>" data-step="12">
@@ -158,41 +161,78 @@
                 </div>
               </div>
             </div> --}}
-              <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="<b>Status Banner</b><br><small>In this banner is where you can see the status of your Application/s.</small>" data-step="4">
+              <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="<b>Status Banner</b><br><small>In this banner is where you can see the status of your Application/s.</small>" data-step="4" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745">
               <div class="card-header" id="headingOne">
                   <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                     Click to View Status
                   </button>
-              </div>
+                  {{-- <button style="float:right;border-radius: 0;" class="btn btn-outline-info">View Submitted Application</button> --}}
+             </div>
 
-              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="border-radius: 3px 3px 0 0;">
                 <div style="flex: 1 1 auto;padding: 1.25rem;" class="table-responsive">
-                  <table class="table table-hover">
+
+                      <table class="table table-bordered" style="border-top: 2px solid #28a745">
                     <thead>
-                      <tr>
+                      <tr class="text-center" style="border-bottom: 1px solid #ddd; ">
                        
-                        <td>List of Application Status</td>
+                        <td>List of Application</td>
                         <td>Application Type</td>
                         <td>Date Applied</td>
                         <td>Date Evaluated</td>
-                        <td>Date Inspected</td>
-                        <td>Date Issued</td>
-                        <td>Date Printed</td>
-                        <td>Status</td>
-                        <td>LTO No</td>
-                        <td>Validity Date</td>
+                        <td><i class="fa fa-gear"></i></td>
 
+                      </tr>
+                      <tr class="text-center">
+                        <td >s</td>
+                        <td >s</td>
+                        <td >Date Applied</td>
+                        <td >Date Evaluated</td>
+                        <td ><a href="{{asset('client/status')}}"><img src="{{asset('ra-idlis/public/img/view.png')}}" style="width: 25px;"></a></td>
                       </tr>
                     </thead>
                   </table>
+ 
+                 {{--   --}}
                 </div>
               </div>
             </div>
             </div>
             </div>
-            <div class="row">
-          <div class="col-lg-6 introjs-showElement introjs-relativePosition">
-            <div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="5" >
+
+             <div class="row" >
+             <div class="col-sm-12">
+             	<div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="5">
+                <div class="row">
+                <div class="col-sm-6">
+              <div class="icon"><i class="fa fa-clipboard"></i></div>
+              <h4 class="title"><a href="{{asset('client/preassessment')}}">Pre assessment</a></h4>
+              <p class="description">Click for Assessment</p>
+                </div>
+                <div class="col-sm-6">
+              <div class="card bg-warning text-white">
+                <div class="card-body" style="height: auto !important">Result</div>
+              </div> 
+              </div>       
+            </div>
+            </div>
+            </div>
+            </div>
+            <div class="alert alert-danger" id="alert" role="alert" style="display: none;">
+                <strong>Oh snap!</strong> You must go first to Pre-assessment.
+            </div>
+            <script type="text/javascript">
+              function  disbool(){
+                document.getElementById('alert').style.display = 'block';
+                 setTimeout(function(){$('#alert').fadeOut(500) }, 2000);
+                
+              }
+              
+            </script>
+            <div class="disbool" onclick="disbool()" >
+            <div class="row" id="syd" style="pointer-events: none;">
+          <div class="col-lg-6 introjs-showElement introjs-relativePosition" >
+            <div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="5">
               <div class="icon"><i class="fa fa-edit"></i></div>
               <h4 class="title"><a href="{{asset('client/apply')}}">Step 1. Apply</a></h4>
               <p class="description">Fill-in application form and submit requirements online.</p>
@@ -224,6 +264,7 @@
               <p class="description">You can now print your application online.</p>
               <p>Issuance Status:<font style="color:orange;">PENDING</font> </p>
             </div>
+          </div>
           </div>
           </div>
           </div>

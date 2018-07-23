@@ -581,7 +581,8 @@
                   </tr>
                 </tbody>
               </table>
-              </div>
+              <a href="{{asset('client/payment')}}"><button class="btn-primarys"><i class="fa fa-credit-card"></i> Payment</button></a>
+             </div>
             </div>
           </div>  
 	        </div>

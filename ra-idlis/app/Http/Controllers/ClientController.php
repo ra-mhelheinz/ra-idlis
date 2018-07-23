@@ -289,7 +289,13 @@ class ClientController extends Controller
           //                           ->where('x08.uid', '=', $uname)
           //                           ->first()
             session()->flash('taeform', $id_type);
+            $personnel =DB::table('personnel')->get();
             $selectedType = strtoupper($id_type);
+            $position = DB::table('position')->get();
+            $plicensetype = DB::table('plicensetype')->get();
+            $section = DB::table('section')->get();
+            $department = DB::table('department')->get();
+            $traintype = DB::table('ptrainings_trainingtype')->get();
             $asd = session('client_data');
             $appform = DB::table('appform')->where("uid", "=", $asd->uid)->where([["draft", "!=", "0"], ["hfser_id", "=", $selectedType]])->get();
             $fatype = DB::table('type_facility')
@@ -308,9 +314,10 @@ class ClientController extends Controller
                               ->select('facility_requirements.*','upload.*','type_facility.*')
                               ->where('type_facility.hfser_id','=', $selectedType)
                               ->get();
+            $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();
                // return dd($upld);               
             // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
-            return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld]);
+            return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld, 'position'=>$position, 'section'=>$section, 'department'=>$department, 'traintype'=>$traintype, 'plicensetype'=>$plicensetype, 'appidinc'=>$appidinc->appid+1]);
       }
         if ($request->isMethod('post')) {
               $employeeData = session('client_data');
@@ -322,55 +329,62 @@ class ClientController extends Controller
               $dateNow = $dt->toDateString(); /// Date
               $timeNow = $dt->toTimeString(); /// Time
               // Tested
-              $insertData = array(
-                                  'uid'=>   $test1,
-                                  'hfser_id' => strtoupper($id_type),
-                                  'facid'=> $request->facid,
-                                  'ocid'=>  $request->OWNSHP,
-                                  'aptid'=> $request->strateMap,
-                                  'classid'=> $Cls,
-                                  'draft'=> $request->draft,
-                                  't_time'=> $timeNow,
-                                  't_date' => $dateNow,
-                                  'ipaddress'=> request()->ip(),
-                                );
+              $ddd = DB::table("appform")->where("draft", "=", $request->draft)->exists();
+              if($ddd == true && $request->draft != '0') {
+                session()->flash('apply_succes',"Draft name already taken.");
+                return back();
+              } else {
+                $insertData = array(  
+                                    'appid'=>   $request->appid,
+                                    'uid'=>   $test1,
+                                    'hfser_id' => strtoupper($id_type),
+                                    'facid'=> $request->facid,
+                                    'ocid'=>  $request->OWNSHP,
+                                    'aptid'=> $request->strateMap,
+                                    'classid'=> $Cls,
+                                    'draft'=> $request->draft,
+                                    't_time'=> $timeNow,
+                                    't_date' => $dateNow,
+                                    'ipaddress'=> request()->ip(),
+                                  );
 
-              // Tested
-              DB::table('appform')->insert($insertData);
-              $NewId = DB::getPdo()->lastInsertId();
-              if (count($request->UpID) . 0) {
-                        for ($i=0; $i < count($request->UpID); $i++) { 
-                        if (isset($request->upLoad[$i])) {
-                            $FileUploaded = $request->upLoad[$i];
-                            $SelectedUPID = $request->UpID[$i];
-                            $filename = $FileUploaded->getClientOriginalName();
-                              // $FileUploaded->store('public/uploaded');
-                              // FILENAME
-                              $filenameOnly = pathinfo($filename,PATHINFO_FILENAME ); // FILE NAME ONLY
-                              // EXTENSION
-                              $fileExtension = $FileUploaded->getClientOriginalExtension();
-                              // FILENAME TO STORE
-                              $fileNameToStore = $filename.'_'.time().'.'.$fileExtension; 
-                              // UPLOAD FILE
-                              $path = $FileUploaded->storeAs('public/uploaded', $fileNameToStore); // UPLOAD FILE
-                              // FILE SIZE
-                              $fileSize = $FileUploaded->getClientSize();    
-                              /////////////////////////////////////////////////////// UPLOAD FILE
-                              $InsertUpload = array(
-                                                      'app_id' => $NewId,
-                                                      'upid'=>   $SelectedUPID,
-                                                      'filepath'=> $fileNameToStore,
-                                                      'fileExten' => $fileExtension,
-                                                      'fileSize' => $fileSize,
-                                                      't_date' => $dateNow,
-                                                      't_time' => $timeNow,
-                                                      'ipaddress' =>request()->ip(),
-                                                    );
-                              DB::table('app_upload')->insert($InsertUpload);
+                // Tested
+                DB::table('appform')->insert($insertData);
+                $NewId = DB::getPdo()->lastInsertId();
+                if (count($request->UpID) > 0) {
+                          for ($i=0; $i < count($request->UpID); $i++) { 
+                          if (isset($request->upLoad[$i])) {
+                              $FileUploaded = $request->upLoad[$i];
+                              $SelectedUPID = $request->UpID[$i];
+                              try { $filename = $FileUploaded->getClientOriginalName(); } catch(Exception $e) {}
+                                // $FileUploaded->store('public/uploaded');
+                                // FILENAME
+                                try { $filenameOnly = pathinfo($filename,PATHINFO_FILENAME ); } catch(Exception $e) {} // FILE NAME ONLY
+                                // EXTENSION
+                                try { $fileExtension = $FileUploaded->getClientOriginalExtension(); } catch(Exception $e) {}
+                                // FILENAME TO STORE
+                                $fileNameToStore = $filename.'_'.time().'.'.$fileExtension; 
+                                // UPLOAD FILE
+                                try { $path = $FileUploaded->storeAs('public/uploaded', $fileNameToStore); } catch(Exception $e) {} // UPLOAD FILE
+                                // FILE SIZE
+                                try { $fileSize = $FileUploaded->getClientSize();   } catch(Exception $e) {}
+                                /////////////////////////////////////////////////////// UPLOAD FILE
+                                $InsertUpload = array(
+                                                        'app_id' => $NewId,
+                                                        'upid'=>   $SelectedUPID,
+                                                        'filepath'=> $fileNameToStore,
+                                                        'fileExten' => $fileExtension,
+                                                        'fileSize' => $fileSize,
+                                                        't_date' => $dateNow,
+                                                        't_time' => $timeNow,
+                                                        'ipaddress' =>request()->ip(),
+                                                      );
+                                DB::table('app_upload')->insert($InsertUpload);
+                          }
                         }
-                      }
-                      session()->flash('apply_succes',$msg_dr);
-                      return back();
+                        session()->flash('apply_succes',$msg_dr);
+                        return back();
+                  }
                 }
               }
               
@@ -396,19 +410,135 @@ class ClientController extends Controller
             $sqw = DB::table("app_upload")->where("app_id", "=", $id)->delete();
             if($sqw) {
               session()->flash('apply_succes','Successfully deleted file and form');
-              return back();
             } else {
               session()->flash('apply_succes','Successfully deleted file and form, but error on deleting file record of upload');
-              return back();
             }
           } else {
             session()->flash('apply_succes','Error on deleting file but successfully deleted form');
-            return back();
           }
         }
+        return back();
       } else {
         session()->flash('apply_succes','Error on deleting form');
         return back();
+      }
+    }
+    public function preassessment(Request $request){
+        $assessment = DB::table('assessment')->get();
+        $countass = DB::table('part')->get();
+      if($request->isMethod('get')){
+        return view('client.preassessment', ['assessment'=>$assessment, 'countass'=>$countass]);
+      }
+      if ($request->isMethod('post')) {
+        return view('client/index');
+      }
+    }
+     public function status(Request $request){
+      if($request->isMethod('get')){
+        return view('client.status');
+      }
+    }
+    public function payment(Request $request){
+      if($request->isMethod('get')){
+        return view ('client.payment');
+      }
+    }
+    public function op_form(Request $req, $col, $id){
+      $table = DB::table("appform")->where("draft", "=", $id)->first();
+      $table1 = DB::table("app_upload")->where("app_id", "=", $table->appid)->first();
+      session()->flash('curr_tbl',[$table, $table1]);
+      return back();
+    }
+    public function addpersonnel(Request $request, $id_type){
+      if($request->isMethod('get')){
+        $table = DB::table('personnel')->leftjoin('personnelwork', 'personnelwork.pid', '=', 'personnel.pid')->leftjoin('position', 'position.posid', '=', 'personnelwork.posid')->select('personnelwork.*', 'posname', 'personnel.*')->where('appid', '=', $id_type)->get();
+        // return back();
+        // dd($table);
+        return json_encode($table);
+      }
+      if ($request->isMethod('post')) {
+        if($id_type == "personnel") {
+            $data['lastname'] = $request->lastname;
+            $data['firstname'] = $request->firstname;
+            $data['middlename'] = $request->middlename;
+            $data['birthdate'] = $request->birthdate;
+            $data['gender'] = $request->gender;
+            $data['appid'] = $request->appid;
+            $data['bod'] = $request->birthdate;
+            if(DB::table('personnel')->insert([
+              'lastname' => $data['lastname'],
+              'firstname' => $data['firstname'],
+              'middlename' => $data['middlename'],
+              'bod' => $data['birthdate'],
+              'gender' => $data['gender'],
+              'bod' => $data['bod'],
+              'appid' => $data['appid']
+            ])) {
+              $id_p = DB::table('personnel')->orderBy('pid', 'desc')->limit(1)->select('pid')->first();
+              $data['position'] = $request->position;
+              $data['department'] = $request->department;
+              $data['section'] = $request->section;
+              $data['assigneddate'] = $request->assigneddate;
+              $data['enddate'] = $request->enddate;
+              DB::table('personnelwork')->insert([
+                'pid' => $id_p->pid,
+                'posid' => $data['position'],
+                'depid' => $data['department'],
+                'secid' => $data['section'],
+                'assigndate' => $data['assigneddate'],
+                'enddate' => $data['enddate']
+              ]);
+            }
+            return 'DONE';
+        }
+        if($id_type == "eligibility"){
+          $id_p = DB::table('personnel')->orderBy('pid', 'desc')->limit(1)->select('pid')->first();
+          $data['plid'] = $request->plid;
+          $data['expiration'] = $request->expiration;
+          DB::table('peligibility')->insert([
+            'pid' => $id_p->pid,
+            'plid' => $data['plid'],
+            'expiration' => $data['expiration']
+          ]);
+          return 'DONE';
+        }
+
+        if($id_type == "trainings"){
+          $id_p = DB::table('personnel')->orderBy('pid', 'desc')->limit(1)->select('pid')->first();
+          $data['school'] = $request->school;
+          $data['course'] = $request->course;
+          $data['datestart'] = $request->datestart;
+          $data['datefinish'] = $request->datefinish;
+          $data['tt_id'] = $request->tt_id;
+          DB::table('ptrainings')->insert([
+            'pid' => $id_p->pid,
+            'tt_id' => $data['tt_id'],
+            'school' => $data['school'],
+            'course' => $data['course'],
+            'datestart' => $data['datestart'],
+            'datefinish' => $data['datefinish']
+          ]);
+          return 'DONE';
+        }
+            
+            // $data['position'] = $request->position;
+            // $data['department'] = $request->department;
+            // $data['section'] = $request->section;
+            // $data['assigneddate'] = $request->assigneddate;
+            // $data['enddate'] = $request->enddate;
+            // $data['plid'] = $request->plid;
+            // $data['expiration'] = $request->expiration;
+            // $data['ptid'] = $request->ptid;
+            // $data['school'] = $request->school;
+            // $data['course'] = $request->course;
+            // $data['datestart'] = $request->datestart;
+            // $data['datefinish'] = $request->datefinish;
+            // $personnel = DB::table('personnel')->insert([
+            //   'lastname' => $data['lastname'],
+            //   'firstname' => $data['firstname'],
+            //   'middlename' => $data['middlename']
+            // ]);
+            // return 'DONE';
       }
     }
 }

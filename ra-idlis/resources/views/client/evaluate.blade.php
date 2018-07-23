@@ -30,10 +30,12 @@
 							</td>
 							<td>
 								<center>
-									
-									<button type="button" class="btn btn-success">
-										<i class="fa fa-check" aria-hidden="true"></i>
-									</button>
+									<i class="fa fa-times" style="color: red;"></i>
+								</center>
+							</td>
+							<td>
+								<center>
+									<input type="file" name="">
 								</center>
 							</td>
 						</tr>
@@ -46,10 +48,12 @@
 							</td>
 							<td>
 								<center>
-									
-									<button type="button" class="btn btn-success">
-										<i class="fa fa-check" aria-hidden="true"></i>
-									</button>
+									<i class="fa fa-times" style="color: red;"></i>
+								</center>
+							</td>
+							<td>
+								<center>
+									<input type="file" name="">
 								</center>
 							</td>
 						</tr>
@@ -94,10 +98,12 @@
 							</td>
 							<td>
 								<center>
-									
-									<button type="button" class="btn btn-success">
-										<i class="fa fa-check" aria-hidden="true"></i>
-									</button>
+									<i class="fa fa-times" style="color: red;"></i>
+								</center>
+							</td>
+							<td>
+								<center>
+									<input type="file" name="">
 								</center>
 							</td>
 						</tr>
@@ -179,9 +185,14 @@
 					<div class="col-sm-6">
 						<span>
 							<label class="form-inline">Proposed Date of Inspection:
-							<strong><label style="color:green;">&nbsp;May 05, 2018</label></strong>
+							<strong><label style="color:green;">&nbsp;</label></strong>
 						</span>
 					</div>		
+				</div>
+				<div class="row">
+					<div class="col-sm-4"></div>
+					<div class="col-sm-4 text-center"><button class="btn-primarys">Re-Submit</button></div>
+					<div class="col-sm-4"></div>
 				</div>
 		</div>	
 	</div>
