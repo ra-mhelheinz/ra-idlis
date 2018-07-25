@@ -172,7 +172,7 @@
               <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="border-radius: 3px 3px 0 0;">
                 <div style="flex: 1 1 auto;padding: 1.25rem;" class="table-responsive">
 
-                      <table class="table table-bordered" style="border-top: 2px solid #28a745">
+                      <table class="table table-bordered" style="border-left: 2px solid #28a745">
                     <thead>
                       <tr class="text-center" style="border-bottom: 1px solid #ddd; ">
                        
@@ -207,7 +207,7 @@
                 <div class="col-sm-6">
               <div class="icon"><i class="fa fa-clipboard"></i></div>
               <h4 class="title"><a href="{{asset('client/preassessment')}}">Pre assessment</a></h4>
-              <p class="description">Click for Assessment</p>
+              <p class="description">Guide for self-assessment of the Health Facility in preparation for inspection monitoring visits</p>
                 </div>
                 <div class="col-sm-6">
               <div class="card bg-warning text-white">
@@ -218,9 +218,14 @@
             </div>
             </div>
             </div>
-            <div class="alert alert-danger" id="alert" role="alert" style="display: none;">
+            @php
+              $check_assess = DB::table('app_assessment')->where('uid',session('client_data')->uid)->first();
+            @endphp
+            @if(!$check_assess)
+             <div class="alert alert-danger" id="alert" role="alert" style="display: none;">
                 <strong>Oh snap!</strong> You must go first to Pre-assessment.
             </div>
+            @endif
             <script type="text/javascript">
               function  disbool(){
                 document.getElementById('alert').style.display = 'block';
@@ -230,7 +235,7 @@
               
             </script>
             <div class="disbool" onclick="disbool()" >
-            <div class="row" id="syd" style="pointer-events: none;">
+            <div class="row" id="syd" @if(!$check_assess) style="pointer-events: none; @endif">
           <div class="col-lg-6 introjs-showElement introjs-relativePosition" >
             <div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="5">
               <div class="icon"><i class="fa fa-edit"></i></div>
