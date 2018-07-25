@@ -21,8 +21,8 @@
                <table class="table" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 40%">ID</th>
-                  <th style="width: 35%">Description</th>
+                  <th style="width: 5%">ID</th>
+                  <th style="width: 70%">Description</th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
@@ -65,10 +65,10 @@
                 <div class="container">
                   <form id="addRgn" class="row"  data-parsley-validate>
                     {{ csrf_field() }}
-                    <div class="col-sm-4">ID:</div>
-                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required"  class="form-control"  required>
-                    </div>
+                    {{-- <div class="col-sm-4">ID:</div> --}}
+                    {{-- <div class="col-sm-8" style="margin:0 0 .8em 0;"> --}}
+                    {{-- <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required"  class="form-control"  required> --}}
+                    {{-- </div> --}}
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Description</strong> required" required>
@@ -161,7 +161,7 @@
                       method: 'POST',
                       data: {
                         _token : $('#token').val(),
-                        id: $('#new_rgnid').val(),
+                        // id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
                         mod_id : $('#CurrentPage').val(),
                       },

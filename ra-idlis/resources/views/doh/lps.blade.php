@@ -1,4 +1,4 @@
-  @extends('main3')
+@extends('main3')
 @section('style')
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
@@ -53,7 +53,35 @@
                 </tr>
                 </thead>
                 <tbody id="FilterdBody">
-                
+                @if ($LotsOfDatas)
+                  @foreach ($LotsOfDatas as $data)
+                  @php
+                    $status = '';
+                          $paid = $data->appid_payment;
+                          $reco = $data->isrecommended;
+                          $color = '';
+                          if ($data->isrecommended == null) {
+                              $status = 'For Evaluation';$color = 'black';
+                          }else if ($data->isrecommended == 1) {
+                            $status = 'Application Approved';$color = 'green';
+                              }
+                          if ($paid == null) {$status = 'For Evaluation (Not Paid)';$color = 'red';
+                              }
+                  @endphp
+                   <tr>
+                     <td>{{$data->hfser_id}}</td>
+                     <td>{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}</td>
+                     <td><strong>{{$data->facilityname}}</strong></td>
+                     <td>{{$data->facname}}</td>
+                                  <td>{{$data->formattedDate}}</td>
+                                  <td>{{$data->aptdesc}}</td>
+                                  <td style="color:{{$color}};font-weight:bold;">{{$status}}</td>
+                                  <td>
+      <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>
+                                  </td>
+                   </tr>
+                  @endforeach
+                @endif
                 </tbody>
             </table>
         </div>

@@ -250,7 +250,7 @@
 		@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
 			<input type="hidden" name="appid" id="appidinc" value="{{ $curr_tbl[0]->appid }}">
 		@else
-			<input type="hidden" name="appid" id="appidinc" value="{{ $appidinc }}">
+			{{-- <input type="hidden" name="appid" id="appidinc" value="{{ $appidinc }}"> --}}
 		@endif
 				<div class="container">
 					<div class="row">

@@ -23,14 +23,14 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Assessment <a href="#" title="Add New Assessment" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Pre-Assessment <a href="#" title="Add New Assessment" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            <div style="float:right;display: inline-block;">
             <form class="form-inline">
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Part ...</option>
                 @foreach ($parts as $part)
-                  <option value="{{$part->partid}}">{{$part->partdesc}}</option>
+                  <option value="{{$part->partid}}">{{$part->partid}}</option>
                 @endforeach
               </select>
               <input type="" id="token" value="{{Session::token()}}" hidden>
@@ -41,9 +41,9 @@
                <table class="table" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 5%">ID</th>
-                  <th style="width: 75%">Name</th>
-                  <th style="width: 20%"><center>Options</center></th>
+                  <th style="width: 40%">ID</th>
+                  <th style="width: 35%">Name</th>
+                  <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
               <tbody id="FilterdBody">
@@ -67,14 +67,14 @@
                       <select id="partid" data-parsley-required-message="*<strong>Part</strong> required" class="form-control" required>  
                           <option value="">Select Part ...</option>
                           @foreach ($parts as $part)
-                            <option value="{{$part->partid}}">{{$part->partdesc}}</option>
+                            <option value="{{$part->partid}}">{{$part->partid}}</option>
                           @endforeach
                       </select>
                     </div>
-                    {{-- <div class="col-sm-4">ID:</div> --}}
-                    {{-- <div class="col-sm-8"  style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required" name="fname" class="form-control" required> --}}
-                    {{-- </div> --}}
+                    <div class="col-sm-4">ID:</div>
+                    <div class="col-sm-8"  style="margin:0 0 .8em 0;">
+                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required" name="fname" class="form-control" required>
+                    </div>
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgn_desc" name="fname" data-parsley-required-message="*<strong>Name</strong> required" class="form-control"  required>
@@ -226,7 +226,7 @@
                   data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
                   success: function(data){
                       if (data == "DONE") {
-                          alert('Successfully Edited Assessment');
+                          alert('Successfully Edited Class');
                           window.location.href = "{{ asset('/employee/dashboard/mf/assessment') }}";
                       }
                   }

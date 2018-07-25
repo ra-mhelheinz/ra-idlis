@@ -79,7 +79,7 @@
   background-color: green;
 }*/
 </style>
-<script type="text/javascript">
+{{-- <script type="text/javascript">
   $(function(){
     var fileInput = $('.upload-file');
     var maxSize = fileInput.data('max-size');
@@ -99,7 +99,7 @@
 
     });
 });
-</script>
+</script> --}}
 {{--   <div style="position: fixed;   right: 0; z-index: 999999;">
     <form class="form-inline">
       <div class="input-group" >
@@ -112,7 +112,7 @@
 
   </div> --}}
 
-   <div style="font-size:30px;cursor:pointer; position: fixed; right: 0; z-index: 999;color: #fff;background-color: #1540B2" onclick="openNav()"><i class="fa fa-angle-double-left"></i></div>
+   <div style="font-size:30px;cursor:pointer; position: fixed; right: 0; z-index: 999;color: #fff;background-color: #1540B2; padding: 3px;border-radius: 3px;" onclick="openNav()"><i class="fa fa-angle-double-left"></i></div>
 <script type="text/javascript">
   function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
@@ -156,7 +156,7 @@ function closeNav() {
       <hr>
 
       <div id="gg_err" data-spy="scroll" data-offset="0">
-         <form method="post" action="{{asset('client/preassessment')}}" id="preform">
+         <form method="post" action="{{asset('client/preassessment')}}" id="preform" enctype="multipart/form-data">
         {{ csrf_field() }}
         @foreach($countass as $countasss)
           @php
@@ -178,18 +178,18 @@ function closeNav() {
                       </h5>
                   </div>
                   <div class="col-sm-2 text-center">
-                     <input class="radio isHidden" name="radio_{{$assessments->asmt_id}}" type="radio" value="1">
-                       <label id="radio_{{$assessments->asmt_id}}1" for="radio_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 1)"><i class="fa fa-check"></i></label>
-
-                     <input class="radio isHidden" name="radio_{{$assessments->asmt_id}}" type="radio" value="0">
-                       <label id="radio_{{$assessments->asmt_id}}2" for="radio_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 2)"><i class="fa fa-times"></i></label>
+                    <input type="hidden" name="upID[]" value="{{$assessments->asmt_id}}">
+                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="complied_{{$assessments->asmt_id}}" type="radio" value="1" hidden>
+                      <label id="radio_{{$assessments->asmt_id}}1" for="complied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 1)"><i class="fa fa-check"></i></label>
+                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="notcomplied_{{$assessments->asmt_id}}" type="radio" value="0" hidden>
+                      <label id="radio_{{$assessments->asmt_id}}2" for="notcomplied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 2)"><i class="fa fa-times"></i></label>
                   </div>
                   <div class="col-3 text-center">
-                      <input type="file" class="file" name="file_{{$assessments->asmt_id}}">
+                      <input type="file" class="file" name="file[]">
                                           
                   </div>
                   <div class="col-sm-3 text-center">
-                    <textarea placeholder="Remarks" name="remarks_{{$assessments->asmt_id}}"></textarea>
+                    <textarea placeholder="Remarks" name="remarks[]"></textarea>
                   </div>
               </div>
               <hr>
@@ -215,9 +215,10 @@ function closeNav() {
         <div id="mess_ere"></div>
         <button form="preform" onclick="val_req()" class="btn-primarys" type="submit" style="background-color: #228B22 !important" id="submt">Submit <i class="fa fa-send-o"></i></button>
         </div>
-      </div>
-
-      <script type="text/javascript">
+      </div> 
+</div>
+</div>
+<script type="text/javascript">
         var str = parseInt(document.getElementsByName('bobonneed')[0].id);
         var end = parseInt(document.getElementsByName('bobonneed')[(document.getElementsByName('bobonneed').length - 1)].id);
         var l = str;
@@ -227,20 +228,21 @@ function closeNav() {
             var cheat = 0;
             var err_id = "";
             var err_arr = []; 
-            for(var j = 0; j < document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file').length; j++){
-              if(document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file')[j].value == "") {
-                cheat++;
-                if(err_id == "") { err_id = "err"+((l==1)?l:l-1)+"_"+j+""; }
-                err_arr.push("err"+((l==1)?l:l-1)+"_"+j+"");
-                if (document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file')[j].files['length'] > 0) {
-                  if (document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file')[j].files[0].size >2000000) {
-                    alert("asdf");
-                  }
-                }
-              } else {
 
-              }
-            }
+            // for(var j = 0; j < document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file').length; j++){
+            //   if(document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file')[j].value == "") {
+            //     cheat++;
+            //     if(err_id == "") { err_id = "err"+((l==1)?l:l-1)+"_"+j+""; }
+            //     err_arr.push("err"+((l==1)?l:l-1)+"_"+j+"");
+            //     if (document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file')[j].files['length'] > 0) {
+            //       if (document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file')[j].files[0].size >2000000) {
+            //         alert("asdf");
+            //       }
+            //     }
+            //   } else {
+
+            //   }
+            // }
             for(var j = 0; j < document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('radio').length; j++){
               if(document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('radio')[j].checked == false) {
                 if(document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('radio')[(j+1)].checked == false) {
@@ -389,9 +391,7 @@ function closeNav() {
         }
         next_bob(0);
         gt_rq();
-      </script>
-</div>
-</div>
+</script>
 <script type="text/javascript">
   function ch_rdb(id, bool) {
     if(bool == 1) {

@@ -51,7 +51,44 @@
                 </tr>
                 </thead>
                 <tbody id="FilterdBody">
-                
+                    @if ($BigData)
+                      @foreach ($BigData as $data)
+                      @php
+                        $status = '';
+                        $paid = $data->appid_payment;
+                        $reco = $data->isrecommended;
+                        $ifdisabled = '';$color = '';
+                          if ($data->isrecommended === null) {
+                              $status = 'For Evaluation';
+                              $color = 'blue';
+                          } else if ($data->isrecommended == 0){
+                            $status = 'Application Rejected';
+                            $color = 'red';
+                          }
+                          else {
+                             $status = 'Application Approved';
+                             $color = 'green';
+                          }
+                          if ($paid == null || paid == 0) {
+                              $status = 'For Evaluation (Not Paid)';
+                              $color = 'red';
+                              $ifdisabled = 'disabled';
+                          }
+                      @endphp
+                      <tr>
+                        <td>{{$data->hfser_id}}</td>
+                        <td>{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}</td>
+                        <td><strong>{{$data->facilityname}}</strong></td>
+                        <td>{{$data->facname}}</td>
+                        <td>{{$data->formattedDate}}</td>
+                        <td>{{$data->aptdesc}}</td>
+                        <td style="color:{{$color}};font-weight:bold;">{{$status}}</td>
+                          <td>
+                              <button type="button" title="Evaluate {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}', '{{$data->brgyname}}', '{{$data->classname}}','{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}', '{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', {{$data->provname}}, '{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', {{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});"  {{$ifdisabled}}><i class="fa fa-fw fa-clipboard-check"></i></button>
+                          </td>
+                      </tr>
+                      @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

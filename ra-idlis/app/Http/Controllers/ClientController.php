@@ -314,13 +314,15 @@ class ClientController extends Controller
                               ->select('facility_requirements.*','upload.*','type_facility.*')
                               ->where('type_facility.hfser_id','=', $selectedType)
                               ->get();
-            $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();
-               // return dd($upld);               
+            // $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();
+               // return dd($traintype);               
             // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
-            return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld, 'position'=>$position, 'section'=>$section, 'department'=>$department, 'traintype'=>$traintype, 'plicensetype'=>$plicensetype, 'appidinc'=>$appidinc->appid+1]);
+          return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld, 'position'=>$position, 'section'=>$section, 'department'=>$department, 'traintype'=>$traintype, 'plicensetype'=>$plicensetype]);
+          // , 'appidinc'=>$appidinc->appid+1
       }
         if ($request->isMethod('post')) {
               $employeeData = session('client_data');
+              // return dd();assignedRgn
               $msg_dr = (($request->draft != "0") ? 'Successfully saved as draft' : 'Success! Application Submitted.');
               //OthersSelected
               $Cls = ($request->CLS == "OTHER") ? $request->OthersSelected : $request->CLS;
@@ -346,8 +348,8 @@ class ClientController extends Controller
                                     't_time'=> $timeNow,
                                     't_date' => $dateNow,
                                     'ipaddress'=> request()->ip(),
+                                    'assignedRgn' => $employeeData->rgnid,
                                   );
-
                 // Tested
                 DB::table('appform')->insert($insertData);
                 $NewId = DB::getPdo()->lastInsertId();
@@ -430,7 +432,54 @@ class ClientController extends Controller
         return view('client.preassessment', ['assessment'=>$assessment, 'countass'=>$countass]);
       }
       if ($request->isMethod('post')) {
-        return view('client/index');
+        // if (count($request->radio) > 0) {
+        //   for ($i=0; $i < count($request->radio); $i++) { 
+        //     dd($i);
+        //   }
+        // }
+        // dd($request->all());
+        $NewId = DB::getPdo()->lastInsertId();
+        $employeeData = session('client_data');
+        for ($i=0; $i < count($request->upID); $i++) {
+            $dt = Carbon::now();
+            $complied = $request->complied[$request->upID[$i]];
+            $fileup = $request->file[$i];
+            $remarks = $request->remarks[$i];
+            $dateNow = $dt->toDateString(); /// Date
+            $timeNow = $dt->toTimeString(); /// Time
+
+            DB::table('app_assessment')->insert([
+                    'uid' => $employeeData->uid,
+                    'sa_remarks' => $remarks,
+                    'sa_tdate' => $dateNow,
+                    'sa_ttime' => $timeNow,
+            ]);
+             try { $filename = $fileup->getClientOriginalName(); } catch(Exception $e) {}
+                                // $FileUploaded->store('public/uploaded');
+                                // FILENAME
+            try { $filenameOnly = pathinfo($filename,PATHINFO_FILENAME ); } catch(Exception $e) {} // FILE NAME ONLY
+            // EXTENSION
+            try { $fileExtension = $fileup->getClientOriginalExtension(); } catch(Exception $e) {}
+                                // FILENAME TO STORE
+            $fileNameToStore = $filename.'_'.time().'.'.$fileExtension; 
+                                // UPLOAD FILE
+            try { $path = $fileup->storeAs('public/uploaded', $fileNameToStore); } catch(Exception $e) {} // UPLOAD FILE
+                                // FILE SIZE
+            try { $fileSize = $fileup->getClientSize();   } catch(Exception $e) {}
+                                /////////////////////////////////////////////////////// UPLOAD FILE
+            $InsertUpload = array(
+                'app_id' => $NewId,
+                'filepath'=> $fileNameToStore,
+                'fileExten' => $fileExtension,
+                'fileSize' => $fileSize,
+                't_date' => $dateNow,
+                't_time' => $timeNow,
+                'ipaddress' =>request()->ip(),
+              );
+            DB::table('app_upload')->insert($InsertUpload);
+
+          }
+        return view('client.index');
       }
     }
      public function status(Request $request){
@@ -441,6 +490,9 @@ class ClientController extends Controller
     public function payment(Request $request){
       if($request->isMethod('get')){
         return view ('client.payment');
+      }
+      if($request->isMethod('post')){
+        
       }
     }
     public function op_form(Request $req, $col, $id){
