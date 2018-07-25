@@ -110,6 +110,7 @@ Route::match(['get', 'post'],'/employee/dashboard/pf/view','DOHController@PfView
 Route::match(['get','post'], '/employee/dashboard/lps/evaluate/{appid}', 'DOHController@EvalOne');
 Route::match(['get','post'], '/employee/dashboard/lps/evaluate/{appid}/{oop_id}/add', 'DOHController@EvalAddOOP');
 Route::match(['get','post'], '/employee/dashboard/lps/evaluate/{appid}/{oop_id}/view', 'DOHController@EvalViewOOP');
+Route::match(['get', 'post'], '/employee/dashboard/lps/assess', 'DOHController@Assess');
 Route::post('/employee/logout','DOHController@logout');
 Route::post('employee/getRights', 'DOHController@getSettings2');
 Route::post('/employee/grprights/check','DOHController@chckgr');
