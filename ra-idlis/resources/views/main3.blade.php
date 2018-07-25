@@ -12,9 +12,12 @@
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/button.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/animate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/parsley.css')}}">
+    {{-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="{{asset('ra-idlis/public/js/moment.js')}}"></script>
     <script src="{{asset('ra-idlis/public/js/num2words.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
     <title>Dashboard | DOH</title>
     @yield('style')
         <style type="text/css">

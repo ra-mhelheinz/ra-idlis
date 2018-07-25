@@ -37,15 +37,38 @@
           
           </span>
           <div class="table-responsive">
-            <table class="table table-hover" style="overflow-x: scroll;" >
+            <table class="table table-hover display" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
+                  <th style="width: 10%">Type</th>
                   <th style="width: 40%">Charge</th>
-                  <th style="width: 25%"><center>Amount</center></th>
+                  <th style="width: 15%"><center>Amount</center></th>
                   <th style="width: 35%"><center>Option</center></th>
                 </tr>
               </thead>
               <tbody id="FilterdBody">
+                {{-- @if ($BigData)
+                  @foreach ($BigData as $d)
+                  @php
+                    $sq = "";
+                      if ($TotalNumber > 1) {
+                        if ($d->chgopp_seq == 1) {$sq='&nbsp;<a href="#"><button onclick="Rearranged(\'down\', '.$d->oop_id.', '.$d->chgopp_seq.','.$d->chgopp_id.')" class="btn btn-info" title="Go Down"><i class="fa fa-sort-down"></i></button></a>';}
+                        else if ($d->chgopp_seq > 1 && $d->chgopp_seq < $TotalNumber) {$sq = '&nbsp;<a href="#"><button onclick="Rearranged(\'up\',\''.$d->oop_id.'\','.$d->chgopp_seq.','.$d->chgopp_id.')" class="btn btn-warning" title="Go Up"><i class="fa fa-sort-up"></i></button></a>&nbsp;<a href="#"><button  onclick="Rearranged(\'down\',\''.$d->oop_id.'\','.$d->chgopp_seq.','.$d->chgopp_id.')" class="btn btn-info" title="Go Down"><i class="fa fa-sort-down"></i></button></a>';}
+                        else {$sq='&nbsp;<a href="#"><button onclick="Rearranged(\'up\',\''.$d->oop_id.'\','.$d->chgopp_seq.','.$d->chgopp_id.')" class="btn btn-warning" title="Go Up"><i class="fa fa-sort-up"></i></button></a>';}
+
+                      }
+                  @endphp
+                    <tr>
+                      <td>{{$d->oop_id}}</td>
+                      <td>{{$d->chg_desc}}</td>
+                      <td><center>{{$d->amt}}</center></td>
+                      <td><center>
+                        <a href="#"><button data-toggle="modal" data-target="#ShowMeTheMoney" onclick="AddAmt({{$d->amt}}, {{$d->chgapp_id}}, '{{$d->chg_desc}}')" class="btn btn-success" title="Modify Amount"><i class="fa fa-edit"></i></button></a>&nbsp;
+                        <a href="#"><button  onclick="DelUploaded({{$d->chgopp_id}}, '{{$d->chg_desc}}', {{$d->oop_desc}}, '{{$d->oop_id}}')" class="btn btn-danger" title="Remove Charge"><i class="fa fa-trash"></i></button></a>{{$sq}}
+                      </center></td>
+                    </tr>
+                  @endforeach
+                @endif --}}
               </tbody>
             </table>
             </div>
@@ -67,7 +90,6 @@
                     Enter Amount:
                   </div>
                   <div class="col-sm-8" id="ShowTheMoneyBox">
-                      
                   </div>
                   <div class="col-sm-12">
                     <hr>
@@ -154,6 +176,9 @@
         </div>
       </div>
     <script type="text/javascript">
+     // $(document).ready(function() {
+     //     $('#example').DataTable();
+     //  } );
     	function filterGroup(){
         var id = $('#filterer').val();
         var token = $('#token').val();
@@ -181,6 +206,7 @@
                     	
                     	$('#FilterdBody').append(
                     			'<tr>' +
+                          '<td>'+d.oop_id+'</td>'+
                     				'<td>'+d.chg_desc+'</td>'+
                     				'<td><center>'+d.amt+'</center></td>'+
                     				'<td><center>'+

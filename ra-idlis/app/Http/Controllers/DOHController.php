@@ -1009,8 +1009,10 @@
 			}
 		}
 		public function OrderOfPayment(Request $request){
-			$data = DB::table('orderofpayment')->where('oop_id', '<>', 'N')->get();
-			return view('doh.mfoop', ['oops'=>$data] );
+			if ($request->isMethod('get')) {
+				$data = DB::table('orderofpayment')->where('oop_id', '<>', 'N')->get();
+				return view('doh.mfoop', ['oops'=>$data] );
+			}
 		}
 		public function EvalAddOOP(Request $request, $appid, $oop_id){
 			if ($request->isMethod('get')) {
@@ -1146,10 +1148,17 @@
 		}
 		public function ChgOop(Request $request){
 			if ($request->isMethod('get')) {
+				$data = DB::table('chg_oop')
+								->join('charges', 'chg_oop.chg_code', '=', 'charges.chg_code')
+								->join('orderofpayment', 'chg_oop.oop_id', '=', 'orderofpayment.oop_id')
+								->join('chg_app', 'chg_oop.chgapp_id', '=', 'chg_app.chgapp_id')
+								// ->where('chg_oop.oop_id', '=', $request->id)
+								->orderBy('chg_oop.oop_id','asc')
+								->get();
 				$data1 = DB::table('orderofpayment')->where('oop_id', '<>', 'N')->get();
 				$data2 = DB::table('charges')->get();
-				// return dd($data1);
-				return view('doh.mfChgOop',['OOPs'=>$data1, 'Chrgs' => $data2]);
+				// return dd($data);
+				return view('doh.mfChgOop',['OOPs'=>$data1, 'Chrgs' => $data2, 'BigData' => $data, 'TotalNumber' => count($data)]);
 			}
 			if ($request->isMethod('post')) {
 				/// oop_id
@@ -1287,6 +1296,11 @@
 						'partid' => $request->partid,
 					]);
 				return 'DONE';
+			}
+		}
+		public function Assess(Request $request){
+			if ($request->isMethod('get')) {
+				return view('doh.lpsAssess');
 			}
 		}
 	}
