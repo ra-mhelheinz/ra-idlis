@@ -314,13 +314,15 @@ class ClientController extends Controller
                               ->select('facility_requirements.*','upload.*','type_facility.*')
                               ->where('type_facility.hfser_id','=', $selectedType)
                               ->get();
-            $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();
-               // return dd($upld);               
+            // $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();
+               // return dd($traintype);               
             // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
-            return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld, 'position'=>$position, 'section'=>$section, 'department'=>$department, 'traintype'=>$traintype, 'plicensetype'=>$plicensetype, 'appidinc'=>$appidinc->appid+1]);
+          return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld, 'position'=>$position, 'section'=>$section, 'department'=>$department, 'traintype'=>$traintype, 'plicensetype'=>$plicensetype]);
+          // , 'appidinc'=>$appidinc->appid+1
       }
         if ($request->isMethod('post')) {
               $employeeData = session('client_data');
+              // return dd();assignedRgn
               $msg_dr = (($request->draft != "0") ? 'Successfully saved as draft' : 'Success! Application Submitted.');
               //OthersSelected
               $Cls = ($request->CLS == "OTHER") ? $request->OthersSelected : $request->CLS;
@@ -346,8 +348,8 @@ class ClientController extends Controller
                                     't_time'=> $timeNow,
                                     't_date' => $dateNow,
                                     'ipaddress'=> request()->ip(),
+                                    'assignedRgn' => $employeeData->rgnid,
                                   );
-
                 // Tested
                 DB::table('appform')->insert($insertData);
                 $NewId = DB::getPdo()->lastInsertId();

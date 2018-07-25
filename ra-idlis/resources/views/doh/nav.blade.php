@@ -122,6 +122,7 @@
                         </li>
                         <li><a href="#AssMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-tasks"></i>&nbsp;Assessment</a>
                             <ul id="AssMenu" class="list-unstyled collapse">
+                                {{-- <li class=""><a href="{{ asset('/employee/dashboard/mf/pre-assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Pre-Assessment</a></li> --}}
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/part') }}">&nbsp;&nbsp;&nbsp;&nbsp;Part</a></li>
                             </ul>
