@@ -215,9 +215,10 @@ function closeNav() {
         <div id="mess_ere"></div>
         <button form="preform" onclick="val_req()" class="btn-primarys" type="submit" style="background-color: #228B22 !important" id="submt">Submit <i class="fa fa-send-o"></i></button>
         </div>
-      </div>
-
-      <script type="text/javascript">
+      </div> 
+</div>
+</div>
+<script type="text/javascript">
         var str = parseInt(document.getElementsByName('bobonneed')[0].id);
         var end = parseInt(document.getElementsByName('bobonneed')[(document.getElementsByName('bobonneed').length - 1)].id);
         var l = str;
@@ -227,6 +228,7 @@ function closeNav() {
             var cheat = 0;
             var err_id = "";
             var err_arr = []; 
+<<<<<<< HEAD
             // for(var j = 0; j < document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file').length; j++){
             //   if(document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file')[j].value == "") {
             //     cheat++;
@@ -238,6 +240,19 @@ function closeNav() {
             //       }
             //     }
             //   } else {
+=======
+            for(var j = 0; j < document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file').length; j++){ // Check Upload
+              if(document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file')[j].value == "") {
+                cheat++;
+                if(err_id == "") { err_id = "err"+((l==1)?l:l-1)+"_"+j+""; }
+                err_arr.push("err"+((l==1)?l:l-1)+"_"+j+"");
+                if (document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file')[j].files['length'] > 0) {
+                  if (document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('file')[j].files[0].size >2000000) { // Para Check sa ge upload
+                    alert("asdf");
+                  }
+                }
+              } else {
+>>>>>>> 2f779bfdf88cb8bf3857318c684f75f64c4d4ee3
 
             //   }
             // }
@@ -389,9 +404,7 @@ function closeNav() {
         }
         next_bob(0);
         gt_rq();
-      </script>
-</div>
-</div>
+</script>
 <script type="text/javascript">
   function ch_rdb(id, bool) {
     if(bool == 1) {

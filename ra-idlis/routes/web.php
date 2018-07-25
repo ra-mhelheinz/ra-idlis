@@ -100,6 +100,7 @@ Route::match(['get', 'post'],'/employee/dashboard/mf/work_status','DOHController
 Route::match(['get', 'post'],'/employee/dashboard/mf/work','DOHController@Work')->name('mfWork');
 Route::match(['get', 'post'],'/employee/dashboard/mf/part','DOHController@Part')->name('mfPart');
 Route::match(['get', 'post'],'/employee/dashboard/mf/assessment','DOHController@AsMent')->name('mfAsMent');
+// Route::match(['get', 'post'],'/employee/dashboard/mf/pre-assessment', 'DOHController@PreAsMent')->name('mfPreAsMent');
 Route::match(['get', 'post'],'/employee/dashboard/mf/personnel','DOHController@PerSoNel')->name('mfPersonnel');
 Route::match(['get', 'post'],'/employee/dashboard/mf/eligibility','DOHController@Eligibility')->name('mfEligibility');
 Route::match(['get', 'post'],'/employee/dashboard/mf/orderofpayment','DOHController@OrderOfPayment')->name('mfOrderOfPayment');

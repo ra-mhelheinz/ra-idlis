@@ -55,7 +55,41 @@
                 </tr>
                 </thead>
                 <tbody id="FilterdBody">
-                
+                @if ($BigData)
+                  @foreach ($BigData as $data)
+                  @php
+                    $status = ''; $color = '';
+                    $paid = $data->appid_payment;
+                          $reco = $data->isrecommended;
+                          if ($data->isrecommended == null) {
+                              $status = 'For Evaluation';
+                              $color = 'black';
+                          }else if ($data->isrecommended == 1) {
+                            $status = 'Application Approved';
+                            $color = 'green';
+                          }
+                          if ($paid == null) {
+                              $status = 'For Evaluation (Not Paid)';
+                              $color = 'red';
+                          }
+                  @endphp
+                    <tr>
+                      <td style="text-align:center">{{$data->hfser_id}}</td>
+                      <td style="text-align:center">{{$data->hfser_id}}R{{$data->assignedRgn}}-{{$data->appid}}</td>
+                      <td style="text-align:center"><strong>{{$data->facilityname}}</strong></td>
+                      <td style="text-align:center">{{$data->rgn_desc}} - <strong>{{$data->formattedLOName}}</strong></td>
+                      <td style="color:{{$color}};text-align:center;font-weight:bold;">{{$status}}</td>
+                      <td style="text-align:center">
+                        <button style="background-color: #ffbc00f7" title="Change Assigned Region" type="button" class="btn-defaults" data-toggle="modal" data-target="#GoddessModal" onclick="showChangeRgnLO({{$data->appid}}, '{{$employeeGRP}}', {{$employeeREGION}});"><i class="fa fa-fw fa-edit"></i></button>&nbsp;
+                          @if ($employeeData->grpid == 'RA')
+                            <button style="background-color: #00ff1ff7" title="Assign LO" data-target="#GoderModal" data-toggle="modal" type="button" class="btn-defaults" onclick="PutAppID({{$data->appid}}, '{{$data->assignedRgn}}', '{{$employeeGRP}}')"><i class="fa fa-fw fa-plus" ></i></button>&nbsp;
+                          @endif
+                        <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}', '{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>&nbsp;
+                      <button style="background-color: #00f9f9" title="View Change Region and LO History" type="button" class="btn-defaults" data-toggle="modal" data-target="#ShowHistory" onclick="ShowHistoryDetailsNow('{{$data->facilityname}}', {{$data->appid}})"><i class="fa fa-fw fa-history"></i></button>&nbsp;
+                      </td>
+                    </tr>
+                  @endforeach
+                @endif
                 </tbody>
             </table>
         </div>
