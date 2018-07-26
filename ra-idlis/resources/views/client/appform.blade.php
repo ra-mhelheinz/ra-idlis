@@ -175,6 +175,23 @@
 	  	loader(true);
 </script>
 @include('client.breadcrumb')
+@if(session()->has('del_succes'))
+<div id="asdf" class="alert alert-info alert-dismissible fade show" role="alert">
+					  <center><strong><i class="fas fa-exclamation"></i></strong> {{session()->get('del_succes')}}</center>
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					</div>
+@endif
+@if(session()->has('draft_error'))
+<div id="asdf" class="alert alert-danger alert-dismissible fade show" role="alert">
+					  <center><strong><i class="fas fa-exclamation"></i></strong> {{session()->get('draft_error')}}</center>
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					</div>
+@endif
+
 @if (session()->has('apply_succes'))
 			{{--Notice--}}
 			<div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -247,11 +264,11 @@
 		<input type="" name="_token" value="{{csrf_token()}}" hidden>
 		<div class="col-sm-12"><center><h4>{{$hfaci}}</h4></center></div>
 		<br>
-		@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
+		{{-- @if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
 			<input type="hidden" name="appid" id="appidinc" value="{{ $curr_tbl[0]->appid }}">
 		@else
-			{{-- <input type="hidden" name="appid" id="appidinc" value="{{ $appidinc }}"> --}}
-		@endif
+			<input type="hidden" name="appid" id="appidinc" value="{{ $appidinc }}">
+		@endif --}}
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-3">
@@ -1090,6 +1107,9 @@ $(document).ready(function(){
 			$('#HealFaServ').append('<option disabled selected hidden></option>');
 			for (var i = 0; i < Get_Ids.length; i++) {
 				var id = Get_Ids[i],selectedText = GetNames[i];
+
+
+				
 				$('#HealFaServ').append(
 						'<option id="'+id+'_healServ">'+selectedText+'</option>'
 					);

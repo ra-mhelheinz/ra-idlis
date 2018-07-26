@@ -124,20 +124,63 @@ function closeNav() {
     // document.getElementById("main").style.marginLeft= "0";
 }
 </script>
+<div class="modal fade" id="confirmmodal" role="dialog">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-body text-center">
+                Are you sure you want to delete?
+                <form action="{{ route('client.deldraft') }}" method="get">
+                <button type="submit" name="delmod" class="btn-primarys" id="yes" >Yes</button>
+                <button type="button" class="btn-defaults" data-dismiss="modal">No</button>
+                </form>          
+              </div>
+            </div>
+          </div>
+  </div>
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <div class="container">
-  <form class="form-group">
-    <input type="text" name="" class="form-control" style="margin-bottom: 2px;border-radius: 0;">
-    <button class="btn btn-success btn-block" style="border-radius: 0;">Save</button>
-  </form>
-  <div class="list-group">
-  <a href="#" class="list-group-item list-group-item-action"><small>Save List</small></a>
-  <a href="#" class="list-group-item list-group-item-action"><small></small></a>
-  <a href="#" class="list-group-item list-group-item-action"><small></small></a>
-  </div>
+
+    <input type="text" name="draftxt" id="draftxt" class="form-control form-control-sm" style="margin-bottom: 2px;border-radius: 0;outline:none !important;">
+    <button form="preform" name="submitpre" class="btn btn-success btn-block" type="submit" value="1" style="border-radius: 0;">Save <i class="fa fa-save"></i></button>
+
+    <ul class="list-group " style="margin-top: 5px;">
+    <li class="list-group-item text-center" >Save List</li>
+    @foreach($app_assessment as $app_assessments)
+
+       <li class="list-group-item">
+        <div class="row">
+          <div class="col-sm-12 text-center">
+          <a href="{{asset('client/preassessment/draft')}}" style="font-size: 15px;margin-left: -20px;">{{$app_assessments->draft}} ({{$app_assessments->sa_tdate}})
+          </a>
+          </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12">
+          <a class="delbtn" id="{{$app_assessments->draft}}" style="cursor: pointer;padding: 0" data-toggle="modal" data-target="#confirmmodal" ><button class="btn btn-danger btn-block" style="padding: 0;">Delete</button></a>
+        </div>
+        </div>
+        </li>
+    @endforeach
+  </ul>
   </div>
 </div>
+@if(session()->has('draft_success'))
+<div class="alert alert-{{session()->has('alert-type')}} alert-dismissible fade show" role="alert">
+            <center><strong><i class="fas fa-exclamation"></i></strong> {{session()->get('draft_success')}}</center>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+@endif
+{{-- @if(session()->has('error_submit'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <center><strong><i class="fas fa-exclamation"></i></strong> {{session()->get('error_submit')}}</center>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+@endif --}}
 <div class="jumbotron container" style="margin-top: 2em;box-shadow: 0px 2px 20px rgba(0,0,0,0.2);background-color: #fff;border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;">
     <div class="container">
      
@@ -156,7 +199,8 @@ function closeNav() {
       <hr>
 
       <div id="gg_err" data-spy="scroll" data-offset="0">
-         <form method="post" action="{{asset('client/preassessment')}}" id="preform" enctype="multipart/form-data">
+      <form method="post" action="{{asset('client/preassessment')}}" id="preform" enctype="multipart/form-data">
+        <input type="hidden" name="savetxt" id="savetxt">
         {{ csrf_field() }}
         @foreach($countass as $countasss)
           @php
@@ -179,9 +223,9 @@ function closeNav() {
                   </div>
                   <div class="col-sm-2 text-center">
                     <input type="hidden" name="upID[]" value="{{$assessments->asmt_id}}">
-                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="complied_{{$assessments->asmt_id}}" type="radio" value="1" hidden>
+                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="complied_{{$assessments->asmt_id}}" type="radio" value="1"  hidden>
                       <label id="radio_{{$assessments->asmt_id}}1" for="complied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 1)"><i class="fa fa-check"></i></label>
-                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="notcomplied_{{$assessments->asmt_id}}" type="radio" value="0" hidden>
+                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="notcomplied_{{$assessments->asmt_id}}" type="radio" value="0"  hidden>
                       <label id="radio_{{$assessments->asmt_id}}2" for="notcomplied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 2)"><i class="fa fa-times"></i></label>
                   </div>
                   <div class="col-3 text-center">
@@ -201,7 +245,7 @@ function closeNav() {
             @endforeach
           </div>
         @endforeach
-              </form>
+      </form>
       </div>
       <div class="text-center">
       <div id="mess_ere"></div>
@@ -213,11 +257,21 @@ function closeNav() {
         <br>
         <div class="text-center">
         <div id="mess_ere"></div>
-        <button form="preform" onclick="val_req()" class="btn-primarys" type="submit" style="background-color: #228B22 !important" id="submt">Submit <i class="fa fa-send-o"></i></button>
+        <button form="preform" onclick="val_req()" class="btn-primarys" type="submit" value="0" name="submitpre" style="background-color: #228B22 !important" id="submt">Submit <i class="fa fa-send-o"></i></button>
         </div>
       </div> 
 </div>
 </div>
+<script type="text/javascript">
+  $('#draftxt').on('input', function(){
+    var draftxt = $(this).val();
+      $('#savetxt').val(draftxt);
+  });
+  $('.delbtn').on('click', function(){
+    var delval = $(this).attr('id');
+    $('#yes').val(delval);
+  })
+</script>
 <script type="text/javascript">
         var str = parseInt(document.getElementsByName('bobonneed')[0].id);
         var end = parseInt(document.getElementsByName('bobonneed')[(document.getElementsByName('bobonneed').length - 1)].id);
