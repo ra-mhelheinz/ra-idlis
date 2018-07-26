@@ -348,78 +348,78 @@ function closeNav() {
             next_bob(inc);
           }
         }
-        // function val_req() {
-        //    document.getElementById('syd').style.pointerEvents="";
-        //   l = parseInt(document.getElementsByName('assess')[document.getElementsByName('assess').length-1].id.split("assess")[1]);
-        //   if(document.getElementById('assess'+l) != null) {
-        //     var cheat = 0;
-        //     var err_id = "";
-        //     var err_arr = [];
-        //     for(var j = 0; j < document.getElementById('assess'+l).getElementsByClassName('radio').length; j++){
-        //       if(document.getElementById('assess'+l).getElementsByClassName('radio')[j].checked == false) {
-        //         if(document.getElementById('assess'+l).getElementsByClassName('radio')[(j+1)].checked == false) {
-        //           cheat++;
-        //           if(err_id == "") { err_id = "err"+l+"_"+j+""; }
-        //           err_arr.push("err"+l+"_"+j+"");
-        //         } else {
+        function val_req() {
+          //  document.getElementById('syd').style.pointerEvents="";
+          // l = parseInt(document.getElementsByName('assess')[document.getElementsByName('assess').length-1].id.split("assess")[1]);
+          if(document.getElementById('assess'+l) != null) {
+            var cheat = 0;
+            var err_id = "";
+            var err_arr = [];
+            for(var j = 0; j < document.getElementById('assess'+l).getElementsByClassName('radio').length; j++){
+              if(document.getElementById('assess'+l).getElementsByClassName('radio')[j].checked == false) {
+                if(document.getElementById('assess'+l).getElementsByClassName('radio')[(j+1)].checked == false) {
+                  cheat++;
+                  if(err_id == "") { err_id = "err"+l+"_"+j+""; }
+                  err_arr.push("err"+l+"_"+j+"");
+                } else {
 
-        //         }
-        //       } else {
+                }
+              } else {
 
-        //       }
-        //       j++;
-        //     }
-        //     for(var j = 0; j < document.getElementById('assess'+l).getElementsByClassName('file').length; j++){
-        //       if(document.getElementById('assess'+l).getElementsByClassName('file')[j].value == "") {
-        //         cheat++;
-        //         if(err_id == "") { err_id = "err"+l+"_"+j+""; }
-        //         err_arr.push("err"+l+"_"+j+"");
-        //         if (document.getElementById('assess'+l).getElementsByClassName('file')[j].files['length'] > 0) {
-        //           if (document.getElementById('assess'+l).getElementsByClassName('file')[j].files[0].size >2000000) {
-        //             alert('asdf');
-        //           }
-        //         }
-        //       } else {
+              }
+              j++;
+            }
+            for(var j = 0; j < document.getElementById('assess'+l).getElementsByClassName('file').length; j++){
+              if(document.getElementById('assess'+l).getElementsByClassName('file')[j].value == "") {
+                cheat++;
+                if(err_id == "") { err_id = "err"+l+"_"+j+""; }
+                err_arr.push("err"+l+"_"+j+"");
+                if (document.getElementById('assess'+l).getElementsByClassName('file')[j].files['length'] > 0) {
+                  if (document.getElementById('assess'+l).getElementsByClassName('file')[j].files[0].size >2000000) {
+                    alert('asdf');
+                  }
+                }
+              } else {
 
-        //       }
-        //     }
+              }
+            }
 
-        //     if(cheat == 0 || inc == 0) {
-        //       document.getElementById('page_id').innerHTML = l;
-        //       document.getElementById('mess_ere').innerHTML = '';
-        //       for(var i = 0; i < document.getElementsByName('assess').length; i++) {
-        //         if(document.getElementsByName('assess')[i].id == "assess"+l) {
-        //           document.getElementsByName('assess')[i].removeAttribute('hidden');
-        //         } else {
-        //           document.getElementsByName('assess')[i].setAttribute('hidden', true);
-        //         }
-        //       }
+            if(cheat == 0 || inc == 0) {
+              document.getElementById('page_id').innerHTML = l;
+              document.getElementById('mess_ere').innerHTML = '';
+              for(var i = 0; i < document.getElementsByName('assess').length; i++) {
+                if(document.getElementsByName('assess')[i].id == "assess"+l) {
+                  document.getElementsByName('assess')[i].removeAttribute('hidden');
+                } else {
+                  document.getElementsByName('assess')[i].setAttribute('hidden', true);
+                }
+              }
 
-        //       if(str == l) {
-        //         document.getElementById("btnp").setAttribute('hidden', true);
-        //         document.getElementById("btnn").removeAttribute('hidden');
-        //         document.getElementById("submit_go").setAttribute('hidden', true);
-        //       } else if(end == l) {
-        //         document.getElementById("btnp").removeAttribute('hidden');
-        //         document.getElementById("btnn").setAttribute('hidden', true);
-        //         document.getElementById("submit_go").removeAttribute('hidden');
-        //       } else {
-        //         document.getElementById("btnp").removeAttribute('hidden');
-        //         document.getElementById("btnn").removeAttribute('hidden');
-        //         document.getElementById("submit_go").setAttribute('hidden', true);
-        //       }
-        //     } else {
-        //       l--;
-        //       document.getElementById('mess_ere').innerHTML = '<p>Complete the required fields</p>';
-        //       var loc = (location.href).split("#")[0];
-        //       var cows = loc + "#"+err_id+"";
-        //       location.href = cows;
-        //       gt_rq1(err_id);
-        //     }
-        //   } else {
-        //     next_bob(inc);
-        //   }
-        // }
+              if(str == l) {
+                document.getElementById("btnp").setAttribute('hidden', true);
+                document.getElementById("btnn").removeAttribute('hidden');
+                document.getElementById("submit_go").setAttribute('hidden', true);
+              } else if(end == l) {
+                document.getElementById("btnp").removeAttribute('hidden');
+                document.getElementById("btnn").setAttribute('hidden', true);
+                document.getElementById("submit_go").removeAttribute('hidden');
+              } else {
+                document.getElementById("btnp").removeAttribute('hidden');
+                document.getElementById("btnn").removeAttribute('hidden');
+                document.getElementById("submit_go").setAttribute('hidden', true);
+              }
+            } else {
+              l--;
+              document.getElementById('mess_ere').innerHTML = '<p>Complete the required fields</p>';
+              var loc = (location.href).split("#")[0];
+              var cows = loc + "#"+err_id+"";
+              location.href = cows;
+              gt_rq1(err_id);
+            }
+          } else {
+            next_bob(inc);
+          }
+        }
         function gt_rq() {
             var id = (window.location.hash).replace("#", "");
             if(id != null || id != "" ||id != undefined) {

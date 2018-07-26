@@ -86,6 +86,18 @@
     document.getElementById("navbarResponsive").classList.add("show");
   }
 </script>
+@if(session()->has('pre_success'))
+<div id="asdf" class="alert alert-success" id="alert" role="alert" style="position: absolute;">
+                <strong>!</strong> {{session()->get('pre_success')}}.
+</div>
+@endif
+<script type="text/javascript">
+    function remLd() { 
+      $('#exampleModalCenter').modal('show', {backdrop: 'static', keyboard: false});
+      setTimeout(function(){ $('#asdf').fadeOut(500); }, 3000);
+     };
+    remLd();
+  </script>
 <div class="container-fluid" style="z-index: 0; position:relative;"> 
     <div class="row">
       <div class="col-sm-12">
@@ -212,7 +224,7 @@
                 </div>
                 <div class="col-sm-6">
               <div class="card bg-warning text-white">
-                <div class="card-body" style="height: auto !important">Result</div>
+                <div class="card-body" style="height: auto !important">Result : @if($result->count()==0)Please take the Pre-assessment first. @else @isset($draft_ok) Complied({{$draft_ok}}), Not Complied({{$draft_not}}) @else No Result @endisset @endif</div>
               </div> 
               </div>       
             </div>
