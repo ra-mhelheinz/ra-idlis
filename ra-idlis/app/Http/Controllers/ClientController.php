@@ -333,7 +333,7 @@ class ClientController extends Controller
               // Tested
               $ddd = DB::table("appform")->where("draft", "=", $request->draft)->exists();
               if($ddd == true && $request->draft != '0') {
-                session()->flash('apply_succes',"Draft name already taken.");
+                session()->flash('draft_error',"Draft name already taken.");
                 return back();
               } else {
                 $insertData = array(  
@@ -403,6 +403,10 @@ class ClientController extends Controller
         return redirect()->route('client');
       }
     }
+    public function del_draft(Request $request){
+      DB::table('app_assessment')->where('draft', '=', $request->delmod )->delete();
+      return back();
+    }
     public function del_form(Request $req, $id) {
       $table = DB::table("appform")->where("appid", "=", $id)->delete();
       if($table) {
@@ -411,25 +415,28 @@ class ClientController extends Controller
           if(Storage::delete('public/uploaded/'.$data->filepath)) {
             $sqw = DB::table("app_upload")->where("app_id", "=", $id)->delete();
             if($sqw) {
-              session()->flash('apply_succes','Successfully deleted file and form');
+              session()->flash('del_succes','Successfully deleted file and form');
             } else {
-              session()->flash('apply_succes','Successfully deleted file and form, but error on deleting file record of upload');
+              session()->flash('del_succes','Successfully deleted file and form, but error on deleting file record of upload');
             }
           } else {
-            session()->flash('apply_succes','Error on deleting file but successfully deleted form');
+            session()->flash('del_succes','Error on deleting file but successfully deleted form');
           }
         }
         return back();
       } else {
-        session()->flash('apply_succes','Error on deleting form');
+        session()->flash('del_succes','Error on deleting form');
         return back();
       }
     }
     public function preassessment(Request $request){
+
+        $employeeData = session('client_data');
         $assessment = DB::table('assessment')->get();
+        $app_assessment = DB::table('app_assessment')->where('uid', '=', $employeeData->uid )->where('draft', '!=', '0')->distinct()->get(['draft', 'sa_tdate']);
         $countass = DB::table('part')->get();
       if($request->isMethod('get')){
-        return view('client.preassessment', ['assessment'=>$assessment, 'countass'=>$countass]);
+        return view('client.preassessment', ['assessment'=>$assessment, 'app_assessment'=>$app_assessment, 'countass'=>$countass]);
       }
       if ($request->isMethod('post')) {
         // if (count($request->radio) > 0) {
@@ -439,10 +446,43 @@ class ClientController extends Controller
         // }
         // dd($request->all());
         $NewId = DB::getPdo()->lastInsertId();
-        $employeeData = session('client_data');
+
+        switch ($request['submitpre']) {
+          case 1:
+           $draftxt = $request['savetxt'];
+           session()->flash('draft_success','Successfully save to draft');
+           session()->flash('alert-type','info');
+           $route = back();
+           $compliedd = 0;
+        $draftaken = DB::table('app_assessment')->where('draft', '=', $request->savetxt)->exists();
+          if (empty($request->savetxt)) {
+             session()->flash('draft_success','Draft name Required');
+           session()->flash('alert-type','danger');
+          }
+        else if ($draftaken == true) {
+           session()->flash('draft_success','Draft name already been taken');
+           session()->flash('alert-type','danger');
+           return back();
+        }
+
+            break;
+          case 0:
+           $draftxt = 0;
+           $route = redirect()->route('client.home');
+            break;
+          default:
+            
+            break;
+        }
+
         for ($i=0; $i < count($request->upID); $i++) {
+            $compliedd = 0;
+            if ($request->complied[$request->upID[$i]]!= null) {
+                $compliedd = $request->complied[$request->upID[$i]];
+            }
+            
             $dt = Carbon::now();
-            $complied = $request->complied[$request->upID[$i]];
+            $complied = $compliedd;
             $fileup = $request->file[$i];
             $remarks = $request->remarks[$i];
             $dateNow = $dt->toDateString(); /// Date
@@ -451,10 +491,15 @@ class ClientController extends Controller
             DB::table('app_assessment')->insert([
                     'uid' => $employeeData->uid,
                     'sa_remarks' => $remarks,
+                    't_date' =>  $dateNow,
+                    't_time' => $timeNow,
                     'sa_tdate' => $dateNow,
                     'sa_ttime' => $timeNow,
+                    'draft' => $draftxt,
+                    'complied' => $complied,
             ]);
-             try { $filename = $fileup->getClientOriginalName(); } catch(Exception $e) {}
+            if ($fileup != null) {
+            try { $filename = $fileup->getClientOriginalName(); } catch(Exception $e) {}
                                 // $FileUploaded->store('public/uploaded');
                                 // FILENAME
             try { $filenameOnly = pathinfo($filename,PATHINFO_FILENAME ); } catch(Exception $e) {} // FILE NAME ONLY
@@ -477,9 +522,10 @@ class ClientController extends Controller
                 'ipaddress' =>request()->ip(),
               );
             DB::table('app_upload')->insert($InsertUpload);
+            }
 
           }
-        return view('client.index');
+        return $route;
       }
     }
      public function status(Request $request){
