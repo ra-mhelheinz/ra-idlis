@@ -24,11 +24,11 @@
           <span id="success_add">
             
           </span>
-          <table class="table" style="overflow-x: scroll;" >
+          <table class="table" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 50%">Name</th>
-                  <th style="width: 15%"><center>Region</center></th>
+                  <th style="width: 40%">Name</th>
+                  <th style="width: 25%"><center>Region</center></th>
                   <th style="width: 10%"><center>Status</center></th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
@@ -38,7 +38,7 @@
                 <tr>
                   <td>{{$user->fname}} @if ($user->mname != "") {{substr($user->mname,0,1)}}. @endif {{$user->lname}}
                   </td>
-                  <td>{{$user->rgn_desc}}</td>
+                  <td><center>{{$user->rgn_desc}}</center></td>
                   <td>
                     <center>
                       @if ($user->isActive == 1)
@@ -57,9 +57,8 @@
                           <a href="#ReactovateAccount"><button data-toggle="modal" onclick="showIfActive({{$user->isActive}},'{{$user->uid}}','{{$user->fname}}','{{$user->mname}}','{{$user->lname}}')" data-target="#IfActiveModal" class="btn btn-success" title="Reactivate Account">&nbsp;<i class="fa fa-toggle-on"></i>&nbsp;</button></a>
                       @endif
                         <a href="#EditAccount"><button class="btn btn-warning" title="Edit Account">&nbsp;<i class="fa fa-edit"></i>&nbsp;</button></a>&nbsp;
-                      </center>
-                    
-                  </td>
+                      </center
+>                  </td>
                 </tr>
               @endforeach
               </tbody>
@@ -212,6 +211,9 @@
   </div>
 </div>
     <script type="text/javascript">
+      $(document).ready(function() {
+         $('#example').DataTable();
+      } );
         $('#RAdmin').on('submit', function(e){
           e.preventDefault();
               var form = $(this);

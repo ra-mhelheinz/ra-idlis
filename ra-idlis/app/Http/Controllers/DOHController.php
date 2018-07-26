@@ -374,6 +374,9 @@
 		public function lps(){ // Licensing Status Page
 			$Cur_useData = $this->getCurrentUserAllData();
 			$employeeData = session('employee_login');
+			$region = DB::table('region')->get();
+			$type = DB::table('hfaci_serv_type')->get();
+			$facility = DB::table('facilitytyp')->get();
 			$getData = DB::table('appform')
 								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
 								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
@@ -385,7 +388,7 @@
 								->where('appform.draft', '=', 0)
 								->first();
 			if (!$getData) {
-				return 'NONE';
+				return view('doh.lpsevaluate', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
 			} else {
 
 				if ($Cur_useData['grpid'] == 'NA') {
@@ -448,17 +451,17 @@
 					}
 				
 			}
-			$region = DB::table('region')->get();
-			$type = DB::table('hfaci_serv_type')->get();
-			$facility = DB::table('facilitytyp')->get();
 			// return dd($anotherData);
 			return view('doh.lps',['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region, 'LotsOfDatas' => $anotherData]);
 		}
 		public function evalute(Request $request){
 			if ($request->isMethod('get')) {
 				$Cur_useData = $this->getCurrentUserAllData();
-			$employeeData = session('employee_login');
-			$getData = DB::table('appform')
+				$employeeData = session('employee_login');
+				$region = DB::table('region')->get();
+				$type = DB::table('hfaci_serv_type')->get();
+				$facility = DB::table('facilitytyp')->get();
+				$getData = DB::table('appform')
 								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
 								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
 								->join('x08', 'appform.uid', '=', 'x08.uid')
@@ -468,12 +471,12 @@
 								->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname' )
 								->where('appform.draft', '=', 0)
 								->first();
-			if (!$getData) {
-				return 'NONE';
-			} else {
+				if (!$getData) {
+					return view('doh.lpsevaluate', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
+				} else {
 
-				if ($Cur_useData['grpid'] == 'NA') {
-					$anotherData = DB::table('appform')
+					if ($Cur_useData['grpid'] == 'NA') {
+						$anotherData = DB::table('appform')
 								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
 								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
 								->join('x08', 'appform.uid', '=', 'x08.uid')
@@ -487,8 +490,8 @@
 								->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname')
 								->where('appform.draft', '=', 0)
 								->get();
-				} else if ($Cur_useData['grpid'] == 'FDA' && $Cur_useData['grpid'] == 'LO') {
-					$anotherData = DB::table('appform')
+					} else if ($Cur_useData['grpid'] == 'FDA' && $Cur_useData['grpid'] == 'LO') {
+						$anotherData = DB::table('appform')
 								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
 								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
 								->join('x08', 'appform.uid', '=', 'x08.uid')
@@ -503,8 +506,8 @@
 								->where('appform.assignedLO', '=', $Cur_useData['cur_user'])
 								->where('appform.draft', '=', 0)
 								->get();
-				} else {
-					$anotherData = DB::table('appform')
+					} else {
+						$anotherData = DB::table('appform')
 								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
 								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
 								->join('x08', 'appform.uid', '=', 'x08.uid')
@@ -519,22 +522,19 @@
 								->where('appform.assignedRgn', '=', $Cur_useData['rgnid'])
 								->where('appform.draft', '=', 0)
 								->get();
-				}
-					for ($i=0; $i < count($anotherData); $i++) {
-						$time = $anotherData[$i]->t_time;
-						$newT = Carbon::parse($time);
-						$anotherData[$i]->formattedTime = $newT->format('g:i A');
-
-						$date = $anotherData[$i]->t_date;
-						$newD = Carbon::parse($date);
-						$anotherData[$i]->formattedDate = $newD->toFormattedDateString();
-						// ->diffForHumans()
 					}
+						for ($i=0; $i < count($anotherData); $i++) {
+							$time = $anotherData[$i]->t_time;
+							$newT = Carbon::parse($time);
+							$anotherData[$i]->formattedTime = $newT->format('g:i A');
+
+							$date = $anotherData[$i]->t_date;
+							$newD = Carbon::parse($date);
+							$anotherData[$i]->formattedDate = $newD->toFormattedDateString();
+							// ->diffForHumans()
+						}
 				
 			}
-				$region = DB::table('region')->get();
-				$type = DB::table('hfaci_serv_type')->get();
-				$facility = DB::table('facilitytyp')->get();
 				return view('doh.lpsevaluate', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region, 'BigData'=>$anotherData]);
 			}
 		}
@@ -1190,6 +1190,9 @@
 		public function assignNow(Request $request){
 			$Cur_useData = $this->getCurrentUserAllData();
 			$employeeData = session('employee_login');
+			$region = DB::table('region')->get();
+			$type = DB::table('hfaci_serv_type')->get();
+			$facility = DB::table('facilitytyp')->get();
 			$getData = DB::table('appform')
 								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
 								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
@@ -1201,7 +1204,7 @@
 								->where('appform.draft', '=', 0)
 								->first();
 			if (!$getData) {
-				return 'NONE';
+				return view('doh.lpsAssign',['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
 			} else {
 
 				if ($Cur_useData['grpid'] == 'NA') {
@@ -1277,9 +1280,6 @@
 						
 					}
 			}
-			$region = DB::table('region')->get();
-			$type = DB::table('hfaci_serv_type')->get();
-			$facility = DB::table('facilitytyp')->get();
 			return view('doh.lpsAssign',['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region, 'BigData' => $anotherData]);
 ;		}
 		public function PreAsMent(Request $request){
@@ -1300,7 +1300,17 @@
 		}
 		public function Assess(Request $request){
 			if ($request->isMethod('get')) {
-				return view('doh.lpsAssess');
+				$Cur_useData = $this->getCurrentUserAllData();
+				$employeeData = session('employee_login');
+				$region = DB::table('region')->get();
+				$type = DB::table('hfaci_serv_type')->get();
+				$facility = DB::table('facilitytyp')->get();
+				return view('doh.lpsAssess', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
+			}
+		}
+		public function AssessOne(Request $request, $appid){
+			if ($request->isMethod('get')) {
+				return view('doh.lpsAssessOne');
 			}
 		}
 	}

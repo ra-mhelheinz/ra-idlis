@@ -9,7 +9,7 @@
 <div class="content p-4">
     <datalist id="rgn_list">
       @foreach ($train as $trains)
-      <option value="{{$trains->ptid}}">{{$trains->ptdesc}}</option>
+      <option value="{{$trains->tt_id}}">{{$trains->ptdesc}}</option>
       @endforeach
     </datalist>
     <div class="card">
@@ -18,11 +18,11 @@
 
         </div>
         <div class="card-body">
-               <table class="table" style="overflow-x: scroll;" >
+               <table class="table" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 40%">ID</th>
-                  <th style="width: 35%">Description</th>
+                  <th style="width: 20%">ID</th>
+                  <th style="width: 55%">Description</th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
@@ -30,15 +30,15 @@
                 @if ($train)
                 @foreach ($train as $trains)
                   <tr>
-                    <td scope="row"> {{$trains->ptid}}</td>
+                    <td scope="row"> {{$trains->tt_id}}</td>
                     <td>{{$trains->ptdesc}}</td>
                     <td>
                       <center>
                         <span class="MA10_update">
-                          <button type="button" class="btn-defaults" onclick="showData('{{$trains->ptid}}', '{{$trains->ptdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                          <button type="button" class="btn-defaults" onclick="showData('{{$trains->tt_id}}', '{{$trains->ptdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
                         </span>
                         <span class="MA10_cancel">
-                          <button type="button" class="btn-defaults" onclick="showDelete('{{$trains->ptid}}', '{{$trains->ptdesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                          <button type="button" class="btn-defaults" onclick="showDelete('{{$trains->tt_id}}', '{{$trains->ptdesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
                         </span>
                       </center>
                     </td>
@@ -129,6 +129,9 @@
       </div> 
     </div>
     <script type="text/javascript">
+      $(document).ready(function() {
+         $('#example').DataTable();
+      } );
         function showData(id,desc){
           $('#EditBody').empty();
           $('#EditBody').append(

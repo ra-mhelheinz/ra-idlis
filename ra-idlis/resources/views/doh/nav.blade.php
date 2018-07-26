@@ -138,8 +138,8 @@
                         @endif
                         <li class=""><a href="{{asset('/employee/dashboard/lps/evaluate')}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
                         <li class=""><a href="{{asset('/employee/dashboard/lps/assess')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
-                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
-                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>
+                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
+                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>
                     </ul>
                 </li>
                 <li><a href="#" ><i class="fa fa-chart-bar"></i> Report</a></li>                
