@@ -2,6 +2,7 @@
  <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/css/service.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/engine1/style.css')}}" />
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/jquery.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 @section('content')
 <style type="text/css">
 
@@ -12,64 +13,61 @@
 </style>
 @include('client.nav')
 <div class="container jumbotron" style="background-color: #fff;">
-  <div id="accordion">
-    <p>List of Application</p>
-    <div class="card">
-      <div class="card-header">
-        <a class="card-link" data-toggle="collapse" href="#collapseOne">
-          <div class="row">
-          <div class="col-sm-10">
-          Application 1
-          </div>
-          <div class="col-sm-2 text-right" style="margin-top: 5px;"><i class="fa fa-chevron-down"></i></div>
-        </div>
-        </a>
-      </div>
-      <div id="collapseOne" class="collapse" data-parent="#accordion">
-        <div class="cardb" style="padding: 2%;">
-          <div class="row">
-            <div class="col-sm-2">Application Type:</div>
-            <div class="col-sm-10"></div>
-             <div class="col-sm-2">Date Applied:</div>
-            <div class="col-sm-10"></div>
-             <div class="col-sm-2">Date Evaluated:</div>
-            <div class="col-sm-10"></div>
-             <div class="col-sm-2">Date Inspected:</div>
-            <div class="col-sm-10"></div>
-             <div class="col-sm-2">Date Issued:</div>
-            <div class="col-sm-10"></div>
-             <div class="col-sm-2">Date Printed:</div>
-            <div class="col-sm-10"></div>
-             <div class="col-sm-2">Status:</div>
-            <div class="col-sm-10"></div>
-             <div class="col-sm-2">LTO No:</div>
-            <div class="col-sm-10"></div>
-             <div class="col-sm-2">Validity Date:</div>
-            <div class="col-sm-10"></div>
-          </div>
-          <div class="card-footer text-center">
-            <div><input type='file' title="Choose a video please" id="aa" onchange="pressed()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="fileLabel">Upload OR</label></div>
-            <br>
-            <button class="btn btn-outline-success">Submit</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+                 <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+          @for($i=0;$i<10;$i++)
+          <tr>
+            <td>{{ $i }}</td>
+            <td>Si</td>
+            <td>paolo</td>
+            <td>kay</td>
+            <td>gwapo</td>
+            <td>kaayo</td>
+            <td>OMG!</td>
+          </tr>
+          @endfor
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot>
+    </table>
+
 </div>
 <script type="text/javascript">
-  window.pressed = function(){
-    var a = document.getElementById('aa');
-    if(a.value == "")
-    {
-        fileLabel.innerHTML = "Choose file";
-    }
-    else
-    {
-        var theSplit = a.value.split('\\');
-        fileLabel.innerHTML = theSplit[theSplit.length-1];
-    }
-};
+//   window.pressed = function(){
+//     var a = document.getElementById('aa');
+//     if(a.value == "")
+//     {
+//         fileLabel.innerHTML = "Choose file";
+//     }
+//     else
+//     {
+//         var theSplit = a.value.split('\\');
+//         fileLabel.innerHTML = theSplit[theSplit.length-1];
+//     }
+// };
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
 </script>
   @include('client.sitemap')
 @endsection

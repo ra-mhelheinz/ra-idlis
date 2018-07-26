@@ -142,7 +142,27 @@ class ClientController extends Controller
     }
     public function home(Request $request){
     	if($request->isMethod('get')){
-    		return view('client.index');
+        $employeeData = session('client_data');
+        $result = DB::table('app_assessment')->where('uid', '=', $employeeData->uid )->where('draft', '=', '0')->get();
+        // dd($result->count()==0);
+        $draft_ok = 0;
+        $draft_not = 0;
+        foreach ($result as $ind_res) {
+          switch ($ind_res->complied) {
+            case $ind_res=='0':
+              $draft_not++;
+              break;
+            case $ind_res!='0':
+              $draft_ok++;
+              break;
+            
+            default:
+              $draft_not++;
+              break;
+          }
+
+        }
+    		return view('client.index', compact(['result'],['draft_ok'],['draft_not']));
     	}
     }
     public function apply(Request $request){
@@ -468,6 +488,7 @@ class ClientController extends Controller
             break;
           case 0:
            $draftxt = 0;
+           session()->flash('pre_success','Completed Assessment, you may now proceed to next step.');
            $route = redirect()->route('client.home');
             break;
           default:
