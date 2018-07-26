@@ -7,7 +7,7 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Evaluate Applicants
+           Assess Applicants
         </div>
         <div class="card-body table-responsive">
             <div style="float:left;margin-bottom: 5px">
@@ -239,7 +239,7 @@
         }        
     }
     function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment){
-        window.location.href = "{{ asset('/employee/dashboard/lps/evaluate') }}/" + appid;
+        window.location.href = "{{ asset('/employee/dashboard/lps/assess') }}/" + appid;
         // var status = '';
         // var paid = appid_payment;
         // var ifdisabled = '';

@@ -37,7 +37,7 @@
           
           </span>
           <div class="table-responsive">
-            <table class="table table-hover" style="overflow-x: scroll;" >
+            <table class="table table-hover" {{-- id="example" --}} style="overflow-x: scroll;" >
               <thead>
                 <tr>
                   <th style="width: 75%">Health Facility/Service</th>
@@ -176,6 +176,9 @@
         </div>
       </div>
     <script type="text/javascript">
+      // $(document).ready(function() {
+      //     $('#example').DataTable();
+      // } );
       var AddMenu = 0;
       function CancelRequirement (){
         $('#AddNewRequirementDIV').empty();

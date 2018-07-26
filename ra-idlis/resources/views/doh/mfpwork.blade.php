@@ -18,11 +18,11 @@
 
         </div>
         <div class="card-body">
-               <table class="table" style="overflow-x: scroll;" >
+               <table class="table" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 40%">ID</th>
-                  <th style="width: 35%">Description</th>
+                  <th style="width: 20%">ID</th>
+                  <th style="width: 55%">Description</th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
@@ -31,7 +31,7 @@
                   @foreach ($works as $work)
                   <tr>
                     <td scope="row"> {{$work->pworkid}}</td>
-                    <td>{{$work->pworkname}}</td>
+                    <td><strong>{{$work->pworkname}}</strong></td>
                     <td>
                       <center>
                         <span class="MA14_update">
@@ -134,6 +134,9 @@
     </div> 
     </div>
     <script type="text/javascript">
+      $(document).ready(function() {
+         $('#example').DataTable();
+      } );
         function showData(id,desc){
           $('#EditBody').empty();
           $('#EditBody').append(

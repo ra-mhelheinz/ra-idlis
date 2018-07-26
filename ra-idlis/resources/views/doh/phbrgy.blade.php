@@ -68,7 +68,7 @@
            </div>
         </div>
         <div class="card-body">
-               <table class="table" style="overflow-x: scroll;" >
+               <table class="table" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
                   <th style="width: 75%">Name</th>
@@ -163,6 +163,9 @@
       </div> 
     </div>
     <script type="text/javascript">
+        $(document).ready(function() {
+           $('#example').DataTable();
+        } );
         function showData(id,desc){
           $('#EditBody').empty();
           $('#EditBody').append(
@@ -246,18 +249,25 @@
             },
           success: function(data){
               if(data){
+                var table = $('#example').DataTable();
+                table.clear().draw();
                 for (var i = 0; i < data.length; i++) {
                  var  x = data[i];
-                 $('#FilterdBody').append(
-                      '<tr>'+
-                          '<td>'+x.brgyname+'</td>' +
-                          '<td>' +
-                          '<center>' +
-                            '<button type="button" class="btn-defaults" onclick="showData(\''+x.brgyname+'\', '+x.brgyid+');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>' +
-                          '</center>' +
-                          '</td>' +
-                      '</tr>'
-                  );
+                 $('#example').DataTable()
+                     .row
+                     .add([x.brgyname, '<center><button type="button" class="btn-defaults" onclick="showData(\''+x.brgyname+'\', '+x.brgyid+');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center>'
+                      ])
+                   .draw();
+                 // $('#FilterdBody').append(
+                 //      '<tr>'+
+                 //          '<td>'+x.brgyname+'</td>' +
+                 //          '<td>' +
+                 //          '<center>' +
+                 //            '<button type="button" class="btn-defaults" onclick="showData(\''+x.brgyname+'\', '+x.brgyid+');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>' +
+                 //          '</center>' +
+                 //          '</td>' +
+                 //      '</tr>'
+                 //  );
                 }
               }
           }

@@ -33,7 +33,7 @@
            </div>
         </div>
         <div class="card-body">
-               <table class="table" style="overflow-x: scroll;" >
+               <table class="table" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
                   <th style="width: 75%">Name</th>
@@ -116,6 +116,9 @@
       </div> 
     </div>
     <script type="text/javascript">
+      $(document).ready(function() {
+         $('#example').DataTable();
+      } );
         function showData(id,desc){
           $('#EditBody').empty();
           $('#EditBody').append(
@@ -135,15 +138,23 @@
         var x = $('#'+id+'_list option').map(function() {return $(this).val();}).get();
         $('#FilterdBody').empty();
         // $('#FilterdBody').append('<option value="">Select Province ...</option>');
+        var table = $('#example').DataTable();
+        table.clear().draw();
+        
           for (var i = 0; i < x.length; i++) {
             var d = $('#'+x[i]+'_pro').text();
             var e = $('#'+x[i]+'_pro').attr('value');
-            $('#FilterdBody').append(
-                        '<tr>'+
-                          '<td>'+d+'</td>' +
-                          '<td><center><button type="button" class="btn-defaults" onclick="showData(\''+e+'\',\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center></td>' +
-                        '</tr>'
-                        );
+             $('#example').DataTable()
+               .row
+               .add([d, '<center><button type="button" class="btn-defaults" onclick="showData(\''+e+'\',\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center>'
+                ])
+               .draw();
+            // $('#FilterdBody').append(
+            //             '<tr>'+
+            //               '<td>'+d+'</td>' +
+            //               '<td><center><button type="button" class="btn-defaults" onclick="showData(\''+e+'\',\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center></td>' +
+            //             '</tr>'
+            //             );
           } 
       }
       $('#addRgn').on('submit',function(event){

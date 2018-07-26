@@ -18,11 +18,11 @@
 
         </div>
         <div class="card-body">
-               <table class="table" style="overflow-x: scroll;" >
+               <table class="table" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 40%">ID</th>
-                  <th style="width: 35%">Description</th>
+                  <th style="width: 20%">ID</th>
+                  <th style="width: 55%">Description</th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
@@ -30,7 +30,7 @@
                 @foreach ($pwStats as $pwStat)
                   <tr>
                     <td scope="row"> {{$pwStat->pworksid}}</td>
-                    <td>{{$pwStat->pworksname}}</td>
+                    <td><strong>{{$pwStat->pworksname}}</strong></td>
                     <td>
                       <center>
                         {{-- <button type="button" class="btn-defaults" onclick="showData('{{$fas->facid}}', '{{$fas->facname}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button> --}}
@@ -128,6 +128,9 @@
     </div> 
     </div>
     <script type="text/javascript">
+      $(document).ready(function() {
+         $('#example').DataTable();
+      } );
         function showData(id,desc){
           $('#EditBody').empty();
           $('#EditBody').append(

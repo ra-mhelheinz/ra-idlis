@@ -18,12 +18,12 @@
 
         </div>
         <div class="card-body">
-               <table class="table" style="overflow-x: scroll;" >
+               <table class="table" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 40%">ID</th>
-                  <th style="width: 35%">Description</th>
-                  <th style="width: 25%"><center>Options</center></th>
+                  <th style="width: 20%">ID</th>
+                  <th style="width: 80%">Description</th>
+                  {{-- <th style="width: 25%"><center>Options</center></th> --}}
                 </tr>
               </thead>
               <tbody>
@@ -31,19 +31,19 @@
                   <tr>
                     <td scope="row"> {{$oop->oop_id}}</td>
                     <td>{{$oop->oop_desc}}</td>
-                    <td>
+                    {{-- <td>
                       <center>
-                        {{-- <span class="MA00_update">
+                        <span class="MA00_update">
                           <button type="button" class="btn-defaults" onclick="showData('{{$oop->oop_id}}', '{{$oop->oop_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
                         </span>
                         <span class="MA00_cancel">
                           <button type="button" class="btn-defaults" onclick="showDelete('{{$oop->oop_id}}', '{{$oop->oop_desc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
-                        </span> --}}
+                        </span>
                         <span class="MA00_cancel">
                           <button type="button" class="btn-defaults" onclick="location.href='{{asset('/')}}{{$oop->oop_link}}'"><i class="fa fa-fw fa-eye"></i></button>
                         </span>
                       </center>
-                    </td>
+                    </td> --}}
                   </tr>
                 @endforeach
               </tbody>
@@ -128,6 +128,9 @@
       </div> 
     </div>
     <script type="text/javascript">
+      $(document).ready(function() {
+          $('#example').DataTable();
+      } );
         function showData(id,desc){
           $('#EditBody').empty();
           $('#EditBody').append(
