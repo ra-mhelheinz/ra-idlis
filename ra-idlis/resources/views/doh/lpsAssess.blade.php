@@ -3,117 +3,114 @@
     <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
 @endsection
 @section('content')
-	<input type="text" id="CurrentPage" value="#" hidden>
-  	<script type="text/javascript">Right_GG();</script>
-  	<datalist id="rgn_list">
-	   {{-- @foreach ($fatypes as $fatype)
-	     <option id="{{$fatype->facid}}_pro" value="{{$fatype->facid}}">{{$fatype->facname}}</option>
-	   @endforeach --}}
-	</datalist>
+<input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Assess Applicants {{-- <a href="#" title="Add New Health Facility/Service" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a> --}}
-           <div style="float:right;display: inline-block;">
-            <input type="" id="token" value="{{ Session::token() }}" hidden>
-            {{-- <form class="form-inline">
-              <label>Filter : &nbsp;</label>
-              <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
-                <option value="">Select Health Facility/Service Type ...</option>
-                @foreach ($hfstypes as $hfstype)
-                  <option value="{{$hfstype->hfser_id}}">{{$hfstype->hfser_desc}}</option>
-                @endforeach
-              </select>
-              
-              </form> --}}
-           </div>
+           Assess Applicants
         </div>
-        <div class="card-body">
-               <table class="table display" id="example" style="overflow-x: scroll;" >
-              <thead>
+        <div class="card-body table-responsive">
+            <div style="float:left;margin-bottom: 5px">
+            <form class="form-inline">
+              <label>Filter : &nbsp;</label>
+              <input type="text" class="form-control" id="filterer" list="grp_list" onchange="filterGroup()" placeholder="Application Type">
+              &nbsp;
+              <select  class="form-control"  id="fa_list" onchange="" placeholder="Health Facility/Service">
+                        <option value="">Select Application Type.. </option>
+               </select>
+               <datalist id="grp_list">
+                @foreach ($types as $type)
+                  <option value="{{$type->hfser_id}}">{{$type->hfser_desc}}</option>
+                @endforeach
+              </datalist>
+              &nbsp;
+              @if ($employeeGRP == "NA")
+              <input type="text" class="form-control" id="filtererReg" list="rgn_list" onchange="" placeholder="Select Region">
+              @endif
+              <datalist id="rgn_list">
+                @foreach ($regions as $region)
+                  <option value="{{$region->rgn_desc}}">{{$region->rgnid}}</option>
+                @endforeach
+              </datalist>
+              &nbsp;
+              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});">Filter</button>
+              <input type="" id="token" value="{{ Session::token() }}" hidden>
+              </form>
+           </div>
+            <table class="table table-hover" style="font-size:13px;">
+                <thead>
                 <tr>
-                  <th scope="col">Type</th>
-                  <th scope="col">Code</th>
-                  <th scope="col">Name of Health Facility</th>
-                  <th scope="col">Type of Health Facility</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">&nbsp</th>
-                  <th scope="col">Status</th>
-                  <th scope="col"><center>Options</center></th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Application Code</th>
+                    <th scope="col">Name of Health Facility</th>
+                    <th scope="col">Type of Health Facility</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col">Current Status</th>
+                    <th scope="col">Options</th>
                 </tr>
-              </thead>
-              <tbody id="FilterdBody">
-                {{-- @foreach ($fatypes as $fatype)
-                  <tr>
-                          <td>{{$fatype->facid}}</td>
-                          <td>{{$fatype->facname}}</td>
-                          <td><center>
-                          <span class="MA05_update">
-                          <button type="button" class="btn-defaults" onclick="showData('{{$fatype->facid}}','{{$fatype->facname}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;
-                          </span>
-                          <span class="MA05_cancel">
-                          <button type="button" class="btn-defaults" onclick="showDelete('{{$fatype->facid}}', '{{$fatype->facname}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
-                       </span>
-                          </center></td>
-                        </tr>
-                @endforeach --}}
-              </tbody>
+                </thead>
+                <tbody id="FilterdBody">
+                    @if (isset($BigData))
+                      @foreach ($BigData as $data)
+                      @php
+                        $status = '';
+                        $paid = $data->appid_payment;
+                        $reco = $data->isrecommended;
+                        $ifdisabled = '';$color = '';
+                          if ($data->isrecommended === null) {
+                              $status = 'For Evaluation';
+                              $color = 'blue';
+                          } else if ($data->isrecommended == 0){
+                            $status = 'Application Rejected';
+                            $color = 'red';
+                          }
+                          else {
+                             $status = 'Application Approved';
+                             $color = 'green';
+                          }
+                          if ($paid == null || paid == 0) {
+                              $status = 'For Evaluation (Not Paid)';
+                              $color = 'red';
+                              $ifdisabled = 'disabled';
+                          }
+                      @endphp
+                      <tr>
+                        <td>{{$data->hfser_id}}</td>
+                        <td>{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}</td>
+                        <td><strong>{{$data->facilityname}}</strong></td>
+                        <td>{{$data->facname}}</td>
+                        <td>{{$data->formattedDate}}</td>
+                        <td>{{$data->aptdesc}}</td>
+                        <td style="color:{{$color}};font-weight:bold;">{{$status}}</td>
+                          <td>
+                              <button type="button" title="Evaluate {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}', '{{$data->brgyname}}', '{{$data->classname}}','{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}', '{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', {{$data->provname}}, '{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', {{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});"  {{$ifdisabled}}><i class="fa fa-fw fa-clipboard-check"></i></button>
+                          </td>
+                      </tr>
+                      @endforeach
+                    @endif
+                </tbody>
             </table>
         </div>
     </div>
         </div>
-         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius: 0px;border: none;">
-              <div class="modal-body text-justify" style=" background-color: #272b30;
-            color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Facility/Service</strong></h5>
-                <hr>
-                <div class="container">
-                  <form class="row" id="addCls" data-parsley-validate>
-                    {{ csrf_field() }}
-                    {{-- <div class="col-sm-4">Facility/Service Type:</div>
-                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                      <select id="hfser_id" data-parsley-required-message="*<strong>Facility/Service</strong> required" class="form-control" required>  
-                          <option value="">Select Facility/Service Type ...</option>
-                          @foreach ($hfstypes as $hfstype)
-                            <option value="{{$hfstype->hfser_id}}">{{$hfstype->hfser_desc}}</option>
-                          @endforeach
-                      </select>
-                    </div> --}}
-                    <div class="col-sm-4">ID:</div>
-                    <div class="col-sm-8"  style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required" name="fname" class="form-control" required>
-                    </div>
-                    <div class="col-sm-4">Description:</div>
-                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgn_desc" name="fname" data-parsley-required-message="*<strong>Name</strong> required" class="form-control"  required>
-                    </div>
-                    <div class="col-sm-12">
-                      <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
-                    </div> 
-                  </form>
-               </div>
-              </div>
-            </div>
-          </div>
     </div>
-    </div>
-    <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+<div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Application Type</strong></h5>
+              <h5 class="modal-title text-center"><strong>Evaluate Uploaded Application</strong></h5>
               <hr>
               <div class="container">
-                    <form id="EditNow" data-parsley-validate>
-                    <span id="EditBody">
+                    <form id="ViewNow" data-parsley-validate>
+                    <span id="ViewBody">
                     </span>
+                    <hr>
                     <div class="row">
-                      <div class="col-sm-6">
-                      <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
+                      <div class="col-sm-8">
+                      {{-- <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button> --}}
                     </div> 
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                       <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
                     </div>
                     </div>
@@ -123,151 +120,192 @@
           </div>
         </div>
       </div>
-      <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Delete Application Type</strong></h5>
-              <hr>
-              <div class="container">
-                <span id="DelModSpan">
-                </span>
-                <hr>
-                    <div class="row">
-                      <div class="col-sm-6">
-                      <button type="button" onclick="deleteNow();" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Yes</button>
-                    </div> 
-                    <div class="col-sm-6">
-                      <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>No</button>
-                    </div>
-                    </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> 
-    </div>
-    <script type="text/javascript">
-      //   $(document).ready(function() {
-      //     $('#example').DataTable();
-      // } );
-        function showData(id,desc){
-          $('#EditBody').empty();
-          $('#EditBody').append(
-              '<div class="col-sm-4">ID:</div>' +
-              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
-                '<input type="text" id="edit_name" value="'+id+'" class="form-control disabled" disabled>' +
-              '</div>' +
-              '<div class="col-sm-4">Description:</div>' +
-              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
-                '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
-              '</div>' 
-            );
-        }
-        function filterGroup(){
+<script type="text/javascript">
+  function filterGroup(){
         var id = $('#filterer').val();
         var token = $('#token').val();
-        var x = $('#'+id+'_list option').map(function() {return $(this).val();}).get();
-        $('#FilterdBody').empty();
-        // $('#FilterdBody').append('<option value="">Select Province ...</option>');
-          for (var i = 0; i < x.length; i++) {
-            var d = $('#'+x[i]+'_pro').text();
-            var e = $('#'+x[i]+'_pro').attr('value');
-            $('#FilterdBody').append(
-                        '<tr>'+
-                          '<td>'+e+'</td>' +
-                          '<td>'+d+'</td>' +
-                          '<td><center>'+
-                          '<span class="MA05_update">'+
-                          '<button type="button" class="btn-defaults" onclick="showData(\''+e+'\',\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;'+
-                          '</span>'+
-                          '<span class="MA05_cancel">' +
-                          '<button type="button" class="btn-defaults" onclick="showDelete(\''+e+'\', \''+d+'\');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>'+
-                        '</span>' +
-                          '</center></td>' +
-                        '</tr>'
-                        );
-          }
-      }
-      function getData(provname){
-          $('#edit_name').attr("value",provname);
-      } 
-      $('#addCls').on('submit',function(event){
-            event.preventDefault();
-            var form = $(this);
-            form.parsley().validate();
-            if (form.parsley().isValid()) {
-                var id = $('#new_rgnid').val();
-                var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
-                // console.log(arr);
-                var test = $.inArray(id,arr);
-                // console.log($('#hfser_id').val());
-                if (test == -1) { // Not in Array
-                    $.ajax({
-                      url: "{{asset('employee/dashboard/mf/faciserv')}}",
-                      method: 'POST',
-                      data: {
-                        _token : $('#token').val(),
-                        id: $('#new_rgnid').val(),
-                        name : $('#new_rgn_desc').val(),
-                        // hfser_id : $('#hfser_id').val(),
-                        mod_id : $('#CurrentPage').val(),
-                      },
-                      success: function(data) {
-                        if (data == 'DONE') {
-                            alert('Successfully Added New Facility/Service');
-                            window.location.href = "{{ asset('employee/dashboard/mf/faciserv') }}";
-                        }
-                      }
-                  });
-                } else {
-                  alert('Health Facility/Service ID is already been taken');
-                  $('#new_rgnid').focus();
-                }
-            }
-        });
-      $('#EditNow').on('submit',function(event){
-          event.preventDefault();
-            var form = $(this);
-            form.parsley().validate();
-             if (form.parsley().isValid()) {
-               var x = $('#edit_name').val();
-               var y = $('#edit_desc').val();
-               $.ajax({
-                  url: "{{ asset('/mf/save_faaptype') }}",
-                  method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
-                  success: function(data){
-                      if (data == "DONE") {
-                          alert('Successfully Edited Facility/Service');
-                          window.location.href = "{{ asset('/employee/dashboard/mf/faciserv') }}";
-                      }
+        $.ajax({
+                url: " {{asset('mf/getTypeFaci')}}",
+                method: 'POST',
+                data: {
+                  _token : token,
+                  hfser_id : id,
+                },
+                success: function(data) {
+                  if (data == 'NONE') {
+                      $('#fa_list').empty();
+                      $('#fa_list').append('<option value="">No Health Facility/Service Registered.</option>');
+                  } else {
+                      $('#fa_list').empty();
+                      $('#fa_list').append('<option value="">Select Health Facilty/Service</option>');
+                    for (var i = 0; i < data.length; i++) {
+                        $('#fa_list').append(
+                              '<option value="'+data[i].facid+'">'+data[i].facname+'</option>'
+                            );
+                    }
                   }
-               });
-             }
-        });
-      function showDelete (id,desc){
-            $('#DelModSpan').empty();
-            $('#DelModSpan').append(
-                '<div class="col-sm-12"> Are you sure you want to delete <span style="color:red"><strong>' + desc + '</strong></span>?' +
-                  // <input type="text" id="edit_desc2" class="form-control"  style="margin:0 0 .8em 0;" required>
-                '<input type="text" id="toBeDeletedID" class="form-control"  style="margin:0 0 .8em 0;" value="'+id+'" hidden>'+
-                '<input type="text" id="toBeDeletedname" class="form-control"  style="margin:0 0 .8em 0;" value="'+desc+'" hidden>'+
-                '</div>'
-              );
+                }
+            });
+      }
+    function FilterData(grpID,rgnID){
+        var hfser_id = '';
+        var facid = $('#fa_list').val();
+        var rgnid = '';
+        var ok = 1;
+        var selectedAppType = $('#filterer').val();
+        var appTypeNames = $('#grp_list option[value]').map(function () {return this.text}).get();  // Application Type Names
+        var appTypeID = $('#grp_list option[value]').map(function () {return this.value}).get();  // Application Type IDs
+        var testAppType = $.inArray(selectedAppType.toUpperCase(),appTypeID); // Check
+
+        if (testAppType < 0 ) { // Not Found
+            alert('PLEASE SELECT APPLICATION TYPE.');
+            $('#filterer').focus();
+            ok = 0;
+        } else if (facid == '') { // Not Found
+            alert('PLEASE SELECT FACILITY FACILITY/SERVICE');
+            $('#fa_list').focus();
+            ok = 0;
+        }else {
+            hfser_id = appTypeID[testAppType];
+            if (grpID == 'NA') {
+              var selected = $('#filtererReg').val(); // Selected
+              var names = $('#rgn_list option[value]').map(function () {return this.value}).get(); // Array for Names
+              var id = $('#rgn_list option[value]').map(function () {return this.text}).get(); // Array for IDs
+              var test = $.inArray(selected,names); // Check 
+              if (test < 0) {
+                alert('PLEASE SELECT A REGION');
+                $('#filtererReg').focus();
+                ok = 0;
+              } else {
+                rgnid = id[test];
+              }
+          } else {
+            rgnid = '{{$employeeREGION}}';
+          } 
         }
-        function deleteNow(){
-          var id = $("#toBeDeletedID").val();
-          var name = $("#toBeDeletedname").val();
+
+        if (ok == 1) {
           $.ajax({
-            url : "{{ asset('/mf/del_FaType') }}",
-            method: 'POST',
-            data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
-            success: function(data){
-              alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/faciserv') }}";
-            }
+              url: '{{asset('/lps/getLPS')}}',
+              method: 'POST',
+              data : {_token : $('#token').val(), hfser_ID : hfser_id, facID : facid, rgnID : rgnid, grpid : grpID},
+              success : function(data){
+                // console.log(data);
+                  if (data != 'NONE') {
+                      $('#FilterdBody').empty();
+                      for (var i = 0; i < data.length; i++) {
+                          var status = '';
+                          var paid = data[i].appid_payment;
+                          var reco = data[i].isrecommended;
+                          var ifdisabled = '';
+                          if (data[i].isrecommended === null) {
+                              status = '<span style="color:blue;font-weight:bold;">For Evaluation</span>';
+                          } else if (data[i].isrecommended == 0){
+                            status = '<span style="color:red;font-weight:bold;">Application Rejected</span>';
+                          }
+                          else {
+                              status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
+                          }
+
+                          if (paid == null || paid == 0) {
+                              status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
+                              ifdisabled = 'disabled';
+                          }
+                          
+                          // var app = data[i].approved
+                          $('#FilterdBody').append(
+                                '<tr>'+
+                                /// 'R'+data[i].rgnid+'
+                                  '<td>' + data[i].hfser_id + '</td>' +
+                                  '<td>' + data[i].hfser_id + 'R'+data[i].rgnid+'-' + data[i].appid + '</td>' +
+                                  '<td><strong>'+data[i].facilityname+'</strong></td>' +
+                                  '<td>'+data[i].facname+'</td>'+
+                                  '<td>'+data[i].formattedDate+'</td>'+
+                                  '<td>'+data[i].aptdesc+'</td>' +
+                                  '<td>'+status+'</td>'+
+                                  '<td>'+
+                                        '<button type="button" title="Evaluate '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+');"  '+ifdisabled+'><i class="fa fa-fw fa-clipboard-check"></i></button>'+
+                                  '</td>'+
+                                  // data-toggle="modal" data-target="#GodModal"
+                                '</tr>'
+                            );
+                      }
+                  } else{
+                    alert('Currently No Applications in this type.');
+                  }
+              }
           });
-        }
-    </script>
+
+        }        
+    }
+    function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment){
+        window.location.href = "{{ asset('/employee/dashboard/lps/assess') }}/" + appid;
+        // var status = '';
+        // var paid = appid_payment;
+        // var ifdisabled = '';
+        // if (isrecommended == null) {
+        //     tatus = "For Evaluation";
+        //   }
+        // if (paid == null) {
+        //      status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
+
+        //   }
+        // $('#ViewBody').empty();
+        // $('#ViewBody').append(
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Facility Name:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' + facilityname +
+        //         '</div>' +
+        //     '</div>' +
+        //     // '<br>' + 
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Address:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' + streetname + ', ' + brgyname + ', ' + cmname + ', ' + provname + ' - ' + zipcode +
+        //         '</div>' +
+        //     '</div>' +
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Owner:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' + authorizedsignature + 
+        //         '</div>' +
+        //     '</div>' +
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Applying for:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' + hfser_id + ' ('+hfser_desc+') - ' + aptdesc +
+        //         '</div>' +
+        //     '</div>' +
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Time and Date:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' + formattedTime + ' - ' + formattedDate +
+        //         '</div>' +
+        //     '</div>' +
+        //     '<div class="row">'+
+        //         '<div class="col-sm-4">Status:' +
+        //         '</div>' +
+        //         '<div class="col-sm-8">' +status +
+        //         '</div>' +
+        //     '</div>'
+        //   );
+
+        // $.ajax({
+        //     url : '{{ asset('/lps/getLPSUploads') }}' ,
+        //     method : 'POST',
+        //     data : {_token:$('#token').val(),appid: appid},
+        //     success : function (data){
+        //         if (data != 'NONE') {
+        //                 $('#ViewBody').empty();
+        //                 for (var i = 0; i < data.length; i++) {
+        //                   // data[i]
+        //                 }
+        //         } else{
+        //           /// ERROR / EMPTY
+        //         }
+        //     },  
+        // });
+    } 
+</script>
 @endsection

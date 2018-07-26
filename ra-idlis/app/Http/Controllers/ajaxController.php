@@ -324,6 +324,7 @@
 								->where('chg_oop.oop_id', '=', $request->id)
 								->orderBy('chg_oop.chgopp_seq','asc')
 								->get();
+			// return dd($data);
 			return response()->json(['data'=>$data,'TotalNumber'=>count($data)]);
 		}
 		public function getLO(Request $request){
@@ -400,6 +401,12 @@
 				return $data2;
 			} else {
 				return 'NONE';
+			}
+		}
+		public function getAssess(Request $request) {
+			$data = DB::table('app_assessment')->get();
+			if ($data) {
+				return $data;
 			}
 		}
 		// -------------------- SELECT --------------------

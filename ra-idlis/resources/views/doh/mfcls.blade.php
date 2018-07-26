@@ -138,9 +138,9 @@
       </div> 
     </div>
     <script type="text/javascript">
-      //$(document).ready(function() {
-      //    $('#example').DataTable();
-      //} );
+      $(document).ready(function() {
+         $('#example').DataTable();
+      } );
         function showData(id,desc){
           $('#EditBody').empty();
           $('#EditBody').append(
@@ -160,23 +160,39 @@
         var x = $('#'+id+'_list option').map(function() {return $(this).val();}).get();
         $('#FilterdBody').empty();
         // $('#FilterdBody').append('<option value="">Select Province ...</option>');
+        var table = $('#example').DataTable();
+        table.clear().draw();
           for (var i = 0; i < x.length; i++) {
             var d = $('#'+x[i]+'_pro').text();
             var e = $('#'+x[i]+'_pro').attr('value');
-            $('#FilterdBody').append(
-                        '<tr>'+
-                          '<td>'+e+'</td>' +
-                          '<td>'+d+'</td>' +
-                          '<td><center>'+
-                          '<span class="MA08_update">'+
-                          '<button type="button" class="btn-defaults" onclick="showData(\''+e+'\',\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;'+
-                          '</span>'+
+            var table = $('#example').DataTable();
+            $('#example').DataTable()
+               .row
+               .add([e,d,
+                      '<center>'+
+                        '<span class="MA08_update">'+
+                        '<button type="button" class="btn-defaults" onclick="showData(\''+e+'\',\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;'+
+                        '</span>'+
                           '<span class="MA08_cancel">' +
                           '<button type="button" class="btn-defaults" onclick="showDelete(\''+e+'\', \''+d+'\');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>'+
                         '</span>' +
-                          '</center></td>' +
-                        '</tr>'
-                        );
+                          '</center>'
+                  ])
+               .draw();
+              // $('#FilterdBody').append(
+              //             '<tr>'+
+              //               '<td>'+e+'</td>' +
+              //               '<td>'+d+'</td>' +
+              //               '<td><center>'+
+              //               '<span class="MA08_update">'+
+              //               '<button type="button" class="btn-defaults" onclick="showData(\''+e+'\',\''+d+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;'+
+              //               '</span>'+
+              //               '<span class="MA08_cancel">' +
+              //               '<button type="button" class="btn-defaults" onclick="showDelete(\''+e+'\', \''+d+'\');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>'+
+              //             '</span>' +
+              //               '</center></td>' +
+              //             '</tr>'
+              //             );
           }
       }
       function getData(provname){

@@ -32,7 +32,7 @@
           
           </span>
           <div class="table-responsive">
-            <table class="table table-hover" style="overflow-x: scroll;" >
+            <table class="table table-hover" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
                   <th style="width: 30%">Module</th>
@@ -113,6 +113,9 @@
         </div>
       </div>     
     <script type="text/javascript">
+      // $(document).ready(function() {
+      //    $('#example').DataTable();
+      // } );
       function filterGroup(){
         var id = $('#filterer').val();
         var token = $('#token').val();

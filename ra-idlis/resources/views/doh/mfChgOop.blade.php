@@ -41,7 +41,8 @@
               <thead>
                 <tr>
                   <th style="width: 10%">Type</th>
-                  <th style="width: 40%">Charge</th>
+                  <th style="width: 10%">#</th>
+                  <th style="width: 30%">Charge</th>
                   <th style="width: 15%"><center>Amount</center></th>
                   <th style="width: 35%"><center>Option</center></th>
                 </tr>
@@ -176,9 +177,9 @@
         </div>
       </div>
     <script type="text/javascript">
-     // $(document).ready(function() {
-     //     $('#example').DataTable();
-     //  } );
+     $(document).ready(function() {
+         $('#example').DataTable();
+      } );
     	function filterGroup(){
         var id = $('#filterer').val();
         var token = $('#token').val();
@@ -194,7 +195,10 @@
                     $('#FilterdBody').empty();
                   } else {
                     $('#FilterdBody').empty();
-                    for (var i = 0; i < data.data.length; i++) {
+                    var table = $('#example').DataTable();
+                    table.clear().draw();
+                    var x = data.data;
+                    for (var i = 0; i < x.length; i++) {
                     	var d = data.data[i];
                     	var sq = "";
                     	if (data.TotalNumber > 1) {
@@ -203,18 +207,27 @@
                     		else {sq='&nbsp;<a href="#"><button onclick="Rearranged(\'up\',\''+d.oop_id+'\','+d.chgopp_seq+','+d.chgopp_id+')" class="btn btn-warning" title="Go Up"><i class="fa fa-sort-up"></i></button></a>';}
 
                     	}
-                    	
-                    	$('#FilterdBody').append(
-                    			'<tr>' +
-                          '<td>'+d.oop_id+'</td>'+
-                    				'<td>'+d.chg_desc+'</td>'+
-                    				'<td><center>'+d.amt+'</center></td>'+
-                    				'<td><center>'+
-                    					'<a href="#"><button data-toggle="modal" data-target="#ShowMeTheMoney" onclick="AddAmt('+d.amt+','+d.chgapp_id+',\''+d.chg_desc+'\')" class="btn btn-success" title="Modify Amount"><i class="fa fa-edit"></i></button></a>&nbsp;'+
-                    					'<a href="#"><button  onclick="DelUploaded('+d.chgopp_id+',\''+d.chg_desc+'\', \''+d.oop_desc+'\',\''+d.oop_id+'\')" class="btn btn-danger" title="Remove Charge"><i class="fa fa-trash"></i></button></a>'+sq +
-                    				'</center></td>'+
-                    			'</tr>'
-                    		);
+                    	$('#example').DataTable()
+                           .row
+                           .add([d.oop_id, d.chgopp_seq,d.chg_desc,
+                                  '<center>' + d.amt + '</center>',
+                                  '<center>'+
+                              '<a href="#"><button data-toggle="modal" data-target="#ShowMeTheMoney" onclick="AddAmt('+d.amt+','+d.chgapp_id+',\''+d.chg_desc+'\')" class="btn btn-success" title="Modify Amount"><i class="fa fa-edit"></i></button></a>&nbsp;'+
+                              '<a href="#"><button  onclick="DelUploaded('+d.chgopp_id+',\''+d.chg_desc+'\', \''+d.oop_desc+'\',\''+d.oop_id+'\')" class="btn btn-danger" title="Remove Charge"><i class="fa fa-trash"></i></button></a>'+sq +
+                            '</center>'
+                              ])
+                           .draw();
+                    	// $('#FilterdBody').append(
+                    	// 		'<tr>' +
+                     //      '<td>'+d.oop_id+'</td>'+
+                    	// 			'<td>'+d.chg_desc+'</td>'+
+                    	// 			'<td><center>'+d.amt+'</center></td>'+
+                    	// 			'<td><center>'+
+                    	// 				'<a href="#"><button data-toggle="modal" data-target="#ShowMeTheMoney" onclick="AddAmt('+d.amt+','+d.chgapp_id+',\''+d.chg_desc+'\')" class="btn btn-success" title="Modify Amount"><i class="fa fa-edit"></i></button></a>&nbsp;'+
+                    	// 				'<a href="#"><button  onclick="DelUploaded('+d.chgopp_id+',\''+d.chg_desc+'\', \''+d.oop_desc+'\',\''+d.oop_id+'\')" class="btn btn-danger" title="Remove Charge"><i class="fa fa-trash"></i></button></a>'+sq +
+                    	// 			'</center></td>'+
+                    	// 		'</tr>'
+                    	// 	);
                     }
                   }
                 }

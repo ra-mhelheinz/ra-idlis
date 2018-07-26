@@ -55,7 +55,7 @@
                 </tr>
                 </thead>
                 <tbody id="FilterdBody">
-                @if ($BigData)
+                @if (isset($BigData))
                   @foreach ($BigData as $data)
                   @php
                     $status = ''; $color = '';
@@ -96,7 +96,6 @@
     </div>
         </div>
     </div>
-@endsection
 <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog {{-- modal-lg --}}" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
@@ -272,10 +271,12 @@
         var testAppType = $.inArray(selectedAppType.toUpperCase(),appTypeID); // Check
 
         if (testAppType < 0 ) { // Not Found
-            console.log('APPLICATION TYPE NOT FOUND');
+            alert('PLEASE SELECT APPLICATION TYPE.');
+            $('#filterer').focus();
             ok = 0;
         } else if (facid == '') { // Not Found
-            console.log('FACILITY/SERVICE NOT FOUND');
+            alert('PLEASE SELECT FACILITY FACILITY/SERVICE');
+            $('#fa_list').focus();
             ok = 0;
         }else {
 
@@ -286,7 +287,8 @@
               var id = $('#rgn_list option[value]').map(function () {return this.text}).get(); // Array for IDs
               var test = $.inArray(selected,names); // Check 
               if (test < 0) {
-                console.log('REGION NOT FOUND');
+                alert('PLEASE SELECT A REGION');
+                $('#filtererReg').focus();
                 ok = 0;
               } else {
                 rgnid = id[test];
@@ -340,7 +342,7 @@
                             );
                       }
                   } else{
-                    /// ERROR
+                    alert('Currently No Applications in this type.');
                   }
               }
           });
@@ -560,3 +562,4 @@
     }
     function AddLONow(){}
 </script>
+@endsection
