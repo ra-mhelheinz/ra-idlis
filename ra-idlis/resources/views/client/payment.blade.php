@@ -102,27 +102,83 @@
                  </div>  
                 </div>        
             </div>
-            <div class="row">
-              <div class="col-sm-12 text-center" id="asdf1" hidden>
-                ddfjkl;k
+            <div class="row" style="border: 1px solid rgba(0,0,0,.125);padding: 5%;border-radius: 5px;">
+              <div class="col-sm-6">
+                <h3 class="text-center">Payment Summary</h3>
+                @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
+                  <table class="table">
+                    <tr>
+                      <td>Description</td>
+                      <td>Amount</td>
+                    </tr>
+                    <?php $desc = $_POST['desc']; $amount = $_POST['amount']; $total = 0; ?>
+                    @for($i = 0; $i < count($amount); $i++)
+                      <?php $total = $total + $amount[$i]; ?>
+                      <tr>
+                        <td>{{$desc[$i]}}</td>
+                        <td>&#8369; {{$amount[$i]}}</td>
+                      </tr>
+                    @endfor
+                    <tr>
+                      <td><strong style="float:right;">Total:</strong></td>
+                      <td>&#8369; {{$total}}</td>
+                    </tr>
+                  </table>
+                @else
+                  <label>No transactions made.</label>
+                @endif
               </div>
-              <div class="col-sm-12 text-center" id="asdf2" hidden>
-                asdasdasd
+              <div class="col-sm-6 text-center" id="asdf1" class="">
+                <div>
+                @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
+                  <label>Pay using your Paypal Account</label>
+                  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                    {{csrf_field()}}
+                     <input type="hidden" name="cmd" value="_cart">
+                     <input type="hidden" name="upload" value="1">
+                     <input type="hidden" name="business" value="ra.janpaolocleotes-facilitator@gmail.com">
+                     <input TYPE="hidden" NAME="currency_code" value="PHP">
+                      @php
+                      $x = 1; $y = 1;
+                      @endphp
+                      @foreach($_POST['desc'] as $desc)
+                        <input type="hidden" name="item_name_{{$x}}" value="{{$desc}}">
+                        <input type="hidden" name="quantity_{{$x}}" value="1">
+                        <input type="hidden" name="shipping_{{$x}}" value="0.00">
+                        <?php $x++; ?>
+                      @endforeach
+                      @foreach($_POST['amount'] as $amount)
+                        <input type="hidden" name="amount_{{$y}}" value="{{$amount}}">
+                        <?php $y++; ?>
+                      @endforeach
+                     <input type="hidden" name="return" id="return">
+                     <input type="hidden" name="cancel_return" id="cancel_return" value="{{asset('client/orderofpaymentc')}}">
+
+                     <input type="submit" class="btn btn-info" value="Continue with Paypal" onclick="get_radio()">
+                 </form>
+                @else
+
+                @endif
+               </div>
               </div>
-              <div class="col-sm-12 text-center" id="asdf3" hidden>
-               hey barbara
+              <div class="col-sm-6 text-center" id="asdf2" hidden>
+                <label>Pay using your Dragonpay Account</label><br>
+                <a href="https://test.dragonpay.ph/GenPay.aspx?merchantid=SAMPLEGEN"><button class="btn btn-info">Continue with Dragonpay</button></a>
               </div>
-              <div class="col-sm-12 text-center" id="asdf4" hidden>
-                you look so fine
+              <div class="col-sm-6 text-center" id="asdf3" hidden>
+               
               </div>
-              <div class="col-sm-12 text-center" id="asdf5" hidden>
-                asaoowreoo
+              <div class="col-sm-6 text-center" id="asdf4" hidden>
+                
+              </div>
+              <div class="col-sm-6 text-center" id="asdf5" hidden>
+                
               </div>
             </div>
-            <div class="footerNavWrap clearfix">
+{{--             <div class="footerNavWrap clearfix">
               <div class="btn btn-success pull-left btn-fyi"><span class="glyphicon glyphicon-chevron-left"></span>Back</div>
               <div class="btn btn-success pull-right btn-fyi">Checkout<span class="glyphicon glyphicon-chevron-right"></span></div>
-            </div>
+            </div> --}}
           </div>
     
   </div>

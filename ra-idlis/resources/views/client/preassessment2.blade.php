@@ -10,32 +10,11 @@
     window.location.href = "{{asset('/')}}";
   </script>
 @endif
-@include('client.breadcrumb')
 <style type="text/css">
-.isHidden {
-  display: none; /* hide radio buttons */
-}
+  .label{
+  padding: 10px;
 
-.label {
-  display: inline-block;
-  background-color: #fff;
-  /*width: 50px;
-  height: 25px;*/
-  padding: 5px 10px;
 }
-        .transcolor {
-            background-color: white;
-            -webkit-transition: background-color 2s ease-out;
-            -moz-transition: background-color 2s ease-out;
-            -o-transition: background-color 2s ease-out;
-            transition: background-color 2s ease-out;
-        }
-        .transcolor1 {
-            background-color: #eadada;
-        }
-        .transcolor2 {
-            background-color: white;
-        }
      .sidenav {
     height: 100%;
     width: 0;
@@ -75,44 +54,22 @@
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-/*.radio:checked + .label {    target next sibling (+) label 
-  background-color: green;
-}*/
 </style>
-<script type="text/javascript">
-  $(function(){
-    var fileInput = $('.upload-file');
-    var maxSize = fileInput.data('max-size');
-    $('.upload-form').submit(function(e){
-        if(fileInput.get(0).files.length){
-            var fileSize = fileInput.get(0).files[0].size; // in bytes
-            if(fileSize>maxSize){
-                alert('file size is more than ' + maxSize + ' bytes');
-                return false;
-            }else{
-                alert('file size is correct - '+fileSize+' bytes');
-            }
-        }else{
-            alert('Please select the file to upload');
-            return false;
-        }
-
-    });
-});
-</script>
-{{--   <div style="position: fixed;   right: 0; z-index: 999999;">
-    <form class="form-inline">
-      <div class="input-group" >
-        <input type="text" class="form-control" name="" placeholder="Save Name" style="border-radius: 3px 0 0 3px;border-right: none;">
-     <div class="input-group-text" style="border-radius: 0 3px 3px 0;">
-      <a href="#"><div><i class="fa fa-save"></i></div></a>
-     </div>
-     </div>
-    </form>
-
-  </div> --}}
-
-<div style="font-size:30px;cursor:pointer; position: fixed; right: 0; z-index: 999;color: #fff;background-color: #1540B2" onclick="openNav()"><i class="fa fa-angle-double-left"></i></div>
+@include('client.breadcrumb')
+<div class="modal fade" id="confirmmodal" role="dialog">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-body text-center">
+                Are you sure you want to delete?
+                <form action="{{ route('client.deldraft') }}" method="get">
+                <button type="submit" name="delmod" class="btn-primarys" id="yes" >Yes</button>
+                <button type="button" class="btn-defaults" data-dismiss="modal">No</button>
+                </form>          
+              </div>
+            </div>
+          </div>
+  </div>
+   <div style="font-size:30px;cursor:pointer; position: fixed; right: 0; z-index: 999;color: #fff;background-color: #1540B2; padding: 3px;border-radius: 3px;" onclick="openNav()"><i class="fa fa-angle-double-left"></i></div>
 <script type="text/javascript">
   function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
@@ -123,138 +80,212 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     // document.getElementById("main").style.marginLeft= "0";
 }
+    function remLd() { 
+      $('#exampleModalCenter').modal('show', {backdrop: 'static', keyboard: false});
+      setTimeout(function(){ $('#asdf').fadeOut(500); }, 3000);
+     };
+    remLd();
 </script>
+@if(session()->has('draft_success'))
+<div id="asdf" class="alert alert-{{session()->has('alert-type')}} alert-dismissible fade show" role="alert">
+            <center><strong><i class="fas fa-exclamation"></i></strong> {{session()->get('draft_success')}}</center>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+@endif
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <div class="container">
-  <form class="form-group">
-    <input type="text" name="" class="form-control" style="margin-bottom: 2px;border-radius: 0;">
-    <button class="btn btn-success btn-block" style="border-radius: 0;">Save</button>
-  </form>
-  <div class="list-group">
-  <a href="#" class="list-group-item list-group-item-action"><small>Save List</small></a>
-  <a href="#" class="list-group-item list-group-item-action"><small></small></a>
-  <a href="#" class="list-group-item list-group-item-action"><small></small></a>
-  </div>
+
+    <input type="text" name="draftxt" id="draftxt" class="form-control form-control-sm" style="margin-bottom: 2px;border-radius: 0;outline:none !important;">
+    <button form="preform" name="submitpre" class="btn btn-success btn-block" type="submit" value="1" style="border-radius: 0;">Save <i class="fa fa-save"></i></button>
+
+    <ul class="list-group " style="margin-top: 5px;">
+    <li class="list-group-item text-center" >Save List</li>
+    @foreach($app_assessment as $app_assessments)
+
+       <li class="list-group-item">
+        <div class="row">
+          <div class="col-sm-12 text-center">
+          <a href="{{asset('client/preassessment2/draft')}}/{{$app_assessments->draft}}" style="font-size: 15px;margin-left: -20px;">{{$app_assessments->draft}} ({{$app_assessments->sa_tdate}})
+          </a>
+          </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12">
+          <a class="delbtn" id="{{$app_assessments->draft}}" style="cursor: pointer;padding: 0" data-toggle="modal" data-target="#confirmmodal" ><button class="btn btn-danger btn-block" style="padding: 0;">Delete</button></a>
+        </div>
+        </div>
+        </li>
+    @endforeach
+  </ul>
   </div>
 </div>
 <div class="jumbotron container" style="margin-top: 2em;box-shadow: 0px 2px 20px rgba(0,0,0,0.2);background-color: #fff;border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;">
     <div class="container">
-     
       <h2>{{$clientData->facilityname}}. {{$clientData->streetname}}, {{$clientData->cmname}}</h2>
       <hr>
-      <div class="container align-items-center">
+       <div class="container">
         <font size="24px" >Assessment Tool</font>
-        {{-- <span style="float:right">
+        <span style="float:right">
           <div class="btn-group">
-            <a href="#"><button type="button"  class="btn-primarys active">Part I</button></a>
-            <a href="{{asset('client/inspection2')}}"><button type="button"  class="btn-primarys">Part II</button></a>
-            <a href="{{asset('client/inspection3')}}"><button type="button"  class="btn-primarys">Part III</button></a>
-          </div>
-        </span> --}}
-      </div>
-      <hr>
-
-      <div id="gg_err" data-spy="scroll" data-offset="0">
-         <form method="post" action="{{asset('client/preassessment')}}" id="preform">
-        {{ csrf_field() }}
-        @foreach($countass as $countasss)
-          @php
-            $inc = 0;
-          @endphp
-          <div name="bobonneed" id="{{$countasss->partid}}"></div>
-          <div name="assess" id="assess{{$countasss->partid}}">
-            <center><h3>
-              {{$countasss->partdesc}}
-            </h3></center>
-            <hr>
-            @foreach($assessment as $assessments)
-            @if($countasss->partid == $assessments->partid)
-              <div class="row" id="err{{$countasss->partid}}_{{$inc}}">
-                  <input type="hidden" name="assessments_partID" value="{{$assessments->asmt_id}}">
-                  <div class="col-sm-4">
-                      <h5 style="text-align: justify;">
-                       {{$assessments->asmt_name}}
-                      </h5>
-                  </div>
-                  <div class="col-sm-2 text-center">
-                     <input class="radio isHidden" name="radio_{{$assessments->asmt_id}}" type="radio" value="1">
-                       <label id="radio_{{$assessments->asmt_id}}1" for="radio_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 1)"><i class="fa fa-check"></i></label>
-
-                     <input class="radio isHidden" name="radio_{{$assessments->asmt_id}}" type="radio" value="0">
-                       <label id="radio_{{$assessments->asmt_id}}2" for="radio_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 2)"><i class="fa fa-times"></i></label>
-                  </div>
-                  <div class="col-3 text-center">
-                      <input type="file" class="file" name="file_{{$assessments->asmt_id}}">
-                                          
-                  </div>
-                  <div class="col-sm-3 text-center">
-                    <textarea placeholder="Remarks" name="remarks_{{$assessments->asmt_id}}"></textarea>
-                  </div>
-              </div>
-              <hr>
-              @php
-                $inc++;
-                $inc++;
-              @endphp
+            @isset($check_assessment)
+            @if($check_assessment->count()>0)
+            <a href="{{asset('client/preassessment2/complied')}}"><button class="btn btn-success" ><i class="fa fa-check"></i> Complied</button></a>
+            <a href="{{asset('client/preassessment2/notcomplied')}}"><button class="btn btn-danger"><i class="fa fa-times"></i> Not Complied</button></a>
             @endif
+            @endisset
+          </div>
+        </span>
+          <hr>
+{{--       <form>
+        {{ csrf_field() }}
+         <div class="table-responsive">
+
+          @foreach($assessment as $assessments)
+
+
+            <table>
+              <tr>
+                <td class="col-sm-12">{{$assessments->asmt_name}}</td>
+                <td class="col-sm-12 text-center"><div style="display: inline-flex;"><input type="radio" id="check" name="optradio" value="1" hidden><input id="wrong" type="radio" value="0" name="optradio" hidden><label onclick="check()" id="bgreen" style="padding: 5px;"><i class="fa fa-check" ></i></label>
+                <label onclick="uncheck()" id="bgred"  style="padding: 5px;"><i class="fa fa-times"></i></label></div></td>
+                <td class="text-center col-sm-12"><input type="file" class="file" name="file[]"></td>
+                <td class="text-center col-sm-12"><textarea placeholder="Remarks" name="remarks[]" id="remrks"></textarea></td>
+              </tr>
+              <hr>
+            </table>
+          
+          @endforeach
+        </div>
+      </form> --}}
+      {{--   <div class="" style="margin-top: 5%; margin-left: 43%;">
+         {{$assessment->links()}}
+        </div>
+        <div class="text-center"> <button onclick="valsub()" class="btn btn-success" id="submt" name="submitpre" type="submit" style="border-radius: 0;">Submit</button></div> --}}
+        
+      <form id="preform" enctype="multipart/form-data" action="{{asset('client/preassessment2')}}" method="post">
+        {{csrf_field()}}
+        <input type="hidden" name="savetxt" id="savetxt">
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="1-content" role="tabpanel" aria-labelledby="pills-home-tab">
+
+            @php 
+            $firstassess = $assessment->where('partid', '=', '1');
+            $getlastnum = DB::table('assessment')->orderBy('partid', 'desc')->first();
+            $numbstart = 2; $numend = intval($getlastnum->partid);
+            $employeeData = session('client_data');
+
+            @endphp
+            @foreach($firstassess as $assessments)
+              @isset($check_assessment)
+                @php
+                  $draft_name = $check_assessment[0]->draft;
+                  $get_answers = DB::table('app_assessment')->where('uid', '=', $employeeData->uid)->where('asmt_id', '=', $assessments->asmt_id)->where('draft', '=', $draft_name)->first();
+                @endphp
+              @endisset
+             <div class="row">
+              <div class="col-sm-4">{{$assessments->asmt_name}}</div>
+              <div class="col-sm-2 text-center">
+                 <input type="hidden" name="upID[]" value="{{$assessments->asmt_id}}">
+                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="complied_{{$assessments->asmt_id}}" type="radio" value="1" @isset($get_answers) @if($get_answers->complied=='1') checked="true"  @endif @endisset hidden>
+                      <label id="radio_{{$assessments->asmt_id}}1" for="complied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 1, '{{$assessments->asmt_id}}')" @isset($get_answers) @if($get_answers->complied=='1') style="background-color:green;" @endif @endisset><i class="fa fa-check"></i></label>
+                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="notcomplied_{{$assessments->asmt_id}}" type="radio" value="0" @isset($get_answers) @if($get_answers->complied=='0') checked="true" @endif @endisset hidden>
+                      <label id="radio_{{$assessments->asmt_id}}2" for="notcomplied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 2, '{{$assessments->asmt_id}}')" @isset($get_answers) @if($get_answers->complied=='0') style="background-color:red;" @endif @endisset><i class="fa fa-times"></i></label>
+              </div>
+              <div class="col-sm-3"><input type="file" class="file" name="file[]"></div>
+              <div class="col-sm-3"><textarea placeholder="Remarks" name="remarks[]" id="remarks_{{$assessments->asmt_id}}">@isset($get_answers) {{$get_answers->sa_remarks}} @endisset</textarea></div>
+            </div>
             @endforeach
           </div>
-        @endforeach
-              </form>
-      </div>
-      <div class="text-center">
-      <div id="mess_ere"></div>
-      <button class="btn-primarys" style="background-color: #228B22 !important" id="btnp" onclick="next_bob(-1)"><i class="fa fa-backward"></i></button>
-      <button class="btn-primarys" style="background-color: #228B22 !important"><span id="page_id"></span></button>
-      <button class="btn-primarys" style="background-color: #228B22 !important" id="btnn" onclick="next_bob(1)"><i class="fa fa-forward"></i></button>
-      </div>
-      <div id="submit_go" hidden>
-        <br>
-        <div class="text-center">
-        <div id="mess_ere"></div>
-        <button form="preform" onclick="val_req()" class="btn-primarys" type="submit" style="background-color: #228B22 !important" id="submt">Submit <i class="fa fa-send-o"></i></button>
+           @for($i=$numbstart;$i <= $numend;$i++)
+           @php 
+            $firstassess = $assessment->where('partid', '=', $i);
+           @endphp
+          <div class="tab-pane fade" id="{{$i}}-content" role="tabpanel" aria-labelledby="pills-profile-tab">
+            @foreach($firstassess as $assessments)
+              @isset($check_assessment)
+                @php
+                  $draft_name = $check_assessment[0]->draft;
+                  $get_answers = DB::table('app_assessment')->where('uid', '=', $employeeData->uid)->where('asmt_id', '=', $assessments->asmt_id)->where('draft', '=', $draft_name)->first();
+                @endphp
+              @endisset
+            <div class="row">
+              <div class="col-sm-4">{{$assessments->asmt_name}}</div>
+              <div class="col-sm-2 text-center">
+                 <input type="hidden" name="upID[]" value="{{$assessments->asmt_id}}">
+                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="complied_{{$assessments->asmt_id}}" type="radio" value="1" @isset($get_answers) @if($get_answers->complied=='1') checked="true" @endif @endisset hidden>
+                      <label id="radio_{{$assessments->asmt_id}}1" for="complied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 1, '{{$assessments->asmt_id}}')" @isset($get_answers) @if($get_answers->complied=='1') style="background-color:green;" @endif @endisset><i class="fa fa-check"></i></label>
+                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="notcomplied_{{$assessments->asmt_id}}" type="radio" value="0" @isset($get_answers) @if($get_answers->complied=='0') checked="true" @endif @endisset hidden>
+                      <label id="radio_{{$assessments->asmt_id}}2" for="notcomplied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 2, '{{$assessments->asmt_id}}')" @isset($get_answers) @if($get_answers->complied=='0') style="background-color:red;" @endif @endisset><i class="fa fa-times"></i></label>
+              </div>
+              <div class="col-sm-3"><input type="file" class="file" name="file[]"></div>
+              <div class="col-sm-3"><textarea placeholder="Remarks"  name="remarks[]" id="remarks_{{$assessments->asmt_id}}">@isset($get_answers) {{$get_answers->sa_remarks}} @endisset</textarea></div>
+            </div>
+            @endforeach
+          </div>
+          @endfor
         </div>
-      </div> 
-</div>
-</div>
-<script type="text/javascript">
-        
-</script>
-<script type="text/javascript">
-  function ch_rdb(id, bool) {
+      </form>
+          <ul class="nav nav-pills mb-3" id="pills-tab" style="margin-left: 46%;" role="tablist">
+           <li class="nav-item">
+            <a class="nav-link active" id="1-page" data-toggle="pill" href="#1-content" role="tab" aria-controls="pills-home" aria-selected="true" onclick="check_remark()">Part 1</a>
+          </li>
+        @for($i=$numbstart;$i <= $numend;$i++)
+          <li class="nav-item">
+            <a class="nav-link" id="{{$i}}-page" data-toggle="pill" href="#{{$i}}-content" role="tab" aria-controls="pills-home" aria-selected="true" onclick="check_remark()">Part {{$i}}</a>
+          </li>
+          @endfor
+        </ul>
+         @isset($result)
+         @if($result=='1')
+          <div class="text-center"><button form="preform" class="btn btn-success" value= "update" name="submitpre" style="border-radius: 0;">Submit</button>
+          @endif
+          @else
+          <div class="text-center"><button form="preform" class="btn btn-success" value= "0" name="submitpre" style="border-radius: 0;">Submit</button>
+         @endisset
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  function ch_rdb(id, bool, id2) {
     if(bool == 1) {
       document.getElementById(id+bool).setAttribute('style', 'background-color: green');
       document.getElementById(id+2).setAttribute('style', 'background-color: none');
-      document.getElementsByName(id)[(bool-1)].checked = true;
+      document.getElementById('remarks_'+id2).removeAttribute('required');
+      document.getElementById('remarks_'+id2).classList.remove('need-remark');
     } else {
       document.getElementById(id+bool).setAttribute('style', 'background-color: red');
       document.getElementById(id+1).setAttribute('style', 'background-color: none');
-      document.getElementsByName(id)[(bool-1)].checked = true;
+      document.getElementById('remarks_'+id2).setAttribute('required', 'true');
+      document.getElementById('remarks_'+id2).classList.add('need-remark');
     }
   }
+    function check_remark(){
+      // var wrong = document.getElementById('wrong');
+      // var remrks = document.getElementById('remrks');
+      // if (wrong.checked == true && remrks.value == '') {
+      //   alert('Put remarks, when you have a X mark for this assessment');
+      // }
+      // var id = document.getElementsByClassName('need-remark');
+      // if(id.length> 0) {
+      //   alert(id[0].value);
+      // }
+    }
+
+  </script>
+  <script type="text/javascript">
+  $('#draftxt').on('input', function(){
+    var draftxt = $(this).val();
+      $('#savetxt').val(draftxt);
+  });
+  $('.delbtn').on('click', function(){
+    var delval = $(this).attr('id');
+    $('#yes').val(delval);
+  })
 </script>
-<div class="modal" id="exampleModal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #0f8845;
-          color: white;">
-{{--               <h5 class="modal-title text-center" id="exampleModalLongTitle"><strong>Thank You for uploading your requirements.</strong></h5>
-              <hr> --}}
-              <h5>You have completed the pre-assessment, you may now start to apply and filling up the application form.</h5>
-                <div class="alert alert-primary" role="alert">
-              <p class="alert-heading"><i class="far fa-sticky-note"></i> Note:</p>
-              <p>&nbsp;- Step 1: Fill-in application form and submit requirements</p>
-              <p>&nbsp;- Step 2: DOH will evaluate your submitted documents and notify your schedule of inspection.</p>
-              <p>&nbsp;- Step 3: DOH will conduct inspection and notify the status of your application.</p>
-              <p>&nbsp;- Step 4: You can now print your application online.</p>
-            </div>
-            <div class="text-center" style="margin-top: 3%;">
-              <button class="btn btn-outline-success btn-block" data-dismiss="modal" >Ok</button>
-            </div>
-            </div>
-          </div>
-        </div>
-</div>
 @include('client.sitemap')
 @endsection

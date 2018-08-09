@@ -59,7 +59,7 @@
             //    $message->from('doholrs@gmail.com','DOH Support');
             // });
 
-            DB::table('x08')->insert(
+              DB::table('x08')->insert(
                 [
                     'uid' => $data['uname'],
                     'pwd' => $data['pass'],
@@ -84,6 +84,8 @@
                     'token' => $data['token']
                 ]
             );
+
+
             // return response()->json(['test'=>$data]);
             // return "Check";
             return 'DONE';

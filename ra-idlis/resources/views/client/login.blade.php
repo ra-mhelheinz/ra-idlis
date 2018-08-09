@@ -125,9 +125,9 @@ html, body, #canvasMap{
 		  </button>
 		</div>
 		@endif
-		@if (session()->has('apply_succes'))
+		@if (session()->has('logout_notif'))
 		<div id="asdf" class="alert alert-info alert-dismissible fade show" role="alert">
-		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('apply_succes')}}
+		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('logout_notif')}}
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
 		  </button>
@@ -417,8 +417,14 @@ html, body, #canvasMap{
 					<input type="text" class="input form-control" name="reg_uname" autocomplete="off" placeholder="Username" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" required="">
 
 				</div>
-				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
-					<input type="password" data-parsley-trigger="change" class="input form-control" id="pass1" data-parsley-equalto="#pass1" name="pass2" autocomplete="off" data-parsley-required-message="<strong>*</strong>Required <strong>Password</strong>" placeholder="Password"  required="">
+				<div class="col-sm-12 text-center" style="margin: 0 0 .8em 0;">
+					<div class="input-group">
+					 <div class="input-group-append">
+					    <span class="input-group-text" onclick="showpass()" style="cursor: pointer;"><i id="peye" class="fa fa-eye"></i><i class="fa fa-eye-slash" id="pslash" style="display: none;"></i></span>
+					  </div>
+					  <input onkeyup="CheckPasswordStrength(this.value)" style="font-size: 14px;padding: .8em 0 10px .8em;" type="password" data-parsley-trigger="change" class="form-control" id="pass1" data-parsley-equalto="#pass1" name="pass2" autocomplete="off" data-parsley-required-message="<strong>*</strong>Required <strong>Password</strong>" placeholder="Password"  required="">
+					</div>
+					<span id="password_strength"></span>
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input  type="password" data-parsley-trigger="change" class="input form-control" id="pass2" name="pass2" autocomplete="off"   placeholder="Retype Password" data-parsley-equalto="#pass1" data-parsley-required-message="<strong>*</strong>Retype Password <strong>Required</strong>" required="">
@@ -437,7 +443,7 @@ html, body, #canvasMap{
 					<p>By signing up, you agree to our</p>
 					<p><a href="#" data-toggle="modal" data-target="#exampleModalLong">Terms of service</a></p>
 				</div><!--.help-text-->	
-					<button id="reg_sign" type="submit" class="button" value="Sign Up">Sign Up</button>
+					<button id="reg_sign" type="button" class="button" data-toggle="modal" data-target="#exampleModalLong" value="Sign Up">Sign Up</button>
 					</form>
 			</div><!--.signup-tab-content-->
 		</div><!--.tabs-content-->
@@ -446,6 +452,67 @@ html, body, #canvasMap{
 		</div>
 	</div>
 </div>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Terms and Service</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+
+Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+
+Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+
+Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+
+Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+
+Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+
+Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+
+Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+
+Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+
+Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+
+Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+
+Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+			<div class="row">
+				<div class="col-sm-12">
+					<input type="checkbox" id="tcheck" name="" required> <label>I agree to Terms and Service</label>
+				</div>
+			</div>
+      </div>
+      <div class="modal-footer">	
+        <button type="button" class="btn btn-danger btn-block" data-dismiss="modal" style="border-radius: 0 ">Close</button>
+        <button type="submit" id="tagree" onclick="tagree()" class="btn btn-success btn-block" style="margin-top: 0;border-radius: 0">Agree</button>
+      </div>
+    </div>
+  </div>
+</div>
 </header>
 {{-- <button onclick="myFunction()">Show Snackbar</button> --}}
 <div id="snackbar">Some text some message..</div>
@@ -453,7 +520,35 @@ html, body, #canvasMap{
 <datalist id="prov_list"></datalist>
 <datalist id="cty_list"></datalist>
 <datalist id="brgy_list"></datalist>
+<script type="text/javascript">
+	function tagree(){
+		var tagree = document.getElementById('tagree');
+		var tcheck = document.getElementById('tcheck');
+		if (tcheck.checked == true) {
+			$('#exampleModalLong').modal('hide');
+			document.getElementById('reg_sign').removeAttribute('data-toggle');
+			document.getElementById('reg_sign').removeAttribute('data-target');
+			document.getElementById('reg_sign').setAttribute('type', 'submit');
 
+		}
+		else{
+			alert('Must accept our Terms and Service');
+		}
+	}
+	function showpass() {
+    var x = document.getElementById("pass1");
+    if (x.type === "password") {
+        x.type = "text";
+         document.getElementById("peye").style.display = 'none';
+    	document.getElementById("pslash").style.display =	'block';
+    } else {
+        x.type = "password";
+        document.getElementById("peye").style.display = 'block';
+    	document.getElementById("pslash").style.display = 'none';
+    	
+    }
+}
+</script>
 <script type="text/javascript">
 	function loadTbl(tbl, dtlist, data, dcid) {
 		chgLd1(dcid[0], true);
@@ -620,6 +715,62 @@ html, body, #canvasMap{
 			$('#passwordAlertMatch').show();
 		}
 	}
+	function CheckPasswordStrength(password) {
+        var password_strength = document.getElementById("password_strength");
+ 
+        //TextBox left blank.
+        if (password.length == 0) {
+            password_strength.innerHTML = "";
+            return;
+        }
+ 
+        //Regular Expressions.
+        var regex = new Array();
+        regex.push("[A-Z]"); //Uppercase Alphabet.
+        regex.push("[a-z]"); //Lowercase Alphabet.
+        regex.push("[0-9]"); //Digit.
+        regex.push("[$@$!%*#?&]"); //Special Character.
+ 
+        var passed = 0;
+ 
+        //Validate for each Regular Expression.
+        for (var i = 0; i < regex.length; i++) {
+            if (new RegExp(regex[i]).test(password)) {
+                passed++;
+            }
+        }
+ 
+        //Validate for length of Password.
+        if (passed > 2 && password.length > 8) {
+            passed++;
+        }
+ 
+        //Display status.
+        var color = "";
+        var strength = "";
+        switch (passed) {
+            case 0:
+            case 1:
+                strength = "Weak Password";
+                color = "red";
+                break;
+            case 2:
+                strength = "Good";
+                color = "darkorange Password";
+                break;
+            case 3:
+            case 4:
+                strength = "Strong Password";
+                color = "green";
+                break;
+            case 5:
+                strength = "Very Strong Password";
+                color = "darkgreen";
+                break;
+        }
+        password_strength.innerHTML = strength;
+        password_strength.style.color = color;
+    }
 </script>
 <script type="text/javascript">
 	jQuery(document).ready(function($) {

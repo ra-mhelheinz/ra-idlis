@@ -23,7 +23,17 @@
     @yield('style')
 </head>
 <style type="text/css">
-.no-js #loader { display: none;  }
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 160px;
+  height: 160px;
+  margin: -75px 0 0 -75px;
+  background: url("{{asset('ra-idlis/public/img/loading.gif')}}") center no-repeat;
+}
+/*.no-js #loader { display: none;  }
 .js #loader { display: block; position: absolute; left: 100px; top: 0; }
 #pageload {
   position: fixed;
@@ -33,7 +43,7 @@
   height: 100%;
   z-index: 9999;
   background: url("{{asset('ra-idlis/public/img/greenload.gif')}}") center no-repeat #fff;
-}
+}*/
 .footer-bottom {
    background: linear-gradient(to bottom left,#228B22, #84bd82);
     min-height: 30px;
@@ -61,6 +71,8 @@ body{
 
 </style>
 <body>
+  {{-- <div id="loader"></div> --}}
+  {{-- <div style="display:none;" id="myDiv" class="animate-bottom"> --}}
   @if(session()->exists('client_data') )
   @else
       <div class="back">
@@ -125,6 +137,7 @@ body{
 
 </div>
 </div> 
+{{-- </div> --}}
 @if (session()->exists('client_data') || session('client_data') != null)
 @else
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmE5U7nzF7cU16HzYicYy7pbXn1-uTb1g&callback=initMap" async defer></script>
@@ -133,16 +146,6 @@ body{
     setInterval(function(e){
       var x = parseFloat(parseFloat(window.innerHeight) + parseFloat(window.scrollY)) - parseFloat(document.getElementById('paraTago').offsetHeight);
       var y = parseFloat((parseFloat(document.body.offsetHeight) - parseFloat(document.getElementById('paraTago').offsetHeight)) - parseFloat(document.getElementById('paraTago').offsetHeight)) + 10;
-
-      // var t = parseFloat(document.getElementById('paraTagoNav').offsetHeight);
-      // var z = parseFloat(window.scrollY);
-      // if(z < t) {
-      //   document.getElementById('fortagoTago').setAttribute("hidden", true);
-      //   document.getElementById('fortagoTago1').setAttribute("hidden", true);
-      // } else {
-      //   document.getElementById('fortagoTago').removeAttribute("hidden");
-      //   document.getElementById('fortagoTago1').removeAttribute("hidden");
-      // }
       if(y <= x) {
         document.getElementsByClassName('fixed-bottom')[0].setAttribute("hidden", true);
       } else {
