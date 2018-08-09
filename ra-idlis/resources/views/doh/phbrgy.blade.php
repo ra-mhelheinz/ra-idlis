@@ -7,24 +7,28 @@
   <input type="text" id="CurrentPage" value="MA04" hidden>
   <script type="text/javascript">Right_GG();</script>
 <div hidden>
-    @foreach ($region as $regions)
-    <datalist id="{{$regions->rgnid}}_list">
-      @foreach ($province as $provinces)
-        @if ($regions->rgnid == $provinces->rgnid)
-          <option id="{{$provinces->provid}}_pro" value="{{$provinces->provid}}">{{$provinces->provname}}</option>
-        @endif
+    @if (isset($region) && isset($province))
+      @foreach ($region as $regions)
+        <datalist id="{{$regions->rgnid}}_list">
+          @foreach ($province as $provinces)
+            @if ($regions->rgnid == $provinces->rgnid)
+              <option id="{{$provinces->provid}}_pro" value="{{$provinces->provid}}">{{$provinces->provname}}</option>
+            @endif
+          @endforeach
+        </datalist> 
       @endforeach
-    </datalist>
-  @endforeach
-  @foreach ($province as $provinces)
-    <datalist id="{{$provinces->provid}}_provlist">
-      @foreach ($cm as $cms)
-       @if ($cms->provid == $provinces->provid)
-         <option id="{{$cms->cmid}}_cm" value="{{$cms->cmid}}">{{$cms->cmname}}</option>
-       @endif
-      @endforeach
-    </datalist>
-  @endforeach
+    @endif
+  @if (isset($province) && isset($cm))
+    @foreach ($province as $provinces)
+      <datalist id="{{$provinces->provid}}_provlist">
+        @foreach ($cm as $cms)
+         @if ($cms->provid == $provinces->provid)
+           <option id="{{$cms->cmid}}_cm" value="{{$cms->cmid}}">{{$cms->cmname}}</option>
+         @endif
+        @endforeach
+      </datalist> 
+    @endforeach
+  @endif
   {{-- @foreach ($cm as $cms)
     <datalist id="{{$cms->cmid}}_cmlist">
       @foreach ($brgy as $brgys)
@@ -44,10 +48,12 @@
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Region ...</option>
-                @foreach ($region as $regions)
-                  <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
-                @endforeach
-              </select>
+                @if (isset($region))
+                  @foreach ($region as $regions)
+                    <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
+                  @endforeach
+                @endif
+              </select>   
               &nbsp;
               <select style="width: auto;" class="form-control" id="filterer2" onchange="filterGroup2()">
                 <option value="">Select Province ...</option>
@@ -101,15 +107,24 @@
                 <hr>
                 <div class="container">
                   <form class="row" id="addRgn" data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
+                      <div class="row">
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     {{ csrf_field() }}
                     <div class="col-sm-4">Region:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                       <select class="form-control" id="Reg4Add" onchange="filter4Add();" data-parsley-required-message="*<strong>Region</strong> required" required>  
                           <option value="">Select Region ...</option>
-                         @foreach ($region as $regions)
+                        @if (isset($region))
+                          @foreach ($region as $regions)
                             <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
                           @endforeach
-                      </select>
+                        @endif
+                      </select> 
                     </div>
                     <div class="col-sm-4">Province:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -145,6 +160,13 @@
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="EditErrorAlert" role="alert">
+                      <div class="row">
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <span id="EditBody">
                     </span>
                     <div class="row">
@@ -296,7 +318,12 @@
                         if (data == 'DONE') {
                             alert('Successfully Added New Barangay');
                             window.location.href = "{{asset('/employee/dashboard/ph/barangay')}}";
+                        } else if (data == 'ERROR') {
+                          $('#AddErrorAlert').show(100);
                         }
+                      }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                          console.log(errorThrown);
+                          $('#AddErrorAlert').show(100);
                       }
                   });
                 } else {
@@ -320,7 +347,12 @@
                       if (data == "DONE") {
                           alert('Successfully Edited Barangay');
                           window.location.href = "{{ asset('/employee/dashboard/ph/barangay') }}";
+                      } else if (data == 'ERROR') {
+                          $('#EditErrorAlert').show(100);
                       }
+                  }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(errorThrown);
+                    $('#EditErrorAlert').show(100);
                   }
                });
              }

@@ -87,15 +87,14 @@
                             <ul id="AppMenu" class="list-unstyled collapse">
                                 <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/apptype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Type</a></li>
                                 <li class="MA07_allow"><a href="{{ asset('/employee/dashboard/mf/appstatus') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Status</a></li>
-                                <li><a href="{{ asset('/employee/dashboard/mf/charges') }}">&nbsp;&nbsp;&nbsp;&nbsp;Charges</a></li>
                                 <li class="MA08_allow"><a href="{{ asset('/employee/dashboard/mf/class') }}">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/orderofpayment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Order of Payment</a></li>
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/holidays') }}">&nbsp;&nbsp;&nbsp;&nbsp;Holidays</a></li>
                                 <li class="MA06_allow"><a href
                                     ="{{ asset('/employee/dashboard/mf/ownership') }}">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
                                 <li class="MA16_allow"><a href="{{ asset('/employee/dashboard/mf/faciserv') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facilities/Services</a>
                                 </li>
-                                <li><a href="{{ asset('/employee/dashboard/mf/chg_oop') }}">&nbsp;&nbsp;&nbsp;&nbsp;Manage Charges</a></li>
                                 <li><a href="{{ asset('/employee/dashboard/mf/typefa') }}">&nbsp;&nbsp;&nbsp;&nbsp;Manage Facilities/Services</a></li>
+                                <li class="" ><a href="{{ asset('/employee/dashboard/mf/tstatus') }}#" >&nbsp;&nbsp;&nbsp;&nbsp;Transaction Status</a></li>
                                 <li class="MA11_allow"><a href="{{ asset('/employee/dashboard/mf/uploads') }}">&nbsp;&nbsp;&nbsp;&nbsp;Uploads</a></li>
                             </ul>
                         </li>
@@ -120,19 +119,29 @@
                                 <li class="MA04_allow"><a href="{{ asset('/employee/dashboard/ph/barangay') }}">&nbsp;&nbsp;&nbsp;&nbsp;Barangay</a></li>
                             </ul>
                         </li>
+                        <li><a href="#pay" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-credit-card"></i>&nbsp;Payment</a>
+                        	<ul id="pay" class="list-unstyled collapse">
+                        		<li class=""><a href="{{ asset('/employee/dashboard/mf/orderofpayment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Order of Payment</a></li>
+                                <li><a href="{{ asset('/employee/dashboard/mf/category') }}">&nbsp;&nbsp;&nbsp;&nbsp;Category</a></li>
+                                <li><a href="{{ asset('/employee/dashboard/mf/charges') }}">&nbsp;&nbsp;&nbsp;&nbsp;Charges</a></li>
+                                <li><a href="{{ asset('/employee/dashboard/mf/chg_oop') }}">&nbsp;&nbsp;&nbsp;&nbsp;Manage Charges</a></li>
+                                <li><a href="{{ asset('/employee/dashboard/mf/mode_payment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Mode of Payment</a></li>
+                        	</ul>                        	
+                        </li>
                         <li><a href="#AssMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-tasks"></i>&nbsp;Assessment</a>
                             <ul id="AssMenu" class="list-unstyled collapse">
                                 {{-- <li class=""><a href="{{ asset('/employee/dashboard/mf/pre-assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Pre-Assessment</a></li> --}}
-                                <li class=""><a href="{{ asset('/employee/dashboard/mf/assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/part') }}">&nbsp;&nbsp;&nbsp;&nbsp;Part</a></li>
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                             </ul>
                         </li>
+                        <li><a href="{{ asset('/employee/dashboard/mf/settings')}}">&nbsp;&nbsp;<i class="fa fa-gears"></i>&nbsp;System Settings</a></li>
                     </ul>
                 </li>
                 @endif
                 <li><a href="#ProFlowMenu" data-toggle="collapse"><i class="fa fa-sitemap"></i> Process Flow</a>
                     <ul id="ProFlowMenu" class="list-unstyled collapse">
-                        <li class=""><a href="{{asset('/employee/dashboard/lps')}}">&nbsp;&nbsp;&nbsp;&nbsp;View Applications</a></li>
+                        <li class=""><a href="{{asset('/employee/dashboard/lps')}}">&nbsp;&nbsp;&nbsp;&nbsp;View Application Status</a></li>
                           @if ($employeeData->grpid == 'NA' || $employeeData->grpid == "RA")  
                         <li class=""><a href="{{asset('/employee/dashboard/lps/assign')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assign Applications</a></li>
                         @endif
@@ -151,14 +160,19 @@
                                 <a href="{{asset('employee/dashboard/grouprights')}}"><i class="fa fa-fw fa-check"></i> Group Rights</a>
                             </li>
                             @endif
-                            <li><a href="{{-- {{asset('/employee/personnel')}} --}}#perso" data-toggle="collapse"><i class="fa fa-fw fa-users"></i> Users
+                            <li>
+                                <a href="{{ route('mngSystemUsers') }}"><i class="fa fa-user-circle"></i> System Users</a>
+                                <a href="{{ asset('employee/dashboard/manage/applicants') }}"><i class="fa fa-users"></i> Applicant Accounts</a>
+                                <a href="{{ asset('employee/dashboard/manage/system_logs') }}"><i class="fa fa-history"></i> System Logs</a>
+                            </li>
+                            {{-- <li><a href="#perso" data-toggle="collapse"><i class="fa fa-fw fa-users"></i> Users
                                 </a>
                                     <ul id="perso" class="list-unstyled collapse">
                                         <li class="UG01_allow"><a href="{{asset('employee/dashboard/personnel/regional')}}">&nbsp;&nbsp;&nbsp;&nbsp;Regional Admins</a></li>
                                         <li class="UG02_allow"><a href="{{asset('employee/dashboard/personnel/fda')}}">&nbsp;&nbsp;&nbsp;&nbsp;Food and Drug Authority</a></li>
                                             <li class="UG03_allow"><a href="{{asset('employee/dashboard/personnel/lo')}}">&nbsp;&nbsp;&nbsp;&nbsp;Licensing Officers</a></li>
                                     </ul>
-                                </li>
+                            </li> --}}
                         </ul>
                 </li>
                 <li hidden><a href="{{asset('/employee/dashboard/lps')}}"><i class="fa fa-fw fa-spinner"></i> Licensing Process Status</a></li>

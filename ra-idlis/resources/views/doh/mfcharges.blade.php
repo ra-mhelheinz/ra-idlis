@@ -8,9 +8,11 @@
   <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
     <datalist id="rgn_list">
-      @foreach ($Chrges as $Chrge)
-      <option value="{{$Chrge->chg_code}}">{{$Chrge->chg_desc}}</option>
+      @if (isset($Chrges))
+        @foreach ($Chrges as $Chrge)
+        <option value="{{$Chrge->chg_code}}">{{$Chrge->chg_desc}}</option>
       @endforeach
+      @endif
     </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
@@ -21,28 +23,37 @@
                <table class="table display" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 20%">Code</th>
-                  <th style="width: 55%">Description</th>
+                  <th style="width: 15%">Category</th>
+                  <th style="width: 10%">Code</th>
+                  <th style="width: 20%">Description</th>
+                  <th style="width:  25%">Explanation</th>
+                  {{-- <th style="width: 15%">Remarks</th> --}}
+                    <th style="width: 10%">Remarks</th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
               <tbody>
+                @if(isset($Chrges))
                 @foreach ($Chrges as $Chrge)
                   <tr>
+                    <td>{{$Chrge->cat_id}} - {{$Chrge->cat_desc}}</td>
                     <td scope="row" style="font-weight: bold"> {{$Chrge->chg_code}}</td>
                     <td>{{$Chrge->chg_desc}}</td>
-                    <td>
+                    <td>{{$Chrge->chg_exp}}</td>
+                    <td>{{$Chrge->chg_rmks}}</td>
+                    <td class="form-inline">
                       <center>
-                        <span class="MA_update">
-                          <button type="button" class="btn-defaults" onclick="showData('{{$Chrge->chg_code}}', '{{$Chrge->chg_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                        <span >
+                          <button type="button" class="btn-defaults" onclick="showData('{{$Chrge->chg_code}}', '{{$Chrge->chg_desc}}', '{{$Chrge->chg_exp}}', '{{$Chrge->chg_rmks}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
                         </span>
-                        <span class="MA">
+                        <span>
                           <button type="button" class="btn-defaults" onclick="showDelete('{{$Chrge->chg_code}}', '{{$Chrge->chg_desc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
                         </span>
                       </center>
                     </td>
                   </tr>
                 @endforeach
+                @endif
               </tbody>
             </table>
         </div>
@@ -51,13 +62,31 @@
          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 0px;border: none;">
-              <div class="modal-body text-justify" style=" background-color: #272b30;
+              <div class="modal-body" style=" background-color: #272b30;
             color: white;">
                 <h5 class="modal-title text-center"><strong>Add New Charge</strong></h5>
                 <hr>
                 <div class="container">
                   <form id="addRgn" class="row"  data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
+                      <div class="row">
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     {{ csrf_field() }}
+                    <div class="col-sm-4">Category:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <select class="form-control" id="new_cat" data-parsley-required-message="*<strong>Category</strong> required" required>
+                          <option value="">Select Category ...</option>
+                          @if ($Categorys)
+                            @foreach ($Categorys as $data)
+                               <option value="{{$data->cat_id}}">{{$data->cat_id}} - {{$data->cat_desc}} </option>
+                            @endforeach
+                      @endif
+                      </select>
+                    </div>
                     <div class="col-sm-4">Code:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>Code</strong> required"  class="form-control"  required>
@@ -65,6 +94,14 @@
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Description</strong> required" required>
+                    </div>
+                    <div class="col-sm-4">Explanation:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <textarea type="text" rows="4" id="new_explanation" class="form-control" data-parsley-required-message="*<strong>Explanation</strong> required" required></textarea>
+                    </div>
+                    <div class="col-sm-4">Remarks:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <textarea type="text" rows="2" id="new_remark" class="form-control"></textarea>
                     </div>
                     <div class="col-sm-12">
                       <button type="submit" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
@@ -79,14 +116,19 @@
     <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Edit Charge</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
-                    <span id="EditBody">
-                      
-                    </span>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="EditErrorAlert" role="alert">
+                      <div class="row">
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <span id="EditBody"></span>
                     <div class="row">
                       <div class="col-sm-6">
                       <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
@@ -108,8 +150,14 @@
               <h5 class="modal-title text-center"><strong>Delete Charge</strong></h5>
               <hr>
               <div class="container">
-                <span id="DelModSpan">
-                </span>
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="DelErrorAlert" role="alert">
+                      <div class="row">
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#DelErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <span id="DelModSpan"></span>
                 <hr>
                     <div class="row">
                       <div class="col-sm-6">
@@ -129,17 +177,25 @@
       $(document).ready(function() {
           $('#example').DataTable();
       } );
-        function showData(id,desc){
+        function showData(id,desc,expl,ts){
           $('#EditBody').empty();
           $('#EditBody').append(
-              '<div class="col-sm-4">ID:</div>' +
+              '<div class="col-sm-4">Code:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
                 '<input type="text" id="edit_name" value="'+id+'" class="form-control disabled" disabled>' +
               '</div>' +
               '<div class="col-sm-4">Description:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
                 '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Description <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
-              '</div>' 
+              '</div>' +
+              '<div class="col-sm-4">Explanation:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<textarea rows="4" id="edit_exp" value="'+expl+'" data-parsley-required-message="<strong>*</strong>Explanation <strong>Required</strong>" placeholder="'+expl+'" class="form-control" required>'+expl+'</textarea>' +
+              '</div>'  +
+              '<div class="col-sm-4">Remarks:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">'  +
+                    '<textarea rows="3" id="edit_exp23" value="'+ts+'" data-parsley-required-message="<strong>*</strong>Explanation <strong>Required</strong>" placeholder="'+ts+'" class="form-control">'+ts+'</textarea>' +
+              '</div>'
             );
         } 
         $('#addRgn').on('submit',function(event){
@@ -156,17 +212,22 @@
                       method: 'POST',
                       data: {
                         _token : $('#token').val(),
+                        cat_id : $('#new_cat').val(),
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
+                        exp : $('#new_explanation').val(),
+                        rmk : $('#new_remark').val(),
                         // mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {
                             alert('Successfully Added New Charge');
                             window.location.href = "{{ asset('/employee/dashboard/mf/charges') }}";
-                        } else {
-                          alert(data);
+                        } else if (data == 'ERROR') {
+                            $('#AddErrorAlert').show(100);      
                         }
+                      }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                           $('#AddErrorAlert').show(100);     
                       }
                   });
                 } else {
@@ -185,12 +246,16 @@
                $.ajax({
                   url: "{{ asset('/mf/save_chrg') }}",
                   method: 'POST',
-                  data : {_token:$('#token').val(),code:x,desc:y,mod_id : $('#CurrentPage').val()},
+                  data : {_token:$('#token').val(),code:x,desc:y,exp : $('#edit_exp').val(),rmk:$('#edit_exp23').val()},
                   success: function(data){
                       if (data == "DONE") {
                           alert('Successfully Edited Charge');
                           window.location.href = "{{ asset('/employee/dashboard/mf/charges') }}";
+                      } else {
+                          $('#EditErrorAlert').show(100);
                       }
+                  }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                      $('#EditErrorAlert').show(100);
                   }
                });
              }
@@ -213,8 +278,15 @@
             method: 'POST',
             data: {_token:$('#token').val(),id:id, mod_id : $('#CurrentPage').val()},
             success: function(data){
-              alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/charges') }}";
+              if (data == 'DONE') {
+                alert('Successfully deleted '+name);
+                window.location.href = "{{ asset('/employee/dashboard/mf/charges') }}";
+              } else if (data == 'ERROR') {
+                  $('#DelErrorAlert').show(100);
+              } 
+            }, // 
+            error : function(XMLHttpRequest, textStatus, errorThrown){
+              $('#DelErrorAlert').show(100);
             }
           });
         }

@@ -30,6 +30,14 @@
 					  </button>
 					</div>
 					@endif
+					@if (session()->has('unverified'))
+						<div class="alert alert-info alert-danger fade show" role="alert">
+						  <strong><i class="fas fa-exclamation"></i></strong> Account not yet verified, <a href="{{ asset('/employee/resend') }}/{{session()->get('unverified')}}">Resend Email</a>
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						    <span aria-hidden="true">&times;</span>
+						  </button>
+						</div>
+					@endif
 					<div style="margin: 0 0 .8em 0;">
 						<input type="text"  class="input form-control" id="user_login" name="uname" autocomplete="off" data-parsley-required-message="<strong>*</strong>Username <strong>Required</strong>" placeholder="Username" value="{{old('uname')}}" required>
 					</div>

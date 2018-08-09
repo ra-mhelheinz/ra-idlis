@@ -1,58 +1,67 @@
 @extends('main3')
 @section('style')
-    <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/bootadmin.min.css')}}">
+    <link rel="stylesheet" href="{{asset('ra-idlis/public/css/css/fullcalendar.min.css')}}">
+    <script type="text/javascript" src="{{ asset('ra-idlis/public/js/fullcalendar.min.js') }}"></script>
 @endsection
 @section('content')
-  <input type="text" id="CurrentPage" value="MA08" hidden>
+  <input type="text" id="CurrentPage" value="#" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @if (isset($own) && isset($class))
-  @foreach ($own as $owns)
-   <datalist id="{{$owns->ocid}}_list">
-     @foreach ($class as $classs)
-       @if ($owns->ocid == $classs->ocid)
-          <option id="{{$classs->classid}}_pro" value="{{$classs->classid}}">{{$classs->classname}}</option>
-       @endif
-     @endforeach
-   </datalist>
-  @endforeach
-  @endif
+  
    {{-- $('#new_rgnid').val() --}}
  <datalist id="rgn_list">
-  @if(isset($class))
-   @foreach ($class as $classs)
-     <option id="{{$classs->classid}}_pro" value="{{$classs->classid}}">{{$classs->classname}}</option>
+  @if(isset($holidays))
+   @foreach ($holidays as $classs)
+     <option id="{{$classs->hdy_id}}_pro" value="{{$classs->hdy_id}}">{{$classs->hdy_desc}}</option>
    @endforeach
    @endif
  </datalist>
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Class <a href="#" title="Add New Class" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Holidays <a href="#" title="Add New Class" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            <div style="float:right;display: inline-block;">
             <form class="form-inline">
-              <label>Filter : &nbsp;</label>
-              <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
+              <a href="#" title="View Calendar" data-toggle="modal" data-target="#CalendarModal"><button class="btn-primarys"><i class="fa fa-calendar"></i>&nbsp;View Calendar</button></a>
+              {{-- <label>Filter : &nbsp;</label> --}}
+              {{-- <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Ownership ...</option>
                 @if(isset($own))
                   @foreach ($own as $owns)
                     <option value="{{$owns->ocid}}">{{$owns->ocdesc}}</option>
                   @endforeach
                 @endif
-              </select>
-              <input type="" id="token" value="{{ Session::token() }}" hidden>
+              </select> --}}
+             
               </form>
            </div>
         </div>
         <div class="card-body">
+           <input type="" id="token" value="{{ Session::token() }}" hidden>
                <table class="table display" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 40%">ID</th>
-                  <th style="width: 35%">Name</th>
-                  <th style="width: 25%"><center>Options</center></th>
+                  <th style="width: 20%">Code</th>
+                  <th style="width: 30%">Description</th>
+                  <th style="width: 10%">Date</th>
+                  <th style="width: 10%">Type</th>
+                  <th style="width: 20%"><center>Options</center></th>
                 </tr>
               </thead>
               <tbody id="FilterdBody">
+                @if (isset($holidays))
+                    @foreach ($holidays as $hly)
+                    <tr>
+                      <td>{{$hly->hdy_id}}</td>
+                      <td style="font-weight: bold">{{$hly->hdy_desc}}</td>
+                      <td data-order="{{$hly->hdy_date}}">{{$hly->formattedDate}}</td>
+                      <td>{{$hly->hdy_typ}}</td>
+                      <td><center>
+                        <button type="button" class="btn-defaults" onclick='showData("{{$hly->hdy_id}}", "{{$hly->hdy_desc}}");' data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;
+                          <button type="button" class="btn-defaults" onclick='showDelete("{{$hly->hdy_id}}", "{{$hly->hdy_desc}}");' data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                      </center></td>
+                    </tr>
+                    @endforeach
+                @endif
               </tbody>
             </table>
         </div>
@@ -63,7 +72,7 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Class</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Holiday</strong></h5>
                 <hr>
                 <div class="container">
                   <form class="row" id="addCls" data-parsley-validate>
@@ -74,27 +83,32 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="col-sm-4">Ownership:</div>
-                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                      <select id="OCID" data-parsley-required-message="*<strong>Ownership</strong> required" class="form-control" required>  
-                          <option value="">Select Ownership ...</option>
-                         @if(isset($own))
-                            @foreach ($own as $owns)
-                              <option value="{{$owns->ocid}}">{{$owns->ocdesc}}</option>
-                            @endforeach
-                         @endif
-                      </select>
-                    </div>
-                    <div class="col-sm-4">ID:</div>
+                    <div class="col-sm-4">Code:</div>
                     <div class="col-sm-8"  style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required" name="fname" class="form-control" required>
+                    <input type="text" id="new_code" data-parsley-required-message="*<strong>Code</strong> required" name="fname" class="form-control" required>
                     </div>
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgn_desc" name="fname" data-parsley-required-message="*<strong>Name</strong> required" class="form-control"  required>
+                    <input type="text" id="new_desc" name="fname" data-parsley-required-message="*<strong>Description</strong> required" class="form-control"  required>
                     </div>
+                    <div class="col-sm-4">Date:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <input type="date" id="new_dt" class="form-control" data-parsley-required-message="*<strong>Date</strong> required" name="" required>
+                    </div> 
+                    <div class="col-sm-4">Type:</div> 
+                    <div class="col-sm-8" style="margin:0 0 .8em 0">
+                      <select class="form-control" id="new_typ" data-parsley-required-message="*<strong>Type</strong> required" required>
+                        <option value=""></option>
+                        <option value="Regular">Regular</option>
+                        <option value="Special">Special</option>
+                      </select>
+                    </div>
+                    {{-- <div class="col-sm-4">Region: </div>
+                    <div class="col-sm-8">
+                      
+                    </div> --}}
                     <div class="col-sm-12">
-                      <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
+                      <button type="submit" id class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
                     </div> 
                   </form>
                </div>
@@ -107,7 +121,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Class</strong></h5>
+              <h5 class="modal-title text-center"><strong>Edit Holiday</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
@@ -136,8 +150,8 @@
       <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Delete Class</strong></h5>
+            <div class="modal-body" style=" background-color: #272b30;color:white">
+              <h5 class="modal-title text-center"><strong>Delete Holiday</strong></h5>
               <hr>
               <div class="container">
                 <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="DelErrorAlert" role="alert">
@@ -161,22 +175,107 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="modal fade" id="CalendarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content" style="border-radius: 0px;border: none;">
+            <div class="modal-body" style=" background-color: #575c61;color: white;">
+              <h5 class="modal-title text-center"><strong>Calendar</strong></h5>
+              <hr>
+              <div class="container">
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="CalendarFetchAlertError" role="alert">
+                          <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                          <button type="button" class="close" onclick="$('#CalendarFetchAlertError').hide(1000);" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                <div id="CalendarMode">
+                </div>
+                <hr>
+                  <div class="row">
+                      <div class="col-sm-8">
+                    </div> 
+                    <div class="col-sm-4">
+                      <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;font-weight: bolder"><span class="fa fa-sign-up"></span>Close</button>
+                    </div>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div> 
     </div>
     <script type="text/javascript">
       $(document).ready(function() {
-         $('#example').DataTable();
+         $('#example').DataTable({"order": [[ 2, "asc" ]]});
+         $('#CalendarMode').fullCalendar({
+              themeSystem: 'bootstrap4',
+            aspectRatio: 1.5,
+            eventSources: [
+                // your event source
+                {
+                  url: '{{ asset('/mf/getCalendarEvents') }}',
+                  type: 'POST',
+                  data: {
+                    _token: $('#token').val()
+                  },
+                  error: function() {
+                      $('#CalendarFetchAlertError').show(100);
+                  },
+                  color: 'yellow',   // a non-ajax option
+                  textColor: 'black' // a non-ajax option
+                },
+
+                {
+                  url: '{{ asset('/mf/getCalendarEvents2') }}',
+                  type: 'POST',
+                  data: {
+                    _token: $('#token').val()
+                  },
+                  error: function() {
+                      $('#CalendarFetchAlertError').show(100);
+                  },
+                  color: 'green',   // a non-ajax option
+                  textColor: 'white' // a non-ajax option
+                }
+
+              ],
+              eventRender: function(eventObj, $el) {
+                  $el.popover({
+                    title: eventObj.hdy_typ + ' Holiday',
+                    content: eventObj.title,
+                    trigger: 'hover',
+                    placement: 'top',
+                    container: 'body'
+                  });
+                },
+                eventColor: '#378006',
+         });
+
+
       } );
         function showData(id,desc){
           $('#EditBody').empty();
           $('#EditBody').append(
               '<div class="col-sm-4">ID:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
-                '<input type="text" id="edit_name" value="'+id+'" class="form-control disabled" disabled>' +
+                '<input type="text" id="edit_code" value="'+id+'" class="form-control disabled" disabled>' +
               '</div>' +
               '<div class="col-sm-4">Description:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
-                '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
+                '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong> Code <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
+              '</div>' + 
+              '<div class="col-sm-4">Date:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<input type="date" id="edit_dt" data-parsley-required-message="<strong>*</strong>Date <strong>Required</strong>" class="form-control" required>' +
+              '</div>'  +
+              '<div class="col-sm-4">Type:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<select id="edit_typ" data-parsley-required-message="<strong>*</strong>Type <strong>Required</strong>" class="form-control" required>' +
+                  '<option value=""></option>'+
+                  '<option value="Regular">Regular</option>'+
+                  '<option value="Special">Special</option>'+
+                '</select>' +
               '</div>' 
             );
         }
@@ -202,7 +301,7 @@
                           '<span class="MA08_cancel">' +
                           '<button type="button" class="btn-defaults" onclick="showDelete(\''+e+'\', \''+d+'\');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>'+
                         '</span>' +
-                          '</center>'
+                      '</center>'
                   ])
                .draw();
               // $('#FilterdBody').append(
@@ -229,7 +328,7 @@
             var form = $(this);
             form.parsley().validate();
             if (form.parsley().isValid()) {
-                var id = $('#new_rgnid').val();
+                var id = $('#new_code').val();
                 var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
                 // console.log(arr);
                 var test = $.inArray(id,arr);
@@ -240,15 +339,15 @@
                       method: 'POST',
                       data: {
                         _token : $('#token').val(),
-                        id: $('#new_rgnid').val(),
-                        name : $('#new_rgn_desc').val(),
-                        ocid : $('#OCID').val(),
-                        mod_id: $('#CurrentPage').val()
+                        code: $('#new_code').val(),
+                        desc : $('#new_desc').val(),
+                        dat : $('#new_dt').val(),
+                        typ: $('#new_typ').val()
                       },
                       success: function(data) {
                         if (data == 'DONE') {
-                            alert('Successfully Added New Class');
-                            window.location.href = "{{ asset('employee/dashboard/mf/class') }}";
+                            alert('Successfully Added New Holiday');
+                            window.location.href = "{{ asset('employee/dashboard/mf/holidays') }}";
                         } else {
                           $('#AddErrorAlert').show(100);
                         }
@@ -258,7 +357,7 @@
                       }
                   });
                 } else {
-                  alert('Class ID is already been taken');
+                  alert('Holiday Code is already been taken');
                   $('#new_rgnid').focus();
                 }
             }
@@ -271,13 +370,19 @@
                var x = $('#edit_name').val();
                var y = $('#edit_desc').val();
                $.ajax({
-                  url: "{{ asset('/mf/save_class') }}",
+                  url: "{{ asset('/mf/save_holiday') }}",
                   method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y,mod_id: $('#CurrentPage').val()},
+                  data : {    
+                            _token:$('#token').val(),
+                            code: $('#edit_code').val(),
+                            desc: $('#edit_desc').val(),
+                            dt:   $('#edit_dt').val(),
+                            typ:  $('#edit_typ').val(),
+                          },
                   success: function(data){
                       if (data == "DONE") {
-                          alert('Successfully Edited Class');
-                          window.location.href = "{{ asset('/employee/dashboard/mf/class') }}";
+                          alert('Successfully Edited Holiday');
+                          window.location.href = "{{ asset('/employee/dashboard/mf/holidays') }}";
                       } else {
                           $('#EditErrorAlert').show(100);
                       }
@@ -302,19 +407,19 @@
           var id = $("#toBeDeletedID").val();
           var name = $("#toBeDeletedname").val();
           $.ajax({
-            url : "{{ asset('/mf/del_class') }}",
+            url : "{{ asset('/mf/del_holidays') }}",
             method: 'POST',
-            data: {_token:$('#token').val(),id:id,mod_id: $('#CurrentPage').val()},
+            data: {_token:$('#token').val(),id:id},
             success: function(data){
               if (data == 'DONE') {
                 alert('Successfully deleted '+name);
-                window.location.href = "{{ asset('/employee/dashboard/mf/class') }}";
+                window.location.href = "{{ asset('/employee/dashboard/mf/holidays') }}";
               } else {
                 $('#DelErrorAlert').show(100);
               }
             }, error : function(XMLHttpRequest, textStatus, errorThrown){
-                console.log(errorThrown);
-                $('#DelErrorAlert').show(100);
+              console.log(errorThrown);
+              $('#DelErrorAlert').show(100);
             }
           });
         }

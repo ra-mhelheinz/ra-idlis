@@ -208,8 +208,9 @@
                           }
 
                           if (paid == null || paid == 0) {
-                              status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
-                              ifdisabled = 'disabled';
+                            status = '<span style="color:blue;font-weight:bold;">For Evaluation</span>';
+                              // status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
+                              // ifdisabled = 'disabled';
                           }
                           
                           // var app = data[i].approved
@@ -239,7 +240,8 @@
         }        
     }
     function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment){
-        window.location.href = "{{ asset('/employee/dashboard/lps/assess') }}/" + appid;
+        // window.location.href = "{{ asset('/employee/dashboard/lps/assess') }}/" + appid;
+        window.location.href = "#";
         // var status = '';
         // var paid = appid_payment;
         // var ifdisabled = '';

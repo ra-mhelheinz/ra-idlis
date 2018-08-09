@@ -5,7 +5,8 @@
 @section('content')
   <input type="text" id="CurrentPage" value="MA13" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @foreach ($depts as $dept)
+ @if (isset($depts) && isset($secs))
+   @foreach ($depts as $dept)
    <datalist id="{{$dept->depid}}_list">
      @foreach ($secs as $sec)
        @if ($dept->depid == $sec->depid)
@@ -14,11 +15,14 @@
      @endforeach
    </datalist>
   @endforeach
+ @endif
    {{-- $('#new_rgnid').val() --}}
  <datalist id="rgn_list">
-   @foreach ($secs as $sec)
-     <option id="{{$sec->secid}}_pro" value="{{$sec->secid}}">{{$sec->secname}}</option>
-   @endforeach
+   @if (isset($secs))
+     @foreach ($secs as $sec)
+       <option id="{{$sec->secid}}_pro" value="{{$sec->secid}}">{{$sec->secname}}</option>
+     @endforeach
+   @endif
  </datalist>
 <div class="content p-4">
     <div class="card">
@@ -29,9 +33,11 @@
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Department ...</option>
-                @foreach ($depts as $dept)
-                  <option value="{{$dept->depid}}">{{$dept->depname}}</option>
-                @endforeach
+                @if (isset($depts))
+                  @foreach ($depts as $dept)
+                    <option value="{{$dept->depid}}">{{$dept->depname}}</option>
+                  @endforeach     
+                @endif
               </select>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
@@ -55,20 +61,28 @@
          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 0px;border: none;">
-              <div class="modal-body text-justify" style=" background-color: #272b30;
+              <div class="modal-body" style=" background-color: #272b30;
             color: white;">
                 <h5 class="modal-title text-center"><strong>Add New Department</strong></h5>
                 <hr>
                 <div class="container">
                   <form class="row" id="addCls" data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     {{ csrf_field() }}
                     <div class="col-sm-4">Department:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                       <select id="OCID" data-parsley-required-message="*<strong>Ownership</strong> required" class="form-control" required>  
                           <option value="">Select Department ...</option>
-                            @foreach ($depts as $dept)
+                            @if (isset($depts))
+                              @foreach ($depts as $dept)
                               <option value="{{$dept->depid}}">{{$dept->depname}}</option>
                             @endforeach
+                            @endif
                       </select>
                     </div>
                     <div class="col-sm-4">ID:</div>
@@ -92,11 +106,17 @@
     <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Edit Section</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="EditErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <span id="EditBody">
                     </span>
                     <div class="row">
@@ -116,10 +136,16 @@
       <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Delete Section</strong></h5>
               <hr>
               <div class="container">
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="DelErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#DelErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 <span id="DelModSpan">
                 </span>
                 <hr>
@@ -202,8 +228,13 @@
                         if (data == 'DONE') {
                             alert('Successfully Added New Section');
                             window.location.href = "{{ asset('employee/dashboard/mf/section') }}";
+                        } else if (data == 'ERROR') {
+                          $('#AddErrorAlert').show(100);
                         }
-                      }
+                      }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                          console.log(errorThrown);
+                          $('#AddErrorAlert').show(100);
+                      },
                   });
                 } else {
                   alert('Section ID is already been taken');
@@ -226,7 +257,12 @@
                       if (data == "DONE") {
                           alert('Successfully Edited Section');
                           window.location.href = "{{ asset('/employee/dashboard/mf/section') }}";
+                      } else if (data == 'ERROR') {
+                        $('#EditErrorAlert').show(100);
                       }
+                  }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                      console.log(errorThrown);
+                      $('#EditErrorAlert').show(100);
                   }
                });
              }
@@ -249,8 +285,15 @@
             method: 'POST',
             data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
-              alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/section') }}";
+              if (data == 'DONE') {
+                alert('Successfully deleted '+name);
+                window.location.href = "{{ asset('/employee/dashboard/mf/section') }}";
+              } else if (data == 'ERROR') {
+                $('#DelErrorAlert').show(100);
+              }
+            }, error : function (XMLHttpRequest, textStatus, errorThrown){
+              console.log(errorThrown);
+              $('#DelErrorAlert').show(100);
             }
           });
         }

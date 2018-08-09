@@ -55,18 +55,28 @@
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Add New Group</strong></h5>
               <hr>
-              <form id="NewRight" action="#" class="row" data-parsley-validate>
-                  <div class="col-sm-4">Group ID :</div>
-                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_modid" class="form-control" data-parsley-required-message="*<strong>Right ID</strong> required" required>
-                  </div>
-                  <div class="col-sm-4">Group Name :</div>
-                  <div class="col-sm-8" style="margin:0 0 .8em 0;" >
-                    <input type="text" id="new_rightdesc" class="form-control" data-parsley-required-message="*<strong>Right name</strong> required" required>
-                  </div>
+              <form id="NewRight" action="#" class="container" data-parsley-validate>
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="AddErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> 
+                 <div class="row">
+                    <div class="col-sm-4">Group ID :</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <input type="text" id="new_modid" class="form-control" data-parsley-required-message="*<strong>Right ID</strong> required" required>
+                    </div>
+                 </div>
+                  <div class="row">
+                    <div class="col-sm-4">Group Name :</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;" >
+                      <input type="text" id="new_rightdesc" class="form-control" data-parsley-required-message="*<strong>Right name</strong> required" required>
+                    </div>
+                    </div>
                   <div class="col-sm-12">
                     <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Group</button>
                   </div>
@@ -80,6 +90,12 @@
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Set Restriction Rights</strong></h5>
+              <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="EditErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> 
               <span id="modal_loaded"></span>
             </div>
           </div>
@@ -88,19 +104,29 @@
       <div class="modal fade" id="Test" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Add New Group</strong></h5>
                 <hr>
                 <span id="Test_body">
                   
-                <form id="NewGropn" action="#" class="row" data-parsley-validate>
-                  <div class="col-sm-4">Group ID :</div>
-                  <div class="col-sm-8" style="margin:0 0 .8em 0;" id="grp_id_holder">
-                    {{-- <input type="text" id="new_grpid" class="form-control" data-parsley-required-message="*<strong>Group ID</strong> required" disabled required> --}}
-                  </div>
-                  <div class="col-sm-4">Group Name :</div>
-                  <div class="col-sm-8" style="margin:0 0 .8em 0;" id="grp_desc_holder">
-                    {{-- <input type="text" id="new_grpdesc" class="form-control" data-parsley-required-message="*<strong>Group name</strong> required" required> --}}
+                <form id="NewGropn" action="#" class="container" data-parsley-validate>
+                   <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="AddNewGroupErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddNewGroupErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> 
+                  <div class="row">
+                    <div class="col-sm-4">Group ID :</div>
+                      <div class="col-sm-8" style="margin:0 0 .8em 0;" id="grp_id_holder">
+                        {{-- <input type="text" id="new_grpid" class="form-control" data-parsley-required-message="*<strong>Group ID</strong> required" disabled required> --}}
+                      </div>  
+                  </div>  
+                  <div class="row">
+                    <div class="col-sm-4">Group Name :</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;" id="grp_desc_holder">
+                      {{-- <input type="text" id="new_grpdesc" class="form-control" data-parsley-required-message="*<strong>Group name</strong> required" required> --}}
+                    </div>
                   </div>
                   <div class="col-sm-12">
                     <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Group</button>
@@ -129,7 +155,9 @@
                 success: function(data) {
                   if (data == 'NONE') {
                     $('#FilterdBody').empty();
-                  } else {
+                  } else if(data == 'ERROR'){
+                      $('#ERROR_MSG2').show(100);
+                   } else {
                     $('#FilterdBody').empty();
                     for (var i = 0; i < data.length; i++) {
                       var alw = data[i].allow == '1' ? 'checked=""' : '';
@@ -152,6 +180,9 @@
                         );
                     }
                   }
+                }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                  console.log(errorThrown);
+                  $('#ERROR_MSG2').show(100);
                 }
             });
       }
@@ -222,7 +253,11 @@
                     showSucc(grp_name,mod_name);
                     alert('Page will automatically reload to apply changes.');
                     setInterval('refreshPage()', 3000);
+                  } else if (data == 'ERROR') {
+                      $('#EditErrorAlert').show(100);
                   }
+                }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                    $('#EditErrorAlert').show(100);
                 }
             });
       }
@@ -278,7 +313,12 @@
                   if (data == 'DONE') {
                       alert('Successfully Added New Group');
                       window.location.href = "{{ asset('employee/dashboard/grouprights') }}";
+                  } else if (data == 'ERROR') {
+                      $('#AddNewGroupErrorAlert').show(100);   
                   }
+                }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(errorThrown);
+                    $('#AddNewGroupErrorAlert').show(100);
                 }
             });
         }
@@ -305,7 +345,12 @@
                   if (data == 'DONE') {
                       alert('Successfully Added New Group');
                       window.location.href = "{{ asset('employee/dashboard/grouprights') }}";
+                  } else if (data == 'ERROR') {
+                          $('#AddErrorAlert').show(100)             
                   }
+                }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                  console.log(errorThrown);
+                   $('#AddErrorAlert').show(100)
                 }
             });
           } else {

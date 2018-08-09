@@ -5,7 +5,8 @@
 @section('content')
   <input type="text" id="CurrentPage" value="MA18" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @foreach ($parts as $part)
+  @if (isset($parts) && isset($asments))
+    @foreach ($parts as $part)
    <datalist id="{{$part->partid}}_list">
      @foreach ($asments as $asment)
        @if ($part->partid == $asment->partid)
@@ -14,12 +15,15 @@
      @endforeach
    </datalist>
   @endforeach
+  @endif
    {{-- $('#new_rgnid').val() --}}
- <datalist id="rgn_list">
+ @if (isset($asments))
+   <datalist id="rgn_list">
    @foreach ($asments as $asment)
      <option id="{{$asment->asmt_id}}_pro" value="{{$asment->asmt_id}}">{{$asment->asmt_name}}</option>
    @endforeach
  </datalist>
+ @endif
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
@@ -29,9 +33,11 @@
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Part ...</option>
-                @foreach ($parts as $part)
-                  <option value="{{$part->partid}}">{{$part->partdesc}}</option>
-                @endforeach
+                @if (isset($parts))
+                  @foreach ($parts as $part)
+                    <option value="{{$part->partid}}">{{$part->partdesc}}</option>
+                  @endforeach
+                @endif
               </select>
               <input type="" id="token" value="{{Session::token()}}" hidden>
               </form>
@@ -61,14 +67,22 @@
                 <hr>
                 <div class="container">
                   <form class="row" id="addCls" data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
+                    <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     {{ csrf_field() }}
                     <div class="col-sm-4">Part:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                       <select id="partid" data-parsley-required-message="*<strong>Part</strong> required" class="form-control" required>  
                           <option value="">Select Part ...</option>
-                          @foreach ($parts as $part)
-                            <option value="{{$part->partid}}">{{$part->partdesc}}</option>
-                          @endforeach
+                          @if (isset($parts))
+                            @foreach ($parts as $part)
+                              <option value="{{$part->partid}}">{{$part->partdesc}}</option>
+                            @endforeach
+                          @endif
                       </select>
                     </div>
                     {{-- <div class="col-sm-4">ID:</div> --}}
@@ -92,11 +106,17 @@
     <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Edit Assessment</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="EditErrorAlert" role="alert">
+                    <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <span id="EditBody">
                     </span>
                     <div class="row">
@@ -116,12 +136,17 @@
       <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Delete Assessment</strong></h5>
               <hr>
               <div class="container">
-                <span id="DelModSpan">
-                </span>
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="DelErrorAlert" role="alert">
+                    <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#DelErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <span id="DelModSpan"></span>
                 <hr>
                     <div class="row">
                       <div class="col-sm-6">
@@ -204,7 +229,11 @@
                         if (data == 'DONE') {
                             alert('Successfully Added New Assessment');
                             window.location.href = "{{ asset('employee/dashboard/mf/assessment') }}";
-                        }
+                        } else if (data == 'ERROR') {
+                            $('#AddErrorAlert').show(100);
+                        } 
+                      }, error: function(XMLHttpRequest, textStatus, errorThrown){
+                          $('#AddErrorAlert').show(100);
                       }
                   });
                 } else {
@@ -228,7 +257,11 @@
                       if (data == "DONE") {
                           alert('Successfully Edited Assessment');
                           window.location.href = "{{ asset('/employee/dashboard/mf/assessment') }}";
+                      } else if (data == 'ERROR') {
+                          $('#EditErrorAlert').show(100);
                       }
+                  }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                      $('#EditErrorAlert').show(100);
                   }
                });
              }
@@ -251,8 +284,14 @@
             method: 'POST',
             data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
+             if (data == 'DONE') {
               alert('Successfully deleted '+name);
               window.location.href = "{{ asset('/employee/dashboard/mf/assessment') }}";
+            } else if (data == 'ERROR') {
+                $('#DelErrorAlert').show(100);
+            }
+            }, error : function(){
+              $('#DelErrorAlert').show(100);
             }
           });
         }

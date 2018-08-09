@@ -8,13 +8,15 @@
   <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
     <datalist id="rgn_list">
-      @foreach ($oShip as $oShips)
-      <option value="{{$oShips->ocid}}">{{$oShips->ocdesc}}</option>
-      @endforeach
+      @if ($oShip)
+        @foreach ($oShip as $oShips)
+        <option value="{{$oShips->ocid}}">{{$oShips->ocdesc}}</option>
+        @endforeach
+      @endif
     </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Ownership <a href="#" title="Add New Region" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Ownership <a href="#" title="Add New Ownership" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
 
         </div>
         <div class="card-body">
@@ -27,25 +29,27 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($oShip as $oShips)
-                  <tr>
-                    <td scope="row"> {{$oShips->ocid}}</td>
-                    <td>{{$oShips->ocdesc}}</td>
-                    <td>
-                      {{-- <center>
-                        <button type="button" class="btn-defaults" onclick="showData('{{$oShips->ocid}}', '{{$oShips->ocdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
-                      </center> --}}
-                      <center>
-                        <span class="MA06_update">
+                @if($oShip)
+                  @foreach ($oShip as $oShips)
+                    <tr>
+                      <td scope="row"> {{$oShips->ocid}}</td>
+                      <td>{{$oShips->ocdesc}}</td>
+                      <td>
+                        {{-- <center>
                           <button type="button" class="btn-defaults" onclick="showData('{{$oShips->ocid}}', '{{$oShips->ocdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
-                        </span>
-                        <span class="MA06_cancel">
-                          <button type="button" class="btn-defaults" onclick="showDelete('{{$oShips->ocid}}', '{{$oShips->ocdesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
-                        </span>
-                      </center>
-                    </td>
-                  </tr>
-                @endforeach
+                        </center> --}}
+                        <center>
+                          <span class="MA06_update">
+                            <button type="button" class="btn-defaults" onclick="showData('{{$oShips->ocid}}', '{{$oShips->ocdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                          </span>
+                          <span class="MA06_cancel">
+                            <button type="button" class="btn-defaults" onclick="showDelete('{{$oShips->ocid}}', '{{$oShips->ocdesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                          </span>
+                        </center>
+                      </td>
+                    </tr>
+                  @endforeach
+                @endif
               </tbody>
             </table>
         </div>
@@ -54,12 +58,18 @@
          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 0px;border: none;">
-              <div class="modal-body text-justify" style=" background-color: #272b30;
+              <div class="modal-body" style=" background-color: #272b30;
             color: white;">
                 <h5 class="modal-title text-center"><strong>Add New Ownership</strong></h5>
                 <hr>
                 <div class="container">
                   <form id="addRgn" class="row"  data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="AddErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     {{ csrf_field() }}
                     <div class="col-sm-4">ID:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -82,11 +92,17 @@
     <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Edit Ownership</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="EditErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <span id="EditBody">
                       
                     </span>
@@ -107,10 +123,16 @@
       <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Delete Ownership</strong></h5>
               <hr>
               <div class="container">
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="DelErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#DelErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 <span id="DelModSpan">
                 </span>
                 <hr>
@@ -178,7 +200,12 @@
                         if (data == 'DONE') {
                             alert('Successfully Added New Ownership');
                             window.location.href = "{{ asset('employee/dashboard/mf/ownership') }}";
+                        } else if (data == 'ERROR') {
+                            $('#AddErrorAlert').show(100);
                         }
+                      }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                          console.log(errorThrown);
+                          $('#AddErrorAlert').show(100);
                       }
                   });
                 } else {
@@ -202,7 +229,12 @@
                       if (data == "DONE") {
                           alert('Successfully Edited Ownership');
                           window.location.href = "{{ asset('/employee/dashboard/mf/ownership') }}";
+                      } else if(data == 'ERROR'){
+                          $('#EditErrorAlert').show(100);
                       }
+                  }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                      console.log(errorThrown);
+                      $('#EditErrorAlert').show(100);
                   }
                });
              }
@@ -215,9 +247,17 @@
             method: 'POST',
             data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
-              alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/ownership') }}";
+              if (data == 'DONE') {
+                alert('Successfully deleted '+name);
+                window.location.href = "{{ asset('/employee/dashboard/mf/ownership') }}";
+              } else if (data == 'ERROR'){
+                $('#DelErrorAlert').show(100);
+              }
+            }, error : function (XMLHttpRequest, textStatus, errorThrown){
+              console.log(errorThrown);
+              $('#DelErrorAlert').show(100);
             }
+
           });
         }
     </script>

@@ -7,11 +7,11 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Licensing Process Status
+           Application Status
         </div>
         <div class="card-body table-responsive">
-            <div style="float:left;margin-bottom: 5px">
-            <form class="form-inline">
+            <div style="float:left;margin-bottom: 5px;width: 100%">
+            <form class="container row form-inline">
               <label>Filter : &nbsp;</label>
               <input type="text" class="form-control" id="filterer" list="grp_list" onchange="filterGroup()" placeholder="Application Type">
               &nbsp;
@@ -19,9 +19,11 @@
                         <option value="">Select Application Type.. </option>
                </select>
                <datalist id="grp_list">
-                @foreach ($types as $type)
-                  <option value="{{$type->hfser_id}}">{{$type->hfser_desc}}</option>
-                @endforeach
+                @if(isset($types))
+                  @foreach ($types as $type)
+                    <option value="{{$type->hfser_id}}">{{$type->hfser_desc}}</option>
+                  @endforeach
+                @endif
               </datalist>
               &nbsp;
               @if ($employeeGRP == "NA")
@@ -30,9 +32,11 @@
               <input type="text" id="filtererReg" name="" value="{{$employeeREGION}}" hidden> 
               @endif
               <datalist id="rgn_list">
-                @foreach ($regions as $region)
-                  <option value="{{$region->rgn_desc}}">{{$region->rgnid}}</option>
-                @endforeach
+                @if(isset($regions))
+                  @foreach ($regions as $region)
+                    <option value="{{$region->rgn_desc}}">{{$region->rgnid}}</option>
+                  @endforeach
+                @endif
               </datalist>
               &nbsp;
               <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});">Filter</button>
@@ -42,18 +46,25 @@
             <table class="table table-hover" style="font-size:13px;">
                 <thead>
                 <tr>
-                    <th scope="col">Type</th>
-                    <th scope="col">Code</th>
-                    <th scope="col">Name of Health Facility</th>
-                    <th scope="col">Type of Health Facility</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Current Status</th>
-                    <th scope="col">Options</th>
+                    <th scope="col" style="">Type</th>
+                    <th scope="col" style="">Code</th>
+                    <th scope="col" style="">Name of the Facility</th>
+                    <th scope="col" style="">Type of Facility</th>
+                    <th scope="col" style="">Type</th>
+                    <th scope="col" style="">Date Applied</th>
+                    <th scope="col" style="">Paid</th>
+                    <th scope="col" style="">Evaluated</th>
+                    {{-- <th scope="col" style="">Evaluated by</th> --}}
+                    {{-- <th scope="col" style="">Region Evaluated</th> --}}
+                    <th scope="col" style="">Inspected</th>
+                    <th scope="col" style="">Approved</th>
+                    <th scope="col" style="">Status</th>
+                    {{-- <th scope="col" style="">Current Status</th> --}}
+                    <th scope="col" style="">Options</th>
                 </tr>
                 </thead>
                 <tbody id="FilterdBody">
-                @if ($LotsOfDatas)
+                 @if (isset($LotsOfDatas))
                   @foreach ($LotsOfDatas as $data)
                   @php
                     $status = '';
@@ -73,31 +84,82 @@
                      <td>{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}</td>
                      <td><strong>{{$data->facilityname}}</strong></td>
                      <td>{{$data->facname}}</td>
-                                  <td>{{$data->formattedDate}}</td>
-                                  <td>{{$data->aptdesc}}</td>
-                                  <td style="color:{{$color}};font-weight:bold;">{{$status}}</td>
-                                  <td>
-      <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>
-                                  </td>
+                     <td>{{$data->aptdesc}}</td>
+                      <td>{{$data->formattedDate}}</td>
+                     <td><center><h5>@if($data->appid_payment !== null) <span class="badge badge-success">Yes</span> @else <span class="badge badge-pill badge-warning">No</span> @endif</h5></center></td>
+                      {{-- <td>{{$data->formattedDateEval}}</td> --}}
+                      {{-- <td>{{$data->recommendedbyName}}</td> --}}
+                      {{-- <td>{{$data->RgnEvaluated}}</td> --}}
+                      {{-- <td></td>
+                      <td></td> --}}
+                      <td><center><h5>@if($data->isrecommended == 1) <span class="badge badge-success" title="Click for more info" data-toggle="modal" data-target="#ShowEvalInfo" onclick="showEvalInfo('{{$data->formattedTimeEval}}', '{{$data->formattedDateEval}}', '{{$data->formattedTimePropEval}}', '{{$data->formattedDatePropEval}}', '{{$data->recommendedbyName}}', '{{$data->RgnEvaluated}}', '{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}')">Yes</span> @elseif($data->isrecommended == null) <span class="badge badge-pill badge-warning">Pending</span> @else <span class="badge badge-pill badge-danger">No</span> @endif</center></h5></td>
+                      <td><center>
+                        <h5>
+                          @if ($data->agreedInspectiondate != null)
+                            <span class="badge badge-success">Yes</span>
+                          @else 
+                            <span class="badge badge-warning">Pending</span>
+                          @endif
+                        </h5>
+                      </center></td>
+                      <td><center>
+                        <h5>
+                          @if ($data->approvedBy == '1')
+                            <span class="badge badge-success">Yes</span>
+                          @elseif($data->approvedBy == '0')
+                            <span class="badge badge-danger">No</span>
+                          @else
+                            <span class="badge badge-warning">Pending</span>
+                          @endif
+                        </h5>
+                      </center></td>
+                      <td style="color:{{$color}};font-weight:bold;">{{-- {{$status}} --}}</td>
+                      <td>
+                        <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>
+                      </td>
                    </tr>
                   @endforeach
-                @endif
+                @endif 
                 </tbody>
             </table>
         </div>
     </div>
         </div>
     </div>
-@endsection
 <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog {{-- modal-lg --}}" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>View Application</strong></h5>
               <hr>
               <div class="container">
                     <form id="ViewNow" data-parsley-validate>
                     <span id="ViewBody">
+                    </span>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-6">
+                      {{-- <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button> --}}
+                    </div> 
+                    <div class="col-sm-6">
+                      <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
+                    </div>
+                    </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="ShowEvalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog {{-- modal-lg --}}" role="document">
+          <div class="modal-content" style="border-radius: 0px;border: none;">
+            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+              <h5 class="modal-title text-center"><strong><span id="EvalTitle"></span> Evaluation</strong></h5>
+              <hr>
+              <div class="container">
+                    <form id="" data-parsley-validate>
+                    <span id="EvalBody">
                     </span>
                     <hr>
                     <div class="row">
@@ -216,7 +278,7 @@
                             );
                       }
                   } else{
-                    /// ERROR
+                    alert('ERROR');
                   }
               }
           });
@@ -274,6 +336,34 @@
                 '</div>' +
             '</div>'
           );
-
     } 
+    // '{{$data->formattedTimeEval}}', '{{$data->formattedDateEval}}', '{{$data->formattedTimePropEval}}', '{{$data->formattedDatePropEval}}', '{{$data->recommendedbyName}}', '{{$data->RgnEvaluated}}', '{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}')"
+    function showEvalInfo(EvalTime, EvalDate, PropTime, PropDate, RecommendedBy, RgnRecommended, code){
+        $('#EvalTitle').empty();
+        $('#EvalTitle').text(code);
+        $('#EvalBody').empty();
+        $('#EvalBody').append(
+              '<div class="row">'+
+                  '<div class="col-sm-5">Evaluated On:</div>' +
+                  '<div class="cols-sm-7" style="font-weight:bold">' + EvalDate + ' ' + EvalTime +
+                  '</div>' + 
+              '</div>'  +
+              '<div class="row">'+
+                  '<div class="col-sm-5">Recommended By:</div>' +
+                  '<div class="cols-sm-7" style="font-weight:bold">' + RecommendedBy +
+                  '</div>' + 
+              '</div>' +
+              '<div class="row">'+
+                  '<div class="col-sm-5">Region Evaluated:</div>' +
+                  '<div class="cols-sm-7" style="font-weight:bold">' + RgnRecommended +
+                  '</div>' + 
+              '</div>' +
+              '<div class="row">'+
+                  '<div class="col-sm-5">Proposed Inspection:</div>' +
+                  '<div class="cols-sm-7" style="font-weight:bold">' + PropDate + ' ' + PropTime +
+                  '</div>' + 
+              '</div>'
+          );
+    }
 </script>
+@endsection

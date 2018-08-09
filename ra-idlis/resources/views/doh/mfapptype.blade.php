@@ -8,9 +8,11 @@
   <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
     <datalist id="rgn_list">
-      @foreach ($apptype as $apptypes)
-      <option value="{{$apptypes->aptid}}">{{$apptypes->aptdesc}}</option>
-      @endforeach
+      @if (isset($apptype))
+        @foreach ($apptype as $apptypes)
+          <option value="{{$apptypes->aptid}}">{{$apptypes->aptdesc}}</option>
+        @endforeach
+      @endif
     </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
@@ -27,6 +29,7 @@
                 </tr>
               </thead>
               <tbody>
+                @if (isset($apptype))
                 @foreach ($apptype as $apptypes)
                   <tr>
                     <td scope="row"> {{$apptypes->aptid}}</td>
@@ -43,6 +46,7 @@
                     </td>
                   </tr>
                 @endforeach
+                @endif
               </tbody>
             </table>
         </div>
@@ -58,6 +62,12 @@
                 <div class="container">
                   <form id="addRgn" class="row"  data-parsley-validate>
                     {{ csrf_field() }}
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="AddErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> 
                     <div class="col-sm-4">ID:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required"  class="form-control"  required>
@@ -79,11 +89,17 @@
     <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Edit Application Status</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
+                      <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="EditErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <span id="EditBody">
                       
                     </span>
@@ -104,10 +120,16 @@
       <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Delete Application Type</strong></h5>
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
+              <h5 class="modal-title text-center"><strong>Delete Application Status</strong></h5>
               <hr>
               <div class="container">
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="DelErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#DelErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 <span id="DelModSpan">
                 </span>
                 <hr>
@@ -152,7 +174,7 @@
                 var test = $.inArray(id,arr);
                 if (test == -1) { // Not in Array
                     $.ajax({
-                      url: "{{ asset('/employee/dashboard/mf/apptype') }}",
+                      url: "{{ asset('/employee/dashboard/mf/appstatus') }}",
                       method: 'POST',
                       data: {
                         _token : $('#token').val(),
@@ -163,12 +185,15 @@
                       },
                       success: function(data) {
                         if (data == 'DONE') {
-                            alert('Successfully Added New Application Type');
-                            window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
-                        } else {
-                          alert(data);
+                            alert('Successfully Added New Application Status');
+                            window.location.href = "{{ asset('/employee/dashboard/mf/appstatus') }}";
+                        } else if (data == 'ERROR'){
+                          $('#AddErrorAlert').show(100);
                         }
-                      }
+                      }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                          console.log(errorThrown);
+                          $('#AddErrorAlert').show(100);
+                      },
                   });
                 } else {
                   alert('Application ID is already been taken');
@@ -189,9 +214,14 @@
                   data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
                   success: function(data){
                       if (data == "DONE") {
-                          alert('Successfully Edited Application Type');
-                          window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+                          alert('Successfully Edited Application Status');
+                          window.location.href = "{{ asset('/employee/dashboard/mf/appstatus') }}";
+                      } else if (data == 'ERROR') {
+                          $('#EditErrorAlert').show(100);
                       }
+                  }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                      console.log(errorThrown);
+                      $('#EditErrorAlert').show(100);
                   }
                });
              }
@@ -214,8 +244,15 @@
             method: 'POST',
             data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
-              alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+              if (data == 'DONE') {
+                alert('Successfully deleted '+name);
+                window.location.href = "{{ asset('/employee/dashboard/mf/appstatus') }}";
+              } else if (data == 'ERROR') {
+                $('#DelErrorAlert').show(100);
+              }
+            }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                console.log(errorThrown);
+                $('#DelErrorAlert').show(100);
             }
           });
         }

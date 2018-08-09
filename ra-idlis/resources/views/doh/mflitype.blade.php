@@ -8,9 +8,11 @@
   <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
     <datalist id="rgn_list">
-      @foreach ($plitype as $plitypes)
-      <option value="{{$plitypes->plid}}">{{$plitypes->pldesc}}</option>
-      @endforeach
+      @if (isset($plitype))
+        @foreach ($plitype as $plitypes)
+          <option value="{{$plitypes->plid}}">{{$plitypes->pldesc}}</option>
+        @endforeach
+      @endif
     </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
@@ -27,7 +29,7 @@
                 </tr>
               </thead>
               <tbody>
-                @if ($plitype)
+                @if (isset($plitype))
                 @foreach ($plitype as $plitypes)
                   <tr>
                     <td scope="row"> {{$plitypes->plid}}</td>
@@ -45,7 +47,6 @@
                   </tr>
                 @endforeach
                 @else
-                GG
                 @endif
               </tbody>
             </table>
@@ -55,20 +56,32 @@
          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 0px;border: none;">
-              <div class="modal-body text-justify" style=" background-color: #272b30;
+              <div class="modal-body" style=" background-color: #272b30;
             color: white;">
                 <h5 class="modal-title text-center"><strong>Add New Personnel License</strong></h5>
                 <hr>
                 <div class="container">
-                  <form id="addRgn" class="row"  data-parsley-validate>
+                  <form id="addRgn"  data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
+                      <div class="row">
+                        
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>  
                     {{ csrf_field() }}
-                    <div class="col-sm-4">ID:</div>
-                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required"  class="form-control"  required>
+                    <div class="row">
+                      <div class="col-sm-4">ID:</div>
+                       <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                       <input type="text" id="new_rgnid" data-parsley-required-message="*<strong>ID</strong> required"  class="form-control"  required>
+                      </div>
                     </div>
-                    <div class="col-sm-4">Description:</div>
-                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Description</strong> required" required>
+                    <div class="row">
+                      <div class="col-sm-4">Description:</div>
+                      <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Description</strong> required" required>
+                        </div>    
                     </div>
                     <div class="col-sm-12">
                       <button type="submit" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
@@ -83,14 +96,20 @@
     <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Edit Personnel License</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
-                    <span id="EditBody">
-                      
-                    </span>
+                      <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="EditErrorAlert" role="alert">
+                      <div class="row">
+                        
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>  
+                    <span id="EditBody"></span>
                     <div class="row">
                       <div class="col-sm-6">
                       <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
@@ -108,10 +127,18 @@
       <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Delete Personnel License</strong></h5>
               <hr>
               <div class="container">
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="DelErrorAlert" role="alert">
+                      <div class="row">
+                        
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#DelErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> 
                 <span id="DelModSpan">
                 </span>
                 <hr>
@@ -165,7 +192,13 @@
                         if (data == 'DONE') {
                             alert('Successfully Added New Personnel License');
                             window.location.href = "{{ asset('/employee/dashboard/mf/litype') }}";
+                        } else if(data == 'ERROR'){
+                          $('#AddErrorAlert').show(100);
                         }
+                      },
+                      error: function(XMLHttpRequest, textStatus, errorThrown) {
+                         console.log(errorThrown);
+                         $('#AddErrorAlert').show(100);
                       }
                   });
                 } else {
@@ -189,8 +222,15 @@
                       if (data == "DONE") {
                           alert('Successfully Edited Application Type');
                           window.location.href = "{{ asset('/employee/dashboard/mf/litype') }}";
+                      } else if (data == 'ERROR') {
+                        $('#EditErrorAlert').show(100);
                       }
+                  },
+                  error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(errorThrown);
+                    $('#EditErrorAlert').show(100);
                   }
+
                });
              }
         });
@@ -211,9 +251,17 @@
             method: 'POST',
             data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
-              alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/litype') }}";
-            }
+             if (data == 'DONE') {
+                 alert('Successfully deleted '+name);
+                window.location.href = "{{ asset('/employee/dashboard/mf/litype') }}";
+             } else if (data == 'ERROR') {
+                $('#DelErrorAlert').show(100);
+             }
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(errorThrown);
+                    $('#DelErrorAlert').show(100);
+                  }
           });
         }
     </script>

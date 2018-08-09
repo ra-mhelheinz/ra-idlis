@@ -64,18 +64,22 @@
                       <thead>
                         <tr>
                           <th></th>
+                          <th>Code</th>
                           <th>Description</th>
                           <th style="text-align: center">Amount</th>
+                          <th>Remarks</th>
                         </tr>
                       </thead>
                       <tbody> 
                         {{-- Bills --}}
-                       @if ($Bills)
+                       @if (isset($Bills))
                          @foreach ($Bills as $bill)
                            <tr>
                                 <td><center><input type="checkbox" name="selected[]" price="{{$bill->amt}}" class="form-check Charge" value="{{$bill->chgopp_id}}" {{-- onchange="Checked({{$bill->amt}})" --}} style=" width: 2rem;height: 1rem;"></center></td>
-                                <td style="font-weight: bold">{{$bill->chg_desc}}</td>
+                                <td style="font-weight: bold">{{$bill->chg_code}}</td>
+                                <td>{{$bill->chg_desc}}</td>
                                 <td style="text-align: center">{{number_format($bill->amt,2,'.',', ')}}</td> 
+                                <td>@if($bill->remarks != null) {{$bill->remarks}} @else &nbsp; @endif</td>
                            </tr>
                          @endforeach
                        @endif
