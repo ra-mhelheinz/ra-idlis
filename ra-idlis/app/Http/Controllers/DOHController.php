@@ -1430,7 +1430,7 @@
 
 
 
-					return dd($data1);
+					// return dd($data1);
 					$hfstype = DB::table('hfaci_serv_type')->get();
 					return view('doh.mfFaServType', ['hfstypes'=>$hfstype]);
 				} catch (Exception $e) {
