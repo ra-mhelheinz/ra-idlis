@@ -75,6 +75,7 @@
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
 /*.radio:checked + .label {    target next sibling (+) label 
   background-color: green;
 }*/
@@ -166,7 +167,7 @@ function closeNav() {
   </div>
 </div>
 @if(session()->has('draft_success'))
-<div class="alert alert-{{session()->has('alert-type')}} alert-dismissible fade show" role="alert">
+<div id="asdf" class="alert alert-{{session()->has('alert-type')}} alert-dismissible fade show" role="alert">
             <center><strong><i class="fas fa-exclamation"></i></strong> {{session()->get('draft_success')}}</center>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -186,15 +187,14 @@ function closeNav() {
      
       <h2>{{$clientData->facilityname}}. {{$clientData->streetname}}, {{$clientData->cmname}}</h2>
       <hr>
-      <div class="container align-items-center">
+      <div class="container">
         <font size="24px" >Assessment Tool</font>
-        {{-- <span style="float:right">
+        <span style="float:right">
           <div class="btn-group">
-            <a href="#"><button type="button"  class="btn-primarys active">Part I</button></a>
-            <a href="{{asset('client/inspection2')}}"><button type="button"  class="btn-primarys">Part II</button></a>
-            <a href="{{asset('client/inspection3')}}"><button type="button"  class="btn-primarys">Part III</button></a>
+           {{--  <a href="{{asset('client/inspection2')}}"><button type="button"  class="btn btn-success"><i class="fa fa-check"></i> Complied</button></a>
+            <a href="{{asset('client/inspection3')}}"><button type="button"  class="btn btn-danger"><i class="fa fa-times"></i> Not Complied</button></a> --}}
           </div>
-        </span> --}}
+        </span>
       </div>
       <hr>
 
@@ -225,7 +225,7 @@ function closeNav() {
                     <input type="hidden" name="upID[]" value="{{$assessments->asmt_id}}">
                     <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="complied_{{$assessments->asmt_id}}" type="radio" value="1"  hidden>
                       <label id="radio_{{$assessments->asmt_id}}1" for="complied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 1)"><i class="fa fa-check"></i></label>
-                    <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="notcomplied_{{$assessments->asmt_id}}" type="radio" value="0"  hidden>
+                    <input class="radio" name="complied[{{$assessments->asmt_id}}]" id="notcomplied_{{$assessments->asmt_id}}" type="radio" value="0"  hidden>
                       <label id="radio_{{$assessments->asmt_id}}2" for="notcomplied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 2)"><i class="fa fa-times"></i></label>
                   </div>
                   <div class="col-3 text-center">
@@ -458,6 +458,10 @@ function closeNav() {
       document.getElementsByName(id)[(bool-1)].checked = true;
     }
   }
+      function remLd() { 
+      setTimeout(function(){ $('#asdf').fadeOut(500); }, 3000);
+     };
+    remLd();
 </script>
 <div class="modal" id="exampleModal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">

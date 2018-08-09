@@ -4,10 +4,11 @@
 @include('client.breadcrumb')
 
 <script type="text/javascript">
-	document.getElementById('second').style = "color: blue;";
+	document.getElementById('third').style = "color: blue;";
 </script>
 <div class="jumbotron container" style="margin-top: 2%;border: 1px solid rgba(0,0,0,.2);margin-top: 2%;;background-color: #fff">
-		<div class="container">
+	<div class="text-center"><h3>Your Application is not yet evaluated.</h3></div>
+		<div class="container" hidden>
 			<div class="table-responsive">
 				<table class="table table-borderless">
 					<thead>

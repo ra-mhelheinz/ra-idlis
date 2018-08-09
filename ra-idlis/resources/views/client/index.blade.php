@@ -86,11 +86,14 @@
     document.getElementById("navbarResponsive").classList.add("show");
   }
 </script>
-@if(session()->has('pre_success'))
-<div id="asdf" class="alert alert-success" id="alert" role="alert" style="position: absolute;">
-                <strong>!</strong> {{session()->get('pre_success')}}.
-</div>
-@endif
+{{-- @if(session()->has('save_success'))
+<div id="asdf" class="alert alert-{{session()->has('alert-type')}} alert-dismissible fade show" role="alert">
+            <center><strong><i class="fas fa-exclamation"></i></strong> {{session()->get('save_success')}}</center>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+@endif --}}
 <script type="text/javascript">
     function remLd() { 
       $('#exampleModalCenter').modal('show', {backdrop: 'static', keyboard: false});
@@ -173,12 +176,11 @@
                 </div>
               </div>
             </div> --}}
-              <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="<b>Status Banner</b><br><small>In this banner is where you can see the status of your Application/s.</small>" data-step="4" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745">
+{{--               <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="<b>Status Banner</b><br><small>In this banner is where you can see the status of your Application/s.</small>" data-step="4" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745">
               <div class="card-header" id="headingOne">
                   <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                     Click to View Status
                   </button>
-                  {{-- <button style="float:right;border-radius: 0;" class="btn btn-outline-info">View Submitted Application</button> --}}
              </div>
 
               <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="border-radius: 3px 3px 0 0;">
@@ -204,27 +206,39 @@
                         </tr>
                       </thead>
                     </table>
-                 {{--   --}}
+  
                 </div>
               </div>
-            </div>
+            </div> --}}
             </div>
             </div>
             @php
-              $check_assess = DB::table('app_assessment')->where('draft', '=', '0')->where('uid',session('client_data')->uid)->first();
+              $check_assess = DB::table('app_assessment')->where('draft', '=', '0')->where('uid',session('client_data')->uid)->get();
+              $check_counter = 0;
+            if ($check_assess->count() <= 0) {
+              $check_counter++;
+            }
+           foreach ($check_assess as $check) {
+             if ($check->complied == '0') {
+               $check_counter++;
+             }
+           }
+           $status = "complied";
+           // dd($check_counter);
+
             @endphp
              <div class="row" >
              <div class="col-sm-12">
-             	<div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="5"  @if($check_assess) style="pointer-events: none; @endif">
+             	<div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="5"  @if($check_counter == 0) style="pointer-events: none;" @endif>
                 <div class="row">
                 <div class="col-sm-6" >
               <div class="icon"><i class="fa fa-clipboard"></i></div>
-              <h4 class="title"><a href="{{asset('client/preassessment')}}">Pre assessment</a></h4>
+              <h4 class="title"><a @if($check_assess->count() <= 0) href="{{asset('client/preassessment2')}}" @else href="{{asset('client/preassessment2')}}/{{$status}}" @endif>Pre assessment</a></h4>
               <p class="description">Guide for self-assessment of the Health Facility in preparation for inspection monitoring visits</p>
                 </div>
                 <div class="col-sm-6">
-              <div class="card bg-warning text-white">
-                <div class="card-body" style="height: auto !important">Result : @if($result->count()==0)Please take the Pre-assessment first. @else @isset($draft_ok) Complied({{$draft_ok}}), Not Complied({{$draft_not}}) @else No Result @endisset @endif</div>
+              <div class="card" style="border-color: #28a745;">
+                <div class="card-body" style="height: auto !important;color: #006400;">Result : @if($result->count()==0)Please take the Pre-assessment first. @else @isset($draft_ok) Complied({{$draft_ok}}), <label style="color: red;">Not Complied({{$draft_not}})</label> @else No Result @endisset @endif</div>
               </div> 
               </div>       
             </div>
@@ -232,7 +246,7 @@
             </div>
             </div>
             
-            @if(!$check_assess)
+            @if($check_counter > 0)
              <div class="alert alert-danger" id="alert" role="alert" style="display: none;">
                 <strong>Oh snap!</strong> You must go first to Pre-assessment.
             </div>
@@ -246,7 +260,7 @@
               
             </script>
             <div class="disbool" onclick="disbool()" >
-            <div class="row" id="syd" @if(!$check_assess) style="pointer-events: none; @endif">
+            <div class="row" id="syd" @if($check_counter > 0 ) style="pointer-events: none;@endif " >
           <div class="col-lg-6 introjs-showElement introjs-relativePosition" >
             <div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="5">
               <div class="icon"><i class="fa fa-edit"></i></div>
@@ -257,31 +271,40 @@
 
           <div class="col-lg-6 introjs-showElement introjs-relativePosition">
             
-            <div class="box wow fadeInRight" data-intro="Step 2 <br><b>Evaluate</b><br><small>After submitting the application form, you'll have to wait for your application to be evaluated. Click the 'View your evaluation status' link to view your evaluation status</small>" data-step="6">
+            <div class="box wow fadeInRight" data-intro="Step 2 <br><b>Payment</b><br><small>You may pay through the internet with Paypal and DragOnPay or you can pay through MLhuillierPayment process for evaluation and inspection to be process.</small>" data-step="6">
               <div class="icon"><i class="fa fa-check"></i></div>
-              <h4 class="title"><a href="{{asset('client/evaluate')}}">Step 2. Evaluate</a></h4>
+              <h4 class="title"><a href="{{asset('client/orderofpaymentc')}}">Step 2. Payment</a></h4>
+              <p class="description">You need to pay for the evaluation and inspection process.{{--  <br> You may pay through the internet with Paypal and DragOnPay or you can pay through MLhuillierPayment process for evaluation and inspection to be process --}}</p>
+            </div>
+          </div>
+            <div class="col-lg-6 introjs-showElement introjs-relativePosition">
+            
+            <div class="box wow fadeInRight" data-intro="Step 2 <br><b>Evaluate</b><br><small>After submitting the application form, you'll have to wait for your application to be evaluated. Click the 'View your evaluation status' link to view your evaluation status</small>" data-step="7">
+              <div class="icon"><i class="fa fa-check"></i></div>
+              <h4 class="title"><a href="{{asset('client/evaluate')}}">Step 3. Evaluate</a></h4>
               <p class="description">DOH will evaluate your submitted documents and notify your schedule of inspection.</p>
               <p><a href="{{asset('client/evaluate')}}">View your evaluation status</a></p>
             </div>
           </div>
 
           <div class="col-lg-6 introjs-showElement introjs-relativePosition">
-            <div class="box wow fadeInLeft" data-intro="Step 3 <br><b>Inspection</b><br><small>After evaluating your application, DOH will then Inspect the application for approval to be issued</small>" data-step="7">
+            <div class="box wow fadeInLeft" data-intro="Step 4 <br><b>Inspection</b><br><small>After evaluating your application, DOH will then Inspect the application for approval to be issued</small>" data-step="8">
               <div class="icon"><i class="fa fa-search"></i></div>
-              <h4 class="title"><a href="{{asset('client/inspection')}}">Step 3. Inspection</a></h4>
+              <h4 class="title"><a href="{{asset('client/inspection')}}">Step 4. Inspection</a></h4>
               <p class="description">DOH will conduct inspection and notify the status of your application.</p>
             </div>
           </div>
-
+          <div class="col-lg-3"></div>
           <div class="col-lg-6 introjs-showElement introjs-relativePosition">
-            <div class="box wow fadeInRight"  data-intro="Step 4 <br><b>Issuance</b><br><small>After evaluating and inspection, the application is good for Issuance</small>" data-step="8">
+            <div class="box wow fadeInRight"  data-intro="Step 5 <br><b>Issuance</b><br><small>After evaluating and inspection, the application is good for Issuance</small>" data-step="9">
               <div class="icon"><i class="fa fa-print"></i></div>
-              <h4 class="title"><a href="{{asset('client/issuance')}}">Step 4. Issuance</a></h4>
+              <h4 class="title"><a href="{{asset('client/issuance')}}">Step 5. Issuance</a></h4>
               <p class="description">You can now print your application online.</p>
               <p>Issuance Status:<font style="color:orange;">PENDING</font> </p>
             </div>
           </div>
-          </div>
+         <div class="col-lg-3"></div>
+           </div>
           </div>
           </div>
         </div>

@@ -264,11 +264,11 @@
 		<input type="" name="_token" value="{{csrf_token()}}" hidden>
 		<div class="col-sm-12"><center><h4>{{$hfaci}}</h4></center></div>
 		<br>
-		{{-- @if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
+		@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
 			<input type="hidden" name="appid" id="appidinc" value="{{ $curr_tbl[0]->appid }}">
 		@else
 			<input type="hidden" name="appid" id="appidinc" value="{{ $appidinc }}">
-		@endif --}}
+		@endif
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-3">
@@ -690,6 +690,7 @@
 				  			List Of Personnel
 				  			</div>
 				  			<div class="card-body">
+				  				<div class="table-responsive">
 				  			<table class="table">
 								<thead>
 									<tr>
@@ -709,6 +710,7 @@
 									</tr> --}}
 								</tbody>
 							</table>
+							</div>
 				  		</div>
 				  		</div>
 						<script type="text/javascript">
