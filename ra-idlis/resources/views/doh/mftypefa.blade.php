@@ -5,9 +5,11 @@
 @section('content')
 <div class="content p-4">
 <datalist id="test_list">
-  @foreach ($uploads as $upload)
-   <option  value="{{$upload->updesc}}" data-id="{{$upload->upid}}"></option>
-  @endforeach
+  @if (isset($uploads))
+    @foreach ($uploads as $upload)
+     <option  value="{{$upload->updesc}}" data-id="{{$upload->upid}}"></option>
+    @endforeach
+  @endif
 </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
@@ -19,9 +21,11 @@
               <label>Filter : &nbsp;</label>
               <input type="text" class="form-control" id="filterer" list="grp_list" onchange="filterGroup()" placeholder="Application Type">
               <datalist id="grp_list">
-                @foreach ($types as $type)
-                  <option value="{{$type->hfser_id}}">{{$type->hfser_desc}}</option>
-                @endforeach
+                @if (isset($types))
+                  @foreach ($types as $type)
+                    <option value="{{$type->hfser_id}}">{{$type->hfser_desc}}</option>
+                  @endforeach
+                @endif
               </datalist>
               <datalist id="mod_list">
                {{--  @foreach ($modules as $module)
@@ -69,9 +73,11 @@
                     <input type="text" id="PutTypeIDhere" name="" hidden>
                       <select class="form-control" id="selectedOOP" data-parsley-required-message="*<strong>Order of Payment</strong> required." required>
                         <option value=""></option>
-                        @foreach ($oops as $oop)
-                          <option value="{{$oop->oop_id}}">{{$oop->oop_desc}}</option>
-                        @endforeach
+                        @if(isset($oops))
+                          @foreach ($oops as $oop)
+                            <option value="{{$oop->oop_id}}">{{$oop->oop_desc}}</option>
+                          @endforeach
+                        @endif
                       </select>
                   </div>
                   <div class="col-sm-12">
@@ -100,6 +106,12 @@
               <input type="text" id="TransfereedID" style="display:none;">
               <hr>
               <div class="container">
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="GetErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#GetErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 <div class="row">
                   <div class="col-sm-10" id="AddNewRequirementDIV"></div>
                   <div class="col-sm-1" id="CancelBtn"></div>                    
@@ -145,27 +157,41 @@
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body container" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Add Facility/Service in Application</strong></h5>
               <hr>
-              <form id="NewFacServIn" action="#" class="row" data-parsley-validate>
-                  <div class="col-sm-4">Application :</div>
-                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                   <select id="appID" data-parsley-required-message="*<strong>Application</strong> required" class="form-control" required>  
-                          <option value="">Select Application ...</option>
-                          @foreach ($types as $type)
-                            <option value="{{$type->hfser_id}}">{{$type->hfser_desc}}</option>
-                          @endforeach
-                      </select>
+              <form id="NewFacServIn" class="container" action="#" class="row" data-parsley-validate>
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                  <div class="row">
+                    <div class="col-sm-4">Application :</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                     <select id="appID" data-parsley-required-message="*<strong>Application</strong> required" class="form-control" required>  
+                            <option value="">Select Application ...</option>
+                            @if(isset($types))
+                              @foreach ($types as $type)
+                                <option value="{{$type->hfser_id}}">{{$type->hfser_desc}}</option>
+                              @endforeach
+                            @endif
+                        </select>
+                    </div>
                   </div>
-                  <div class="col-sm-4">Facility/Service :</div>
-                  <div class="col-sm-8" style="margin:0 0 .8em 0;" >
-                   <select id="FacServID" data-parsley-required-message="*<strong>Facility/Service</strong> required" class="form-control" required>  
-                          <option value="">Select Facility/Service ...</option>
-                          @foreach ($facilitys as $facility)
-                            <option value="{{$facility->facid}}">{{$facility->facname}}</option>
-                          @endforeach
-                      </select>
+                  <div class="row">
+                    <div class="col-sm-4">Facility/Service :</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;" >
+                     <select id="FacServID" data-parsley-required-message="*<strong>Facility/Service</strong> required" class="form-control" required>  
+                            <option value="">Select Facility/Service ...</option>
+                            @if (isset($facilitys))
+                              @foreach ($facilitys as $facility)
+                                <option value="{{$facility->facid}}">{{$facility->facname}}</option>
+                              @endforeach
+                            @endif
+                        </select>
+                    </div>
                   </div>
                   <div class="col-sm-12">
                     <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add Facility/Service</button>
@@ -217,13 +243,15 @@
                       } else if (data == "SAME") {
                           alert('Selected upload is already listed as a Requirement.');
                           $('#requirementData').focus();
+                      } else if (data == 'ERROR') {
+                        $('#GetErrorAlert').show(100);
                       }
                   }
               });
           }
         }
       }
-      function DelRequirement (id){
+      function DelRequirement (id){ //////////////// MISSING
         
       }
       function  showData(id,facname,hfser_id,hfser_name){
@@ -248,29 +276,34 @@
                                   '</tr>'
                               );
                         }
-                      } else {
+                      } else if (data == 'NONE'){
                           $('#GodModalTableBody').empty();
+                      }  else if (data == 'ERROR'){
+                          $('#GetErrorAlert').show(100);
                       }
+                }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                    console.log(errorThrown);
+                    $('#GetErrorAlert').show(100);
                 }
             }
           );
       }
-      function ChangeStateNow (ifActiveState){
-        var state = $('#ifActiveState').text();
-        var id = $('#ifActiveID').text();
-        $.ajax({
-            url: "{{ asset('/m2f/facility/isEnabled') }}",
-            method: "POST",
-            data: {_token:$('input[name="_token"]').val(),isEnabled:state,id:id},
-            success: function(data){
-                if (data == 'DONE') {
-                    alert('Successfully change status of a Facility/Service');
-                    $('#IfActiveModal').modal('toggle');
-                    filterGroup();
-                }
-              }
-          });
-      }
+      // function ChangeStateNow (ifActiveState){
+      //   var state = $('#ifActiveState').text();
+      //   var id = $('#ifActiveID').text();
+      //   $.ajax({
+      //       url: "{{ asset('/m2f/facility/isEnabled') }}",
+      //       method: "POST",
+      //       data: {_token:$('input[name="_token"]').val(),isEnabled:state,id:id},
+      //       success: function(data){
+      //           if (data == 'DONE') {
+      //               alert('Successfully change status of a Facility/Service');
+      //               $('#IfActiveModal').modal('toggle');
+      //               filterGroup();
+      //           }
+      //         }
+      //     });
+      // }
       function showIfActive(state,id,facname,hfser_id,hfser_name){
         var title, message;
         if (state == 1) {
@@ -323,6 +356,8 @@
                         );
                     }
                   }
+                }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                  console.log(errorThrown);
                 }
             });
       }
@@ -350,7 +385,12 @@
                         } else if (data == 'SAME') {
                             alert('Facility/Service is already in the selected Application');
                             $('#FacServID').focus();
+                        } else if (data == 'ERROR') {
+                            $('#AddErrorAlert').show(100);
                         }
+                      }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                        console.log(errorThrown);
+                        $('#AddErrorAlert');
                       }
                   });
           }

@@ -1,6 +1,9 @@
 @extends('main')
 @section('content')
 @include('client.nav')
+<script type="text/javascript">
+	document.getElementById('fifth').style = "color: blue;";
+</script>
 @include('client.breadcrumb')
 		<div class="container">
 			<div class="modal-dialog modal-lg">

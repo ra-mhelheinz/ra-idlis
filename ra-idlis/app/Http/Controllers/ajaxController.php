@@ -35,7 +35,42 @@
 			$data['ip'] = $ip;
 			$data['cur_user'] = $uname;
 			$data['grpid'] = $employeeData->grpid;
+			$data['rgnid'] = $employeeData->rgnid;
 			return $data;
+		}
+		public function SystemLogs($message){
+			$Cur_useData = $this->getCurrentUserAllData();
+			$timedate = Carbon::now()->format('YmdHs');
+			$name = $timedate.$Cur_useData['cur_user'].'RGN'.$Cur_useData['rgnid'];
+			Storage::put('/system/logs/'.$name.'.txt', $message);
+		}
+		public function getCalendarEvents(Request $request){
+			try {
+					$data = DB::table('holidays')->where('hdy_typ', '=', 'Regular')->get();
+					if ($data) {
+						for ($i=0; $i < count($data); $i++) { 
+							$data[$i]->title = $data[$i]->hdy_desc;
+							$data[$i]->start = $data[$i]->hdy_date;
+						}
+						return $data;
+					}
+			} catch (Exception $e) {
+				
+			}
+		}
+		public function getCalendarEvents2(Request $request){
+			try {
+					$data = DB::table('holidays')->where('hdy_typ', '=', 'Special')->get();
+					if ($data) {
+						for ($i=0; $i < count($data); $i++) { 
+							$data[$i]->title = $data[$i]->hdy_desc;
+							$data[$i]->start = $data[$i]->hdy_date;
+						}
+						return $data;
+					}
+			} catch (Exception $e) {
+				
+			}
 		}
 		// -------------------- SELECT --------------------
 		public function selectProvince(Request $request){ // Get Provinces
@@ -48,7 +83,8 @@
 			return response()->json($brgy);
 		}
 		public function getRights(Request $request){ // Get Rights
-			$groupRights = DB::table('x06')
+			try {
+				$groupRights = DB::table('x06')
 				// ->join('orders', 'users.id', '=', 'orders.user_id')
 								->join('x05', 'x06.mod_id','=','x05.mod_id')
 								->join('x07', 'x06.grp_id', '=', 'x07.grp_id')
@@ -56,11 +92,15 @@
 								->where('x06.grp_id', '=', $request->grp_id)
 								->get()
 								;
-			if ($groupRights) {
-				return $groupRights;
-				// return response()->json(['GrpRights'=>$groupRights]);
-			} else {
-				return "NONE";
+				if ($groupRights) {
+					return $groupRights;
+					// return response()->json(['GrpRights'=>$groupRights]);
+				} else {
+					return "NONE";
+				}
+			} catch (Exception $e) {
+				$data = $hos->SystemLogs($e->message());
+				return 'ERROR';
 			}
 		}
 		public function getClass(Request $request){ // Get Classes
@@ -127,20 +167,25 @@
 			}
 		}
 		public function getRequirements(Request $request){
-			$Requirements = DB::table('facility_requirements')
+			try {
+					$Requirements = DB::table('facility_requirements')
 								->join('upload','facility_requirements.upid','=','upload.upid')
 								->select('facility_requirements.*','upload.*')
 								->where('facility_requirements.typ_id', '=', $request->tyf_id)
 								->first();
-			if ($Requirements) {
-				$getAllData = DB::table('facility_requirements')
-								->join('upload','facility_requirements.upid','=','upload.upid')
-								->select('facility_requirements.*','upload.*')
-								->where('facility_requirements.typ_id', '=', $request->tyf_id)
-								->get();
-				return $getAllData;
-			} else {
-				return "NONE";
+					if ($Requirements) {
+						$getAllData = DB::table('facility_requirements')
+										->join('upload','facility_requirements.upid','=','upload.upid')
+										->select('facility_requirements.*','upload.*')
+										->where('facility_requirements.typ_id', '=', $request->tyf_id)
+										->get();
+						return $getAllData;
+					} else {
+						return "NONE";
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
 			}
 		}
 		public function getLPS(Request $request){
@@ -317,15 +362,27 @@
 			}
 		}
 		public function getChgOOP(Request $request){
-			$data = DB::table('chg_oop')
-								->join('charges', 'chg_oop.chg_code', '=', 'charges.chg_code')
-								->join('orderofpayment', 'chg_oop.oop_id', '=', 'orderofpayment.oop_id')
-								->join('chg_app', 'chg_oop.chgapp_id', '=', 'chg_app.chgapp_id')
-								->where('chg_oop.oop_id', '=', $request->id)
-								->orderBy('chg_oop.chgopp_seq','asc')
-								->get();
-			// return dd($data);
-			return response()->json(['data'=>$data,'TotalNumber'=>count($data)]);
+			try {	$data = DB::table('chg_oop')
+									->join('charges', 'chg_oop.chg_code', '=', 'charges.chg_code')
+									->join('orderofpayment', 'chg_oop.oop_id', '=', 'orderofpayment.oop_id')
+									->join('chg_app', 'chg_oop.chgapp_id', '=', 'chg_app.chgapp_id')
+									->join('category', 'charges.cat_id', '=', 'category.cat_id')
+									->join('apptype', 'chg_app.aptid', '=', 'apptype.aptid')
+									->where('chg_oop.oop_id', '=', $request->id)
+									->orderBy('chg_oop.chgopp_seq','asc')
+									->get();
+				// return dd($data);
+						
+					if ($data) {
+						return response()->json(['data'=>$data,'TotalNumber'=>count($data)]);
+					} else {
+						$data = $this->SystemLogs('No data has been fetch from chg_app table.');
+						return 'ERROR';
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function getLO(Request $request){
 			$data = DB::table('x08')->select('uid', 'fname', 'mname', 'lname', 'isActive')
@@ -421,53 +478,108 @@
           	return back();
 		}
 		public function addTypeFa(Request $request){
-			$ChckData = DB::table('facility_requirements')
+			try {
+					$ChckData = DB::table('facility_requirements')
 							->where('typ_id','=',$request->typeID)
 							->where('upid','=', $request->id)
 							->first();
-			if (!$ChckData) {
-				DB::table('facility_requirements')->insert([
-		            'typ_id' =>$request->typeID,
-		            'upid' =>$request->id
-		            		]);
-	            return "DONE";
-			} else {
-				return 'SAME';
+					if (!$ChckData) {
+						DB::table('facility_requirements')->insert([
+				            'typ_id' =>$request->typeID,
+				            'upid' =>$request->id
+				            		]);
+			            return "DONE";
+					} else {
+						return 'SAME';
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
 			}
 		}
 		// -------------------- ADD --------------------
 		// -------------------- EDIT -------------------
 		public function savePhBarangay(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('brgyname'=>$request->name);
-			DB::table('barangay')->where('brgyid',$request->id)->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('brgyname'=>$request->name);
+				$test = DB::table('barangay')->where('brgyid',$request->id)->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in barangay table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+					return 'ERROR';
+			}
 		}
 		public function savePhCmB(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('cmname'=>$request->name);
-			DB::table('city_muni')->where('cmid',$request->id)->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('cmname'=>$request->name);
+				$test = DB::table('city_muni')->where('cmid',$request->id)->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in city_muni table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function savePhProvince(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('provname' => $request->name);
-			DB::table('province')->where('provid',$request->id)->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('provname' => $request->name);
+				$test = DB::table('province')->where('provid',$request->id)->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in province table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function savePhRegion(Request $request){ // Update Ph Region
-			$updateData = array('rgn_desc' => $request->name);
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			DB::table('region')->where('rgnid',$request->id)->update($updateData);
-			return 'DONE';
+			try {
+				$updateData = array('rgn_desc' => $request->name);
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$test = DB::table('region')->where('rgnid',$request->id)->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in region table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function isActive(Request $request){ // Update User Stat
-			$currentState = ($request->isActive == 1 ? 0 : 1);
-			$updateData = array('isActive'=> $currentState);
-			DB::table('x08')
-				->where('uid', $request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$currentState = ($request->isActive == 1 ? 0 : 1);
+				$updateData = array('isActive'=> $currentState);
+				$test = DB::table('x08')
+					->where('uid', $request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in x08 table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function isEnabled(Request $request){
 			$currentState = ($request->isEnabled == 1 ? 0 :1);
@@ -478,7 +590,8 @@
 			return 'DONE';
 		}
 		public function saveRights(Request $request){ // Update User Rights
-			$updateData = array(
+			try {
+				$updateData = array(
 						'allow' 	=> 	$request->alwChk,
 						'ad_d'		=>	$request->addChk,
 						'upd'		=>	$request->updChk,
@@ -486,122 +599,272 @@
 						'print' 	=>	$request->prtChk,
 						'view' 		=>	$request->vwChk
 					);
-			DB::table('x06')
-            ->where('x06_id', $request->id)
-            ->update($updateData);
-			return 'DONE';
+				$test = DB::table('x06')
+			            ->where('x06_id', $request->id)
+			            ->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in x06 table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function saveAppType(Request $request){ // Update Application Type
-			$updateData = array('aptdesc' => $request->name);
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			DB::table('apptype')
-				->where('aptid',$request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				    $updateData = array('aptdesc' => $request->name);
+					$data = $this->InsertActLog($request->mod_id,"upd");
+					$test = DB::table('apptype')
+						->where('aptid',$request->id)
+						->update($updateData);
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been updated in apptype table.');
+						return 'ERROR';
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function saveClass(Request $request){ // Update Class
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('classname' => $request->name);
-			DB::table('class')
-				->where('classid',$request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('classname' => $request->name);
+				$test = DB::table('class')
+					->where('classid',$request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in class table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function saveFaType(Request $request){ // Update Facility Type
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('facname' => $request->name);
-			DB::table('facilitytyp')
-				->where('facid',$request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+					$data = $this->InsertActLog($request->mod_id,"upd");
+					$updateData = array('facname' => $request->name);
+					$test = DB::table('facilitytyp')
+						->where('facid',$request->id)
+						->update($updateData);
+					if ($test) {
+								return 'DONE';
+						} else {
+							$data = $this->SystemLogs('No data has been updated in facilitytyp table.');
+							return 'ERROR';
+						}		
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function saveOShip(Request $request){ // Update Ownership
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('ocdesc'=>$request->name);
-			DB::table('ownership')
-				->where('ocid',$request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('ocdesc'=>$request->name);
+				$test = DB::table('ownership')
+					->where('ocid',$request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been ownership in class table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function savePLicense(Request $request){ // Update Personnel License
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('pldesc'=>$request->name);
-			DB::table('plicensetype')
-				->where('plid',$request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('pldesc'=>$request->name);
+				$test = DB::table('plicensetype')
+					->where('plid',$request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been ownership in plicensetype table.');
+					return 'ERROR';
+				}
+				
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function savePTrain(Request $request){ // Update Personnel Training
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('ptdesc'=>$request->name);
-			DB::table('ptrainings_trainingtype')
-				->where('ptid',$request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('ptdesc'=>$request->name);
+				$test = DB::table('ptrainings_trainingtype')
+					->where('ptid',$request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been ownership in ptrainings_trainingtype table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function saveUpload(Request $request){ // Update Uploads
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('updesc'=>$request->name, 'isRequired' => $request->isRequiredNow);
-			DB::table('upload')
-				->where('upid',$request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('updesc'=>$request->name, 'isRequired' => $request->isRequiredNow);
+				$test = DB::table('upload')
+					->where('upid',$request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in upload table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function saveDept(Request $request){ // Update Department
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('depname'=>$request->name);
-			DB::table('department')
-				->where('depid',$request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+					$data = $this->InsertActLog($request->mod_id,"upd");
+					$updateData = array('depname'=>$request->name);
+					$test = DB::table('department')
+						->where('depid',$request->id)
+						->update($updateData);
+					if ($test) {
+							return 'DONE';	
+						} else {
+							$data = $this->SystemLogs('No data has been updated in department table.');
+							return 'ERROR';
+					}			
+				} catch (Exception $e) {
+					$data = $this->SystemLogs($e->getMessage());
+					return 'ERROR';				
+			}					
 		}
 		public function saveSect(Request $request){ // Update Section 
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('secname'=>$request->name);
-			DB::table('section')
-				->where('secid', $request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('secname'=>$request->name);
+				$test = DB::table('section')
+					->where('secid', $request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in section table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';			
+			}
 		}
 		public function saveWorkStats(Request $request){ // Update Work Status
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('pworksname'=>$request->name);
-			DB::table('pwork_status')
-				->where('pworksid', $request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('pworksname'=>$request->name);
+				$test = DB::table('pwork_status')
+					->where('pworksid', $request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in pwork_status table.');
+					return 'ERROR'; 
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR'; 
+			}
 		}
 		public function saveWork(Request $request){ // Update Work
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('pworkname'=>$request->name);
-			DB::table('pwork')
-				->where('pworkid', $request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('pworkname'=>$request->name);
+				$test = DB::table('pwork')
+					->where('pworkid', $request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in pwork table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function savePart(Request $request){ // Update Part
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('partdesc'=>$request->name);
-			DB::table('part')
-				->where('partid', $request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('partdesc'=>$request->name);
+				$test = DB::table('part')
+					->where('partid', $request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in part table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function saveAsMt(Request $request){ // Update Assessment
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('asmt_name'=>$request->name);
-			DB::table('assessment')
-				->where('asmt_id', $request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"upd");
+				$updateData = array('asmt_name'=>$request->name);
+				$test = DB::table('assessment')
+					->where('asmt_id', $request->id)
+					->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been updated in assessment table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function saveHfst(Request $request){ // Update Health Facility/Service Type
-			$data = $this->InsertActLog($request->mod_id,"upd");
-			$updateData = array('hfser_desc'=>$request->name);
-			DB::table('hfaci_serv_type')
-				->where('hfser_id', $request->id)
-				->update($updateData);
-			return 'DONE';
+			try {
+					$data = $this->InsertActLog($request->mod_id,"upd");
+					$updateData = array('hfser_desc'=>$request->name);
+					$test = DB::table('hfaci_serv_type')
+						->where('hfser_id', $request->id)
+						->update($updateData);
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been updated in hfaci_serv_type table.');
+						return 'ERROR';
+					}
+			} catch (Exception $e) {
+					$data = $this->SystemLogs($e->getMessage());
+					return 'ERROR';
+			}
 		}
 		public function chngPass(Request $request){
 			 $employeeData = session('employee_login');
@@ -644,9 +907,11 @@
 			$updateData = array(
 								'isrecommended'=>1,
 								'recommendedby' => $Cur_useData['cur_user'],
-								'recommendedtime' => $request->proptime,
-								'recommendeddate' =>  $request->propdate,
+								'recommendedtime' => $Cur_useData['time'],
+								'recommendeddate' =>  $Cur_useData['date'],
 								'recommendedippaddr' =>$Cur_useData['ip'],
+								'proposedInspectiontime' => $request->proptime,
+								'proposedInspectiondate' =>  $request->propdate,
 							);
 			DB::table('appform')->where('appid', '=', $request->apid)->update($updateData);
 			
@@ -658,9 +923,19 @@
 			return 'DONE';
 		}
 		public function saveChrg(Request $request){
-			$updateData = array('chg_desc'=>$request->desc);
-			DB::table('charges')->where('chg_code', $request->code)->update($updateData);
-			return 'DONE';
+			try {
+				$updateData = array('chg_desc'=>$request->desc,'chg_exp'=>$request->exp,'chg_rmks'=>$request->rmk);
+				$test = DB::table('charges')->where('chg_code', $request->code)->update($updateData);
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been modified in charges table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function rearrange_oop(Request $request){
 			$newSeq = null;
@@ -670,21 +945,44 @@
 				$newSeq = $request->seq_num + 1;
 			}
 
-			$oldSeq = $request->seq_num;
-			$data = DB::table('chg_oop')->where([['oop_id','=', $request->oop_id],['chgopp_seq', '=', $newSeq]])->first();
+			try {
+				$oldSeq = $request->seq_num;
+				$data = DB::table('chg_oop')->where([['oop_id','=', $request->oop_id],['chgopp_seq', '=', $newSeq]])->first();
 
-			$update = array('chgopp_seq'=>$oldSeq);
-			DB::table('chg_oop')->where('chgopp_id','=',$data->chgopp_id)->update($update);
+				$update = array('chgopp_seq'=>$oldSeq);
+				$test1 = DB::table('chg_oop')->where('chgopp_id','=',$data->chgopp_id)->update($update);
 
-			$update2 = array('chgopp_seq'=>$newSeq);
-			DB::table('chg_oop')->where('chgopp_id','=',$request->chgopp_id)->update($update2);
+				$update2 = array('chgopp_seq'=>$newSeq);
+				$test2 = DB::table('chg_oop')->where('chgopp_id','=',$request->chgopp_id)->update($update2);
 
-			return 'DONE';
+				if ($test1 && $test2) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been modfied in chg_oop table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function SaveAmt(Request $request){
-			$data = array('amt'=>$request->amt);
-			DB::table('chg_app')->where('chgapp_id','=', $request->id)->update($data);
-			return 'DONE';
+			try {
+				// $test0 = (isset($request->rmk)) ? $request->rmk : ' ' ;
+				// return $test0; 
+				$data = array('amt'=>$request->amt,'remarks'=> $request->rmk);
+				$test = DB::table('chg_app')->where('chgapp_id','=', $request->id)->update($data);
+				// if ($test) {
+				// 	return 'DONE';
+				// } else {
+				// 	$data = $this->SystemLogs('No data has been updated ownership in chg_app table.');
+				// 	return 'ERROR';
+				// }
+				return 'DONE';
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function saveRgnLO(Request $request){
 			$Cur_useData = $this->getCurrentUserAllData();
@@ -750,94 +1048,344 @@
 				return 'DONE';			
 			}
 		}
+		public function saveHoliday(Request $request){
+			try {
+					$data = array(
+							'hdy_desc'=>$request->desc,
+							'hdy_date'=>$request->dt,
+							'hdy_typ'=>$request->typ
+						);
+					$test = DB::table('holidays')->where('hdy_id', '=', $request->code)->update($data);
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been updated in holidays table.');
+						return 'ERROR';
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function saveCategory(Request $request){
+			try {
+					$data = array('cat_desc'=>$request->name);
+					$test = DB::table('category')->where('cat_id', '=', $request->id)->update($data);
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been updated in category table.');
+						return 'ERROR';
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function saveTStatus(Request $request){
+			try {
+				    $data = array('trns_desc'=>$request->name);
+				    $test = DB::table('trans_status')->where('trns_id', '=', $request->id)->update($data);
+				    if ($test) {
+				    	return 'DONE';
+				    } else {
+				    	$data = $this->SystemLogs('No data has been updated in trans_status table.');
+				    	return 'ERROR';
+				    }
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
 		// -------------------- EDIT -------------------- 
 		// -------------------- DELETE --------------------
 		public function delAppType(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('apptype')->where('aptid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('apptype')->where('aptid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in apptype table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+					return 'ERROR';					
+			}
 		}
 		public function delClass(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('class')->where('classid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('class')->where('classid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in class table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function delFaType(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('facilitytyp')->where('facid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('facilitytyp')->where('facid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in facilitytyp table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function delOShip(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('ownership')->where('ocid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('ownership')->where('ocid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in ownership table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function delPLicense(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('plicensetype')->where('plid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('plicensetype')->where('plid', '=', $request->id)->delete();
+				if ($test) {
+						return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in plicensetype table.');
+					return 'ERROR';
+				}			
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function delTrain(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('ptrainings_trainingtype')->where('ptid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('ptrainings_trainingtype')->where('ptid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in ptrainings_trainingtype table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function delUpload(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('upload')->where('upid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('upload')->where('upid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in upload table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function delDept(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('department')->where('depid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('department')->where('depid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in department table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function delSect(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('section')->where('secid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('section')->where('secid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in section table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function delWorkStats(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('pwork_status')->where('pworksid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('pwork_status')->where('pworksid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in pwork_status table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+
 		}
 		public function delWork(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('pwork')->where('pworkid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('pwork')->where('pworkid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in pwork table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		public function delPart(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('part')->where('partid', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('part')->where('partid', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in part table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function delAsMt(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('assessment')->where('asmt_id', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('assessment')->where('asmt_id', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				return 'ERROR';		
+			}
 		}
 		public function delHfst(Request $request){
-			$data = $this->InsertActLog($request->mod_id,"del");
-			DB::table('hfaci_serv_type')->where('hfser_id', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$data = $this->InsertActLog($request->mod_id,"del");
+				$test = DB::table('hfaci_serv_type')->where('hfser_id', '=', $request->id)->delete();
+				if ($test) {
+					$data = $this->SystemLogs('No data has been deleted in hfaci_serv_type table.');
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs($e->getMessage());
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				return 'ERROR';	
+			}
 		}
 		public function delChrg(Request $request){
-			DB::table('charges')->where('chg_code', '=', $request->id)->delete();
-			return 'DONE';
+			try {
+				$test = DB::table('charges')->where('chg_code', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in charges table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';		
+			}
 		}
 		public function delChrgOop(Request $request){
-			$data = DB::table('chg_oop')
+			try {
+				$data = DB::table('chg_oop')
 								->join('chg_app', 'chg_oop.chgapp_id', '=', 'chg_app.chgapp_id')
 								->where('chg_oop.chgopp_id', '=', $request->id)->first();
-			DB::table('chg_oop')->where('chgopp_id','=', $request->id)->delete();
-			DB::table('chg_app')->where('chgapp_id','=', $data->chgapp_id)->delete();
-			$data2 = DB::table('chg_oop')->where('oop_id', '=', $request->oop_id)->orderBy('chgopp_seq', 'asc')->get();
-			// $total = count($data2);
-			for ($i=0,$s=1; $i < count($data2); $i++,$s++) { 
-				DB::table('chg_oop')->where('chgopp_id', '=', $data2[$i]->chgopp_id)->update(['chgopp_seq'=>$s]);
+				$test1 = DB::table('chg_oop')->where('chgopp_id','=', $request->id)->delete();
+				$test2 = DB::table('chg_app')->where('chgapp_id','=', $data->chgapp_id)->delete();
+				$data2 = DB::table('chg_oop')->where('oop_id', '=', $request->oop_id)->orderBy('chgopp_seq', 'asc')->get();
+				// $total = count($data2);
+				for ($i=0,$s=1; $i < count($data2); $i++,$s++) { 
+					DB::table('chg_oop')->where('chgopp_id', '=', $data2[$i]->chgopp_id)->update(['chgopp_seq'=>$s]);
+				}
+				if ($test1 && $test2) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in chg_oop and chg_app tables.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
 			}
-			return 'DONE';
+		}
+		public function delHolidays(Request $request){
+			try {
+				$test = DB::table('holidays')->where('hdy_id', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in holidays tables.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function delCategory(Request $request){
+			try {
+				$test = DB::table('category')->where('cat_id', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in category tables.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function delTStatus(Request $request){
+			try {
+				$test = DB::table('trans_status')->where('trns_id', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in trans_status tables.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
 		}
 		// -------------------- DELETE --------------------
 	}

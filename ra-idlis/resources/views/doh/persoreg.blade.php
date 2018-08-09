@@ -34,6 +34,7 @@
                 </tr>
               </thead>
               <tbody>
+              @if(isset($users))
               @foreach ($users as $user)
                 <tr>
                   <td>{{$user->fname}} @if ($user->mname != "") {{substr($user->mname,0,1)}}. @endif {{$user->lname}}
@@ -62,9 +63,10 @@
                   </td>
                 </tr>
               @endforeach
+              @endif
               </tbody>
             </table>
-            @if (!$users)
+            @if (!isset($users))
              <div class="alert alert-danger alert-dismissible fade show" role="alert">
               <strong><i class="fas fa-exclamation"></i></strong> No <strong>Regional Administrators</strong> are currently registered!
             </div>
@@ -102,10 +104,16 @@
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
             <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="">
             <option value=""></option>  
-                @foreach ($region as $regions)
-                  <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
-                @endforeach
-            </select>
+                @if (isset($region))
+                  @foreach ($region as $regions)
+                    <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
+                  @endforeach
+                @endif
+            </select> 
+            </div>
+            <div class="col-sm-4">Position:</div>
+            <div class="col-sm-8" style="margin:0 0 .8em 0;">
+            <input type="test" name="position" class="form-control" data-parsley-required-message="*<strong>Position</strong> required" required>
             </div>
             <div class="col-sm-4">Email Address:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -233,6 +241,7 @@
                     email : $('input[name="email"]').val(),
                     cntno : $('input[name="cntno"]').val(),
                     uname : $('input[name="uname"]').val(),
+                    posti : $('input[name="position"]'),
                     pass : $('input[name="pass"]').val(),
                   },
                   success: function(data) {

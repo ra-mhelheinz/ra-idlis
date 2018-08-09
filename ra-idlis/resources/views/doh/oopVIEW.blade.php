@@ -63,9 +63,10 @@
                     <table class="table table-hover" style="width: 100%;">
                       <thead>
                         <tr>
-                          <th></th>
+                          <th>Code</th>
                           <th>Description</th>
                           <th style="text-align: center">Amount</th>
+                          <th>Remarks</th>
                         </tr>
                       </thead>
                       <tbody> 
@@ -73,17 +74,19 @@
                        @if ($Bills)
                          @foreach ($Bills as $bill)
                            <tr>
-                                <td><center>&nbsp;</center></td>
-                                <td style="font-weight: bold">{{$bill->chg_desc}}</td>
+                                <td style="font-weight: bold">{{$bill->chg_code}}</td>
+                                <td >{{$bill->chg_desc}}</td>
                                 <td style="text-align: center">{{number_format($bill->amt,2,'.',', ')}}</td> 
+                                <td>@if($bill->remarks != null) {{$bill->remarks}} @else &nbsp; @endif</td>
                            </tr>
                          @endforeach
                        @endif
-                       @if ($Bills)
+                       @if (isset($Bills))
                          <tr style="">
                             <td style="border-top:2pt solid black"> </td>
                            <td style="font-weight: bolder;border-top:2pt solid black">TOTAL</td>
                            <td style="text-align: center;font-weight: bold;border-top:2pt solid black" id="GRANDTOTALHERE">{{number_format($OOPDATA->oop_total,2,'.',', ')}}</td>
+                            <td style="border-top:2pt solid black"> </td>
                          </tr>
                        @endif
                       </tbody>

@@ -6,7 +6,7 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-          <input type="text" id="NumberOfRejected" value="{{$numOfX}}" hidden>
+          <input type="text" id="NumberOfRejected" value="@isset ($numOfX) {{$numOfX}} @endisset" hidden>
           <input type="" id="token" value="{{ Session::token() }}" hidden>
            Evaluation
            <button class="float-right btn btn-primarys" onclick="location.href='{{ asset('/employee/dashboard/lps/evaluate') }}'">Back</button>
@@ -16,7 +16,7 @@
           <thead>
             <tr>
               <td width="80%">
-                <h2>{{$AppData->facilityname}}</h2>
+                <h2>@isset($AppData) {{$AppData->facilityname}} @endisset</h2>
                 <h5>{{$AppData->streetname}}, {{$AppData->brgyname}}, {{$AppData->cmname}}, {{$AppData->provname}}</h5>
                 <h6>Status: @if ($AppData->isrecommended === null) <span style="color:blue">For Evaluation</span> @elseif($AppData->isrecommended == 1)  <span style="color:green">Application Accepted</span> @else <span style="color:red">Application Rejected</span> @endif</h6>
               </td>
@@ -30,41 +30,43 @@
           <tbody>
       <form id="EvalForm" data-parsley-validate>
             <input type="text" name="TotalNumber" value="{{count($UploadData)}}" hidden>
-            @foreach ($UploadData as $UpData) 
-              <tr>
-              <td >
-                <font>
-                  {{$UpData->updesc}}
-                </font>
-              </td>
-              <td>
-                <center>
-                  <a href="{{ route('DownloadFile', $UpData->filepath) }}">
-                  <button type="button" class="btn-primarys">
-                    <i class="fa fa-download" aria-hidden="true"></i>
-                  </button>
-                  </a>
-                </center>
-              </td>
-              <td>
-                <center>
-                  <button type="button" id="appdow_{{$UpData->apup_id}}_yes" @if($UpData->evaluation === NULL) data-toggle="modal" data-target="#TestModal" @endif class="btn btn-success app_id_{{$UpData->appid}}" onclick="showModalForEvaluate(1,{{$UpData->apup_id}})" @if($UpData->evaluation == 0 && $UpData->evaluation !== NULL)) disabled @endif>
-                    <i class="fa fa-check" aria-hidden="true"></i>
-                  </button>
-                  {{-- {{$UpData->evaluation}} --}}
-                  <button type="button" id="appdow_{{$UpData->apup_id}}_no" @if($UpData->evaluation === NULL) data-toggle="modal" data-target="#TestModal" @endif class="btn btn-danger" onclick="showModalForEvaluate(0,{{$UpData->apup_id}})" @if($UpData->evaluation == 1 && $UpData->evaluation !== NULL) disabled @endif>
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                  </button>
-                  @if($UpData->evaluation !== NULL)
-                        <button type="button"  data-toggle="modal" data-target="#ShowDetailsModal" class="btn btn-primary" onclick="ShowDetails({{$UpData->evaluation}}, {{$UpData->apup_id}}, '{{$UpData->updesc}}')">
-                    <i class="fa fa-eye" aria-hidden="true"></i>
-                  </button>
-                  @endif
-                </center>
-              </td>
-            </tr>
-            @endforeach
-          </tbody>
+            @if (isset($UploadData))
+              @foreach ($UploadData as $UpData) 
+                <tr>
+                <td >
+                  <font>
+                    {{$UpData->updesc}}
+                  </font>
+                </td>
+                <td>
+                  <center>
+                    <a href="{{ route('DownloadFile', $UpData->filepath) }}">
+                    <button type="button" class="btn-primarys">
+                      <i class="fa fa-download" aria-hidden="true"></i>
+                    </button>
+                    </a>
+                  </center>
+                </td>
+                <td>
+                  <center>
+                    <button type="button" id="appdow_{{$UpData->apup_id}}_yes" @if($UpData->evaluation === NULL) data-toggle="modal" data-target="#TestModal" @endif class="btn btn-success app_id_{{$UpData->appid}}" onclick="showModalForEvaluate(1,{{$UpData->apup_id}})" @if($UpData->evaluation == 0 && $UpData->evaluation !== NULL)) disabled @endif>
+                      <i class="fa fa-check" aria-hidden="true"></i>
+                    </button>
+                    {{-- {{$UpData->evaluation}} --}}
+                    <button type="button" id="appdow_{{$UpData->apup_id}}_no" @if($UpData->evaluation === NULL) data-toggle="modal" data-target="#TestModal" @endif class="btn btn-danger" onclick="showModalForEvaluate(0,{{$UpData->apup_id}})" @if($UpData->evaluation == 1 && $UpData->evaluation !== NULL) disabled @endif>
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                    @if($UpData->evaluation !== NULL)
+                          <button type="button"  data-toggle="modal" data-target="#ShowDetailsModal" class="btn btn-primary" onclick="ShowDetails({{$UpData->evaluation}}, {{$UpData->apup_id}}, '{{$UpData->updesc}}')">
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>
+                    @endif
+                  </center>
+                </td>
+              </tr>
+              @endforeach
+            @endif
+          </tbody>  
         </table>
         <div class="row">
           <div class="col-sm-6" >
@@ -158,7 +160,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
-       <div class="showHospit"><h5>Add Order of Payment.</h5>
+       <div class="showHospit"><h5>Please select the type of Order of Payment</h5>
         <ul>
        {{--    <ol><a href="{{asset('headorderofpayment')}}">Hospital Based Private</a></ol>
           <ol><a href="{{asset('headorderofpayment2')}}">Hospital Based Government</a></ol>

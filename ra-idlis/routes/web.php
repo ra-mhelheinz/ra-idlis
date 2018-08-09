@@ -26,6 +26,7 @@ Route::get('client/home', 'ClientController@home')->name('client.home');
 Route::get('client/apply/lop','ClientController@LOP');
 Route::match(['get', 'post'], '/client/apply/form/{id_type}', 'ClientController@FORM');
 Route::match(['get', 'post'], '/client/personnel/form/{id_type}', 'ClientController@addpersonnel');
+Route::view('/mailTest2', 'mail4SystemUsers');
 
 // Route::match(['get', 'post'], '/client/apply/form', 'ClientController@FORM');
 Route::match(['get', 'post'], '/client/apply/ptc', 'ClientController@PTC');
@@ -37,6 +38,9 @@ Route::get('client/apply/sa','ClientController@SA');
 Route::get('client/apply', 'ClientController@apply');
 Route::get('client/status', 'ClientController@status');
 Route::match(['get', 'post'], 'client/preassessment', 'ClientController@preassessment');
+Route::match(['get', 'post'], 'client/preassessment2', 'ClientController@preassessment2');
+Route::match(['get', 'post'], 'client/preassessment2/{status}', 'ClientController@preassesscompletion')->name('client.completion');
+Route::match(['get', 'post'], 'client/preassessment2/draft/{draft}', 'ClientController@preassessdraft');
 Route::get('client/evaluate', 'ClientController@evaluate');
 Route::get('client/orderofpaymentc', 'ClientController@orderofpaymentc');
 Route::get('client/inspection', 'ClientController@inspection');
@@ -74,8 +78,12 @@ Route::get('/headinspection2', 'headController@headinspection2');
 Route::get('/headinspection3', 'headController@headinspection3');
 // ----------------------------------------------- DOH Controller
 //
-Route::match(['get', 'post'], 'employee/dashboard/act_logs', 'DOHController@ActLogs')->name('setActLogs');
+Route::get('employee/verify/{id}', 'DOHController@verify_account');
+Route::get('employee/resend/{id}','DOHController@resend_ver');
+Route::match(['get', 'post'], '/employee/dashboard/act_logs', 'DOHController@ActLogs')->name('setActLogs');
 Route::match(['get', 'post'], '/employee/', 'DOHController@login')->name('employee');
+Route::match(['get', 'post'], '/employee/dashboard/manage/system_users', 'DOHController@SystemUsers')->name('mngSystemUsers');
+Route::match(['get', 'post'], 'employee/dashboard/manage/applicants', 'DOHController@Applicants')->name('mngApplicants');
 Route::match(['get', 'post'], '/employee/dashboard/personnel/regional', 'DOHController@regionalAdmins')->name('regAdmins');
 Route::match(['get', 'post'], '/employee/dashboard/personnel/lo', 'DOHController@LOfficers')->name('regOfficer');
 Route::match(['get', 'post'], '/employee/dashboard/personnel/fda', 'DOHController@FDAs')->name('regFDA');
@@ -106,16 +114,23 @@ Route::match(['get', 'post'],'/employee/dashboard/mf/personnel','DOHController@P
 Route::match(['get', 'post'],'/employee/dashboard/mf/eligibility','DOHController@Eligibility')->name('mfEligibility');
 Route::match(['get', 'post'],'/employee/dashboard/mf/orderofpayment','DOHController@OrderOfPayment')->name('mfOrderOfPayment');
 Route::match(['get','post'],'/employee/dashboard/mf/charges','DOHController@Charges')->name('mfCharges');
-Route::match(['get','post'], 'employee/dashboard/mf/chg_oop','DOHController@ChgOop')->name('mfChargeOoP');
+Route::match(['get','post'], '/employee/dashboard/mf/chg_oop','DOHController@ChgOop')->name('mfChargeOoP');
+Route::match(['get', 'post'], '/employee/dashboard/mf/holidays', 'DOHController@Holidays');
+Route::match(['get', 'post'], '/employee/dashboard/mf/mode_payment', 'DOHController@ModeOfPayment');
 Route::match(['get', 'post'],'/employee/dashboard/pf/view','DOHController@PfView')->name('pfView');
 Route::match(['get','post'], '/employee/dashboard/lps/evaluate/{appid}', 'DOHController@EvalOne');
 Route::match(['get','post'], '/employee/dashboard/lps/evaluate/{appid}/{oop_id}/add', 'DOHController@EvalAddOOP');
 Route::match(['get','post'], '/employee/dashboard/lps/evaluate/{appid}/{oop_id}/view', 'DOHController@EvalViewOOP');
 Route::match(['get', 'post'], '/employee/dashboard/lps/assess', 'DOHController@Assess');
 Route::match(['get', 'post'], '/employee/dashboard/lps/assess/{appid}', 'DOHController@AssessOne');
+Route::match(['get','post'],'/employee/dashboard/mf/category','DOHController@Category')->name('mfCategory');
+Route::match(['get','post'],'/employee/dashboard/mf/tstatus','DOHController@TransStatus')->name('mfTranStatus');
+Route::match(['get', 'post'], '/employee/dashboard/mf/settings', 'DOHController@Settings')->name('mfSettings');
+Route::match(['get', 'post'], '/employee/dashboard/manage/system_logs', 'DOHController@System_Logs')->name('SystemLogs');
 Route::post('/employee/logout','DOHController@logout');
 Route::post('employee/getRights', 'DOHController@getSettings2');
 Route::post('/employee/grprights/check','DOHController@chckgr');
+
 Route::get('/employee/dashboard', 'DOHController@dashboard')->name('eDashboard');
 Route::get('/employee/dashboard/lps','DOHController@lps');
 Route::get('/employee/dashboard/lps/evaluate','DOHController@evalute');
@@ -132,7 +147,7 @@ Route::post('/mf/add_typefa', ['as'=>'add-typefa','uses'=>'ajaxController@addTyp
 // -------------------------------------- GET
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
 Route::post('/ph/get_brgy', ['as'=>'select-brgy','uses'=>'ajaxController@selectBrgy']);
-Route::post('mf/getUploads',['as'=>'select-uploads','uses'=>'ajaxController@selectUploads']);
+Route::post('/mf/getUploads',['as'=>'select-uploads','uses'=>'ajaxController@selectUploads']);
 Route::post('/mf/getClass', ['as'=>'get-class','uses'=>'ajaxController@getClass']);
 Route::post('/mf/getTypeFaci', ['as'=>'get-typefacility','uses'=>'ajaxController@getTypeFaci']);
 Route::post('/employee/get_rights', ['as'=>'get-rights','uses'=>'ajaxController@getRights']);
@@ -146,6 +161,8 @@ Route::post('mf/getChgOOP',['as'=>'get-ChgOOP','uses'=>'ajaxController@getChgOOP
 Route::post('mf/getGetLO',['as'=>'get-GetLO','uses'=>'ajaxController@getLO']);
 Route::post('mf/getGetChangeHistory',['as'=>'get-GetChangeHistory','uses'=>'ajaxController@getChangeHistory']);
 Route::post('/lps/getAssess', ['as'=>'getAssess', 'uses'=>'ajaxController@getAssess']);
+Route::post('/mf/getCalendarEvents', ['as'=>'getCalendarEvents', 'uses'=>'ajaxController@getCalendarEvents']);
+Route::post('/mf/getCalendarEvents2', ['as'=>'getCalendarEvents2', 'uses'=>'ajaxController@getCalendarEvents2']);
 //getRequirements
 // -------------------------------------- GET
 // -------------------------------------- UPDATE
@@ -178,8 +195,11 @@ Route::post('/lsp/reject_app', ['as'=>'reject-app', 'uses'=> 'ajaxController@rej
 Route::post('/lsp/accept_app', ['as'=>'accpet-app', 'uses'=> 'ajaxController@accept_app']);
 Route::post('/mf/rearrange_oop', ['as'=>'rearrange_oop', 'uses'=> 'ajaxController@rearrange_oop']);
 Route::post('/mf/save_amt', ['as'=>'save_amt', 'uses'=> 'ajaxController@SaveAmt']);
-Route::post('mf/save_rgnLo', ['as'=>'save_rgnLO', 'uses'=> 'ajaxController@saveRgnLO']);
-Route::post('mf/save_newLO',['as'=>'save_newLO','uses' => 'ajaxController@saveNewLO']);
+Route::post('/mf/save_rgnLo', ['as'=>'save_rgnLO', 'uses'=> 'ajaxController@saveRgnLO']);
+Route::post('/mf/save_newLO', ['as'=>'save_newLO','uses' => 'ajaxController@saveNewLO']);
+Route::post('/mf/save_holiday', ['as'=>'save_holiday', 'uses' => 'ajaxController@saveHoliday']);
+Route::post('/mf/save_category', ['as'=>'save_category', 'uses' => 'ajaxController@saveCategory']);
+Route::post('/mf/save_tstatus', ['as'=>'save_tstatus', 'uses'=> 'ajaxController@saveTStatus']);
 // -------------------------------------- UPDATE
 // -------------------------------------- DELETE
 Route::post('/mf/del_aptype', ['as'=>'del-AppType','uses'=>'ajaxController@delAppType']);
@@ -198,6 +218,9 @@ Route::post('/mf/del_asmt', ['as'=>'del-AsMt','uses'=>'ajaxController@delAsMt'])
 Route::post('/mf/del_hfst', ['as'=>'del-HfsT','uses'=>'ajaxController@delHfst']);
 Route::post('/mf/del_chrg',['as'=>'del-chrg','uses'=>'ajaxController@delChrg']);
 Route::post('/mf/del_chrg_oop',['as'=>'del-chrg','uses'=>'ajaxController@delChrgOop']);
+Route::post('/mf/del_holidays',['as'=>'del-holidays','uses'=>'ajaxController@delHolidays']);
+Route::post('mf/del_category', ['as'=>'del-category', 'uses'=> 'ajaxController@delCategory']);
+Route::post('/mf/del_tstatus', ['as'=>'del_tstatus', 'uses'=>'ajaxController@delTStatus']);
 // -------------------------------------- DELETE
 // ----------------------------------------------- Ajax Controller
 Route::get('sendbasicemail','MailController@basic_email');

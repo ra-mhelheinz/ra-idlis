@@ -52,14 +52,14 @@
               return 'sameFacility';
           }
           else {
-            $data1 = array('name'=>$request->facility_name, 'token'=>$data['token']);
-            Mail::send('mail', $data1, function($message) use ($request) {
-               $message->to($request->email, $request->facility_name)->subject
-                  ('Verify Email Account');
-               $message->from('doholrs@gmail.com','DOH Support');
-            });
+            // $data1 = array('name'=>$request->facility_name, 'token'=>$data['token']);
+            // Mail::send('mail', $data1, function($message) use ($request) {
+            //    $message->to($data['email'], $request->facility_name)->subject
+            //       ('Verify Email Account');
+            //    $message->from('doholrs@gmail.com','DOH Support');
+            // });
 
-            DB::table('x08')->insert(
+              DB::table('x08')->insert(
                 [
                     'uid' => $data['uname'],
                     'pwd' => $data['pass'],
@@ -84,6 +84,8 @@
                     'token' => $data['token']
                 ]
             );
+
+
             // return response()->json(['test'=>$data]);
             // return "Check";
             return 'DONE';
@@ -112,5 +114,10 @@
          $message->from('doholrs@gmail.com', 'DOH OLRS Support');
       });
       return redirect()->route('client');
-    }      
+    } 
+    public function SaveSystemUser(Request $request) {
+        if ($request->isMethod('post')) {
+          # code...
+        }
+    }     
 }

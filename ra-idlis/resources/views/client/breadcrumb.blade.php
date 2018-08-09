@@ -1,10 +1,13 @@
- 		<div class="btn-group breadcrumb-success btn-breadcrumb sticky-top">
+ 	<div class="sticky-top">
+  	<div class="btn-group breadcrumb-success btn-breadcrumb">
             <a href="{{asset('client/home')}}" class="btn btn-successs"><i class="fa fa-home"></i></a>
             <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="first">APPLY</a>
-            <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="second">EVALUATION STATUS</a>
-            <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="third">INSPECTION STATUS</a>
-            <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="fourth">ISSUANCE</a>
+              <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="second">PAYMENT</a>
+            <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="third">EVALUATION STATUS</a>
+            <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="fourth">INSPECTION STATUS</a>
+            <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="fifth">ISSUANCE</a>
         </div>
+  </div>
         <style type="text/css">
         	.btn-group{
   z-index: 2;
@@ -84,6 +87,7 @@
 	        	second = document.getElementById("second");
 	        	third = document.getElementById("third");
 	        	fourth = document.getElementById("fourth");
+            fifth = document.getElementById("fifth");
         		if(window.innerWidth < 530){
 	        		if(first.getElementsByTagName('i')[0] != null || first.getElementsByTagName('i')[0] != undefined) {
 
@@ -92,25 +96,32 @@
 	        				first.innerHTML = "<i class='fa fa-edit'></i>";
 	        			}
 	        		}
-	        		if(second.getElementsByTagName('i')[0] != null || second.getElementsByTagName('i')[0] != undefined) {
+              if(second.getElementsByTagName('i')[0] != null || second.getElementsByTagName('i')[0] != undefined) {
 
-	        		} else {
-	        			if(second.style.color == "") {
-	        				second.innerHTML = "<i class='fa fa-check'></i>";
-	        			}
-	        		}
+              } else {
+                if(second.style.color == "") {
+                  second.innerHTML = "<i class='fa fa-credit-card'></i>";
+                }
+              }
 	        		if(third.getElementsByTagName('i')[0] != null || third.getElementsByTagName('i')[0] != undefined) {
 
 	        		} else {
 	        			if(third.style.color == "") {
-	        				third.innerHTML = "<i class='fa fa-search'></i>";
+	        				third.innerHTML = "<i class='fa fa-check'></i>";
 	        			}
 	        		}
 	        		if(fourth.getElementsByTagName('i')[0] != null || fourth.getElementsByTagName('i')[0] != undefined) {
 
 	        		} else {
 	        			if(fourth.style.color == "") {
-	        				fourth.innerHTML = "<i class='fa fa-print'></i>";
+	        				fourth.innerHTML = "<i class='fa fa-search'></i>";
+	        			}
+	        		}
+	        		if(fifth.getElementsByTagName('i')[0] != null || fifth.getElementsByTagName('i')[0] != undefined) {
+
+	        		} else {
+	        			if(fifth.style.color == "") {
+	        				fifth.innerHTML = "<i class='fa fa-print'></i>";
 	        			}
 	        		}
 	        		
@@ -119,14 +130,17 @@
 	        			first.innerHTML = "APPLY";
 	        		}
 	        		if(second.getElementsByTagName('i')[0] != null || second.getElementsByTagName('i')[0] != undefined) {
-	        			second.innerHTML = "EVALUATION STATUS";
+	        			second.innerHTML = "PAYMENT";
 	        		}
 	        		if(third.getElementsByTagName('i')[0] != null || third.getElementsByTagName('i')[0] != undefined) {
-	        			third.innerHTML = "INSPECTION STATUS";
+	        			third.innerHTML = "EVALUATION STATUS";
 	        		}
 	        		if(fourth.getElementsByTagName('i')[0] != null || fourth.getElementsByTagName('i')[0] != undefined) {
-	        			fourth.innerHTML = "ISSUANCE";
+	        			fourth.innerHTML = "INSPECTION STATUS";
 	        		}
+              if(fourth.getElementsByTagName('i')[0] != null || fourth.getElementsByTagName('i')[0] != undefined) {
+                fourth.innerHTML = "ISSUANCE";
+              }
 	        	}
         	}, 1);
         </script>

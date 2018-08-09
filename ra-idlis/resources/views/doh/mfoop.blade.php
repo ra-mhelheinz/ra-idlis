@@ -8,14 +8,15 @@
   <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
     <datalist id="rgn_list">
-      @foreach ($oops as $oop)
-      <option value="{{$oop->oop_id}}">{{$oop->oop_desc}}</option>
-      @endforeach
-    </datalist>
+      @if (isset($oops))
+        @foreach ($oops as $oop)
+        <option value="{{$oop->oop_id}}">{{$oop->oop_desc}}</option>
+        @endforeach
+      @endif
+    </datalist> 
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
            Order of Payment {{-- <span class="MA00_add"><a href="#" title="Add New Application Status" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span> --}}
-
         </div>
         <div class="card-body">
                <table class="table" id="example" style="overflow-x: scroll;" >
@@ -27,6 +28,7 @@
                 </tr>
               </thead>
               <tbody>
+                @if(isset($oops))
                 @foreach ($oops as $oop)
                   <tr>
                     <td scope="row"> {{$oop->oop_id}}</td>
@@ -46,6 +48,7 @@
                     </td> --}}
                   </tr>
                 @endforeach
+                @endif
               </tbody>
             </table>
         </div>
@@ -144,82 +147,82 @@
               '</div>' 
             );
         } 
-        $('#addRgn').on('submit',function(event){
-            event.preventDefault();
-            var form = $(this);
-            form.parsley().validate();
-            if (form.parsley().isValid()) {
-                var id = $('#new_rgnid').val();
-                var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
-                var test = $.inArray(id,arr);
-                if (test == -1) { // Not in Array
-                    $.ajax({
-                      url: "{{ asset('/employee/dashboard/mf/apptype') }}",
-                      method: 'POST',
-                      data: {
-                        _token : $('#token').val(),
-                        id: $('#new_rgnid').val(),
-                        name : $('#new_rgn_desc').val(),
-                        mod_id : $('#CurrentPage').val(),
-                        act: 'add',
-                      },
-                      success: function(data) {
-                        if (data == 'DONE') {
-                            alert('Successfully Added New Application Type');
-                            window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
-                        } else {
-                          alert(data);
-                        }
-                      }
-                  });
-                } else {
-                  alert('Application ID is already been taken');
-                  $('#new_rgnid').focus();
-                }
-            }
-        });
-        $('#EditNow').on('submit',function(event){
-          event.preventDefault();
-            var form = $(this);
-            form.parsley().validate();
-             if (form.parsley().isValid()) {
-               var x = $('#edit_name').val();
-               var y = $('#edit_desc').val();
-               $.ajax({
-                  url: "{{ asset('/mf/save_aptype') }}",
-                  method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
-                  success: function(data){
-                      if (data == "DONE") {
-                          alert('Successfully Edited Application Type');
-                          window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
-                      }
-                  }
-               });
-             }
-        });
-        function showDelete (id,desc){
-            $('#DelModSpan').empty();
-            $('#DelModSpan').append(
-                '<div class="col-sm-12"> Are you sure you want to delete <span style="color:red"><strong>' + desc + '</strong></span>?' +
-                  // <input type="text" id="edit_desc2" class="form-control"  style="margin:0 0 .8em 0;" required>
-                '<input type="text" id="toBeDeletedID" class="form-control"  style="margin:0 0 .8em 0;" value="'+id+'" hidden>'+
-                '<input type="text" id="toBeDeletedname" class="form-control"  style="margin:0 0 .8em 0;" value="'+desc+'" hidden>'+
-                '</div>'
-              );
-        }
-        function deleteNow(){
-          var id = $("#toBeDeletedID").val();
-          var name = $("#toBeDeletedname").val();
-          $.ajax({
-            url : "{{ asset('/mf/del_aptype') }}",
-            method: 'POST',
-            data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
-            success: function(data){
-              alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
-            }
-          });
-        }
+        // $('#addRgn').on('submit',function(event){
+        //     event.preventDefault();
+        //     var form = $(this);
+        //     form.parsley().validate();
+        //     if (form.parsley().isValid()) {
+        //         var id = $('#new_rgnid').val();
+        //         var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
+        //         var test = $.inArray(id,arr);
+        //         if (test == -1) { // Not in Array
+        //             $.ajax({
+        //               url: "{{ asset('/employee/dashboard/mf/orderofpayment') }}",
+        //               method: 'POST',
+        //               data: {
+        //                 _token : $('#token').val(),
+        //                 id: $('#new_rgnid').val(),
+        //                 name : $('#new_rgn_desc').val(),
+        //                 mod_id : $('#CurrentPage').val(),
+        //                 act: 'add',
+        //               },
+        //               success: function(data) {
+        //                 if (data == 'DONE') {
+        //                     alert('Successfully Added New Application Type');
+        //                     window.location.href = "{{ asset('/employee/dashboard/mf/orderofpayment') }}";
+        //                 } else {
+        //                   alert(data);
+        //                 }
+        //               }
+        //           });
+        //         } else {
+        //           alert('Application ID is already been taken');
+        //           $('#new_rgnid').focus();
+        //         }
+        //     }
+        // });
+        // $('#EditNow').on('submit',function(event){
+        //   event.preventDefault();
+        //     var form = $(this);
+        //     form.parsley().validate();
+        //      if (form.parsley().isValid()) {
+        //        var x = $('#edit_name').val();
+        //        var y = $('#edit_desc').val();
+        //        $.ajax({
+        //           url: "{{ asset('/mf/save_aptype') }}",
+        //           method: 'POST',
+        //           data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
+        //           success: function(data){
+        //               if (data == "DONE") {
+        //                   alert('Successfully Edited Application Type');
+        //                   window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+        //               }
+        //           }
+        //        });
+        //      }
+        // });
+        // function showDelete (id,desc){
+        //     $('#DelModSpan').empty();
+        //     $('#DelModSpan').append(
+        //         '<div class="col-sm-12"> Are you sure you want to delete <span style="color:red"><strong>' + desc + '</strong></span>?' +
+        //           // <input type="text" id="edit_desc2" class="form-control"  style="margin:0 0 .8em 0;" required>
+        //         '<input type="text" id="toBeDeletedID" class="form-control"  style="margin:0 0 .8em 0;" value="'+id+'" hidden>'+
+        //         '<input type="text" id="toBeDeletedname" class="form-control"  style="margin:0 0 .8em 0;" value="'+desc+'" hidden>'+
+        //         '</div>'
+        //       );
+        // }
+        // function deleteNow(){
+        //   var id = $("#toBeDeletedID").val();
+        //   var name = $("#toBeDeletedname").val();
+        //   $.ajax({
+        //     url : "{{ asset('/mf/del_aptype') }}",
+        //     method: 'POST',
+        //     data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
+        //     success: function(data){
+        //       alert('Successfully deleted '+name);
+        //       window.location.href = "{{ asset('/employee/dashboard/mf/apptype') }}";
+        //     }
+        //   });
+        // }
     </script>
 @endsection

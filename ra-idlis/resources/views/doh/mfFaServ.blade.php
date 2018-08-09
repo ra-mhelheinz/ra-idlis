@@ -16,14 +16,16 @@
   @endforeach --}}
    {{-- $('#new_rgnid').val() --}}
  <datalist id="rgn_list">
-   @foreach ($fatypes as $fatype)
-     <option id="{{$fatype->facid}}_pro" value="{{$fatype->facid}}">{{$fatype->facname}}</option>
-   @endforeach
+   @if (isset($fatypes))
+     @foreach ($fatypes as $fatype)
+      <option id="{{$fatype->facid}}_pro" value="{{$fatype->facid}}">{{$fatype->facname}}</option>
+    @endforeach
+   @endif
  </datalist>
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Facility/Service <a href="#" title="Add New Health Facility/Service" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
+           Health Facility/Service <a href="#" title="Add New Health Facility/Service" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>
            <div style="float:right;display: inline-block;">
             <input type="" id="token" value="{{ Session::token() }}" hidden>
             {{-- <form class="form-inline">
@@ -48,6 +50,7 @@
                 </tr>
               </thead>
               <tbody id="FilterdBody">
+                @if($fatypes)
                 @foreach ($fatypes as $fatype)
                   <tr>
                           <td>{{$fatype->facid}}</td>
@@ -62,6 +65,7 @@
                           </center></td>
                         </tr>
                 @endforeach
+                @endif
               </tbody>
             </table>
         </div>
@@ -72,10 +76,16 @@
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
             color: white;">
-                <h5 class="modal-title text-center"><strong>Add New Facility/Service</strong></h5>
+                <h5 class="modal-title text-center"><strong>Add New Health Facility/Service</strong></h5>
                 <hr>
                 <div class="container">
                   <form class="row" id="addCls" data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="AddErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     {{ csrf_field() }}
                     {{-- <div class="col-sm-4">Facility/Service Type:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -107,11 +117,17 @@
     <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Edit Application Type</strong></h5>
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
+              <h5 class="modal-title text-center"><strong>Edit Health Faclity/Service</strong></h5>
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
+                      <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="EditErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <span id="EditBody">
                     </span>
                     <div class="row">
@@ -131,10 +147,16 @@
       <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Delete Application Type</strong></h5>
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
+              <h5 class="modal-title text-center"><strong>Delete Health Facility/Service</strong></h5>
               <hr>
               <div class="container">
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="DelErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#DelErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 <span id="DelModSpan">
                 </span>
                 <hr>
@@ -165,7 +187,7 @@
               '</div>' +
               '<div class="col-sm-4">Description:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
-                '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
+                '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Description Code <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
               '</div>' 
             );
         }
@@ -222,7 +244,12 @@
                         if (data == 'DONE') {
                             alert('Successfully Added New Facility/Service');
                             window.location.href = "{{ asset('employee/dashboard/mf/faciserv') }}";
+                        } else if (data == 'ERROR'){
+                            $('#AddErrorAlert').show(100);
                         }
+                      }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                          console.log(errorThrown);
+                          $('#AddErrorAlert');
                       }
                   });
                 } else {
@@ -246,7 +273,12 @@
                       if (data == "DONE") {
                           alert('Successfully Edited Facility/Service');
                           window.location.href = "{{ asset('/employee/dashboard/mf/faciserv') }}";
+                      } else if (data == 'ERROR') {
+                        $('#EditErrorAlert').show(100);
                       }
+                  }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                      console.log(errorThrown);
+                      $('#EditErrorAlert').show(100);
                   }
                });
              }
@@ -269,8 +301,15 @@
             method: 'POST',
             data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
-              alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/faciserv') }}";
+               if (data == 'DONE') {
+                   alert('Successfully deleted '+name);
+                  window.location.href = "{{ asset('/employee/dashboard/mf/faciserv') }}";
+               } else if (data == 'ERROR') {
+                  $('#DelErrorAlert').show(100);
+               }
+            }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                console.log(errorThrown);
+                $('#DelErrorAlert').show(100);
             }
           });
         }

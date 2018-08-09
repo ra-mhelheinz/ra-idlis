@@ -2,8 +2,12 @@
 @section('content')
 @include('client.nav')
 @include('client.breadcrumb')
+<script type="text/javascript">
+	document.getElementById('fourth').style = "color: blue;";
+</script>
 <div class="jumbotron container" style="margin-top: 2em;box-shadow: 0px 2px 20px rgba(0,0,0,0.2);background-color: #fff">
-		<div class="container">
+	<div class="text-center"><h3>Your Application is not yet inspected.</h3></div>
+		<div class="container" hidden>
 			<h2>ABC Hospital. Rizal St., Manila</h2>
 			<hr>
 			<div class="container align-items-center">
@@ -726,6 +730,5 @@
 				<!-- //////////// -->
 			</div>
 	</div>
-</div>
 @include('client.sitemap')
 @endsection

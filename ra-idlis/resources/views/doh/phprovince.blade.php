@@ -6,7 +6,8 @@
 <script type="text/javascript">Right_GG();</script>
   <input type="text" id="CurrentPage" value="MA02" hidden>
   <script type="text/javascript">Right_GG();</script>
-  @foreach ($region as $regions)
+  @if (isset($region) && isset($province))
+    @foreach ($region as $regions)
     <datalist id="{{$regions->rgnid}}_list">
       @foreach ($province as $provinces)
         @if ($regions->rgnid == $provinces->rgnid)
@@ -15,6 +16,7 @@
       @endforeach
     </datalist>
   @endforeach
+  @endif
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
@@ -24,10 +26,12 @@
               <label>Filter : &nbsp;</label>
               <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
                 <option value="">Select Region ...</option>
-                @foreach ($region as $regions)
-                  <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
-                @endforeach
-              </select>
+                @if (isset($region))
+                   @foreach ($region as $regions)
+                      <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
+                    @endforeach
+                @endif
+              </select> 
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
            </div>
@@ -60,27 +64,40 @@
          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 0px;border: none;">
-              <div class="modal-body text-justify" style=" background-color: #272b30;
-            color: white;">
+              <div class="container modal-body" style=" background-color: #272b30;color: white;">
                 <h5 class="modal-title text-center"><strong>Add New Province</strong></h5>
                 <hr>
                 <div class="container">
-                  <form id="addRgn" class="row"  data-parsley-validate>
+                  <form id="addRgn" data-parsley-validate>
                     {{ csrf_field() }}
-                    <div class="col-sm-4">Region:</div>
-                    <div class="col-sm-8" style="margin:0 0 .8em 0;" >
-                      <select class="form-control" id="new_rgnid" data-parsley-required-message="*<strong>Region</strong> required" required>  
-                          <option value="">Select Region ...</option>
-                         @foreach ($region as $regions)
-                            <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
-                          @endforeach
-                      </select>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
+                      <div class="row">
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="col-sm-4">Name:</div>
-                    <div class="col-sm-8">
-                    <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Name</strong> required" required>
+                    <div class="row">
+                      <div class="col-sm-4">Region:</div>
+                      <div class="col-sm-8" style="margin:0 0 .8em 0;" >
+                        <select class="form-control" id="new_rgnid" data-parsley-required-message="*<strong>Region</strong> required" required>  
+                            <option value="">Select Region ...</option>
+                            @if (isset($region))
+                              @foreach ($region as $regions)
+                                <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
+                              @endforeach
+                            @endif
+                        </select>
+                      </div>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="row">
+                      <div class="col-sm-4">Name:</div>
+                      <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Name</strong> required" required>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row col-sm-12">
                       <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New Province</button>
                     </div> 
                   </form>
@@ -88,7 +105,6 @@
               </div>
             </div>
           </div>
-    </div>
     </div>
     <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -98,6 +114,13 @@
               <hr>
               <div class="container">
                     <form id="EditNow" data-parsley-validate>
+                      <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="EditErrorAlert" role="alert">
+                      <div class="row">
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <span id="EditBody">
                     </span>
                     <div class="row">
@@ -179,7 +202,12 @@
                         if (data == 'DONE') {
                             alert('Successfully Added New Province');
                             window.location.href = "{{ asset('employee/dashboard/ph/provinces') }}";
+                        } else if (data == 'ERROR') {
+                            $('#AddErrorAlert');show(100);
                         }
+                      }, 
+                      error : function (XMLHttpRequest, textStatus, errorThrown){
+                          $('#AddErrorAlert');show(100);                          
                       }
                   });
                 } else {
@@ -203,7 +231,12 @@
                       if (data == "DONE") {
                           alert('Successfully Edited Province');
                           window.location.href = "{{ asset('/employee/dashboard/ph/provinces') }}";
+                      } else if (data == 'ERROR') {
+                        $('#EditErrorAlert').show(100);
                       }
+                  },
+                  error: function(XMLHttpRequest, textStatus, errorThrown){
+                      $('#EditErrorAlert').show(100);               
                   }
                });
              }

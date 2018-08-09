@@ -9,6 +9,19 @@
    <option  value="{{$upload->updesc}}" data-id="{{$upload->upid}}"></option>
   @endforeach --}}
 </datalist>
+    <div hidden>
+      @if (isset($Cats) AND isset($Chrgs))
+                @foreach ($Cats as $Cat)
+                    <datalist id="{{$Cat->cat_id}}_list">
+                   @foreach ($Chrgs as $Chrg)
+                     @if ($Cat->cat_id == $Chrg->cat_id)
+                        <option id="{{$Chrg->chg_code}}_pro" value="{{$Chrg->chg_code}}" exp='{{$Chrg->chg_exp}}' rmks="{{$Chrg->chg_rmks}}">{{$Chrg->chg_desc}}</option>
+                     @endif
+                   @endforeach
+                 </datalist>
+                @endforeach
+              @endif
+    </div>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
            Manage Charges <a href="" title="Add New" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>  
@@ -19,15 +32,13 @@
               <label>Filter : &nbsp;</label>
               <input type="text" class="form-control" id="filterer" list="grp_list" onchange="filterGroup()" placeholder="Order of Payment">
               <datalist id="grp_list">
-                @foreach ($OOPs as $OOP)
-                  <option value="{{$OOP->oop_id}}">{{$OOP->oop_desc}}</option>
-                @endforeach
+                @if (isset($OOPs))
+                  @foreach ($OOPs as $OOP)
+                    <option value="{{$OOP->oop_id}}">{{$OOP->oop_desc}}</option>
+                  @endforeach
+                @endif
               </datalist>
-              <datalist id="mod_list">
-               {{--  @foreach ($modules as $module)
-                  <option value="{{$module->mod_id}}">{{$module->mod_desc}}</option>
-                @endforeach --}}
-              </datalist>
+              
               &nbsp;
               {{-- <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="chckIn()">Save</button> --}}
               <input type="" id="token" value="{{ Session::token() }}" hidden>
@@ -40,11 +51,13 @@
             <table class="table table-hover display" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
+                  <th style="width: 10%">OOP - #</th>
+                  <th style="width: 10%">Code</th>
+                  <th style="width: 20%">Charge</th>
                   <th style="width: 10%">Type</th>
-                  <th style="width: 10%">#</th>
-                  <th style="width: 30%">Charge</th>
                   <th style="width: 15%"><center>Amount</center></th>
-                  <th style="width: 35%"><center>Option</center></th>
+                  <th style="width: 15%"><center>Remarks</center></th>
+                  <th style="width: 20%"><center>Option</center></th>
                 </tr>
               </thead>
               <tbody id="FilterdBody">
@@ -85,12 +98,23 @@
               <hr>
               <div class="container">
                 <form  id="AddAmount" class="row" data-parsley-validate>
+                  <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="AddAmtErrorAlert" role="alert">
+                    <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddAmtErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                   <div class="col-sm-12" id="Error"></div>
                   <input type="text" id="PutTypeIDhere" name="" hidden>
                   <div class="col-sm-4">
-                    Enter Amount:
+                    Amount:
                   </div>
-                  <div class="col-sm-8" id="ShowTheMoneyBox">
+                  <div class="col-sm-8" id="ShowTheMoneyBox" style="margin:0 0 .8em 0;">
+                  </div>
+                  <div class="col-sm-4">
+                    Remarks:
+                  </div>
+                  <div class="col-sm-8" id="ShowTheRemarkBox" style="margin:0 0 .8em 0;">
                   </div>
                   <div class="col-sm-12">
                     <hr>
@@ -118,7 +142,12 @@
               <hr>
               <div class="container">
                 <form  id="DelCharge" class="row" data-parsley-validate>
-                  <div class="col-sm-12" id="Error"></div>
+                  <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="DelErrorAlert" role="alert">
+                    <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#DelErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                   <input type="text" id="PutTypeIDhere4Delete" name="" hidden>
                   <input type="text" id="PutTypeOOP_IDhere4Delete" name="" hidden>
                   <div class="col-sm-12" id="DelMessage">
@@ -144,30 +173,86 @@
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Add Charge in Order of Payment</strong></h5>
               <hr>
-              <form id="NewFacServIn" action="#" class="row" data-parsley-validate>
-                  <div class="col-sm-4">Order of Payment :</div>
-                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                   <select id="appID" data-parsley-required-message="*<strong>Order of Payment</strong> required" class="form-control" required>  
-                          <option value="">Select Order of Payment ...</option>
-                          @foreach ($OOPs as $OOP)
-                            <option value="{{$OOP->oop_id}}">{{$OOP->oop_desc}}</option>
-                          @endforeach
+              <form id="NewFacServIn" action="#" class="container" data-parsley-validate>
+                  <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
+                    <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                  <div class="row">
+                    <div class="col-sm-4">Order of Payment :</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                     <select id="appID" data-parsley-required-message="*<strong>Order of Payment</strong> required" class="form-control" required>  
+                            <option value="">Select Order of Payment ...</option>
+                            @foreach ($OOPs as $OOP)
+                              <option value="{{$OOP->oop_id}}">{{$OOP->oop_desc}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4">Category</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <select data-parsley-required-message="*<strong>Category</strong> required" id="SelectedCat" class="form-control" onchange="GetCharges()" required>
+                      <option value="">Select Category ...</option>
+                      @if (isset($Cats))
+                        @foreach ($Cats as $Cat)
+                          <option value="{{$Cat->cat_id}}">{{$Cat->cat_id}} - {{$Cat->cat_desc}}</option>
+                        @endforeach
+                      @endif
                       </select>
+                    </div>
                   </div>
-                  <div class="col-sm-4">Charge :</div>
-                  <div class="col-sm-8" style="margin:0 0 .8em 0;" >
-                  	<input type="text" id="FacServID" data-parsley-required-message="*<strong>Charge</strong> required" class="form-control" list="chrges_list" required>
-                   {{-- <select id="FacServID" data-parsley-required-message="*<strong>Charge</strong> required" class="form-control" required>   --}}
-                          <datalist id="chrges_list">
-                          @foreach ($Chrgs as $Chrg)
-                            <option value="{{$Chrg->chg_code}}">{{$Chrg->chg_desc}}</option>
-                          @endforeach
-                          </datalist>
-                      {{-- </select> --}}
+                  <div class="row">
+                    <div class="col-sm-4">Charge :</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      {{-- <input type="text" id="FacServID" data-parsley-required-message="*<strong>Charge</strong> required" class="form-control" list="chrges_list" required> --}}
+                     <select id="FacServID" data-parsley-required-message="*<strong>Charge</strong> required" class="form-control" onchange="GetChargeDetails()" required>  
+                           {{--  <datalist id="chrges_list">
+                           @if (isset($Chrgs))
+                              @foreach ($Chrgs as $Chrg)
+                                <option value="{{$Chrg->chg_code}}">{{$Chrg->chg_desc}}</option>
+                              @endforeach
+                           @endif
+                            </datalist> --}}
+                        </select>
+                    </div>
                   </div>
+                  <div class="row">
+                    <div class="col-sm-4">Charge Explanation:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <textarea class="form-control" rows="3" id="SelectedChargeExplanation" disabled></textarea>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4">Charge Remarks:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <textarea class="form-control" rows="2" id="SelectedChargeRemark" disabled></textarea>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-sm-4">Type :</div>
+                      <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                        <select class="form-control" id="AptID"  data-parsley-required-message="*<strong>Charge</strong> required" required>
+                            <option value="">Select Type ...</option>
+                            @if (isset($IniRen))
+                              @foreach ($IniRen as $data)
+                                <option value="{{$data->aptid}}">{{$data->aptdesc}}</option>
+                              @endforeach
+                            @endif
+                        </select>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4">Remarks :</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <textarea class="form-control" id="NewRmk" rows="5"></textarea>
+                    </div>
+                  </div>   
                   <div class="col-sm-12">
                     <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add Charge</button>
                   </div>
@@ -207,29 +292,28 @@
                     		else {sq='&nbsp;<a href="#"><button onclick="Rearranged(\'up\',\''+d.oop_id+'\','+d.chgopp_seq+','+d.chgopp_id+')" class="btn btn-warning" title="Go Up"><i class="fa fa-sort-up"></i></button></a>';}
 
                     	}
+                      var test = (d.chg_rmks == null)? 'No Remarks' : d.chg_rmks;
                     	$('#example').DataTable()
                            .row
-                           .add([d.oop_id, d.chgopp_seq,d.chg_desc,
-                                  '<center>' + d.amt + '</center>',
-                                  '<center>'+
-                              '<a href="#"><button data-toggle="modal" data-target="#ShowMeTheMoney" onclick="AddAmt('+d.amt+','+d.chgapp_id+',\''+d.chg_desc+'\')" class="btn btn-success" title="Modify Amount"><i class="fa fa-edit"></i></button></a>&nbsp;'+
-                              '<a href="#"><button  onclick="DelUploaded('+d.chgopp_id+',\''+d.chg_desc+'\', \''+d.oop_desc+'\',\''+d.oop_id+'\')" class="btn btn-danger" title="Remove Charge"><i class="fa fa-trash"></i></button></a>'+sq +
-                            '</center>'
+                           .add([
+                                d.oop_id, 
+                                '<a href="#" data-toggle="tooltip" title="" data-original-title="'+test+'">'+d.chg_code+'</a>',
+                                d.chg_desc, d.aptdesc,
+                                '<center>' + d.amt + '</center>',
+                                d.remarks,
+                                '<center>'+
+                                  '<a href="#"><button data-toggle="modal" data-target="#ShowMeTheMoney" onclick="AddAmt('+d.amt+','+d.chgapp_id+',\''+d.chg_desc+'\', \''+d.remarks+'\')" class="btn btn-success" title="Modify Amount"><i class="fa fa-edit"></i></button></a>&nbsp;'+
+                                  '<a href="#"><button  onclick="DelUploaded('+d.chgopp_id+',\''+d.chg_desc+'\', \''+d.oop_desc+'\',\''+d.oop_id+'\')" class="btn btn-danger" title="Remove Charge"><i class="fa fa-trash"></i></button></a>'+sq +
+                                '</center>'
                               ])
                            .draw();
-                    	// $('#FilterdBody').append(
-                    	// 		'<tr>' +
-                     //      '<td>'+d.oop_id+'</td>'+
-                    	// 			'<td>'+d.chg_desc+'</td>'+
-                    	// 			'<td><center>'+d.amt+'</center></td>'+
-                    	// 			'<td><center>'+
-                    	// 				'<a href="#"><button data-toggle="modal" data-target="#ShowMeTheMoney" onclick="AddAmt('+d.amt+','+d.chgapp_id+',\''+d.chg_desc+'\')" class="btn btn-success" title="Modify Amount"><i class="fa fa-edit"></i></button></a>&nbsp;'+
-                    	// 				'<a href="#"><button  onclick="DelUploaded('+d.chgopp_id+',\''+d.chg_desc+'\', \''+d.oop_desc+'\',\''+d.oop_id+'\')" class="btn btn-danger" title="Remove Charge"><i class="fa fa-trash"></i></button></a>'+sq +
-                    	// 			'</center></td>'+
-                    	// 		'</tr>'
-                    	// 	);
                     }
+                    // table.rowReorder.disable();
+
                   }
+                }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                  console.log(errorThrown);
+                  $("#ERROR_MSG2").show(100);
                 }
             });
       }
@@ -241,7 +325,7 @@
               $.ajax({
                       // url: "{{asset('employee/dashboard/mf/typefa')}}",
                       method: 'POST',
-                      data: {_token:$('input[name="_token"]').val(),oop_id:$('#appID').val(),chg_code:$('#FacServID').val()},
+                      data: {_token:$('input[name="_token"]').val(),oop_id:$('#appID').val(),chg_code:$('#FacServID').val(),aptid: $('#AptID').val(), rmk : $('#NewRmk').val()},
                       success: function(data) {
                         if (data == 'DONE') {
                             alert('Successfully Added New Charge in an Application');
@@ -249,7 +333,12 @@
                         } else if (data == 'SAME') {
                             alert('Charge is already in the selected Order of Payment');
                             $('#FacServID').focus();
+                        } else if (data == 'ERROR') {
+                          $('#AddErrorAlert').show(100);
                         }
+                      }, error  : function (XMLHttpRequest, textStatus, errorThrown){
+                        console.log(errorThrown);
+                        $('#AddErrorAlert').show(100);
                       }
                   });
           }
@@ -264,12 +353,17 @@
       			if (data == 'DONE') {
                 alert('Successfully Rearranged');
                 filterGroup();
-
+              } else if (data == 'ERROR') {
+                alert('An error occured. Please contact the system administrator.');
               }
-      		},
+      		}, error : function(XMLHttpRequest, textStatus, errorThrown){
+            console.log(errorThrown);
+            $('#ERROR_MSG2').show(100);
+            $('#ERROR_MSG2').focus();
+          }
       	});
       }
-      function AddAmt(amt, chgapp_id, chg_desc){
+      function AddAmt(amt, chgapp_id, chg_desc, remarks){
       	$('#ifActiveTitle').empty();
       	$('#ifActiveTitle').append(chg_desc);
 
@@ -283,6 +377,13 @@
 
       	$('#PutTypeIDhere').attr('value','');
       	$('#PutTypeIDhere').attr('value',chgapp_id);
+
+       var test = (remarks == 'null') ? '' : remarks;
+
+        $('#ShowTheRemarkBox').empty();
+        $('#ShowTheRemarkBox').append(
+            '<textarea class="form-control" id="selectedRemark" placeholder="'+test+'">'+test+'</textarea>'
+          );
       }
       $('#AddAmount').on('submit',function(event){    
       	event.preventDefault();
@@ -292,14 +393,18 @@
         	$.ajax({
         		url: '{{ asset('/mf/save_amt') }}' ,
         		method : 'POST',
-        		data : {_token:$('input[name="_token"]').val(),amt : $('#selectedAMOUNT').val(),id : $('#PutTypeIDhere').val()},
+        		data : {_token:$('input[name="_token"]').val(),amt : $('#selectedAMOUNT').val(),id : $('#PutTypeIDhere').val(),rmk : $('#selectedRemark').val()},
         		success : function(data){
         				if (data == 'DONE') {
         					alert('Successfully Updated Amount');
                	 			filterGroup();
                	 			$('#ShowMeTheMoney').modal('toggle');
-        				}
-        		},
+        				} else if (data == 'ERROR') {
+                    $('#AddAmtErrorAlert').show(100);
+                }
+        		}, error : function(XMLHttpRequest, textStatus, errorThrown){
+                $('#AddAmtErrorAlert').show(100);
+            }
         	});
         }
       });
@@ -326,9 +431,35 @@
       				alert('Successfully deleted a Charge');
       				filterGroup();
       				$('#ShowDelete').modal('toggle');
-      			}
-      		},
+      			} else if (data == 'ERROR') {
+              $('#DelErrorAlert').show(100);
+            }
+      		}, error : function(){
+            $('#DelErrorAlert').show(100);
+          }
       	});
       });
+      function GetCharges(){
+          var id = $('#SelectedCat').val();
+          $('#FacServID').empty();
+          $('#SelectedChargeExplanation').empty();
+          $('#SelectedChargeRemark').empty();
+          $('#FacServID').append('<option value=""></option>');
+          var x = $('#'+id+'_list option').map(function() {return $(this).val();}).get();
+          for (var i = 0; i < x.length; i++) {
+            var d = $('#'+x[i]+'_pro').text();
+            var e = $('#'+x[i]+'_pro').attr('value');
+            $('#FacServID').append('<option value="'+e+'">'+e+' | '+d+'</option>');
+          }
+      }
+      function GetChargeDetails(){
+        var x = $('#FacServID').val();
+        var exp = $('#'+x+'_pro').attr('exp');
+        var rmk = $('#'+x+'_pro').attr('rmks');
+        $('#SelectedChargeExplanation').empty();
+        $('#SelectedChargeRemark').empty();
+        $('#SelectedChargeExplanation').text(exp);
+        $('#SelectedChargeRemark').text(rmk);
+      }
     </script>
 @endsection

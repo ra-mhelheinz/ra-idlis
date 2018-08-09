@@ -8,14 +8,15 @@
   <input type="" id="token" value="{{ Session::token() }}" hidden>
 <div class="content p-4">
     <datalist id="rgn_list">
-      @foreach ($train as $trains)
-      <option value="{{$trains->tt_id}}">{{$trains->ptdesc}}</option>
-      @endforeach
+      @if (isset($train))
+        @foreach ($train as $trains)
+          <option value="{{$trains->tt_id}}">{{$trains->ptdesc}}</option>
+        @endforeach
+      @endif
     </datalist>
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
            Personnel Training <span class="MA10_add"><a href="#" title="Add New Application Type" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a></span>
-
         </div>
         <div class="card-body">
                <table class="table" id="example" style="overflow-x: scroll;" >
@@ -27,7 +28,7 @@
                 </tr>
               </thead>
               <tbody>
-                @if ($train)
+                @if (isset($train))
                 @foreach ($train as $trains)
                   <tr>
                     <td scope="row"> {{$trains->tt_id}}</td>
@@ -35,17 +36,15 @@
                     <td>
                       <center>
                         <span class="MA10_update">
-                          <button type="button" class="btn-defaults" onclick="showData('{{$trains->tt_id}}', '{{$trains->ptdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
+                          <button type="button" class="btn-defaults" onclick='showData("{{$trains->tt_id}}", "{{$trains->ptdesc}}");' data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
                         </span>
                         <span class="MA10_cancel">
-                          <button type="button" class="btn-defaults" onclick="showDelete('{{$trains->tt_id}}', '{{$trains->ptdesc}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                          <button type="button" class="btn-defaults" onclick='showDelete("{{$trains->tt_id}}", "{{$trains->ptdesc}}");' data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
                         </span>
                       </center>
                     </td>
                   </tr>
                 @endforeach
-                @else
-                GG
                 @endif
               </tbody>
             </table>
@@ -55,12 +54,19 @@
          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 0px;border: none;">
-              <div class="modal-body text-justify" style=" background-color: #272b30;
+              <div class="modal-body" style=" background-color: #272b30;
             color: white;">
                 <h5 class="modal-title text-center"><strong>Add New Personnel Training</strong></h5>
                 <hr>
                 <div class="container">
                   <form id="addRgn" class="row"  data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
+                      <div class="row">
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> 
                     {{ csrf_field() }}
                     <div class="col-sm-4">ID:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -83,13 +89,19 @@
     <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Edit Personnel Training</strong></h5>
               <hr>
               <div class="container">
-                    <form id="EditNow" data-parsley-validate>
-                    <span id="EditBody">
-                    </span>
+                  <form id="EditNow" data-parsley-validate>
+                    <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="EditErrorAlert" role="alert">
+                      <div class="row">
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <span id="EditBody"></span>
                     <div class="row">
                       <div class="col-sm-6">
                       <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
@@ -107,12 +119,18 @@
       <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
               <h5 class="modal-title text-center"><strong>Delete Personnel Training</strong></h5>
               <hr>
               <div class="container">
-                <span id="DelModSpan">
-                </span>
+                <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display:none;margin:5px" id="DelErrorAlert" role="alert">
+                      <div class="row">
+                      </div><strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                        <button type="button" class="close" onclick="$('#DelErrorAlert').hide(1000);" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <span id="DelModSpan"></span>
                 <hr>
                     <div class="row">
                       <div class="col-sm-6">
@@ -167,7 +185,13 @@
                         if (data == 'DONE') {
                             alert('Successfully Added New Personnel Training');
                             window.location.href = "{{ asset('/employee/dashboard/mf/training') }}";
+                        } else if (data == 'ERROR') {
+                            $('#AddErrorAlert').show(100);
                         }
+                      },
+                      error: function(XMLHttpRequest, textStatus, errorThrown){
+                          console.log(errorThrown);
+                          $('#AddErrorAlert').show(100);
                       }
                   });
                 } else {
@@ -191,7 +215,13 @@
                       if (data == "DONE") {
                           alert('Successfully Edited Personnel Training');
                           window.location.href = "{{ asset('/employee/dashboard/mf/training') }}";
+                      } else if (data == 'ERROR') {
+                          $('#EditErrorAlert').show(100);
                       }
+                  },
+                  error : function(XMLHttpRequest, textStatus, errorThrown){
+                      console.log(errorThrown);
+                      $('#EditErrorAlert').show(100);
                   }
                });
              }
@@ -213,8 +243,16 @@
             method: 'POST',
             data: {_token:$('#token').val(),id:id,mod_id : $('#CurrentPage').val()},
             success: function(data){
-              alert('Successfully deleted '+name);
-              window.location.href = "{{ asset('/employee/dashboard/mf/training') }}";
+              if (data == 'DONE') {
+                alert('Successfully deleted '+name);
+                window.location.href = "{{ asset('/employee/dashboard/mf/training') }}";
+              } else if (data == 'ERROR') {
+                $('#DelErrorAlert').show(100);
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+              console.log(errorThrown);
+              $('#DelErrorAlert').show(100);
             }
           });
         }

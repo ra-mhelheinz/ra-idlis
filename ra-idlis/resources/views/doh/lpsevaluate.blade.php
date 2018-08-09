@@ -19,18 +19,22 @@
                         <option value="">Select Application Type.. </option>
                </select>
                <datalist id="grp_list">
-                @foreach ($types as $type)
-                  <option value="{{$type->hfser_id}}">{{$type->hfser_desc}}</option>
-                @endforeach
+                @if (isset($types))
+                  @foreach ($types as $type)
+                    <option value="{{$type->hfser_id}}">{{$type->hfser_desc}}</option>
+                  @endforeach
+                @endif
               </datalist>
               &nbsp;
               @if ($employeeGRP == "NA")
               <input type="text" class="form-control" id="filtererReg" list="rgn_list" onchange="" placeholder="Select Region">
               @endif
               <datalist id="rgn_list">
-                @foreach ($regions as $region)
-                  <option value="{{$region->rgn_desc}}">{{$region->rgnid}}</option>
-                @endforeach
+                @if (isset($regions))
+                  @foreach ($regions as $region)
+                    <option value="{{$region->rgn_desc}}">{{$region->rgnid}}</option>
+                  @endforeach
+                @endif
               </datalist>
               &nbsp;
               <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});">Filter</button>
@@ -69,10 +73,12 @@
                              $status = 'Application Approved';
                              $color = 'green';
                           }
-                          if ($paid == null || paid == 0) {
-                              $status = 'For Evaluation (Not Paid)';
-                              $color = 'red';
-                              $ifdisabled = 'disabled';
+                          if ($paid == null || $paid == 0) {
+                              $status = 'For Evaluation';
+                              // $status = 'For Evaluation (Not Paid)';
+                              $color = 'blue';
+                              // $color = 'red';
+                              // $ifdisabled = 'disabled';
                           }
                       @endphp
                       <tr>
@@ -84,7 +90,7 @@
                         <td>{{$data->aptdesc}}</td>
                         <td style="color:{{$color}};font-weight:bold;">{{$status}}</td>
                           <td>
-                              <button type="button" title="Evaluate {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}', '{{$data->brgyname}}', '{{$data->classname}}','{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}', '{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', {{$data->provname}}, '{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', {{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});"  {{$ifdisabled}}><i class="fa fa-fw fa-clipboard-check"></i></button>
+                              <button type="button" title="Evaluate {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}', '{{$data->brgyname}}', '{{$data->classname}}','{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}', '{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}', '{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});"  {{$ifdisabled}}><i class="fa fa-fw fa-clipboard-check"></i></button>
                           </td>
                       </tr>
                       @endforeach
