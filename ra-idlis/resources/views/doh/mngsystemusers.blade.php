@@ -1,6 +1,6 @@
 @extends('main3')
 @section('content')
-<input type="text" id="CurrentPage" value= hidden>
+<input type="text" id="CurrentPage" value="" hidden>
   <script type="text/javascript">Right_GG();</script>
   <style type="text/css">
   	div .short{
