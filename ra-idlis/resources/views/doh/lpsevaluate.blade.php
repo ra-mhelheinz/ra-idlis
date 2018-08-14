@@ -44,14 +44,14 @@
             <table class="table table-hover" style="font-size:13px;">
                 <thead>
                 <tr>
-                    <th scope="col">Type</th>
-                    <th scope="col">Application Code</th>
-                    <th scope="col">Name of Health Facility</th>
-                    <th scope="col">Type of Health Facility</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">&nbsp;</th>
-                    <th scope="col">Current Status</th>
-                    <th scope="col">Options</th>
+                    <th scope="col" class="text-center">Type</th>
+                    <th scope="col" class="text-center">Application Code</th>
+                    <th scope="col" class="text-center">Name of Health Facility</th>
+                    <th scope="col" class="text-center">Type of Health Facility</th>
+                    <th scope="col" class="text-center">Date</th>
+                    <th scope="col" class="text-center">&nbsp;</th>
+                    <th scope="col" class="text-center">Current Status</th>
+                    <th scope="col" class="text-center">Options</th>
                 </tr>
                 </thead>
                 <tbody id="FilterdBody">
@@ -62,36 +62,19 @@
                         $paid = $data->appid_payment;
                         $reco = $data->isrecommended;
                         $ifdisabled = '';$color = '';
-                          if ($data->isrecommended === null) {
-                              $status = 'For Evaluation';
-                              $color = 'blue';
-                          } else if ($data->isrecommended == 0){
-                            $status = 'Application Rejected';
-                            $color = 'red';
-                          }
-                          else {
-                             $status = 'Application Approved';
-                             $color = 'green';
-                          }
-                          if ($paid == null || $paid == 0) {
-                              $status = 'For Evaluation';
-                              // $status = 'For Evaluation (Not Paid)';
-                              $color = 'blue';
-                              // $color = 'red';
-                              // $ifdisabled = 'disabled';
-                          }
+          
                       @endphp
                       <tr>
-                        <td>{{$data->hfser_id}}</td>
-                        <td>{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}</td>
-                        <td><strong>{{$data->facilityname}}</strong></td>
-                        <td>{{$data->facname}}</td>
-                        <td>{{$data->formattedDate}}</td>
-                        <td>{{$data->aptdesc}}</td>
-                        <td style="color:{{$color}};font-weight:bold;">{{$status}}</td>
-                          <td>
+                        <td class="text-center">{{$data->hfser_id}}</td>
+                        <td class="text-center">{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}</td>
+                        <td class="text-center"><strong>{{$data->facilityname}}</strong></td>
+                        <td class="text-center">{{$data->facname}}</td>
+                        <td class="text-center">{{$data->formattedDate}}</td>
+                        <td class="text-center">{{$data->aptdesc}}</td>
+                        <td class="text-center" style="font-weight:bold;">{{$data->trns_desc}}</td>
+                          <td><center>
                               <button type="button" title="Evaluate {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}', '{{$data->brgyname}}', '{{$data->classname}}','{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}', '{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}', '{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});"  {{$ifdisabled}}><i class="fa fa-fw fa-clipboard-check"></i></button>
-                          </td>
+                          </center></td>
                       </tr>
                       @endforeach
                     @endif
@@ -204,34 +187,34 @@
                           var paid = data[i].appid_payment;
                           var reco = data[i].isrecommended;
                           var ifdisabled = '';
-                          if (data[i].isrecommended === null) {
-                              status = '<span style="color:blue;font-weight:bold;">For Evaluation</span>';
-                          } else if (data[i].isrecommended == 0){
-                            status = '<span style="color:red;font-weight:bold;">Application Rejected</span>';
-                          }
-                          else {
-                              status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
-                          }
+                          // if (data[i].isrecommended === null) {
+                          //     status = '<span style="color:blue;font-weight:bold;">For Evaluation</span>';
+                          // } else if (data[i].isrecommended == 0){
+                          //   status = '<span style="color:red;font-weight:bold;">Application Rejected</span>';
+                          // }
+                          // else {
+                          //     status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
+                          // }
 
-                          if (paid == null || paid == 0) {
-                              status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
-                              ifdisabled = 'disabled';
-                          }
+                          // if (paid == null || paid == 0) {
+                          //     status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
+                          //     ifdisabled = 'disabled';
+                          // }
                           
                           // var app = data[i].approved
                           $('#FilterdBody').append(
                                 '<tr>'+
                                 /// 'R'+data[i].rgnid+'
-                                  '<td>' + data[i].hfser_id + '</td>' +
-                                  '<td>' + data[i].hfser_id + 'R'+data[i].rgnid+'-' + data[i].appid + '</td>' +
-                                  '<td><strong>'+data[i].facilityname+'</strong></td>' +
-                                  '<td>'+data[i].facname+'</td>'+
-                                  '<td>'+data[i].formattedDate+'</td>'+
-                                  '<td>'+data[i].aptdesc+'</td>' +
-                                  '<td>'+status+'</td>'+
-                                  '<td>'+
+                                  '<td class="text-center">' + data[i].hfser_id + '</td>' +
+                                  '<td class="text-center">' + data[i].hfser_id + 'R'+data[i].rgnid+'-' + data[i].appid + '</td>' +
+                                  '<td class="text-center"><strong>'+data[i].facilityname+'</strong></td>' +
+                                  '<td class="text-center">'+data[i].facname+'</td>'+
+                                  '<td class="text-center">'+data[i].formattedDate+'</td>'+
+                                  '<td class="text-center">'+data[i].aptdesc+'</td>' +
+                                  '<td class="text-center"><strong>'+data[i].trns_desc+'</strong></td>'+
+                                  '<td><center>'+
                                         '<button type="button" title="Evaluate '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+');"  '+ifdisabled+'><i class="fa fa-fw fa-clipboard-check"></i></button>'+
-                                  '</td>'+
+                                  '</center></td>'+
                                   // data-toggle="modal" data-target="#GodModal"
                                 '</tr>'
                             );

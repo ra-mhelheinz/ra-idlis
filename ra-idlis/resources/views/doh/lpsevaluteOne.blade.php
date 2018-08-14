@@ -9,7 +9,7 @@
           <input type="text" id="NumberOfRejected" value="@isset ($numOfX) {{$numOfX}} @endisset" hidden>
           <input type="" id="token" value="{{ Session::token() }}" hidden>
            Evaluation
-           <button class="float-right btn btn-primarys" onclick="location.href='{{ asset('/employee/dashboard/lps/evaluate') }}'">Back</button>
+           <button class="float-right btn btn-primarys" onclick="window.history.back();">Back</button>
         </div>
         <div class="card-body">
             <table class="table table-borderless">

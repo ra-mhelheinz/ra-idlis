@@ -77,7 +77,7 @@
         <div class="sidebar sidebar-dark bg-dark">
             <ul class="list-unstyled">
                 <li class="S04_allow"><a href="{{asset('/employee/dashboard')}}"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
-                @if ($employeeData->grpid == 'NA')
+                @if ($employeeData->grpid == 'NA' || $employeeData->grpid == 'RA')
                    <li>
                     <a href="#sm_base" data-toggle="collapse">
                         <i class="fa fa-fw fa-wrench"></i> Master File
@@ -85,10 +85,13 @@
                     <ul id="sm_base" class="list-unstyled collapse">
                         <li><a href="#AppMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-clipboard-list"></i>&nbsp;Application</a>
                             <ul id="AppMenu" class="list-unstyled collapse">
+                                @if ($employeeData->grpid == 'NA')
                                 <li class="MA05_allow"><a href="{{ asset('/employee/dashboard/mf/apptype') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Type</a></li>
                                 <li class="MA07_allow"><a href="{{ asset('/employee/dashboard/mf/appstatus') }}">&nbsp;&nbsp;&nbsp;&nbsp;Application Status</a></li>
                                 <li class="MA08_allow"><a href="{{ asset('/employee/dashboard/mf/class') }}">&nbsp;&nbsp;&nbsp;&nbsp;Class</a></li>
+                                @endif
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/holidays') }}">&nbsp;&nbsp;&nbsp;&nbsp;Holidays</a></li>
+                                @if ($employeeData->grpid == 'NA')
                                 <li class="MA06_allow"><a href
                                     ="{{ asset('/employee/dashboard/mf/ownership') }}">&nbsp;&nbsp;&nbsp;&nbsp;Ownership</a></li>
                                 <li class="MA16_allow"><a href="{{ asset('/employee/dashboard/mf/faciserv') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facilities/Services</a>
@@ -96,8 +99,10 @@
                                 <li><a href="{{ asset('/employee/dashboard/mf/typefa') }}">&nbsp;&nbsp;&nbsp;&nbsp;Manage Facilities/Services</a></li>
                                 <li class="" ><a href="{{ asset('/employee/dashboard/mf/tstatus') }}#" >&nbsp;&nbsp;&nbsp;&nbsp;Transaction Status</a></li>
                                 <li class="MA11_allow"><a href="{{ asset('/employee/dashboard/mf/uploads') }}">&nbsp;&nbsp;&nbsp;&nbsp;Uploads</a></li>
+                                @endif
                             </ul>
                         </li>
+                         @if ($employeeData->grpid == 'NA')
                         <li><a href="#PersoMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-users"></i>&nbsp;Personnel</a>
                             <ul id="PersoMenu" class="list-unstyled collapse">
                                 <li class="MA12_allow"><a href="{{ asset('/employee/dashboard/mf/department') }}">&nbsp;&nbsp;&nbsp;&nbsp;Department</a></li>
@@ -135,7 +140,8 @@
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                             </ul>
                         </li>
-                        <li><a href="{{ asset('/employee/dashboard/mf/settings')}}">&nbsp;&nbsp;<i class="fa fa-gears"></i>&nbsp;System Settings</a></li>
+                        {{-- <li><a href="{{ asset('/employee/dashboard/mf/settings')}}">&nbsp;&nbsp;<i class="fa fa-gears"></i>&nbsp;System Settings</a></li> --}}
+                        @endif
                     </ul>
                 </li>
                 @endif

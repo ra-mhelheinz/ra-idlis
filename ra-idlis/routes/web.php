@@ -139,6 +139,7 @@ Route::get('/employee/dashboard/lps/evalute/ins/1','DOHController@ins1');
 Route::get('/employee/dashboard/lps/evalute/ins/2','DOHController@ins2');
 Route::get('/employee/dashboard/lps/evalute/ins/3','DOHController@ins3');
 Route::get('/file/download/{id}','ajaxController@DownloadFile')->name('DownloadFile');
+Route::get('/employee/dashboard/lps/preassessment/{id}', 'DOHController@PreAssessment');
 // ----------------------------------------------- DOH Controller
 // ----------------------------------------------- Ajax Controller
 // -------------------------------------- ADD
