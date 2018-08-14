@@ -1,0 +1,3 @@
+[09-Jul-2018 08:11:47 Asia/Manila] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/rightapp/public_html/doholrs/ra-idlis/app/Http/Controllers/ajaxController.php on line 2
+[11-Jul-2018 11:51:34 Asia/Manila] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/rightapp/public_html/doholrs/ra-idlis/app/Http/Controllers/ajaxController.php on line 2
+[11-Jul-2018 11:51:38 Asia/Manila] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/rightapp/public_html/doholrs/ra-idlis/app/Http/Controllers/ajaxController.php on line 2

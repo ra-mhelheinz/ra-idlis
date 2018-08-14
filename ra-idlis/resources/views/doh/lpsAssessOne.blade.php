@@ -54,33 +54,36 @@
           	<div class="row"></div>
           </div>
           <div class="container">
-			<form data-parsley-validate>				
+            
+
+			<form id="TESTING" data-parsley-validate>				
                	@if (isset($Parts) && isset($Assments))
-               	    @foreach ($Parts as $part)
-               	    <div class="container text-center"><h3>{{$part->partdesc}}</h3></div>
+                {{-- $i = 0; $i < 10; $i++ --}}
+               	    @for ($i = 0; $i < count($Parts); $i++)
+               	    <div class="container text-center"><h3>{{$Parts[$i]->partdesc}}</h3></div>
                	    <hr>
-               	    	@foreach ($Assments as $assment)
-               	    		@if ($part->partid == $assment->partid)
-               	    			<div class="row">
-               	    				<div class="col-sm-5 text-justify" ><h5>&nbsp;&nbsp;&nbsp;&nbsp;{{$assment->asmt_name}}</h5></div>
+               	    	@for ($j = 0; $j < count($Assments); $j++)
+               	    		@if ($Parts[$i]->partid == $Assments[$j]->partid)
+               	    			<div class="row" id="app_{{$j}}_div" selectedId="{{$Assments[$j]->asmt_id}}">
+               	    				<div class="col-sm-5 text-justify" ><h5>&nbsp;&nbsp;&nbsp;&nbsp;{{$Assments[$j]->asmt_name}}</h5></div>
                	    				<div class="col-sm-4">
                	    					 <center>
-               	    					 	<button type="button" id="app_{{$assment->asmt_id}}_yes" class="btn btn-outline-success" onclick="btnClicked(1, {{$assment->asmt_id}})"><i class="fa fa-check" aria-hidden="true"></i></button>
-               	    					 	<button type="button" id="app_{{$assment->asmt_id}}_no" class="btn btn-outline-danger" onclick="btnClicked(0, {{$assment->asmt_id}})"><i class="fa fa-times" aria-hidden="true"></i></button>
+               	    					 	<button type="button" id="app_{{$j}}_yes" class="btn btn-outline-success" onclick="btnClicked(1, {{$j}})"><i class="fa fa-check" aria-hidden="true"></i></button>
+               	    					 	<button type="button" id="app_{{$j}}_no" class="btn btn-outline-danger" onclick="btnClicked(0, {{$j}})"><i class="fa fa-times" aria-hidden="true"></i></button>
                	    					 </center>
                	    				</div>
                	    				<div class="col-sm-3">
                	    					<center>
-               	    						<textarea id="app_{{$assment->asmt_id}}_rmk" rows="3" class="form-control" placeholder="Remarks"></textarea>
+               	    						<textarea id="app_{{$j}}_rmk" rows="3" class="form-control" placeholder="Remarks"></textarea>
                	    					</center>
                	    				</div>
                	    			</div>
                	    			<br>
                	    		@endif
-               	    	@endforeach
-               	    @endforeach
+               	    	@endfor
+               	    @endfor
                	@endif
-               	<center><button type="submit" style="background-color:#0ed639" class="btn btn-primarys">Submit</button></center>
+               	<center><button type="button" style="background-color:#0ed639" onclick="SubmitNow()" class="btn btn-primarys">Submit</button></center>
 			</form>
           </div>
           <hr>
@@ -190,59 +193,88 @@
       </div> 
     </div>
     <script type="text/javascript">
+      var CheckedOrNot = [], Remarks = [], GetAsMentId=[];
+      var numOfAssMents = {{$numOfAssMents}}, test =0;
+      $(document).ready(function(){
+          for (var i = 0; i < numOfAssMents; i++) {
+          CheckedOrNot[i] = null;
+          Remarks[i] = "";
+          GetAsMentId[i] = $('#app_'+i+'_div').attr('selectedId');
+        }
+      });
+      // console.log(CheckedOrNot);
 		function btnClicked(YesNo, AssMentID){
 			if(YesNo == 1){
 				var name1 = '#app_'+AssMentID+'_yes';
 				var name2 = '#app_'+AssMentID+'_no';
+        var name3 = '#app_'+AssMentID+'_rmk';
+        $(name3).removeAttr('required');
+        $(name3).removeAttr('data-parsley-required-message');
 			} else {
 				var name1 = '#app_'+AssMentID+'_no';
 				var name2 = '#app_'+AssMentID+'_yes';
+        var name3 = '#app_'+AssMentID+'_rmk';
+        $(name3).removeAttr('required');
+        $(name3).attr('required', '');
+        $(name3).removeAttr('data-parsley-required-message');
+        $(name3).attr('data-parsley-required-message', "<strong>Remark</strong> required");
 			}
+      CheckedOrNot[AssMentID] = YesNo;
+      // console.log(CheckedOrNot);
 			$(name1).addClass('active')
 			$(name2).removeClass('active');
 
 		}
-		// $(function () {
-		// 	  var $sections = $('.form-section');
+    function SubmitNow(){
+      // console.log(CheckedOrNot);
+      // console.log(Remarks);
+      
+      for (var i = 0; i < numOfAssMents; i++) {
+        Remarks[i] = $('#app_'+i+'_rmk').val();
+      }
 
-		// 	  function navigateTo(index) {
-		// 	    // Mark the current section with the class 'current'
-		// 	    $sections
-		// 	      .removeClass('current')
-		// 	      .eq(index)
-		// 	        .addClass('current');
-		// 	    // Show only the navigation buttons that make sense for the current section:
-		// 	    $('.form-navigation .previous').toggle(index > 0);
-		// 	    var atTheEnd = index >= $sections.length - 1;
-		// 	    $('.form-navigation .next').toggle(!atTheEnd);
-		// 	    $('.form-navigation [type=submit]').toggle(atTheEnd);
-		// 	  }
+      for (var i = 0; i < numOfAssMents; i++) {
+        if(CheckedOrNot[i] == null) {
+          $('#app_'+i+'_yes').focus();
+          test = 1;
+          break;
+        } else {
+          test = 0;
+        }
 
-		// 	  function curIndex() {
-		// 	    // Return the current index by looking at which section has the class 'current'
-		// 	    return $sections.index($sections.filter('.current'));
-		// 	  }
+        if (CheckedOrNot[i] == 0 && Remarks[i] == ""){
+          $('#app_'+i+'_rmk').focus();
+          test = 1;
+          break;
+        } 
 
-		// 	  // Previous button is easy, just go back
-		// 	  $('.form-navigation .previous').click(function() {
-		// 	    navigateTo(curIndex() - 1);
-		// 	  });
+      }
 
-		// 	  // Next button goes forward iff current block validates
-		// 	  $('.form-navigation .next').click(function() {
-		// 	    $('.demo-form').parsley().whenValidate({
-		// 	      group: 'block-' + curIndex()
-		// 	    }).done(function() {
-		// 	      navigateTo(curIndex() + 1);
-		// 	    });
-		// 	  });
+        if(test == 0){
+            $.ajax({
+              // url : 
+              method: 'POST',
+              data: {
+                _token : '{{Session::token()}}',
+                chckOrNot : CheckedOrNot,
+                num : numOfAssMents,
+                rmks : Remarks,
+                AsId : GetAsMentId,
+              },
+              success : function (data){
+                if(data == 'DONE'){
 
-		// 	  // Prepare sections by setting the `data-parsley-group` attribute to 'block-0', 'block-1', etc.
-		// 	  $sections.each(function(index, section) {
-		// 	    $(section).find(':input').attr('data-parsley-group', 'block-' + index);
-		// 	  });
-		// 	  navigateTo(0); // Start at the beginning
-		// 	});
+                } else if(data == 'ERROR'){
+                    $('#ERROR_MSG2').show(100);
+                }
+              },
+              error : function(XMLHttpRequest, textStatus, errorThrown){
+                  $('#ERROR_MSG2').show(100);
+              },
+            });
+        }       
+      }
+		
 
   //       function showData(id,desc){
   //         $('#EditBody').empty();

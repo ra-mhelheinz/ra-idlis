@@ -1877,11 +1877,19 @@
 					$data2 = DB::table('assessment')->get();					
 
 					// return dd($data2);
-					return view('doh.lpsAssessOne',['AppData'=>$data, 'Parts'=>$data1, 'Assments'=>$data2]);
+					return view('doh.lpsAssessOne',['AppData'=>$data, 'Parts'=>$data1, 'Assments'=>$data2, 'numOfAssMents' => count($data2)]);
 				} catch (Exception $e) {
 					$TestError = $this->SystemLogs($e->getMessage());
 					session()->flash('system_error','ERROR');
 					return view('doh.lpsAssessOne');
+				}
+			}
+			if ($request->isMethod('post')) {
+				try {
+						
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					return 'ERROR';
 				}
 			}
 		}
@@ -2083,7 +2091,7 @@
 				$data1 = DB::table('part')->get();
 				$data2 = DB::table('app_assessment')
 							->join('assessment', 'app_assessment.asmt_id', '=', 'assessment.asmt_id')
-							->where([['app_assessment.draft', '=', '0'], ['app_assessment.uid', '=', $id]])
+							->where([['app_assessment.draft', '=', '0'], ['app_assessment.uid', '=', $id], ['app_assessment.t_date', '=', null], ['app_assessment.t_time', '=', null]])
 							->get();
 				// $data2 = DB::table('assessment')->get();
 
@@ -2092,7 +2100,7 @@
 			} catch (Exception $e) {
 				$TestError = $this->SystemLogs($e->getMessage());
 				session()->flash('system_error','ERROR');
-				return view('doh.mngsystemlogs');
+				return view('doh.lpsPreAssment');
 			}
 		}
 	}
