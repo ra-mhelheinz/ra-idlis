@@ -40,14 +40,14 @@
             <table class="table table-hover" style="font-size:13px;">
                 <thead>
                 <tr>
-                    <th scope="col">Type</th>
-                    <th scope="col">Application Code</th>
-                    <th scope="col">Name of Health Facility</th>
-                    <th scope="col">Type of Health Facility</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">&nbsp;</th>
-                    <th scope="col">Current Status</th>
-                    <th scope="col">Options</th>
+                    <th scope="col" class="text-center">Type</th>
+                    <th scope="col" class="text-center">Application Code</th>
+                    <th scope="col" class="text-center">Name of Health Facility</th>
+                    <th scope="col" class="text-center">Type of Health Facility</th>
+                    <th scope="col" class="text-center">Date</th>
+                    <th scope="col" class="text-center">&nbsp;</th>
+                    <th scope="col" class="text-center">Current Status</th>
+                    <th scope="col" class="text-center">Options</th>
                 </tr>
                 </thead>
                 <tbody id="FilterdBody">
@@ -198,35 +198,36 @@
                           var paid = data[i].appid_payment;
                           var reco = data[i].isrecommended;
                           var ifdisabled = '';
-                          if (data[i].isrecommended === null) {
-                              status = '<span style="color:blue;font-weight:bold;">For Evaluation</span>';
-                          } else if (data[i].isrecommended == 0){
-                            status = '<span style="color:red;font-weight:bold;">Application Rejected</span>';
-                          }
-                          else {
-                              status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
-                          }
+                          // if (data[i].isrecommended === null) {
+                          //     status = '<span style="color:blue;font-weight:bold;">For Evaluation</span>';
+                          // } else if (data[i].isrecommended == 0){
+                          //   status = '<span style="color:red;font-weight:bold;">Application Rejected</span>';
+                          // }
+                          // else {
+                          //     status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
+                          // }
 
-                          if (paid == null || paid == 0) {
-                            status = '<span style="color:blue;font-weight:bold;">For Evaluation</span>';
-                              // status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
-                              // ifdisabled = 'disabled';
-                          }
+                          // if (paid == null || paid == 0) {
+                          //   status = '<span style="color:blue;font-weight:bold;">For Evaluation</span>';
+                          //     // status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
+                          //     // ifdisabled = 'disabled';
+                          // }
                           
                           // var app = data[i].approved
                           $('#FilterdBody').append(
                                 '<tr>'+
                                 /// 'R'+data[i].rgnid+'
-                                  '<td>' + data[i].hfser_id + '</td>' +
-                                  '<td>' + data[i].hfser_id + 'R'+data[i].rgnid+'-' + data[i].appid + '</td>' +
-                                  '<td><strong>'+data[i].facilityname+'</strong></td>' +
-                                  '<td>'+data[i].facname+'</td>'+
-                                  '<td>'+data[i].formattedDate+'</td>'+
-                                  '<td>'+data[i].aptdesc+'</td>' +
-                                  '<td>'+status+'</td>'+
-                                  '<td>'+
-                                        '<button type="button" title="Evaluate '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+');"  '+ifdisabled+'><i class="fa fa-fw fa-clipboard-check"></i></button>'+
-                                  '</td>'+
+                                  '<td class="text-center">' + data[i].hfser_id + '</td>' +
+                                  '<td class="text-center">' + data[i].hfser_id + 'R'+data[i].rgnid+'-' + data[i].appid + '</td>' +
+                                  '<td class="text-center"><strong>'+data[i].facilityname+'</strong></td>' +
+                                  '<td class="text-center">'+data[i].facname+'</td>'+
+                                  '<td class="text-center">'+data[i].formattedDate+'</td>'+
+                                  '<td class="text-center">'+data[i].aptdesc+'</td>' +
+                                  '<td class="text-center">'+data[i].trns_desc+'</td>'+
+                                  '<td><center>'+
+                                        '<button type="button" title="Evaluate '+data[i].facilityname+'" class="btn-defaults" onclick="window.location.href=\'{{asset('employee/dashboard/lps/assess')}}/'+data[i].appid+'\'"  '+ifdisabled+'><i class="fa fa-fw fa-clipboard-check"></i></button>'+
+                                  // showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+');
+                                  '</center></td>'+
                                   // data-toggle="modal" data-target="#GodModal"
                                 '</tr>'
                             );

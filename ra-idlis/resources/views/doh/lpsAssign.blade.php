@@ -60,18 +60,21 @@
                   @php
                     $status = ''; $color = '';
                     $paid = $data->appid_payment;
-                          $reco = $data->isrecommended;
-                          if ($data->isrecommended == null) {
-                              $status = 'For Evaluation';
-                              $color = 'black';
-                          }else if ($data->isrecommended == 1) {
-                            $status = 'Application Approved';
-                            $color = 'green';
-                          }
-                          if ($paid == null) {
-                              $status = 'For Evaluation (Not Paid)';
-                              $color = 'red';
-                          }
+                    $reco = $data->status;
+                    if ($reco == 'P') {
+                      $status = 'Pending';
+                    }
+                          // if ($data->isrecommended == null) {
+                          //     $status = 'For Evaluation';
+                          //     $color = 'black';
+                          // }else if ($data->isrecommended == 1) {
+                          //   $status = 'Application Approved';
+                          //   $color = 'green';
+                          // }
+                          // if ($paid == null) {
+                          //     $status = 'For Evaluation (Not Paid)';
+                          //     $color = 'red';
+                          // }
                   @endphp
                     <tr>
                       <td style="text-align:center">{{$data->hfser_id}}</td>

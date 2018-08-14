@@ -146,7 +146,7 @@
               <br>
               <hr>
           <div class="container"><center><button style="background-color: #82d202" class="btn btn-primarys" onclick="SubmitOOP();">Submit</button>&nbsp;
-            <button class="btn btn-primarys" onclick="location.href='{{ asset('/employee/dashboard/lps/evaluate') }}/{{$appid}}'">Back</button></center></div>
+            <button class="btn btn-primarys" onclick="window.history.back();">Back</button></center></div>
         </div>
       </div>
   </div>
