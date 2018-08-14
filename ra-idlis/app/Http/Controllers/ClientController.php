@@ -176,6 +176,32 @@ class ClientController extends Controller
     }
      public function evaluate(Request $request){
     	if($request->isMethod('get')){
+          // $data0 = DB::table('appform')
+          //               ->join('x08', 'appform.uid', '=', 'x08.uid')
+          //               ->join('barangay', 'x08.barangay', '=', 'barangay.brgyid')
+          //               ->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+          //               ->join('province', 'x08.province', '=', 'province.provid')
+          //               ->join('type_facility', 'appform.hfser_id', '=', 'type_facility.hfser_id') 
+          //               ->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+          //               // ->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
+          //               // , 'orderofpayment.*'
+          //               ->select('appform.uid', 'appform.appid', 'appform.isrecommended', 'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'appform.recommendedtime', 'appform.recommendeddate', 'type_facility.*', 'appform.proposedInspectiontime', 'appform.proposedInspectiondate', 'appform.status', 'trans_status.trns_desc')
+          //               ->where('appform.appid', '=', $appid)
+          //               // , 'type_facility.*', 'orderofpayment.*'
+          //               // ->where('type_facility.facid', '=', 'appform.facid')
+          //               ->first();
+          //   if ($data0->recommendedtime !== null && $data0->recommendeddate !== null) {
+          //     $newT = Carbon::parse($data0->proposedInspectiontime);
+          //     $data0->formattedPropTime = $newT->format('g:i A');
+          //     $newD = Carbon::parse($data0->proposedInspectiondate);
+          //     $data0->formattedPropDate = $newD->toFormattedDateString();
+          //   }
+          //   $data1 = DB::table('appform')
+          //               ->join('app_upload', 'appform.appid', '=', 'app_upload.app_id')
+          //               ->join('upload', 'app_upload.upid', '=', 'upload.upid')
+          //               ->select('appform.appid', 'appform.facid', 'app_upload.*', 'upload.updesc')
+          //               ->where('appform.appid', '=', $appid)
+          //               ->get();
     		return view('client.evaluate');
     	}
     }
@@ -339,7 +365,7 @@ class ClientController extends Controller
                               ->select('facility_requirements.*','upload.*','type_facility.*')
                               ->where('type_facility.hfser_id','=', $selectedType)
                               ->get();
-            $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();               
+            $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();            
             // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
           return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld, 'position'=>$position, 'section'=>$section, 'department'=>$department, 'traintype'=>$traintype, 'plicensetype'=>$plicensetype, 'appidinc'=>$appidinc->appid+1]);
           // , 'appidinc'=>$appidinc->appid+1
@@ -628,8 +654,8 @@ class ClientController extends Controller
                     'uid' => $employeeData->uid,
                     'asmt_id' => $asmt_id,
                     'sa_remarks' => $remarks,
-                    't_date' =>  $dateNow,
-                    't_time' => $timeNow,
+                    // 't_date' =>  $dateNow,
+                    // 't_time' => $timeNow,
                     'sa_tdate' => $dateNow,
                     'sa_ttime' => $timeNow,
                     'draft' => $draftxt,
@@ -642,8 +668,8 @@ class ClientController extends Controller
                     'uid' => $employeeData->uid,
                     'asmt_id' => $asmt_id,
                     'sa_remarks' => $remarks,
-                    't_date' =>  $dateNow,
-                    't_time' => $timeNow,
+                    // 't_date' =>  $dateNow,
+                    // 't_time' => $timeNow,
                     'sa_tdate' => $dateNow,
                     'sa_ttime' => $timeNow,
                     'draft' => $draftxt,

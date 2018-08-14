@@ -2,6 +2,9 @@
 @section('content')
 @include('client.nav')
 @include('client.breadcrumb')
+<script type="text/javascript">
+  document.getElementById('second').style = "color: blue;";
+</script>
 <style type="text/css">
   .paymentWrap {
   padding: 50px;
@@ -65,6 +68,7 @@
   <div class="row">
     <div class="col-sm-12" style="margin-top: 5%; margin-bottom: 5%;">
             <div class="headingWrap">
+              <button></button>
                 <h3 class="headingTop text-center">Select Your Payment Method</h3>  
                 <p class="text-center">Created with bootsrap button and using radio button</p>
             </div>
@@ -106,22 +110,22 @@
               <div class="col-sm-6">
                 <h3 class="text-center">Payment Summary</h3>
                 @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
-                  <table class="table">
+                  <table style="width: 100%;" class="table">
                     <tr>
-                      <td>Description</td>
-                      <td>Amount</td>
+                      <td style="width: 50%;">Description</td>
+                      <td style="width: 50%;" class="text-center">Amount</td>
                     </tr>
                     <?php $desc = $_POST['desc']; $amount = $_POST['amount']; $total = 0; ?>
                     @for($i = 0; $i < count($amount); $i++)
                       <?php $total = $total + $amount[$i]; ?>
                       <tr>
                         <td>{{$desc[$i]}}</td>
-                        <td>&#8369; {{$amount[$i]}}</td>
+                        <td class="text-center">&#8369; {{$amount[$i]}}</td>
                       </tr>
                     @endfor
                     <tr>
-                      <td><strong style="float:right;">Total:</strong></td>
-                      <td>&#8369; {{$total}}</td>
+                      <td class="text-right"><strong>Total:</strong></td>
+                      <td class="text-center">&#8369; {{$total}}</td>
                     </tr>
                   </table>
                 @else
