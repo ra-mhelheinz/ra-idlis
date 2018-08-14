@@ -39,28 +39,28 @@
                 @endif
               </datalist>
               &nbsp;
-              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});">Filter</button>
+              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" {{-- onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});" --}}>Filter</button>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
            </div>
-            <table class="table table-hover" style="font-size:13px;">
+            <table class="table table-hover" style="font-size:13px;" id="example">
                 <thead>
                 <tr>
-                    <th scope="col" style="">Type</th>
-                    <th scope="col" style="">Code</th>
-                    <th scope="col" style="">Name of the Facility</th>
-                    <th scope="col" style="">Type of Facility</th>
-                    <th scope="col" style="">Type</th>
-                    <th scope="col" style="">Date Applied</th>
-                    <th scope="col" style="">Paid</th>
-                    <th scope="col" style="">Evaluated</th>
+                    <th scope="col" style="text-align:center">Type</th>
+                    <th scope="col" style="text-align:center">Code</th>
+                    <th scope="col" style="text-align:center">Name of the Facility</th>
+                    <th scope="col" style="text-align:center">Type of Facility</th>
+                    <th scope="col" style="text-align:center">Type</th>
+                    <th scope="col" style="text-align:center">Date Applied</th>
+                    {{-- <th scope="col" style="">Paid</th> --}}
+                    <th scope="col" style="text-align:center">Evaluated</th>
                     {{-- <th scope="col" style="">Evaluated by</th> --}}
                     {{-- <th scope="col" style="">Region Evaluated</th> --}}
-                    <th scope="col" style="">Inspected</th>
-                    <th scope="col" style="">Approved</th>
-                    <th scope="col" style="">Status</th>
+                    <th scope="col" style="text-align:center">Inspected</th>
+                    <th scope="col" style="text-align:center">Approved</th>
+                    <th scope="col" style="text-align:center">Status</th>
                     {{-- <th scope="col" style="">Current Status</th> --}}
-                    <th scope="col" style="">Options</th>
+                    <th scope="col" style="text-align:center">Options</th>
                 </tr>
                 </thead>
                 <tbody id="FilterdBody">
@@ -71,29 +71,38 @@
                           $paid = $data->appid_payment;
                           $reco = $data->isrecommended;
                           $color = '';
-                          if ($data->isrecommended == null) {
-                              $status = 'For Evaluation';$color = 'black';
-                          }else if ($data->isrecommended == 1) {
-                            $status = 'Application Approved';$color = 'green';
-                              }
-                          if ($paid == null) {$status = 'For Evaluation (Not Paid)';$color = 'red';
-                              }
+                          // if ($data->isrecommended == null) {
+                          //     $status = 'For Evaluation';$color = 'black';
+                          // }else if ($data->isrecommended == 1) {
+                          //   $status = 'Application Approved';$color = 'green';
+                          //     }
+                          // if ($paid == null) {$status = 'For Evaluation (Not Paid)';$color = 'red';
+                          //     }
                   @endphp
                    <tr>
-                     <td>{{$data->hfser_id}}</td>
-                     <td>{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}</td>
-                     <td><strong>{{$data->facilityname}}</strong></td>
-                     <td>{{$data->facname}}</td>
-                     <td>{{$data->aptdesc}}</td>
-                      <td>{{$data->formattedDate}}</td>
-                     <td><center><h5>@if($data->appid_payment !== null) <span class="badge badge-success">Yes</span> @else <span class="badge badge-pill badge-warning">No</span> @endif</h5></center></td>
+                     <td style="text-align:center">{{$data->hfser_id}}</td>
+                     <td style="text-align:center">{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}</td>
+                     <td style="text-align:center"><strong>{{$data->facilityname}}</strong></td>
+                     <td style="text-align:center">{{$data->facname}}</td>
+                     <td style="text-align:center">{{$data->aptdesc}}</td>
+                      <td style="text-align:center">{{$data->formattedDate}}</td>
+                     {{-- <td><center><h5>@if($data->appid_payment !== null) <span class="badge badge-success">Yes</span> @else <span class="badge badge-pill badge-warning">No</span> @endif</h5></center></td> --}}
                       {{-- <td>{{$data->formattedDateEval}}</td> --}}
                       {{-- <td>{{$data->recommendedbyName}}</td> --}}
                       {{-- <td>{{$data->RgnEvaluated}}</td> --}}
                       {{-- <td></td>
                       <td></td> --}}
-                      <td><center><h5>@if($data->isrecommended == 1) <span class="badge badge-success" title="Click for more info" data-toggle="modal" data-target="#ShowEvalInfo" onclick="showEvalInfo('{{$data->formattedTimeEval}}', '{{$data->formattedDateEval}}', '{{$data->formattedTimePropEval}}', '{{$data->formattedDatePropEval}}', '{{$data->recommendedbyName}}', '{{$data->RgnEvaluated}}', '{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}')">Yes</span> @elseif($data->isrecommended == null) <span class="badge badge-pill badge-warning">Pending</span> @else <span class="badge badge-pill badge-danger">No</span> @endif</center></h5></td>
-                      <td><center>
+                      <td><center> {{-- EVALUATION --}}
+                        <h5>
+                          @if($data->isrecommended == 1) 
+                          <span class="badge  badge-success" title="Click for more info" data-toggle="modal" data-target="#ShowEvalInfo" onclick="showEvalInfo('{{$data->formattedTimeEval}}', '{{$data->formattedDateEval}}', '{{$data->formattedTimePropEval}}', '{{$data->formattedDatePropEval}}', '{{$data->recommendedbyName}}', '{{$data->RgnEvaluated}}', '{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}', {{$data->appid}})">Yes</span> 
+                          @elseif($data->isrecommended == null) 
+                            <span class="badge badge-warning">Pending</span> 
+                          @else 
+                            <span class="badge badge-danger">No</span> 
+                        @endif</h5>
+                      </center></td>
+                      <td><center> {{-- INSPECTION --}}
                         <h5>
                           @if ($data->agreedInspectiondate != null)
                             <span class="badge badge-success">Yes</span>
@@ -102,7 +111,7 @@
                           @endif
                         </h5>
                       </center></td>
-                      <td><center>
+                      <td><center> {{-- APPROVED --}}
                         <h5>
                           @if ($data->approvedBy == '1')
                             <span class="badge badge-success">Yes</span>
@@ -113,9 +122,9 @@
                           @endif
                         </h5>
                       </center></td>
-                      <td style="color:{{$color}};font-weight:bold;">{{-- {{$status}} --}}</td>
+                      <td style="color:black;font-weight:bolder;text-decoration: underline;">{{$data->trns_desc}}</td>
                       <td>
-                        <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>
+                        <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', '{{$data->status}}', '{{$data->uid}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>
                       </td>
                    </tr>
                   @endforeach
@@ -139,7 +148,7 @@
                     <hr>
                     <div class="row">
                       <div class="col-sm-6">
-                      {{-- <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button> --}}
+                      <button type="button" class="btn btn-outline-info form-control" id="PreAssessButton" style="border-radius:0;"><span class="fa fa-sign-up"></span>View Preassessment</button>
                     </div> 
                     <div class="col-sm-6">
                       <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
@@ -164,7 +173,7 @@
                     <hr>
                     <div class="row">
                       <div class="col-sm-6">
-                      {{-- <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button> --}}
+                      <button type="button" class="btn btn-outline-info form-control" style="border-radius:0;" id="ViewEvalButton"><span class="fa fa-sign-up"></span>View Evaluation</button>
                     </div> 
                     <div class="col-sm-6">
                       <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Cancel</button>
@@ -177,6 +186,9 @@
         </div>
       </div>
 <script type="text/javascript">
+   $(document).ready(function() {
+         // $('#example').DataTable();
+      } );
   function filterGroup(){
         var id = $('#filterer').val();
         var token = $('#token').val();
@@ -272,7 +284,7 @@
                                   '<td>'+data[i].aptdesc+'</td>' +
                                   '<td>'+status+'</td>'+
                                   '<td>'+
-                                        '<button type="button" title="View detailed information for '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>'+
+                                        '<button type="button" title="View detailed information for '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+', \''+data[i].status+'\', \''+data[i].uid+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>'+
                                   '</td>'+
                                 '</tr>'
                             );
@@ -285,17 +297,15 @@
 
         }        
     }
-    function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment){
+    /// showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', '{{$data->status}}', '{{$data->uid}}
+    function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, statusX, uid){
         var status = '';
-        var paid = appid_payment;
-        if (isrecommended == null) {
-            status = "For Evaluation";
-          }else if (isrecommended == 1) {
-            status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
-          }
-        if (paid == null) {
-             status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
-          } 
+        // var paid = appid_payment;
+        if (statusX == 'P') {
+            status = '<span style="color:orange">Pending</span>';
+        } 
+        $('#PreAssessButton').attr('onclick', '');
+        $('#PreAssessButton').attr('onclick', "location.href='{{ asset('/employee/dashboard/lps/preassessment') }}/"+uid+"'");
         $('#ViewBody').empty();
         $('#ViewBody').append(
             '<div class="row">'+
@@ -338,7 +348,9 @@
           );
     } 
     // '{{$data->formattedTimeEval}}', '{{$data->formattedDateEval}}', '{{$data->formattedTimePropEval}}', '{{$data->formattedDatePropEval}}', '{{$data->recommendedbyName}}', '{{$data->RgnEvaluated}}', '{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}')"
-    function showEvalInfo(EvalTime, EvalDate, PropTime, PropDate, RecommendedBy, RgnRecommended, code){
+    function showEvalInfo(EvalTime, EvalDate, PropTime, PropDate, RecommendedBy, RgnRecommended, code, idCode){
+        $('#ViewEvalButton').attr('onclick','');
+        $('#ViewEvalButton').attr('onclick',"location.href='{{ asset('/employee/dashboard/lps/evaluate') }}/"+idCode+"'");
         $('#EvalTitle').empty();
         $('#EvalTitle').text(code);
         $('#EvalBody').empty();

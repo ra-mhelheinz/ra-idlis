@@ -1,7 +1,4 @@
-@php
-    
-@endphp
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -46,7 +43,6 @@
 <body class="bg-light">
     @include('doh.nav')
 <script src="{{asset('ra-idlis/public/js/bootadmin.min.js')}}"></script>
-</body>
 @if (session()->has('system_error'))
     <div class="alert alert-danger alert-dismissible fade show" id="ERROR_MSG" role="alert">
         <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> has occured. Please contact the system administrator.
@@ -69,4 +65,5 @@ $("body").append('<div class="pageloader"></div>');
     $(".pageloader").fadeOut(1000);
   });
 </script>
+</body>
 </html>

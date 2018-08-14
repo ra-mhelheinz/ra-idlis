@@ -189,76 +189,82 @@
 			}
 		}
 		public function getLPS(Request $request){
-			$Cur_useData = $this->getCurrentUserAllData();
-			$getData = DB::table('appform')
-								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
-								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
-								->join('x08', 'appform.uid', '=', 'x08.uid')
-								->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
-								->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
-								->join('province', 'x08.province', '=', 'province.provid')
-								->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname' )
-								->where('appform.hfser_id', '=', $request->hfser_ID)
-								->where('appform.facid', '=', $request->facID)
-								->where('appform.assignedRgn', '=', $request->rgnID)
-								->where('appform.draft', '=', 0)
-								->first();
-			if (!$getData) {
-				return 'NONE';
-			} else {
+			try {
+					$Cur_useData = $this->getCurrentUserAllData();
+					$getData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'x08.uid' )
+										->where('appform.hfser_id', '=', $request->hfser_ID)
+										->where('appform.facid', '=', $request->facID)
+										->where('appform.assignedRgn', '=', $request->rgnID)
+										->where('appform.draft', '=', 0)
+										->first();
+					if (!$getData) {
+						return 'NONE';
+					} else {
 
-				if ($Cur_useData['grpid'] != 'LO' && $Cur_useData['grpid'] != 'FDA') {
-					$anotherData = DB::table('appform')
-								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
-								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
-								->join('x08', 'appform.uid', '=', 'x08.uid')
-								->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
-								->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
-								->join('province', 'x08.province', '=', 'province.provid')
-								->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
-								->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
-								->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
-								->join('class', 'appform.classid', '=', 'class.classid')
-								->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname')
-								->where('appform.hfser_id', '=', $request->hfser_ID)
-								->where('appform.facid', '=', $request->facID)
-								->where('appform.assignedRgn', '=', $request->rgnID)
-								->where('appform.draft', '=', 0)
-								->get();
-				} else {
-					$anotherData = DB::table('appform')
-								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
-								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
-								->join('x08', 'appform.uid', '=', 'x08.uid')
-								->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
-								->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
-								->join('province', 'x08.province', '=', 'province.provid')
-								->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
-								->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
-								->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
-								->join('class', 'appform.classid', '=', 'class.classid')
-								->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname')
-								->where('appform.hfser_id', '=', $request->hfser_ID)
-								->where('appform.facid', '=', $request->facID)
-								->where('appform.assignedRgn', '=', $request->rgnID)
-								->where('appform.assignedLO', '=', $Cur_useData['cur_user'])
-								->where('appform.draft', '=', 0)
-								->get();
-				}
-					for ($i=0; $i < count($anotherData); $i++) {
-						$time = $anotherData[$i]->t_time;
-						$newT = Carbon::parse($time);
-						$anotherData[$i]->formattedTime = $newT->format('g:i A');
+						if ($Cur_useData['grpid'] != 'LO' && $Cur_useData['grpid'] != 'FDA') {
+							$anotherData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+										->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+										->join('class', 'appform.classid', '=', 'class.classid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'appform.status', 'x08.uid', 'trans_status.trns_desc')
+										->where('appform.hfser_id', '=', $request->hfser_ID)
+										->where('appform.facid', '=', $request->facID)
+										->where('appform.assignedRgn', '=', $request->rgnID)
+										->where('appform.draft', '=', 0)
+										->get();
+						} else {
+							$anotherData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+										->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+										->join('class', 'appform.classid', '=', 'class.classid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'appform.status', 'x08.uid', 'trans_status.trns_desc')
+										->where('appform.hfser_id', '=', $request->hfser_ID)
+										->where('appform.facid', '=', $request->facID)
+										->where('appform.assignedRgn', '=', $request->rgnID)
+										->where('appform.assignedLO', '=', $Cur_useData['cur_user'])
+										->where('appform.draft', '=', 0)
+										->get();
+						}
+							for ($i=0; $i < count($anotherData); $i++) {
+								$time = $anotherData[$i]->t_time;
+								$newT = Carbon::parse($time);
+								$anotherData[$i]->formattedTime = $newT->format('g:i A');
 
-						$date = $anotherData[$i]->t_date;
-						$newD = Carbon::parse($date);
-						$anotherData[$i]->formattedDate = $newD->toFormattedDateString();
-						// ->diffForHumans()
+								$date = $anotherData[$i]->t_date;
+								$newD = Carbon::parse($date);
+								$anotherData[$i]->formattedDate = $newD->toFormattedDateString();
+								// ->diffForHumans()
+							}
+						return $anotherData;
 					}
-				return $anotherData;
+			} catch (\Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';			
 			}
 			
-			// return 'TEST';
 		}
 		public function getLPS4Assigned (Request $request){
 			$getData = DB::table('appform')
