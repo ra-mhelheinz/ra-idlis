@@ -21,7 +21,7 @@
 </script>
 
       <input type="hidden" id="global-token" value="{{ Session::token() }}" />
-       <nav id="paraTagoNav" class="navbar navbar-expand-lg navbar-dark bg-dark" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;box-shadow: 0px 2px 4px rgba(0,0,0,0.2);padding: 1px 1px 1px 1px;">
+       <nav id="paraTagoNav" class="navbar navbar-expand-lg navbar-dark bg-dark" style="background: linear-gradient(to bottom left, #228B22, #84bd82);padding: 10px 10px 10px 10px;padding: 1px 1px 1px 1px;">
       <div class="container">
         <a class="navbar-brand" href="#"><img src="{{asset('ra-idlis/public/img/doh2.png')}}" class="img4">
             <div class="republic1">
@@ -39,9 +39,9 @@
         <div class="collapse navbar-collapse" id="navbarResponsive" style="z-index: 1039; position: relative;">
           <ul class="navbar-nav ml-auto" style="text-align: center;">
             <li class="nav-item">
-              <a class="nav-link" href="{{asset('client/home')}}" data-toggle="tooltip" title="HOME">Home</a>
+              <a class="nav-link text-uppercase" href="{{asset('client/home')}}" data-toggle="tooltip" title="HOME">Home</a>
             </li>
-             <li class="nav-item dropdown"> 
+{{--              <li class="nav-item dropdown"> 
               <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Application Types <br><small>Click this to toggle/choose your Application Type</small>" data-step="1">Application</a>
                 <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
                      <a class="dropdown-item" href="{{ asset('/client/apply/form/con') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>Certificate of Need (CON)</small></a>
@@ -50,9 +50,9 @@
                       <a class="dropdown-item" href="{{ asset('/client/apply/form/coa') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Certificate of Accreditation (COA)</small></a>
                       <a class="dropdown-item" href="{{ asset('/client/apply/form/ato') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Authority to Operate (ATO)</small></a>
                 </div>
-            </li>
+            </li> --}}
             <li class="nav-item dropdown"> 
-              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Notifications <br><small>Click here to view your notifications such as updates or changes.</small>" data-step="2"><span class="fa fa-bell" style="font-size:  18px;"></span>1</a>
+              <a class="nav-link introjs-showElement introjs-relativePosition" href="#" class="navbar dropdown dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" data-intro="Notifications <br><small>Click here to view your notifications such as updates or changes.</small>" data-step="1"><span class="fa fa-bell" style="font-size:  18px;"></span>0</a>
                 <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="navbarDropdown2">
                   <div class="navbar-login">
                     <p>Welcome to DOH OLORS.</p>
@@ -60,11 +60,11 @@
                 </div>
             </li>
             <li class="nav-item dropdown">
-             <a class="nav-link dropdown-toggle introjs-showElement introjs-relativePosition"  data-intro="Account Button <br><small>In this button you can find some options that might help you while browsing (About, Help, Logout)</small>" data-step="3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <a class="nav-link dropdown-toggle introjs-showElement introjs-relativePosition"  data-intro="Account Button <br><small>In this button you can find some options that might help you while browsing (Help, Logout)</small>" data-step="2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <i class="fa fa-user-circle" style="font-size:  20px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right bg-light" id="acc" aria-labelledby="navbarDropdown">
-         <div class="navbar-login">
+     {{--     <div class="navbar-login">
             <div class="row">
                <div class="col-lg-4">
                   <p class="text-center">
@@ -94,7 +94,30 @@
                    </p>
                 </div>
               </div>
-          </div>
+          </div> --}}
+            <div class="container">
+              <div style="padding: 0.75rem 0.035rem">
+              <div class="row">
+                <div class="col-sm-3 text-center"><i class="fa fa-user" style="font-size: 50px;"></i></div>
+                <div class="col-sm-9">
+                  <small>{{$clientData->authorizedsignature}}</small>
+                  <small  class="text-lowercase">{{$clientData->email}}</small>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-6"><button class="btn btn-default btn-block" style="background-color: #ebebeb;
+    border-color: #adadad; font-size: 12px">Help</button></div>
+                 <div class="col-sm-6"><button  onclick="event.preventDefault();document.getElementById('clientLogout').submit();" class="btn btn-default btn-block" style="background-color: #ebebeb;
+    border-color: #adadad; font-size: 12px">Logout</button>
+                     <form id="clientLogout" action="{{asset('/client/logout')}}" method="POST" hidden>
+                        @csrf
+                      </form>
+                </div>
+                
+              </div>
+              </div>
+            </div>
         </div>
             </li>
           </ul>

@@ -147,12 +147,13 @@ html, body, #canvasMap{
 		<div class="row">
 			<div class="col-lg-7" style="margin: 3em auto">
 				<h3>DOH Licensing Process</h3>
-				<form style="margin-bottom: 10px;">
+				<hr>
+			{{-- 	<form style="margin-bottom: 10px;">
 					<div class="input-group">
 						<input type="" name="" class="form-control" placeholder="Search for...">
 						<div class="input-group-prepend"><button type="button" class="btn-defaults" style="background-color: #28A55F;" name=""><i class="fa fa-search" style="color: #fff;"></i></button></div>
 					</div>
-				</form>
+				</form> --}}
 				<div class="row">
 					<div class="col-sm-6">
 						<h4><i class="fa fa-registered"></i>&nbsp;<strong>Step 1.</strong> Registration</h4>
@@ -314,8 +315,11 @@ html, body, #canvasMap{
 				</div>
 				</div>
 				<div class="row">
-				<div class="col-sm-8" style="margin: 0 0 .8em 0;">
-					<input id="strID" type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name"   data-parsley-required-message="<strong>*</strong>Street Name <strong>Required</strong>" required="">
+				<div class="col-sm-5" style="margin: 0 0 .8em 0;">
+					<input id="strID" type="text" class="input form-control" name="street" autocomplete="off" placeholder="Street Name">
+				</div>
+				<div class="col-sm-3" style="margin: 0 0 .8em 0;">
+					<input type="text" class="input form-control" name="lot" autocomplete="off" placeholder="Lot#" >
 				</div>
 				<div class="col-sm-4" style="margin: 0 0 .8em 0;">
 					<input id="zipID" type="text" class="input form-control" name="zipcode" autocomplete="off" placeholder="Zip Code"  required=""  data-parsley-type="digits" data-parsley-maxlength="4" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>">
@@ -371,7 +375,6 @@ html, body, #canvasMap{
 				        });
         				getAddress();
 
-
 					 	// function route() {
 						//     place = autocomplete.getPlace();
 						//     if (place.geometry) {
@@ -386,8 +389,10 @@ html, body, #canvasMap{
 						//     marker.setVisible(true);
 						// }
 						function getAddress() {
-							var arrComp = [document.getElementById('zipID').value, document.getElementById('provID').value, document.getElementById('rgnID').value, document.getElementById('provID').value, document.getElementById('ctyID').value, document.getElementById('brgyID').value, document.getElementById('strID').value];
+							var arrComp = [document.getElementById('brgyID').value, document.getElementById('ctyID').value, document.getElementById('provID').value, document.getElementById('rgnID').value];
+							//[document.getElementById('rgnID').value, document.getElementById('provID').value, document.getElementById('ctyID').value, document.getElementById('brgyID').value, document.getElementById('strID').value, document.getElementById('zipID').value];
 						    var address = arrComp.join(", ");
+						    console.log(address);
 						    geocoder.geocode( { 'address': address}, function(results, status) {
 						      	if (status == 'OK') {
 							        map.setCenter(results[0].geometry.location);
@@ -397,15 +402,14 @@ html, body, #canvasMap{
 							            position: results[0].geometry.location
 							        });
 						      	} else {
-						        	// alert('Geocode was not successful for the following reason: ' + status);
+
 						      	}
 						    });
 						}
 					}
-				    
   				</script>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
-					<input type="text" class="input form-control" name="auth_name" autocomplete="off" placeholder="Authorized Signature" data-parsley-required-message="<strong>*</strong>Authorized Signature <strong>Required</strong>"  required="">
+					<input type="text" class="input form-control" name="auth_name" autocomplete="off" placeholder="Authorized Signatory" data-parsley-required-message="<strong>*</strong>Authorized Signature <strong>Required</strong>"  required="">
 				</div>
 				<div class="col-sm-12" style="margin: 0 0 .8em 0;">
 					<input type="text" class="input form-control" name="cel" autocomplete="off" placeholder="Cellphone No." data-parsley-required-message="<strong>*</strong>Cel No. <strong>Required</strong>"  required="">

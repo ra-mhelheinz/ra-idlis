@@ -11,8 +11,13 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
+<<<<<<< HEAD
         "maatwebsite/excel": "^3.0",
         "paypal/rest-api-sdk-php": "^1.13"
+=======
+        "maatwebsite/excel": "~2.1.0",
+        "elibyy/tcpdf-laravel" : "5.2.*"
+>>>>>>> 1537423cae9ceadc0f52d20cd6a634d4b3161e25
     },
     "require-dev": {
         "filp/whoops": "^2.0",

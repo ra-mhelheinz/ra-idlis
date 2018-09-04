@@ -1,15 +1,11 @@
-<style type="text/css">
-  /************************************************************
-*************************Footer******************************
-*************************************************************/
+{{-- <style type="text/css">
+
 .footer1 {
     background: #fff url("../images/footer/footer-bg.png") repeat scroll left top;
   padding-top: 40px;
   padding-right: 0;
   padding-bottom: 20px;
-  padding-left: 0;/*  border-top-width: 4px;
-  border-top-style: solid;
-  border-top-color: #003;*/
+  padding-left: 0;
 }
 
 
@@ -113,19 +109,17 @@
         color: #f39c12;
       }
       .nomargin { margin:0px; padding:0px;}
-/************************************************************
-*************************Footer******************************
-*************************************************************/
+
 </style>
 <footer class="footer1">
 <div class="container">
 
-<div class="row"><!-- row -->
+<div class="row">
             
-                <div class="col-lg-3 col-md-3"><!-- widgets column left -->
-                <ul class="list-unstyled clear-margins"><!-- widgets -->
+                <div class="col-lg-3 col-md-3">
+                <ul class="list-unstyled clear-margins">
                         
-                          <li class="widget-container widget_nav_menu"><!-- widgets list -->
+                          <li class="widget-container widget_nav_menu">
                     
                                 <h1 class="title-widget">Useful links</h1>
                                 
@@ -136,11 +130,7 @@
                                     <li><a  href="#"><i class="fa fa-angle-double-right"></i> Contact Us</a></li>
                                      <li><a  href="#"><i class="fa fa-angle-double-right"></i> FAQ<i style="text-transform: lowercase">s</p></i></li>
                                     <li><a  href="#"><i class="fa fa-angle-double-right"></i> Terms of Service</a></li>
-                                   {{--  <li><a  href="#"><i class="fa fa-angle-double-right"></i> PG Courses</a></li>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i> Achiever's Batch</a></li>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Regular Batch</a></li>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Test & Discussion</a></li>
-                                    <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Fast Track T & D</a></li> --}}
+
                                 </ul>
                     
               </li>
@@ -148,15 +138,15 @@
                         </ul>
                          
                       
-                </div><!-- widgets column left end -->
+                </div>
                 
                 
                 
-                <div class="col-lg-3 col-md-3"><!-- widgets column left -->
+                <div class="col-lg-3 col-md-3">
             
-                <ul class="list-unstyled clear-margins"><!-- widgets -->
+                <ul class="list-unstyled clear-margins">
                         
-                          <li class="widget-container widget_nav_menu"><!-- widgets list -->
+                          <li class="widget-container widget_nav_menu">
                               
                                 <h1 class="title-widget">Useful links</h1>
                                 
@@ -177,15 +167,15 @@
                         </ul>
                          
                       
-                </div><!-- widgets column left end -->
+                </div>
                 
                 
                 
-                <div class="col-lg-3 col-md-3"><!-- widgets column left -->
+                <div class="col-lg-3 col-md-3">
             
-                <ul class="list-unstyled clear-margins"><!-- widgets -->
+                <ul class="list-unstyled clear-margins">
                         
-                          <li class="widget-container widget_nav_menu"><!-- widgets list -->
+                          <li class="widget-container widget_nav_menu">
                     
                                 <h1 class="title-widget">Useful links</h1>
                                 
@@ -208,16 +198,16 @@
                         </ul>
                          
                       
-                </div><!-- widgets column left end -->
+                </div>
                 
                 
-                <div class="col-lg-3 col-md-3"><!-- widgets column center -->
+                <div class="col-lg-3 col-md-3">
                 
                    
                     
-                        <ul class="list-unstyled clear-margins"><!-- widgets -->
+                        <ul class="list-unstyled clear-margins">
                         
-                          <li class="widget-container widget_recent_news"><!-- widgets list -->
+                          <li class="widget-container widget_recent_news">
                     
                                 <h1 class="title-widget">Contact Detail </h1>
                                 
@@ -246,4 +236,48 @@
                        </div>
                 </div>
 </div>
-</footer>
+</footer> --}}
+ <div class="container py-5">
+      <div class="row">
+        <div class="col-12 col-md">
+          <p>DOHOLRS</p>
+          <small class="d-block mb-3 text-muted">&copy; 2017-2018</small>
+        </div>
+        <div class="col-6 col-md">
+          <h5>Features</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Random feature</a></li>
+            <li><a class="text-muted" href="#">Team feature</a></li>
+            <li><a class="text-muted" href="#">Stuff for developers</a></li>
+            <li><a class="text-muted" href="#">Another one</a></li>
+            <li><a class="text-muted" href="#">Last time</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md">
+          <h5>Resources</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Resource</a></li>
+            <li><a class="text-muted" href="#">Resource name</a></li>
+            <li><a class="text-muted" href="#">Another resource</a></li>
+            <li><a class="text-muted" href="#">Final resource</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md">
+          <h5>Resources</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Business</a></li>
+            <li><a class="text-muted" href="#">Education</a></li>
+            <li><a class="text-muted" href="#">Government</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md">
+          <h5>About</h5>
+          <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Team</a></li>
+            <li><a class="text-muted" href="#">Locations</a></li>
+            <li><a class="text-muted" href="#">Privacy</a></li>
+            <li><a class="text-muted" href="#">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>

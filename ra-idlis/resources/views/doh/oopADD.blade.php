@@ -14,7 +14,7 @@
                   <h6>Republic of the Philippines</h6>
                   <h6>DEPARTMENT OF HEALTH</h6>
                   <h5>Order of Payment</h5>
-                  <h4><strong>{{$oop_data->oop_desc}}</strong></h4>
+                  <h4><strong>@isset($oop_data){{$oop_data->oop_desc}}@endisset</strong></h4>
                 </th>
                 <th style="width:10%"></th>
               </tr>
@@ -32,10 +32,10 @@
                   <td colspan="4">Date: <span id="DateToday" class="font-weight-bold"></span></td>
                 </tr>
                 <tr>
-                  <td colspan="4">Name of Hospital: <span class="font-weight-bold">{{$AppData->facilityname}}</span></td>
+                  <td colspan="4">Name of Hospital: <span class="font-weight-bold">@isset($AppData){{$AppData->facilityname}}@endisset</span></td>
                 </tr>
                 <tr>
-                    <td colspan="4">Address: <span class="font-weight-bold">{{$AppData->streetname}}, {{$AppData->brgyname}}, {{$AppData->cmname}}, {{$AppData->provname}} - {{$AppData->zipcode}} {{$AppData->rgn_desc}}</span></td>
+                    <td colspan="4">Address: <span class="font-weight-bold">@isset($AppData){{$AppData->streetname}}, {{$AppData->brgyname}}, {{$AppData->cmname}}, {{$AppData->provname}} - {{$AppData->zipcode}} {{$AppData->rgn_desc}}@endisset</span></td>
                 </tr>
                 <tr>
                     <td colspan="3">To CASHIER: Please charge the amount of&nbsp;&nbsp;<span id="WTotalHere" style="font-weight: bold;text-decoration: underline;"></span></td>
@@ -75,7 +75,7 @@
                        @if (isset($Bills))
                          @foreach ($Bills as $bill)
                            <tr>
-                                <td><center><input type="checkbox" name="selected[]" price="{{$bill->amt}}" class="form-check Charge" value="{{$bill->chgopp_id}}" {{-- onchange="Checked({{$bill->amt}})" --}} style=" width: 2rem;height: 1rem;"></center></td>
+                                <td><center><input type="checkbox" name="selected[]" price="{{$bill->amt}}" class="form-check Charge" value="{{$bill->chgapp_id}}" {{-- onchange="Checked({{$bill->amt}})" --}} style=" width: 2rem;height: 1rem;"></center></td>
                                 <td style="font-weight: bold">{{$bill->chg_code}}</td>
                                 <td>{{$bill->chg_desc}}</td>
                                 <td style="text-align: center">{{number_format($bill->amt,2,'.',', ')}}</td> 
@@ -83,7 +83,7 @@
                            </tr>
                          @endforeach
                        @endif
-                       @if ($Bills)
+                       @if (isset($Bills))
                          <tr>
                             <td></td>
                            <td style="font-weight: bolder;">TOTAL</td>
@@ -107,7 +107,7 @@
                 <tbody>
                   <tr>
                     <td >Prepared by:</td>
-                    <td class="text-center" style="font-weight: bolder;text-transform: uppercase;">@if($EmployeeData->grpid == "NA") Administrator @else {{$EmployeeData->name}} @endif</td>
+                    <td class="text-center" style="font-weight: bolder;text-transform: uppercase;">@isset($EmployeeData) @if($EmployeeData->grpid == "NA") Administrator @else {{$EmployeeData->name}} @endif @endisset</td>
                     <td>Recieved the above payment/s:</td>
                     <td></td>
                   </tr>
@@ -203,14 +203,14 @@
       alert('Error: Cannot Proceed'); 
     } else {
       $.ajax({
-        url : '{{ asset('/employee/dashboard/lps/evaluate/') }}/{{$appid}}/{{$oop_id}}/add',
+        url : '{{ asset('/employee/dashboard/lps/evaluate/') }}/@isset($appid){{$appid}}@endisset/@isset($oop_id){{$oop_id}}@endisset/add',
         method : 'POST',
         data : {_token:$('#token').val(), data : Test,grandtotal : total,
                   totalword : $('#WTotalHere').text()},
         success : function(data){
             if (data == 'DONE') {
                   alert('Successfully added Order of Payment.');
-                  location.href = '{{ asset('/employee/dashboard/lps/evaluate/') }}/{{$appid}}';
+                  location.href = '{{ asset('/employee/dashboard/lps/evaluate/') }}/@isset($appid){{$appid}}@endisset';
               }
         }
       });

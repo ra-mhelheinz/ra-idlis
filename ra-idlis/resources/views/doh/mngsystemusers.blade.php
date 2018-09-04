@@ -103,7 +103,7 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="border-radius: 0px;border: none;">
-      <div class="modal-body text-justify" style=" background-color: #272b30;
+      <div class="modal-body" style=" background-color: #272b30;
     color: white;">
         <h5 class="modal-title text-center"><strong>System Users Registration</strong></h5>
         <hr>
@@ -168,8 +168,21 @@
             <div class="row">
             	<div class="col-sm-4">Position:</div>
 	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	            <input type="test" name="position" class="form-control" data-parsley-required-message="*<strong>Position</strong> required" required>
+	            <input type="text" name="position" class="form-control" data-parsley-required-message="*<strong>Position</strong> required" required>
 	            </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">Default Facility Assignment:</div>
+              <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                <select class="form-control">
+                  <option value=""></option>
+                  @isset($facilitys)
+                    @foreach ($facilitys as $dt)
+                      <option value="{{$dt->facid}}">{{$dt->facname}}</option>
+                    @endforeach
+                  @endisset
+                </select>
+              </div>
             </div>
             <div class="row">
             	<div class="col-sm-4">Email Address:</div>

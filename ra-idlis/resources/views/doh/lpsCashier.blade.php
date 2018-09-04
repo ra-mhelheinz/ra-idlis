@@ -7,7 +7,7 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Evaluate Applicants
+           Cashiering
         </div>
         <div class="card-body table-responsive">
             <div style="float:left;margin-bottom: 5px">
@@ -26,11 +26,11 @@
                 @endif
               </datalist>
               &nbsp;
-              @isset($employeeGRP)
-                @if ($employeeGRP == "NA")
-                <input type="text" class="form-control" id="filtererReg" list="rgn_list" onchange="" placeholder="Select Region">
-                @endif
-              @endisset
+			  @isset($employeeGRP)
+	              @if ($employeeGRP == "NA")
+	              <input type="text" class="form-control" id="filtererReg" list="rgn_list" onchange="" placeholder="Select Region">
+	              @endif
+			  @endisset
               <datalist id="rgn_list">
                 @if (isset($regions))
                   @foreach ($regions as $region)
@@ -39,7 +39,7 @@
                 @endif
               </datalist>
               &nbsp;
-              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('@isset($employeeGRP){{$employeeGRP}}@else{{'LO'}}@endisset',@isset($employeeREGION){{$employeeREGION}}@else{{'00'}}@endisset);">Filter</button>
+              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('@isset($employeeGRP){{$employeeGRP}}@else{{'#'}}@endisset',@isset($employeeREGION){{$employeeREGION}}@else{{'#'}}@endisset);">Filter</button>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
            </div>
@@ -65,9 +65,9 @@
                         $reco = $data->isrecommended;
                         $ifdisabled = '';$color = '';
                         
-                        // if($data->status == 'P'){
-                        //   $ifdisabled = 'disabled';
-                        // }
+                        if($data->status == 'P' || $data->status == 'RA' || $data->status == 'RE' || $data->status == 'RI' ){
+                          $ifdisabled = 'disabled';
+                        }
 
                       @endphp
                       <tr>
@@ -79,7 +79,7 @@
                         <td class="text-center">{{$data->aptdesc}}</td>
                         <td class="text-center" style="font-weight:bold;">{{$data->trns_desc}}</td>
                           <td><center>
-                              <button type="button" title="Evaluate {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}', '{{$data->brgyname}}', '{{$data->classname}}','{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}', '{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}', '{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});"  {{$ifdisabled}}><i class="fa fa-fw fa-clipboard-check" {{$ifdisabled}}></i></button>
+                              <button type="button" title="Evaluate Payment for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}', '{{$data->brgyname}}', '{{$data->classname}}','{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}', '{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}', '{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});"  {{$ifdisabled}}><i class="fa fa-fw fa-clipboard-check" {{$ifdisabled}}></i></button>
                           </center></td>
                       </tr>
                       @endforeach
@@ -175,7 +175,7 @@
                 rgnid = id[test];
               }
           } else {
-            rgnid = '@isset($employeeREGION){{$employeeREGION}}@else{{'00'}}@endisset';
+            rgnid = '@isset($employeeREGION){{$employeeREGION}}@else{{0}}@endisset';
           } 
         }
 
@@ -234,7 +234,7 @@
         }        
     }
     function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment){
-        window.location.href = "{{ asset('/employee/dashboard/lps/evaluate') }}/" + appid;
+        window.location.href = "{{ asset('/employee/dashboard/lps/cashier') }}/" + appid;
         // var status = '';
         // var paid = appid_payment;
         // var ifdisabled = '';

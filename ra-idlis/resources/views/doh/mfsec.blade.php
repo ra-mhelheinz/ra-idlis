@@ -44,7 +44,7 @@
            </div>
         </div>
         <div class="card-body">
-               <table class="table" style="overflow-x: scroll;" >
+               <table class="table" style="overflow-x: scroll;" id="example">
               <thead>
                 <tr>
                   <th style="width: 40%">ID</th>
@@ -164,6 +164,12 @@
       </div> 
     </div>
     <script type="text/javascript">
+      $(document).ready(function() {
+          $('#example').DataTable({
+              dom: 'Bfrtip',
+              buttons: ['csvHtml5', 'excelHtml5', 'pdfHtml5', 'print'],
+          });
+      } );
         function showData(id,desc){
           $('#EditBody').empty();
           $('#EditBody').append(

@@ -55,7 +55,7 @@
 						return $data;
 					}
 			} catch (Exception $e) {
-				
+				return 'ERROR';
 			}
 		}
 		public function getCalendarEvents2(Request $request){
@@ -69,7 +69,8 @@
 						return $data;
 					}
 			} catch (Exception $e) {
-				
+				$data = $hos->SystemLogs($e->message());
+				return 'ERROR';
 			}
 		}
 		// -------------------- SELECT --------------------
@@ -258,7 +259,9 @@
 								$anotherData[$i]->formattedDate = $newD->toFormattedDateString();
 								// ->diffForHumans()
 							}
-						return $anotherData;
+							// return response()->json(['item_image ' => $item_image, 'item_something' => $item_something, 'item_more' => $item_more  ]);
+						// return dd($anotherData);
+						return response()->json(['data'=>$anotherData]);
 					}
 			} catch (\Exception $e) {
 				$data = $this->SystemLogs($e->getMessage());
@@ -267,64 +270,71 @@
 			
 		}
 		public function getLPS4Assigned (Request $request){
-			$getData = DB::table('appform')
-								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
-								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
-								->join('x08', 'appform.uid', '=', 'x08.uid')
-								->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
-								->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
-								->join('province', 'x08.province', '=', 'province.provid')
-								->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'appform.assignedRgn', 'facilitytyp.facname', 'city_muni.cmname' )
-								->where('appform.hfser_id', '=', $request->hfser_ID)
-								->where('appform.facid', '=', $request->facID)
-								->where('appform.assignedRgn', '=', $request->rgnID)
-								->where('appform.draft', '=', 0)
-								->first();
-			if (!$getData) {
-				return 'NONE';
-			} else {
-				$anotherData = DB::table('appform')
-								->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
-								->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
-								->join('x08', 'appform.uid', '=', 'x08.uid')
-								->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
-								->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
-								->join('province', 'x08.province', '=', 'province.provid')
-								->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
-								->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
-								->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
-								->join('class', 'appform.classid', '=', 'class.classid')
-								->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'appform.assignedRgn', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname')
-								->where('appform.hfser_id', '=', $request->hfser_ID)
-								->where('appform.facid', '=', $request->facID)
-								->where('appform.assignedRgn', '=', $request->rgnID)
-								->where('appform.draft', '=', 0)
-								->get();
-					for ($i=0; $i < count($anotherData); $i++) {
-						$time = $anotherData[$i]->t_time;
-						$newT = Carbon::parse($time);
-						$anotherData[$i]->formattedTime = $newT->format('g:i A');
+			try {
+					$getData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'appform.assignedRgn', 'facilitytyp.facname', 'city_muni.cmname', 'trans_status.trns_desc')
+										->where('appform.hfser_id', '=', $request->hfser_ID)
+										->where('appform.facid', '=', $request->facID)
+										->where('appform.assignedRgn', '=', $request->rgnID)
+										->where('appform.draft', '=', 0)
+										->first();
+					if (!$getData) {
+						return 'NONE';
+					} else {
+						$anotherData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+										->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+										->join('class', 'appform.classid', '=', 'class.classid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'appform.assignedRgn', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
+										->where('appform.hfser_id', '=', $request->hfser_ID)
+										->where('appform.facid', '=', $request->facID)
+										->where('appform.assignedRgn', '=', $request->rgnID)
+										->where('appform.draft', '=', 0)
+										->get();
+							for ($i=0; $i < count($anotherData); $i++) {
+								$time = $anotherData[$i]->t_time;
+								$newT = Carbon::parse($time);
+								$anotherData[$i]->formattedTime = $newT->format('g:i A');
 
-						$date = $anotherData[$i]->t_date;
-						$newD = Carbon::parse($date);
-						$anotherData[$i]->formattedDate = $newD->toFormattedDateString();
-						// ->diffForHumans()
-						
-						if ($anotherData[$i]->assignedLO === null) {
-							$anotherData[$i]->formattedLOName = "NONE";
-						} else {
-							$temp = DB::table('x08')->where('uid', '=', $anotherData[$i]->assignedLO)->first();
-							$x = $temp->mname;
-		                    if ($x != "") {
-		                    	$mid = strtoupper($x[0]);
-		                    	$mid = $mid.'. ';
-		                    } else {
-		                    	$mid = ' ';
-		                    }
-						$anotherData[$i]->formattedLOName = $temp->fname.' '.$mid.$temp->lname;
-						}
+								$date = $anotherData[$i]->t_date;
+								$newD = Carbon::parse($date);
+								$anotherData[$i]->formattedDate = $newD->toFormattedDateString();
+								// ->diffForHumans()
+								
+								if ($anotherData[$i]->assignedLO === null) {
+									$anotherData[$i]->formattedLOName = "NONE";
+								} else {
+									$temp = DB::table('x08')->where('uid', '=', $anotherData[$i]->assignedLO)->first();
+									$x = $temp->mname;
+				                    if ($x != "") {
+				                    	$mid = strtoupper($x[0]);
+				                    	$mid = $mid.'. ';
+				                    } else {
+				                    	$mid = ' ';
+				                    }
+								$anotherData[$i]->formattedLOName = $temp->fname.' '.$mid.$temp->lname;
+								}
+							}
+						return $anotherData;
 					}
-				return $anotherData;
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';		
 			}
 		}
 		public function getLPSUploads(Request $request){
@@ -368,17 +378,16 @@
 			}
 		}
 		public function getChgOOP(Request $request){
-			try {	$data = DB::table('chg_oop')
-									->join('charges', 'chg_oop.chg_code', '=', 'charges.chg_code')
-									->join('orderofpayment', 'chg_oop.oop_id', '=', 'orderofpayment.oop_id')
-									->join('chg_app', 'chg_oop.chgapp_id', '=', 'chg_app.chgapp_id')
+			try {	$data = DB::table('chg_app')
+									->join('charges', 'chg_app.chg_code', '=', 'charges.chg_code')
+									->join('orderofpayment', 'chg_app.oop_id', '=', 'orderofpayment.oop_id')
+									// ->join('chg_app', 'chg_app.chgapp_id', '=', 'chg_app.chgapp_id')
 									->join('category', 'charges.cat_id', '=', 'category.cat_id')
 									->join('apptype', 'chg_app.aptid', '=', 'apptype.aptid')
-									->where('chg_oop.oop_id', '=', $request->id)
-									->orderBy('chg_oop.chgopp_seq','asc')
+									->where('chg_app.oop_id', '=', $request->id)
+									->orderBy('chg_app.chgopp_seq','asc')
 									->get();
 				// return dd($data);
-						
 					if ($data) {
 						return response()->json(['data'=>$data,'TotalNumber'=>count($data)]);
 					} else {
@@ -470,6 +479,25 @@
 			$data = DB::table('app_assessment')->get();
 			if ($data) {
 				return $data;
+			}
+		}
+		public function getPaymentData(Request $request){
+			try {
+				$data1 = DB::table('chgfil')
+						->join('chg_app', 'chgfil.chgapp_id', '=', 'chg_app.chgapp_id')
+						->join('orderofpayment', 'chg_app.oop_id', '=', 'orderofpayment.oop_id')
+						->where('chgfil.appform_id', '=', $request->appid)
+						->orderBy('chg_app.oop_id','asc')
+						->get();
+				for ($i=0; $i < count($data1); $i++) { 
+								$data1[$i]->formattedAmt = 'PHP '.number_format($data1[$i]->amount,2);
+							}
+				$data2 = DB::table('chgfil')->where('appform_id', '=', $request->appid)->sum('amount');
+				$data3 = 'PHP '.number_format($data2,2);
+				return response()->json(['payments'=>$data1, 'sum' =>$data2, 'formmatedSum' => $data3]);
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
 			}
 		}
 		// -------------------- SELECT --------------------
@@ -857,7 +885,7 @@
 		public function saveHfst(Request $request){ // Update Health Facility/Service Type
 			try {
 					$data = $this->InsertActLog($request->mod_id,"upd");
-					$updateData = array('hfser_desc'=>$request->name);
+					$updateData = array('hfser_desc'=>$request->name, 'seq_num' => $request->seq);
 					$test = DB::table('hfaci_serv_type')
 						->where('hfser_id', $request->id)
 						->update($updateData);
@@ -896,32 +924,53 @@
    			} 
 		}
 		public function reject_app(Request $request){
-			$Cur_useData = $this->getCurrentUserAllData();
-			// return $Cur_useData;
-			$updateData = array(
-								'isrecommended'=>0,
-								'recommendedby' => $Cur_useData['cur_user'],
-								'recommendedtime' => $Cur_useData['time'],
-								'recommendeddate' =>  $Cur_useData['date'],
-								'recommendedippaddr' =>$Cur_useData['ip'],
-							);
-			DB::table('appform')->where('appid', '=', $request->apid)->update($updateData);
-			return 'DONE';
+			try {
+					$Cur_useData = $this->getCurrentUserAllData();
+					// return $Cur_useData;
+					$updateData = array(
+										'isrecommended'=>0,
+										'recommendedby' => $Cur_useData['cur_user'],
+										'recommendedtime' => $Cur_useData['time'],
+										'recommendeddate' =>  $Cur_useData['date'],
+										'recommendedippaddr' =>$Cur_useData['ip'],
+										'status' => 'RE',
+									);
+					$test = DB::table('appform')->where('appid', '=', $request->apid)->update($updateData);
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been modified in appform table.');
+						return 'ERROR';
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function accept_app(Request $request){
-			$Cur_useData = $this->getCurrentUserAllData();
-			$updateData = array(
-								'isrecommended'=>1,
-								'recommendedby' => $Cur_useData['cur_user'],
-								'recommendedtime' => $Cur_useData['time'],
-								'recommendeddate' =>  $Cur_useData['date'],
-								'recommendedippaddr' =>$Cur_useData['ip'],
-								'proposedInspectiontime' => $request->proptime,
-								'proposedInspectiondate' =>  $request->propdate,
-							);
-			DB::table('appform')->where('appid', '=', $request->apid)->update($updateData);
-			
-			return 'DONE';
+			try {
+					$Cur_useData = $this->getCurrentUserAllData();
+					$updateData = array(
+										'isrecommended'=>1,
+										'recommendedby' => $Cur_useData['cur_user'],
+										'recommendedtime' => $Cur_useData['time'],
+										'recommendeddate' =>  $Cur_useData['date'],
+										'recommendedippaddr' =>$Cur_useData['ip'],
+										'proposedInspectiontime' => $request->proptime,
+										'proposedInspectiondate' =>  $request->propdate,
+										'status'=> 'FI',
+									);
+					$test = DB::table('appform')->where('appid', '=', $request->apid)->update($updateData);
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been modified in appform table.');
+						return 'ERROR';
+					}					
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';	
+			}
 		}
 		public function saveOop(Request $request) {
 			$updateData = array('oop_id'=>$request->OopID);
@@ -953,18 +1002,18 @@
 
 			try {
 				$oldSeq = $request->seq_num;
-				$data = DB::table('chg_oop')->where([['oop_id','=', $request->oop_id],['chgopp_seq', '=', $newSeq]])->first();
-
+				$data = DB::table('chg_app')->where([['oop_id','=', $request->oop_id],['chgopp_seq', '=', $newSeq]])->first();
+				// return dd($data);
 				$update = array('chgopp_seq'=>$oldSeq);
-				$test1 = DB::table('chg_oop')->where('chgopp_id','=',$data->chgopp_id)->update($update);
+				$test1 = DB::table('chg_app')->where('chgapp_id','=',$data->chgapp_id)->update($update);
 
 				$update2 = array('chgopp_seq'=>$newSeq);
-				$test2 = DB::table('chg_oop')->where('chgopp_id','=',$request->chgopp_id)->update($update2);
+				$test2 = DB::table('chg_app')->where('chgapp_id','=',$request->chgopp_id)->update($update2);
 
 				if ($test1 && $test2) {
 					return 'DONE';
 				} else {
-					$data = $this->SystemLogs('No data has been modfied in chg_oop table.');
+					$data = $this->SystemLogs('No data has been modfied in chg_app table.');
 					return 'ERROR';
 				}
 			} catch (Exception $e) {
@@ -1075,7 +1124,7 @@
 		}
 		public function saveCategory(Request $request){
 			try {
-					$data = array('cat_desc'=>$request->name);
+					$data = array('cat_desc'=>$request->name,'cat_type'=>$request->type);
 					$test = DB::table('category')->where('cat_id', '=', $request->id)->update($data);
 					if ($test) {
 						return 'DONE';
@@ -1090,7 +1139,7 @@
 		}
 		public function saveTStatus(Request $request){
 			try {
-				    $data = array('trns_desc'=>$request->name);
+				    $data = array('trns_desc'=>$request->name,'allowedpayment'=>$request->allow, 'canapply' => $request->apply);
 				    $test = DB::table('trans_status')->where('trns_id', '=', $request->id)->update($data);
 				    if ($test) {
 				    	return 'DONE';
@@ -1102,6 +1151,44 @@
 				$data = $this->SystemLogs($e->getMessage());
 				return 'ERROR';
 			}
+		}
+		public function saveMoP(Request $request){
+			try {
+					$data = array('chg_desc'=>$request->name);
+					$test = DB::table('charges')->where('chg_code', '=', $request->id)->update($data);
+					if ($test) {
+				    	return 'DONE';
+				    } else {
+				    	$data = $this->SystemLogs('No data has been updated in charges table.');
+				    	return 'ERROR';
+				    }
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function acceptPayEval(Request $request){
+				try {
+						$Cur_useData = $this->getCurrentUserAllData();
+						$data = array(
+								   'isPayEval' => 1,
+								   'payEvaldate' => $Cur_useData['date'],
+								   'payEvaltime' => $Cur_useData['time'],
+								   'payEvalip' => $Cur_useData['ip'],
+								   'payEvalby' => $Cur_useData['cur_user'],
+								   'status' => 'FA',
+								);
+						$test = DB::table('appform')->where('appid', '=', $request->id)->update($data);
+						if ($test) {
+							return 'DONE';
+						} else {
+							$data = $this->SystemLogs('No data has been updated in appform table.');
+					    	return 'ERROR';
+						}
+				} catch (Exception $e) {
+					$data = $this->SystemLogs($e->getMessage());
+					return 'ERROR';
+				}
 		}
 		// -------------------- EDIT -------------------- 
 		// -------------------- DELETE --------------------
@@ -1330,17 +1417,19 @@
 		}
 		public function delChrgOop(Request $request){
 			try {
-				$data = DB::table('chg_oop')
-								->join('chg_app', 'chg_oop.chgapp_id', '=', 'chg_app.chgapp_id')
-								->where('chg_oop.chgopp_id', '=', $request->id)->first();
-				$test1 = DB::table('chg_oop')->where('chgopp_id','=', $request->id)->delete();
-				$test2 = DB::table('chg_app')->where('chgapp_id','=', $data->chgapp_id)->delete();
-				$data2 = DB::table('chg_oop')->where('oop_id', '=', $request->oop_id)->orderBy('chgopp_seq', 'asc')->get();
+				$data = DB::table('chg_app')
+								// ->join('chg_app', 'chg_oop.chgapp_id', '=', 'chg_app.chgapp_id')
+								->where('chgapp_id', '=', $request->id)->first();
+				// return dd($data->chgapp_id);
+				$test1 = DB::table('chg_app')->where('chgapp_id','=', $request->id)->delete();
+				// $test2 = DB::table('chg_app')->where('chgapp_id','=', $data->chgapp_id)->delete();
+				$data2 = DB::table('chg_app')->where('oop_id', '=', $request->oop_id)->orderBy('chgopp_seq', 'asc')->get();
+				// return dd($data2);
 				// $total = count($data2);
 				for ($i=0,$s=1; $i < count($data2); $i++,$s++) { 
-					DB::table('chg_oop')->where('chgopp_id', '=', $data2[$i]->chgopp_id)->update(['chgopp_seq'=>$s]);
+					DB::table('chg_app')->where('chgapp_id', '=', $data2[$i]->chgapp_id)->update(['chgopp_seq'=>$s]);
 				}
-				if ($test1 && $test2) {
+				if ($test1) {
 					return 'DONE';
 				} else {
 					$data = $this->SystemLogs('No data has been deleted in chg_oop and chg_app tables.');
@@ -1357,7 +1446,7 @@
 				if ($test) {
 					return 'DONE';
 				} else {
-					$data = $this->SystemLogs('No data has been deleted in holidays tables.');
+					$data = $this->SystemLogs('No data has been deleted in holidays table.');
 					return 'ERROR';
 				}
 			} catch (Exception $e) {
@@ -1371,7 +1460,7 @@
 				if ($test) {
 					return 'DONE';
 				} else {
-					$data = $this->SystemLogs('No data has been deleted in category tables.');
+					$data = $this->SystemLogs('No data has been deleted in category table.');
 					return 'ERROR';
 				}
 			} catch (Exception $e) {
@@ -1385,9 +1474,40 @@
 				if ($test) {
 					return 'DONE';
 				} else {
-					$data = $this->SystemLogs('No data has been deleted in trans_status tables.');
+					$data = $this->SystemLogs('No data has been deleted in trans_status table.');
 					return 'ERROR';
 				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function delMoP(Request $request){
+			try {
+				$test = DB::table('charges')->where('chg_code', '=', $request->id)->delete();
+				if ($test) {
+					return 'DONE';
+				} else {
+					$data = $this->SystemLogs('No data has been deleted in charges table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function del_payment(Request $request){
+			try {
+					$getData = DB::table('chgfil')->where('id', '=', $request->id)->first();
+					$test = DB::table('chgfil')->where('id', '=', $request->id)->delete();
+					$updateData = array('chg_num'=>$getData->chg_num);
+					$test2 = DB::table('chg_app')->where('chgapp_id', '=', $getData->chgapp_id)->update($updateData);
+					if ($test && $test2) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been deleted in chgfil and chg_app tables.');
+						return 'ERROR';
+					}
 			} catch (Exception $e) {
 				$data = $this->SystemLogs($e->getMessage());
 				return 'ERROR';

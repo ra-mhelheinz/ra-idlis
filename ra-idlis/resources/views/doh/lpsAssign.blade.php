@@ -81,13 +81,15 @@
                       <td style="text-align:center">{{$data->hfser_id}}R{{$data->assignedRgn}}-{{$data->appid}}</td>
                       <td style="text-align:center"><strong>{{$data->facilityname}}</strong></td>
                       <td style="text-align:center">{{$data->rgn_desc}} - <strong>{{$data->formattedLOName}}</strong></td>
-                      <td style="color:{{$color}};text-align:center;font-weight:bold;">{{$status}}</td>
+                      <td style="text-align:center;font-weight:bold;">{{$data->trns_desc}}</td>
                       <td style="text-align:center">
+                        @if($employeeData->grpid == 'NA'))
                         <button style="background-color: #ffbc00f7" title="Change Assigned Region" type="button" class="btn-defaults" data-toggle="modal" data-target="#GoddessModal" onclick="showChangeRgnLO({{$data->appid}}, '{{$employeeGRP}}', {{$employeeREGION}});"><i class="fa fa-fw fa-edit"></i></button>&nbsp;
+                        @endif
                           @if ($employeeData->grpid == 'RA')
                             <button style="background-color: #00ff1ff7" title="Assign LO" data-target="#GoderModal" data-toggle="modal" type="button" class="btn-defaults" onclick="PutAppID({{$data->appid}}, '{{$data->assignedRgn}}', '{{$employeeGRP}}')"><i class="fa fa-fw fa-plus" ></i></button>&nbsp;
                           @endif
-                        <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}', '{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>&nbsp;
+                        <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}', '{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', '{{$data->appid_payment}}', '{{$data->trns_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>&nbsp;
                       <button style="background-color: #00f9f9" title="View Change Region and LO History" type="button" class="btn-defaults" data-toggle="modal" data-target="#ShowHistory" onclick="ShowHistoryDetailsNow('{{$data->facilityname}}', {{$data->appid}})"><i class="fa fa-fw fa-history"></i></button>&nbsp;
                       </td>
                     </tr>
@@ -332,38 +334,43 @@
                                   // '<td style="text-align:center">'+data[i].rgn_desc+'</td>'+
                                   '<td style="text-align:center">'+data[i].rgn_desc+' - <strong>'+data[i].formattedLOName+'</strong></td>'+
                                   // '<td>'+data[i].aptdesc+'</td>' +
-                                  '<td style="text-align:center">'+status+'</td>'+
+                                  '<td style="text-align:center;font-weight:bold">'+data[i].trns_desc+'</td>'+
                                   '<td style="text-align:center">'+
                                         '<button style="background-color: #ffbc00f7" title="Change Assigned Region" type="button" class="btn-defaults" data-toggle="modal" data-target="#GoddessModal" onclick="showChangeRgnLO('+data[i].appid+', \''+grpID+'\', '+rgnID+');"><i class="fa fa-fw fa-edit"></i></button>&nbsp;' +
                                         @if ($employeeData->grpid == 'RA')
                                           '<button style="background-color: #00ff1ff7" title="Assign LO" data-target="#GoderModal" data-toggle="modal" type="button" class="btn-defaults" onclick="PutAppID('+data[i].appid+', \''+data[i].assignedRgn+'\', \''+grpID+'\')"><i class="fa fa-fw fa-plus" ></i></button>&nbsp;' + 
                                         @endif
-                                        '<button type="button" title="View detailed information for '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>&nbsp;'+
+                                        '<button type="button" title="View detailed information for '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+', \''+data[i].trns_desc+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>&nbsp;'+
                                         '<button style="background-color: #00f9f9" title="View Change Region and LO History" type="button" class="btn-defaults" data-toggle="modal" data-target="#ShowHistory" onclick="ShowHistoryDetailsNow(\''+data[i].facilityname+'\', '+data[i].appid+')"><i class="fa fa-fw fa-history"></i></button>&nbsp;' +
                                   '</td>'+
                                 '</tr>'
                             );
                       }
-                  } else{
+                  } else if (data== 'NONE'){
                     alert('Currently No Applications in this type.');
+                  } else if (data == 'ERROR'){
+                    $('#ERROR_MSG2').show(100);
                   }
-              }
+              }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                  console.log(errorThrown);
+                  $('#ERROR_MSG2').show(100);
+              },
           });
 
         }        
     }
 
-    function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment){
+    function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment, transStatus){
         var status = '';
         var paid = appid_payment;
-        if (isrecommended == null) {
-            status = "For Evaluation";
-          }else if (isrecommended == 1) {
-            status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
-          }
-        if (paid == null) {
-             status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
-          } 
+        // if (isrecommended == null) {
+        //     status = "For Evaluation";
+        //   }else if (isrecommended == 1) {
+        //     status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
+        //   }
+        // if (paid == null) {
+        //      status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
+        //   } 
         $('#ViewBody').empty();
         $('#ViewBody').append(
             '<div class="row">'+
@@ -400,7 +407,7 @@
             '<div class="row">'+
                 '<div class="col-sm-4">Status:' +
                 '</div>' +
-                '<div class="col-sm-8">' +status +
+                '<div class="col-sm-8">' +transStatus +
                 '</div>' +
             '</div>'
           );

@@ -1,9 +1,9 @@
   @extends('main')
 @section('content')
 @include('client.nav')
-@include('client.breadcrumb')
+<div class="container">@include('client.breadcrumb')</div>
 <script type="text/javascript">
-  document.getElementById('second').style = "color: blue;";
+      document.getElementById('second').style = "margin:0;border-bottom: 3px solid #f2e20c;";
 </script>
 <style type="text/css">
   .paymentWrap {
@@ -60,10 +60,15 @@
 
 
 .paymentWrap .paymentBtnGroup .paymentMethod .method:hover {
+
+
   border-color: #4cd264;
   outline: none !important;
 }
 </style>
+@php
+  $payment = DB::select("SELECT chgapp_id, chg_desc FROM chg_app ca INNER JOIN charges ch ON ch.chg_code = ca.chg_code WHERE ch.cat_id = 'PMT'");
+@endphp
 <div class="container">
   <div class="row">
     <div class="col-sm-12" style="margin-top: 5%; margin-bottom: 5%;">
@@ -107,17 +112,23 @@
                 </div>        
             </div>
             <div class="row" style="border: 1px solid rgba(0,0,0,.125);padding: 5%;border-radius: 5px;">
-              <div class="col-sm-6">
-                <h3 class="text-center">Payment Summary</h3>
+              <div class="col-sm-8">
+                <div class="card">
+                <div class="card-header">
+                  <h3 class="text-center">Payment Summary</h3>
+                </div>
                 @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
                   <table style="width: 100%;" class="table">
                     <tr>
                       <td style="width: 50%;">Description</td>
                       <td style="width: 50%;" class="text-center">Amount</td>
                     </tr>
-                    <?php $desc = $_POST['desc']; $amount = $_POST['amount']; $total = 0; ?>
+                    @php
+                      $appform_id = $_POST['appform_id']; $desc = $_POST['desc']; $amount = $_POST['amount']; $total = 0; $hfser_id = $_POST['hfser_id']; $chgapp_id = $_POST['chgapp_id']; $hfser_desc = []; if(isset($hfser_id)) { $hfser_desc = DB::select("SELECT hfser_desc FROM `hfaci_serv_type` WHERE hfser_id = '$hfser_id'"); } else { $hfser_id = [['hfser_desc'=>"No data"]]; }
+                      Session::put('desc', $desc); Session::put('amount', $amount); Session::put('chgapp_id', $chgapp_id); Session::put('hfser_desc', $hfser_desc); Session::put('hfser_id', $hfser_id); Session::put('appform_id', $appform_id); 
+                    @endphp
                     @for($i = 0; $i < count($amount); $i++)
-                      <?php $total = $total + $amount[$i]; ?>
+                      <?php $total = $total + intval($amount[$i]); ?>
                       <tr>
                         <td>{{$desc[$i]}}</td>
                         <td class="text-center">&#8369; {{$amount[$i]}}</td>
@@ -129,10 +140,11 @@
                     </tr>
                   </table>
                 @else
-                  <label>No transactions made.</label>
+                  <label>No transactions made.</label> PiZZA
                 @endif
               </div>
-              <div class="col-sm-6 text-center" id="asdf1" class="">
+              </div>
+              <div class="col-sm-4 text-center" id="asdf1" class="">
                 <div>
                 @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
                   <label>Pay using your Paypal Account</label>
@@ -145,37 +157,34 @@
                       @php
                       $x = 1; $y = 1;
                       @endphp
-                      @foreach($_POST['desc'] as $desc)
-                        <input type="hidden" name="item_name_{{$x}}" value="{{$desc}}">
+                      @for($j = 0; $j < count($amount); $j++)
+                        <input type="hidden" name="item_name_{{$x}}" value="{{$desc[$j]}}">
                         <input type="hidden" name="quantity_{{$x}}" value="1">
                         <input type="hidden" name="shipping_{{$x}}" value="0.00">
-                        <?php $x++; ?>
-                      @endforeach
-                      @foreach($_POST['amount'] as $amount)
-                        <input type="hidden" name="amount_{{$y}}" value="{{$amount}}">
-                        <?php $y++; ?>
-                      @endforeach
-                     <input type="hidden" name="return" id="return">
-                     <input type="hidden" name="cancel_return" id="cancel_return" value="{{asset('client/orderofpaymentc')}}">
+                        <input type="hidden" name="amount_{{$y}}" value="{{$amount[$j]}}">
+                        <?php $y++; $x++; ?>
+                      @endfor
+                     {{-- <input type="hidden" name="return" id="return"> --}}
+                     <input type="hidden" name="cancel_return" id="cancel_return" value="{{asset('client/payment')}}/{{csrf_token()}}/292">
 
-                     <input type="submit" class="btn btn-info" value="Continue with Paypal" onclick="get_radio()">
+                     <input type="submit" class="btn btn-info" value="Continue with Paypal">
                  </form>
                 @else
 
                 @endif
                </div>
               </div>
-              <div class="col-sm-6 text-center" id="asdf2" hidden>
+              <div class="col-sm-4 text-center" id="asdf2" hidden>
                 <label>Pay using your Dragonpay Account</label><br>
                 <a href="https://test.dragonpay.ph/GenPay.aspx?merchantid=SAMPLEGEN"><button class="btn btn-info">Continue with Dragonpay</button></a>
               </div>
-              <div class="col-sm-6 text-center" id="asdf3" hidden>
+              <div class="col-sm-4 text-center" id="asdf3" hidden>
                
               </div>
-              <div class="col-sm-6 text-center" id="asdf4" hidden>
+              <div class="col-sm-4 text-center" id="asdf4" hidden>
                 
               </div>
-              <div class="col-sm-6 text-center" id="asdf5" hidden>
+              <div class="col-sm-4 text-center" id="asdf5" hidden>
                 
               </div>
             </div>

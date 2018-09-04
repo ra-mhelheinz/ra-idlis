@@ -107,11 +107,11 @@
                             <ul id="PersoMenu" class="list-unstyled collapse">
                                 <li class="MA12_allow"><a href="{{ asset('/employee/dashboard/mf/department') }}">&nbsp;&nbsp;&nbsp;&nbsp;Department</a></li>
                                 <li class="MA13_allow"><a href="{{ asset('/employee/dashboard/mf/section') }}">&nbsp;&nbsp;&nbsp;&nbsp;Section</a></li>
-                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/personnel') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Personnel</a></li>
-                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Education/Trainings</a></li>
+                                <li class="" style="display: none"><a href="{{-- {{ asset('/employee/dashboard/mf/personnel') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Personnel</a></li>
+                                <li class="" style="display: none"><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Education/Trainings</a></li>
                                 <li class="MA14_allow"><a href="{{ asset('/employee/dashboard/mf/work') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work</a></li>
                                 <li class="MA15_allow"><a href="{{ asset('/employee/dashboard/mf/work_status') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work Status</a></li>
-                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/eligibility') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Eligibility</a></li>
+                                <li class="" style="display:none"><a href="{{-- {{ asset('/employee/dashboard/mf/eligibility') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Eligibility</a></li>
                                 <li class="MA09_allow"><a href="{{ asset('/employee/dashboard/mf/litype') }}">&nbsp;&nbsp;&nbsp;&nbsp;License Type</a></li>
                                 <li class="MA10_allow"><a href="{{ asset('/employee/dashboard/mf/training') }}">&nbsp;&nbsp;&nbsp;&nbsp;Training Type</a></li>
                             </ul>
@@ -140,7 +140,7 @@
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                             </ul>
                         </li>
-                        {{-- <li><a href="{{ asset('/employee/dashboard/mf/settings')}}">&nbsp;&nbsp;<i class="fa fa-gears"></i>&nbsp;System Settings</a></li> --}}
+                        <li><a href="{{ asset('/employee/dashboard/mf/settings')}}">&nbsp;&nbsp;<i class="fa fa-gears"></i>&nbsp;System Settings</a></li>
                         @endif
                     </ul>
                 </li>
@@ -153,8 +153,11 @@
                         @endif
                         <li class=""><a href="{{asset('/employee/dashboard/lps/evaluate')}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
                         <li class=""><a href="{{asset('/employee/dashboard/lps/assess')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
-                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
-                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/cashier')}}">&nbsp;&nbsp;&nbsp;&nbsp;Cashiering</a></li>
+                        @if ($employeeData->grpid == 'NA' || $employeeData->grpid == "RA")
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/approval')}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
+                        @endif
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/failed')}}">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>
                     </ul>
                 </li>
                 <li><a href="#" ><i class="fa fa-chart-bar"></i> Report</a></li>                
@@ -167,9 +170,13 @@
                             </li>
                             @endif
                             <li>
+                                @if($employeeData->grpid == 'NA' || $employeeData->grpid == 'RA')
                                 <a href="{{ route('mngSystemUsers') }}"><i class="fa fa-user-circle"></i> System Users</a>
+                                @endif
                                 <a href="{{ asset('employee/dashboard/manage/applicants') }}"><i class="fa fa-users"></i> Applicant Accounts</a>
+                                @if ($employeeData->grpid == 'NA')
                                 <a href="{{ asset('employee/dashboard/manage/system_logs') }}"><i class="fa fa-history"></i> System Logs</a>
+                                @endif
                             </li>
                             {{-- <li><a href="#perso" data-toggle="collapse"><i class="fa fa-fw fa-users"></i> Users
                                 </a>

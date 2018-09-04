@@ -207,9 +207,14 @@
     </div>
     <script type="text/javascript">
       $(document).ready(function() {
-         $('#example').DataTable({"order": [[ 2, "asc" ]]});
+
+         $('#example').DataTable({
+                  "order": [[ 2, "asc" ]],
+                  dom: 'Bfrtip',
+                  buttons: ['csvHtml5', 'excelHtml5', 'pdfHtml5', 'print'],
+                });
          $('#CalendarMode').fullCalendar({
-              themeSystem: 'bootstrap4',
+            themeSystem: 'bootstrap4',
             aspectRatio: 1.5,
             eventSources: [
                 // your event source
@@ -238,7 +243,6 @@
                   color: 'green',   // a non-ajax option
                   textColor: 'white' // a non-ajax option
                 }
-
               ],
               eventRender: function(eventObj, $el) {
                   $el.popover({
@@ -251,8 +255,6 @@
                 },
                 eventColor: '#378006',
          });
-
-
       } );
         function showData(id,desc){
           $('#EditBody').empty();

@@ -25,100 +25,61 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Assessment 
+           View Assessment 
            <button class="btn btn-primary" onclick="window.history.back();">Back</button>
         </div>
         <div class="card-body">
           <div class="container"> 
-            <div class="row">
-              <div class="col-sm-8"> 
-                @if(isset($AppData))
-                    <h2>{{$AppData->facilityname}}</h2>
-                    <h5>{{strtoupper($AppData->streetname)}}, {{strtoupper($AppData->brgyname)}}, {{$AppData->cmname}}, {{$AppData->provname}} {{$AppData->zipcode}}</h5>
-                    {{-- <h6>Status:@if ($AppData->isInspected === null) <span style="color:blue">For Inspection</span> @elseif($AppData->isInspected == 1)  <span style="color:green">Accepted Inspection</span> @else <span style="color:red">Rejected Inspection</span> @endif</h6> --}}
-                    {{-- <select class="form-control">
-                    	
-                    </select> --}}
-                @else
-                @endif
-              </div>
-              <div class="col-sm-4">
-                Filter:
-                <select class="form-control" id="Filterer" onchange="filterMode()">
-                  <option value="0">Show all</option>
-                  <option value="1">Complied</option>
-                  <option value="2">Not Complied</option>
-                </select>
-              </div>
-            </div>  
+            @if(isset($AppData))
+                <h2>{{$AppData->facilityname}}</h2>
+                <h5>{{strtoupper($AppData->streetname)}}, {{strtoupper($AppData->brgyname)}}, {{$AppData->cmname}}, {{$AppData->provname}} {{$AppData->zipcode}}</h5>
+                <h6>Status:@if ($AppData->isInspected === null) <span style="color:blue">For Inspection</span> @elseif($AppData->isInspected == 1)  <span style="color:green">Accepted Inspection</span> @else <span style="color:red">Rejected Inspection</span> @endif</h6>
+            @else
+            @endif
           </div>
           <hr>
           <div class="container">
-            <div class="row">
+          	<div class="row">
                 <div class="col-sm-5 text-center"  style="font-weight: bolder">ASSESSMENT</div>
-                <div class="col-sm-2 text-center"  style="font-weight: bolder">USER</div>
-                {{-- <div class="col-sm-2 text-center"  style="font-weight: bolder">USER</div> --}}
-                <div class="col-sm-2">&nbsp;</div>
+                <div class="col-sm-4">&nbsp;</div>
                 <div class="col-sm-3 text-center" style="font-weight: bolder">REMARKS</div> 
             </div>
           </div>
           <hr>
-          <div class="container">
-            
-
-      <form id="TESTING" data-parsley-validate>
-        <input type="text" id="AppID" value="@isset($appId){{$appId}}@endisset" hidden disabled>        
-                @if (isset($Parts) && isset($Assments) && isset($BigData))
+    <div class="container">
+      <form data-parsley-validate>
+        <input type="text" id="AppID" value="@isset($appId){{$appId}}@endisset" hidden disabled>				
+               	@if (isset($Parts) && isset($Assments))
                 {{-- $i = 0; $i < 10; $i++ --}}
-                    @for ($i = 0; $i < count($Parts); $i++)
-                    <div class="container text-center"><h3>{{$Parts[$i]->partdesc}}</h3></div>
-                    <hr>
-                      @for ($j = 0; $j < count($Assments); $j++)
-                        @if ($Parts[$i]->partid == $Assments[$j]->partid)
-                          @if($Assments[$j]->asmt_id == $BigData[$j]->asmt_id)
-              <span class="@if($BigData[$j]->complied == 1) OKCls @else NotOkCls @endif">  
-                        <div class="row {{-- @if($BigData[$j]->complied == 1) OKCls @else NotOkCls @endif --}}" id="app_{{$j}}_div" selectedAppAssId="{{$BigData[$j]->app_assess_id}}" selectedId="{{$Assments[$j]->asmt_id}}">
-                            <div class="col-sm-5 text-justify" ><h5>&nbsp;&nbsp;&nbsp;&nbsp;{{$Assments[$j]->asmt_name}}</h5></div> {{-- Assessment --}}
-                            <div class="col-sm-2">
-                              <center>
-                                @isset ($BigData[$j]->complied)
-                                  @if ($BigData[$j]->complied == 1)
-                                      <button type="button" class="btn btn-outline-success active" disabled><i class="fa fa-check" aria-hidden="true"></i></button>
-                                    @else
-                                    <button type="button" class="btn btn-outline-danger active" disabled><i class="fa fa-times" aria-hidden="true"></i></button>
-                                  @endif                                    
-                                @endisset
-                              </center>
-                            </div>
-                            {{-- <div class="col-sm-1">
-                              <a @isset($BigData[$j]->fileName)href="{{asset('/file/download')}}/{{$BigData[$j]->fileName}}"@else href="#" disabled @endisset>
-                                <button type="button" class="btn btn-outline-primary" @isset($BigData[$j]->fileName) @else disabled @endisset>
-                                <i class="fa fa-download" aria-hidden="true"></i>
-                              </button>
-                              </a>
-                            </div> --}}
-                            <div class="col-sm-2">
-                               <center>
-                                <button type="button" id="app_{{$j}}_yes" class="btn btn-outline-success addBTN" onclick="btnClicked(1, {{$j}})"><i class="fa fa-check" aria-hidden="true"></i></button>
-                                <button type="button" id="app_{{$j}}_no" class="btn btn-outline-danger" onclick="btnClicked(0, {{$j}})"><i class="fa fa-times" aria-hidden="true"></i></button>
+               	    @for ($i = 0; $i < count($Parts); $i++)
+               	    <div class="container text-center"><h3>{{$Parts[$i]->partdesc}}</h3></div>
+               	    <hr>
+               	    	@for ($j = 0; $j < count($Assments); $j++)
+               	    		@if ($Parts[$i]->partid == $Assments[$j]->partid)
+               	    			<div class="row" id="app_{{$j}}_div" selectedId="{{$Assments[$j]->asmt_id}}">
+               	    				<div class="col-sm-5 text-justify" ><h5>&nbsp;&nbsp;&nbsp;&nbsp;{{$Assments[$j]->asmt_name}}</h5></div>
+               	    				<div class="col-sm-4">
+               	    					 <center>
+                                @if($Assments[$j]->isapproved == 1)
+               	    					 	<button type="button" id="app_{{$j}}_yes" class="btn btn-outline-success active" disabled><i class="fa fa-check" aria-hidden="true"></i></button>
+               	    					 	@else
+                                <button type="button" id="app_{{$j}}_no" class="btn btn-outline-danger active" disabled><i class="fa fa-times" aria-hidden="true"></i></button>
+               	    					   @endif
                                </center>
-                            </div>
-                            <div class="col-sm-3">
-                              <center>
-                                <textarea id="app_{{$j}}_rmk" rows="3" class="form-control" placeholder="Remarks"></textarea>
-                              </center>
-                            </div>
-                          </div>
-                          <br>
-                        </span>
-                          @endif
-                        @endif
-                      @endfor
-                    @endfor
-                @endif
-                <hr>
-                <center><button type="button" style="background-color:#0ed639" onclick="SubmitNow()" class="btn btn-primarys">Submit</button></center>
-      </form>
+               	    				</div>
+               	    				<div class="col-sm-3">
+               	    					<center>
+               	    						<textarea id="app_{{$j}}_rmk" rows="4" class="form-control" placeholder="" disabled>{{$Assments[$j]->remarks}}</textarea>
+               	    					</center>
+               	    				</div>
+               	    			</div>
+               	    			<br>
+               	    		@endif
+               	    	@endfor
+               	    @endfor
+               	@endif
+               	{{-- <center><button type="button" style="background-color:#0ed639" onclick="SubmitNow()" class="btn btn-primarys">Submit</button></center> --}}
+			</form>
           </div>
           {{-- <hr>
           <div class="container">
@@ -141,7 +102,7 @@
         </div>
     </div>
         </div>
-         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+         {{-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 0px;border: none;">
               <div class="modal-body text-justify" style=" background-color: #272b30;
@@ -155,9 +116,9 @@
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                       <select id="partid" data-parsley-required-message="*<strong>Part</strong> required" class="form-control" required>  
                           <option value="">Select Part ...</option>
-                          {{-- @foreach ($parts as $part)
+                          @foreach ($parts as $part)
                             <option value="{{$part->partid}}">{{$part->partid}}</option>
-                          @endforeach --}}
+                          @endforeach
                       </select>
                     </div>
                     <div class="col-sm-4">ID:</div>
@@ -176,9 +137,9 @@
               </div>
             </div>
           </div>
+    </div> --}}
     </div>
-    </div>
-    <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    {{-- <div class="modal fade" id="GodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
@@ -201,8 +162,8 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      </div> --}}
+      {{-- <div class="modal fade" id="DelGodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
@@ -224,10 +185,10 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div> --}} 
     </div>
-    <script type="text/javascript">
-      var CheckedOrNot = [], Remarks = [], GetAsMentId=[], SelectedId = [];
+    {{-- <script type="text/javascript">
+      var CheckedOrNot = [], Remarks = [], GetAsMentId=[];
       var numOfAssMents = {{$numOfAssMents}}, test =0, hasNotApproved = 0;
       $(document).ready(function(){
           for (var i = 0; i < numOfAssMents; i++) {
@@ -237,38 +198,34 @@
         }
       });
       // console.log(CheckedOrNot);
-    function btnClicked(YesNo, AssMentID){
-      if(YesNo == 1){
-        var name1 = '#app_'+AssMentID+'_yes';
-        var name2 = '#app_'+AssMentID+'_no';
+		function btnClicked(YesNo, AssMentID){
+			if(YesNo == 1){
+				var name1 = '#app_'+AssMentID+'_yes';
+				var name2 = '#app_'+AssMentID+'_no';
         var name3 = '#app_'+AssMentID+'_rmk';
         $(name3).removeAttr('required');
         $(name3).removeAttr('data-parsley-required-message');
-      } else {
-        var name1 = '#app_'+AssMentID+'_no';
-        var name2 = '#app_'+AssMentID+'_yes';
+			} else {
+				var name1 = '#app_'+AssMentID+'_no';
+				var name2 = '#app_'+AssMentID+'_yes';
         var name3 = '#app_'+AssMentID+'_rmk';
         $(name3).removeAttr('required');
         $(name3).attr('required', '');
         $(name3).removeAttr('data-parsley-required-message');
         $(name3).attr('data-parsley-required-message', "<strong>Remark</strong> required");
-      }
+			}
       CheckedOrNot[AssMentID] = YesNo;
       // console.log(CheckedOrNot);
-      $(name1).addClass('active')
-      $(name2).removeClass('active');
+			$(name1).addClass('active')
+			$(name2).removeClass('active');
 
-    }
+		}
     function SubmitNow(){
       // console.log(CheckedOrNot);
       // console.log(Remarks);
       
       for (var i = 0; i < numOfAssMents; i++) {
         Remarks[i] = $('#app_'+i+'_rmk').val();
-      }
-
-      for (var i = 0; i < numOfAssMents; i++) {
-        SelectedId[i] = $('#app_'+i+'_div').attr('selectedappassid');
       }
 
       for (var i = 0; i < numOfAssMents; i++) {
@@ -303,13 +260,11 @@
                 num : numOfAssMents,
                 rmks : Remarks,
                 AsId : GetAsMentId,
-                SeldID : SelectedId,
                 id : $('#AppID').val(),
                 hasNotApproved : hasNotApproved,
               },
               success : function (data){
                 if(data == 'DONE'){
-                	var id = $('#AppID').val();
                     alert('Successfully Inspected Application');
                     location.href = '{{ asset('/employee/dashboard/lps/assess') }}';
                 } else if(data == 'ERROR'){
@@ -323,26 +278,5 @@
             });
         }       
       }
-      function filterMode(){
-        //  OKCls  NotOkCls
-          var test = $('#Filterer').val();
-          // console.log(test);
-          if (test == 0) {
-              $('.OKCls').show();
-              $('.NotOkCls').show();
-              $('.OKCls .NotOkCls').css({'margin':'0 0 0 0'});
-              $('.OKCls .NotOkCls').css({'margin':'0 15 0 15'});
-          } else if (test == 1) {
-              $('.OKCls').show();
-              $('.NotOkCls').hide();
-              $('.OKCls .NotOkCls').css({'margin':'0 0 0 0'});
-              $('.OKCls').css({'margin':'0 15 0 15'});
-          } else {
-            $('.OKCls').hide();
-            $('.NotOkCls').show();
-            $('.OKCls .NotOkCls').css({'margin':'0 0 0 0'});
-            $('.NotOkCls').css({'margin':'0 15 0 15'});
-          }
-      }
-    </script>
+    </script> --}}
 @endsection

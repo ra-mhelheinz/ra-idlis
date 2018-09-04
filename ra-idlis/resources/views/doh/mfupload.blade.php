@@ -200,7 +200,10 @@
     </div>
     <script type="text/javascript">
       $(document).ready(function() {
-          $('#example').DataTable();
+          $('#example').DataTable({
+              dom: 'Bfrtip',
+              buttons: ['csvHtml5', 'excelHtml5', 'pdfHtml5', 'print'],
+          });
       } );
         function showData(id,desc,IsRequired){
           var checked = (IsRequired == 1) ? 'checked' : '';

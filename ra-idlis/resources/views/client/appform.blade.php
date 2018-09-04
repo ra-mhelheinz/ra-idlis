@@ -11,12 +11,15 @@
   </script>
 @endif
 
-   @if(session('curr_tbl') != null)
-     @php
-   	   $curr_tbl = session('curr_tbl');
-   	 @endphp
-   @endif
-
+@if(session('curr_tbl') != null)
+ 	@php
+	   $curr_tbl = session('curr_tbl');
+	@endphp
+@endif
+@php
+	$sql = "SELECT seq_num, GROUP_CONCAT(hs.hfser_desc) AS h_desc, GROUP_CONCAT(hs.hfser_id) AS h_id, COALESCE(ap.appid, '0') AS don, COALESCE(ts.canapply, (CASE WHEN seq_num = '1' THEN 1 ELSE 0 END)) AS app_stat FROM hfaci_serv_type hs LEFT JOIN (SELECT * FROM appform WHERE CONCAT(hfser_id, t_date, t_time, uid) IN (SELECT CONCAT(hfser_id, MAX(t_date), MAX(t_time), uid) FROM appform WHERE uid = '$clientData->uid' GROUP BY hfser_id, uid)) ap ON ap.hfser_id = hs.hfser_id LEFT JOIN trans_status ts ON ts.trns_id = ap.status GROUP BY seq_num, ts.canapply, ap.appid ORDER BY seq_num ASC";
+	$h_data = DB::select($sql);
+@endphp
 <span hidden>
 	@foreach ($ownshs as $ownsh)
 		<datalist id="{{$ownsh->ocid}}_oShip">
@@ -174,7 +177,11 @@
 <script type="text/javascript">
 	  	loader(true);
 </script>
-@include('client.breadcrumb')
+<div class="container">@include('client.breadcrumb')</div>
+<script type="text/javascript">
+	  	document.getElementById('first').style = "margin:0;border-bottom: 3px solid #f2e20c;";
+</script>
+
 @if(session()->has('del_succes'))
 <div id="asdf" class="alert alert-info alert-dismissible fade show" role="alert">
 					  <center><strong><i class="fas fa-exclamation"></i></strong> {{session()->get('del_succes')}}</center>
@@ -194,7 +201,7 @@
 
 @if (session()->has('apply_succes'))
 			{{--Notice--}}
-			<div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			{{-- <div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			  <div class="modal-dialog" role="document">
 			    <div class="modal-content" style="border-radius: 0px;border: none;">
 			      <div class="modal-body text-justify" style=" background-color: #0f8845;
@@ -213,14 +220,14 @@
 							<p>&nbsp;- Proceed to Cashier for payment and submit a photocopy of official receipt to the Licensing Officer;</p>
 							<p>&nbsp;- Team Leader sets Schedule for Inspection (you may check through your online account)</p>
 						</div>
-						{{-- <h5 class="modal-title text-center" id="exampleModalLongTitle"><strong>Thank You for submitting you may now proceed to your Pre-assessment.</strong></h5> --}}
+						
 						<div class="text-center">
-						<a href="{{asset('client/home')}}" style="text-decoration: none;"><button class="btn btn-outline-success btn-block">Ok</button></a>
+						<a href="{{asset('client/orderofpaymentc')}}" style="text-decoration: none;"><button class="btn btn-outline-success btn-block">Ok</button></a>
 						</div> 
 			      </div>
 			    </div>
 			  </div>
-			</div>
+			</div> --}}
 @endif
 
 <script type="text/javascript">
@@ -231,27 +238,31 @@
 		remLd();
 	</script>
 				<div class="row" style="margin-top: 20px;">
-				<div class="col-sm-4 text-center">
-					  <button type="button" class="btn-defaults"><i class="fa fa-pencil-square-o"></i></button>
-					  <button type="button" class="btn-defaults"><i class="fa fa-history"></i></button>
-				</div>
-				<div class="col-sm-4"></div>
-				<div class="col-sm-4 text-center">
+				<div class="col-sm-6"></div>
+				<div class="col-sm-6 text-center">
 					 <div class="dropdown ">
 					  <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					    <i class="fa fa-list"></i>&nbsp;Application Type
 					  </button>
 					  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-					    <a class="dropdown-item" href="{{ asset('/client/apply/form/con') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>Certificate of Need (CON)</small></a>
-					    <a class="dropdown-item" href="{{ asset('/client/apply/form/ptc') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>Permit to Construct (PTC)</small></a>
-					    <a class="dropdown-item" href="{{ asset('/client/apply/form/lto') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>License to Operate (LTO)</small></a>
-					    <a class="dropdown-item" href="{{ asset('/client/apply/form/coa') }}" style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Certificate of Accreditation (COA)</small></a>
-					    <a class="dropdown-item" href="{{ asset('/client/apply/form/ato') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Authority to Operate (ATO)</small></a>
+					  	@if(count($h_data) > 0)
+					  		@for($i = 0; $i < count($h_data); $i++)
+					  			<?php $h_desc = explode(',', $h_data[$i]->h_desc); $h_id = explode(',', $h_data[$i]->h_id); $k = ((($i-1) < 0) ? $i : (($h_data[($i-1)]->don == '0') ? $i : ($i-1))); ?>
+					  			@if(count($h_desc) > 1)
+						  			@for($j = 0; $j < count($h_desc); $j++)
+									    <a class="dropdown-item" @if($h_data[$i]->don != '0') @if($h_data[$i]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="{{ asset('/client/view/form') }}/{{strtolower($h_data[$i]->h_id)}}" @endif @else @if($h_data[$k]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="#" @endif @endif style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$h_desc[$j]}} ({{$h_id[$j]}})</small></a>
+						  			@endfor
+						  		@else 
+						  			<a class="dropdown-item" @if($h_data[$i]->don != '0') @if($h_data[$i]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="{{ asset('/client/view/form') }}/{{strtolower($h_data[$i]->h_id)}}" @endif @else @if($h_data[$k]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="#" @endif @endif style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>{{$h_data[$i]->h_desc}} ({{$h_data[$i]->h_id}})</small></a>
+						  		@endif
+					  		@endfor
+						@else
+						@endif
 					  </div>
 					</div>
 				</div>
 			</div>
-		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;padding: 2rem 2rem;margin-top: 1%;padding-bottom: 7%;">
+		<div class="jumbotron container" style="background-color: #fff;border: 1px solid rgba(0,0,0,.2);border-top: 2px solid #28a745;padding: 2rem 2rem;margin-top: 1%;padding-bottom: 7%;box-shadow: -5px 5px 10px rgba(0,0,0,0.25)">
 			<div class="title"  style="text-align: center;border-bottom: 1px solid green;padding-bottom: 9px;position: relative;margin-bottom: 2%;"> 
 			<h3>APPLICATION FORM</h3>
 			{{-- div class="btn-group" role="group" aria-label="Basic example" style="float: right;">
@@ -260,7 +271,7 @@
 			</div> --}}
 			</div>
 
-	<form action="{{ asset('/client/apply/form/') }}/{{$id_type}}"  data-parsley-validate enctype="multipart/form-data"  method="post" data-parsley-validate id="ApplyFoRm">
+	<form @if($isview == false) action="{{ asset('/client/apply/form/') }}/{{$id_type}}"  data-parsley-validate enctype="multipart/form-data"  method="post" data-parsley-validate id="ApplyFoRm" @endif>
 		<input type="" name="_token" value="{{csrf_token()}}" hidden>
 		<div class="col-sm-12"><center><h4>{{$hfaci}}</h4></center></div>
 		<br>
@@ -361,29 +372,23 @@
 							Health Facility:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
-							<select class="form-control" id="HFATYPE" name="facid" onchange="{{--getFacilityType();--}}getUploads()" data-parsley-required-message="<strong>Health Facility</strong> required." required>
+							<select @if($isview == true) disabled @endif class="form-control" id="HFATYPE" name="facid" onchange="{{--getFacilityType();--}}getUploads()" data-parsley-required-message="<strong>Health Facility</strong> required." required>
 								<option value="" hidden></option>
 								@foreach ($fatypes as $fatype)
 									<option value="{{$fatype->facid}}">{{$fatype->facname}}</option>
 								@endforeach
 							</select>
-							@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
-							<script>function tae(num) { var i = num; if(document.getElementById('HFATYPE').options[i].value == "{{$curr_tbl[0]->facid}}") { document.getElementById('HFATYPE').selectedIndex = i; } else { i++; tae(i); } } tae(0);</script>
-							@endif
 						</div>
 						<div class="col-sm-3" >
 							Ownership:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
-							<select class="form-control" id="OWNSHP" name="OWNSHP" data-parsley-required-message="<strong>Ownership</strong> required." onchange="getOwnship();" required>>
+							<select @if($isview == true) disabled @endif class="form-control" id="OWNSHP" name="OWNSHP" data-parsley-required-message="<strong>Ownership</strong> required." onchange="getOwnship();" required>>
 								<option value="" hidden></option>
 								@foreach ($ownshs as $ownsh)
 									<option value="{{$ownsh->ocid}}">{{$ownsh->ocdesc}}</option>
 								@endforeach
 							</select>
-							@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
-							<script>function tae1(num) { var i = num; if(document.getElementById('OWNSHP').options[i].value == "{{$curr_tbl[0]->ocid}}") { document.getElementById('OWNSHP').selectedIndex = i; getOwnship(); } else { i++; tae1(i); } } tae1(0);</script>
-							@endif
 						</div>
 					</div>
 					<br>
@@ -413,12 +418,9 @@
 								Class:<span style="color:red">*</span>
 							</div>
 							<div class="col-sm-3" id="Main1Sub2DrpDown" style="display: none">
-								<select class="form-control" id="CLS" name="CLS" onchange="chckOwnOther();">
+								<select @if($isview == true) disabled @endif class="form-control" id="CLS" name="CLS" onchange="chckOwnOther();">
 								</select>
 
-							@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
-							<script>function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);</script>
-							@endif
 							</div>
 						</div>
 						<br>
@@ -465,15 +467,12 @@
 							Status of Application:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-3" >
-							<select class="form-control" id="STATS_APP" name="strateMap" data-parsley-required-message="<strong>Status of Application</strong> required." required >
+							<select @if($isview == true) disabled @endif class="form-control" id="STATS_APP" name="strateMap" data-parsley-required-message="<strong>Status of Application</strong> required." required >
 								<option value="" hidden></option>
 								@foreach ($aptyps as $aptyp)
 									<option value="{{$aptyp->aptid}}">{{$aptyp->aptdesc}}</option>
 								@endforeach
 							</select>
-							@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
-							<script>function tae3(num) { var i = num; if(document.getElementById('STATS_APP').options[i].value == "{{$curr_tbl[0]->aptid}}") { document.getElementById('STATS_APP').selectedIndex = i; } else { i++; tae3(i); } } tae3(0);</script>
-							@endif
 						</div>
 					</div>
 					<div class="row">
@@ -529,7 +528,7 @@
 						</div>
 					</div> --}}
 					<div class="text-center">
-						<div  data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="background-color: #5bc0de !important;color: #fff;border-radius: 0;" class="btn btn-block"><i class="fa fa-plus-circle"></i>&nbsp;Add Personnel</div>
+						<div  data-toggle="collapse" data-target="#collapseExample" class="form-control bg-primary" aria-expanded="false" aria-controls="collapseExample" style="color: #fff;cursor:pointer;" class="btn btn-block"><i class="fa fa-plus"></i>&nbsp;Add Personnel</div>
 					</div>
 					<div class="collapse" id="collapseExample">
 					  <div class="card card-body">
@@ -793,7 +792,7 @@
 					</div>
 					<hr>
 					{{-- <div class="row"><div class="col-sm-12">Attachment: (incomplete attachment shall be a ground for the denial of this application)</div></div> --}}
-					<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer;border-radius: 0;">Click to show CHECKLIST OF DOCUMENTS:</div>
+					<div id="flip" class="form-control text-center btn-primary" style="cursor:pointer;">Click to show CHECKLIST OF DOCUMENTS:</div>
 						<div id="panel" class="container" style="background: #fff;padding: 1em;border-radius: 10px;overflow: auto;">
 							<table class="attachments table table-hover" style="width: 100%;">
 								<tbody id="ApplyTable">
@@ -813,35 +812,43 @@
 						<input type="hidden" name="draft">
 		{{-- <div class="col-sm-12">&nbsp;&nbsp;&nbsp;I hereby declare  that this Application  has been accomplished  by me, and that the foregoing  information  and attached documents required for the permit to construct are true and correct.</div> --}}
 		{{-- data-toggle="modal" data-target="#exampleModalCenter" --}}
-		<div class="container">
-			<center>
-				<button onmouseover="document.getElementsByName('draft')[0].value = ((document.getElementsByName('draft')[0].value == '0') ? '1': document.getElementsByName('draft')[0].value);" style="background-color: #ff9600 !important" type="button" class="btn-primarys" data-toggle="modal" data-target="#savedrafts"><i class="fa fa-save"></i>&nbsp;Save as Draft</button>
-				<button  type="button" class="btn-primarys" data-toggle="modal" data-target="#confirmmodal" style="background-color: #228B22 !important"><i class="fa fa-send-o"></i>&nbsp;Submit</button>
-			</center>
-				<div class="modal fade" id="confirmmodal" role="dialog">
-			    <div class="modal-dialog modal-sm">
-			      <div class="modal-content">
-			        <div class="modal-body text-center">
-			        	Are you sure you want to submit?
-			        	<button type="submit" class="btn-primarys" onmouseover="document.getElementsByName('draft')[0].value = '0';" data-toggle="modal" data-target="#exampleModalCenter">Yes</button>
-			          	<button type="button" class="btn-defaults" data-dismiss="modal">No</button>
-			        </div>
-			      </div>
-			    </div>
-			  </div>
-		</div>
+		@if($isview == false)
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-4"></div>
+				<div class="col-sm-2">
+					<button onmouseover="document.getElementsByName('draft')[0].value = ((document.getElementsByName('draft')[0].value == '0') ? '1': document.getElementsByName('draft')[0].value);" type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#savedrafts"><i class="fa fa-save"></i>&nbsp;Save as Draft</button>				
+				</div>
+				<div class="col-sm-2"><button  type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#confirmmodal"><i class="fa fa-send-o"></i>&nbsp;Submit</button></div>
+				<div class="col-sm-4"></div>
+				</div>
+					<div class="modal fade" id="confirmmodal" role="dialog">
+				    <div class="modal-dialog modal-sm">
+				      <div class="modal-content">
+				        <div class="modal-body text-center">
+				        	Are you sure you want to submit?
+				        	<button type="submit" class="btn btn-primary" onmouseover="document.getElementsByName('draft')[0].value = '0';" data-toggle="modal" data-target="#exampleModalCenter">Yes</button>
+				          	<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+			</div>
+		@endif
 		</div>
 		<input type="text" name="numberOfUploads" hidden>
 		</form>
-				<div class="row">
-					<div class="col-sm-4"></div>
-					<div class="col-sm-4">
-				<button style="margin-top: 10px;" data-toggle="modal" data-target="#draftmodal" class="btn-primarys btn-block"><i class="fa fa-file"></i>&nbsp;Open recent Drafts</button>
-					</div>
-					<div class="col-sm-4"></div>
+		@if($isview == false)
+			<div class="row">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4">
+			<button style="margin-top: 10px;" data-toggle="modal" data-target="#draftmodal" class="btn btn-primary btn-block"><i class="fa fa-file"></i>&nbsp;Open recent Drafts</button>
 				</div>
-				</div>
-	
+				<div class="col-sm-4"></div>
+			</div>
+		@endif
+			</div>
+		 @if($isview == false)
 			  <div class="modal fade" id="draftmodal" role="dialog">
 			    <div class="modal-dialog modal-lg">
 			      <div class="modal-content">
@@ -878,33 +885,35 @@
 			      </div>
 			    </div>
 			  </div>
+		@endif
 
-<div id="savedrafts" class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Save as</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <label>Save name as</label>
-        <input id="draftchg" type="text" onkeyup="keyyy()" class="form-control">
-        <script type="text/javascript">
-        	function keyyy() {
-        		var e = window.event || e;
-        		if(e.keyCode > 64 && e.keyCode <91) { document.getElementsByName('draft')[0].value = document.getElementById('draftchg').value; }
-        	}
-        </script>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" form="ApplyFoRm">Save changes as</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+@if($isview == false)
+	<div id="savedrafts" class="modal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Save as</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <label>Save name as</label>
+	        <input id="draftchg" type="text" onkeyup="keyyy()" class="form-control">
+	        <script type="text/javascript">
+	        	function keyyy() {
+	        		var e = window.event || e;
+	        		if(e.keyCode > 64 && e.keyCode <91) { document.getElementsByName('draft')[0].value = document.getElementById('draftchg').value; }
+	        	}
+	        </script>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="submit" class="btn btn-primary" form="ApplyFoRm">Save changes as</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 	<script>
 $(document).ready(function(){
@@ -913,6 +922,7 @@ $(document).ready(function(){
         $("#panel").slideToggle("slow");
     });
 });
+@endif
 </script>
 	<script type="text/javascript">
 		var Number_of_Files = 0;
@@ -1017,9 +1027,6 @@ $(document).ready(function(){
 			}
 
 		}
-		@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
-		function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);
-		@endif
 		function getHospitaType(){
 			// Main2Sub1Name
 			// MainSub1DrpDown
@@ -1309,16 +1316,54 @@ $(document).ready(function(){
 			          success: function(data) {
 			          	var extract = JSON.parse(data);
 			          	document.getElementById('personnels').innerHTML = "";
-			          	for(var i = 0; i < extract.length; i++) {
-			          		document.getElementById('personnels').innerHTML += '<tr><td>'+extract[i]['firstname']+' '+extract[i]['middlename']+' '+extract[i]['lastname']+'</td><td>'+extract[i]['posname']+'</td><td><button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button></td></tr>';
-			          	}
+			          	if(extract.length > 0) {
+				          	for(var i = 0; i < extract.length; i++) {
+				          		document.getElementById('personnels').innerHTML += '<tr><td>'+extract[i]['firstname']+' '+extract[i]['middlename']+' '+extract[i]['lastname']+'</td><td>'+extract[i]['posname']+'</td><td><button type="button" class="btn btn-danger" onclick="delete_pfrom(\''+extract[i]['pid']+'\')"><i class="fa fa-times"></i></button></td></tr>';
+				          	}
+				        } else {
+				        	document.getElementById('personnels').innerHTML = '<tr><td colspan="3">None</td></tr>';
+				        }
 			          }
 			      });
 	        }
-															
+	        function delete_pfrom(id_type) {
+	        	$.ajax({
+			          url: "{{asset('/client/personnel/delete')}}/"+id_type,
+			          method: 'GET',
+			          success: function(data) {
+						get_pform(document.getElementById('appidinc').value);
+			          }
+			      });
+	        }
+			get_pform(document.getElementById('appidinc').value);
+		@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
+			function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);
+		@else
+			@if($isview == true)
+				function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);
+			@endif
+		@endif									
 													</script>
 @if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
-<script>getUploads(); getOwnship();function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0); console.log("{{asset('ra-idlis/storage/app/public/uploaded')}}/{{$curr_tbl[1]->filepath}}"); get_pform(document.getElementById('appidinc').value)</script>
+	<script>function tae(num) { var i = num; if(document.getElementById('HFATYPE').options[i].value == "{{$curr_tbl[0]->facid}}") { document.getElementById('HFATYPE').selectedIndex = i; } else { i++; tae(i); } } tae(0);</script>
+	<script>function tae1(num) { var i = num; if(document.getElementById('OWNSHP').options[i].value == "{{$curr_tbl[0]->ocid}}") { document.getElementById('OWNSHP').selectedIndex = i; getOwnship(); } else { i++; tae1(i); } } tae1(0);</script>
+	<script>function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);</script>
+	<script>function tae3(num) { var i = num; if(document.getElementById('STATS_APP').options[i].value == "{{$curr_tbl[0]->aptid}}") { document.getElementById('STATS_APP').selectedIndex = i; } else { i++; tae3(i); } } tae3(0);</script>
+@else
+	@if($isview == true)
+		<script>function tae(num) { var i = num; if(document.getElementById('HFATYPE').options[i].value == "{{$sendform[0]->facid}}") { document.getElementById('HFATYPE').selectedIndex = i; } else { i++; tae(i); } } tae(0);</script>
+		<script>function tae1(num) { var i = num; if(document.getElementById('OWNSHP').options[i].value == "{{$sendform[0]->ocid}}") { document.getElementById('OWNSHP').selectedIndex = i; getOwnship(); } else { i++; tae1(i); } } tae1(0);</script>
+		<script>function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);</script>
+		<script>function tae3(num) { var i = num; if(document.getElementById('STATS_APP').options[i].value == "{{$sendform[0]->aptid}}") { document.getElementById('STATS_APP').selectedIndex = i; } else { i++; tae3(i); } } tae3(0);</script>
+	@endif
 @endif
+@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
+	<script>getUploads(); getOwnship();function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0); console.log("{{asset('ra-idlis/storage/app/public/uploaded')}}/{{$curr_tbl[1]->filepath}}"); get_pform(document.getElementById('appidinc').value)</script>
+@else
+	@if($isview == true)
+		<script>getUploads(); getOwnship();function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0); console.log("{{asset('ra-idlis/storage/app/public/uploaded')}}/{{$sendform[1]->filepath}}"); get_pform(document.getElementById('appidinc').value)</script>
+	@endif
+@endif
+<hr>
 @include('client.sitemap')
 @endsection

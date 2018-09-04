@@ -21,7 +21,8 @@
               <thead>
                 <tr>
                   <th style="width: 20%">ID</th>
-                  <th style="width: 55%">Description</th>
+                  <th style="width: 35%">Description</th>
+                  <th style="width: 20%">Type</th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
@@ -31,6 +32,9 @@
                     <tr>
                       <td scope="row"> {{$categorys->cat_id}}</td>
                       <td>{{$categorys->cat_desc}}</td>
+                      <td>
+                        @if($categorys->cat_type == 'C') Charge @else Payment @endif
+                      </td>
                       <td>
                         <center>
                             <button type="button" class="btn-defaults" onclick="showData('{{$categorys->cat_id}}', '{{$categorys->cat_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>
@@ -68,6 +72,14 @@
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Description</strong> required" required>
+                    </div>
+                    <div class="col-sm-4">Type:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <select id="new_rgn_type" class="form-control" data-parsley-required-message="*<strong>Type</strong> required" required>
+                        <option value=""></option>
+                        <option value="C">Charge</option>
+                        <option value="P">Payment</option>
+                      </select>
                     </div>
                     <div class="col-sm-12">
                       <button type="submit" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
@@ -155,6 +167,14 @@
               '<div class="col-sm-4">Description:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
                 '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Description <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
+              '</div>' +
+              '<div class="col-sm-4">Type:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<select type="text" id="edit_type" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Type <strong>Required</strong>" class="form-control" required>' +
+                    '<option value=""></option>' +
+                    '<option value="C">Charge</option>' +
+                    '<option value="P">Payment</option>' +
+                '</select>' +
               '</div>' 
             );
         } 
@@ -174,6 +194,7 @@
                         _token : $('#token').val(),
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
+                        type : $('#new_rgn_type').val(),
                         // mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {
@@ -204,7 +225,7 @@
                $.ajax({
                   url: "{{ asset('/mf/save_category') }}",
                   method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y},
+                  data : {_token:$('#token').val(),id:x,name:y,type: $('#edit_type').val()},
                   success: function(data){
                       if (data == "DONE") {
                           alert('Successfully Edited Category');

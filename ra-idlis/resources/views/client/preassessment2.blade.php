@@ -189,6 +189,7 @@ function closeNav() {
               <div class="col-sm-4">{{$assessments->asmt_name}}</div>
               <div class="col-sm-2 text-center">
                  <input type="hidden" name="upID[]" value="{{$assessments->asmt_id}}">
+                    <input type="hidden" name="complied[{{$assessments->asmt_id}}]" value="">
                     <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="complied_{{$assessments->asmt_id}}" type="radio" value="1" @isset($get_answers) @if($get_answers->complied=='1') checked="true"  @endif @endisset hidden>
                       <label id="radio_{{$assessments->asmt_id}}1" for="complied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 1, '{{$assessments->asmt_id}}')" @isset($get_answers) @if($get_answers->complied=='1') style="background-color:green;" @endif @endisset><i class="fa fa-check"></i></label>
                     <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="notcomplied_{{$assessments->asmt_id}}" type="radio" value="0" @isset($get_answers) @if($get_answers->complied=='0') checked="true" @endif @endisset hidden>
@@ -215,6 +216,7 @@ function closeNav() {
               <div class="col-sm-4">{{$assessments->asmt_name}}</div>
               <div class="col-sm-2 text-center">
                  <input type="hidden" name="upID[]" value="{{$assessments->asmt_id}}">
+                    <input type="hidden" name="complied[{{$assessments->asmt_id}}]" value="">
                     <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="complied_{{$assessments->asmt_id}}" type="radio" value="1" @isset($get_answers) @if($get_answers->complied=='1') checked="true" @endif @endisset hidden>
                       <label id="radio_{{$assessments->asmt_id}}1" for="complied_{{$assessments->asmt_id}}" class="label text-center" onclick="ch_rdb('radio_{{$assessments->asmt_id}}', 1, '{{$assessments->asmt_id}}')" @isset($get_answers) @if($get_answers->complied=='1') style="background-color:green;" @endif @endisset><i class="fa fa-check"></i></label>
                     <input class="radio " name="complied[{{$assessments->asmt_id}}]" id="notcomplied_{{$assessments->asmt_id}}" type="radio" value="0" @isset($get_answers) @if($get_answers->complied=='0') checked="true" @endif @endisset hidden>

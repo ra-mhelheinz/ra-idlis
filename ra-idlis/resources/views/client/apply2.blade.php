@@ -41,12 +41,12 @@
 					</script>
 					<div class="col-sm-12">
 						<div class="input-group">Name of Health Facility/Service:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->facilityname}}</div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;"></div>
 						</div>
 					</div>
 					<div class="col-sm-12">
 						<div class="input-group">Address:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->streetname}}, {{$clientData->barangay}}, {{$clientData->city_muni}}, {{$clientData->zipcode}} {{$clientData->provname}} - {{$clientData->rgn_desc}} </div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;"> </div>
 						</div>
 					</div>
 				</div>
@@ -78,14 +78,14 @@
 						</div></div>
 					<div class="col-sm-4">
 						<div class="input-group" style="font-size: 14px;margin-top: 2px;">Email Address:&nbsp;
-						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->email}}</div>
+						<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;"></div>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="input-group">Owner: &nbsp;
-							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;">{{$clientData->authorizedsignature}}</div>
+							<div class="input-group-prepend" style="border-bottom: 1px solid #b5c1c9;"></div>
 						</div>
 					</div>
 				</div>
@@ -113,11 +113,7 @@
 							<div class="input-group-prepend">
 									<select id="HFacility" data-parsley-required-message="<strong>Health Facility</strong> required."  onchange="selectHealthFacility();" style="border-radius:0;border: 0;border-bottom: 1px solid #b5c1c9;outline: 0;width: 100%;" required>
 							  			<option disabled selected hidden></option>
-									  	@if ($hfaci)
-							  				@foreach ($hfaci as $hfacis)
-								  				<option value="{{$hfacis->hfser_id}}">{{$hfacis->hfser_desc}}</option>
-								  			@endforeach
-							  			@endif
+								  				<option value=""></option>
 							  		</select>
 				  			</div>
 						</div>
