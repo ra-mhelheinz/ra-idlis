@@ -107,11 +107,11 @@
                             <ul id="PersoMenu" class="list-unstyled collapse">
                                 <li class="MA12_allow"><a href="{{ asset('/employee/dashboard/mf/department') }}">&nbsp;&nbsp;&nbsp;&nbsp;Department</a></li>
                                 <li class="MA13_allow"><a href="{{ asset('/employee/dashboard/mf/section') }}">&nbsp;&nbsp;&nbsp;&nbsp;Section</a></li>
-                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/personnel') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Personnel</a></li>
-                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Education/Trainings</a></li>
+                                <li class="" style="display: none"><a href="{{-- {{ asset('/employee/dashboard/mf/personnel') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Personnel</a></li>
+                                <li class="" style="display: none"><a href="{{-- {{ asset('/employee/dashboard/mf/litype') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Education/Trainings</a></li>
                                 <li class="MA14_allow"><a href="{{ asset('/employee/dashboard/mf/work') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work</a></li>
                                 <li class="MA15_allow"><a href="{{ asset('/employee/dashboard/mf/work_status') }}">&nbsp;&nbsp;&nbsp;&nbsp;Work Status</a></li>
-                                <li class=""><a href="{{-- {{ asset('/employee/dashboard/mf/eligibility') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Eligibility</a></li>
+                                <li class="" style="display:none"><a href="{{-- {{ asset('/employee/dashboard/mf/eligibility') }} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Eligibility</a></li>
                                 <li class="MA09_allow"><a href="{{ asset('/employee/dashboard/mf/litype') }}">&nbsp;&nbsp;&nbsp;&nbsp;License Type</a></li>
                                 <li class="MA10_allow"><a href="{{ asset('/employee/dashboard/mf/training') }}">&nbsp;&nbsp;&nbsp;&nbsp;Training Type</a></li>
                             </ul>
