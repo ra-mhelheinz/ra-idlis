@@ -24,7 +24,8 @@
               <thead>
                 <tr>
                   <th style="width: 40%">ID</th>
-                  <th style="width: 35%">Description</th>
+                  <th style="width: 30%">Description</th>
+                  <th style="width: 5%;text-align: center">Seq. #</th>
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
@@ -34,6 +35,7 @@
                     <tr>
                       <td scope="row"> {{$hfstype->hfser_id}}</td>
                       <td>{{$hfstype->hfser_desc}}</td>
+                      <td style="text-align: center">{{$hfstype->seq_num}}</td>
                       <td>
                         <center>
                           <span class="MA16_update">
@@ -75,6 +77,16 @@
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                     <input type="text" id="new_rgn_desc" class="form-control" data-parsley-required-message="*<strong>Description</strong> required" required>
+                    </div>
+                    <div class="col-sm-4">Sequence #:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <select id="new_rgn_seq" class="form-control" data-parsley-required-message="*<strong>Sequence</strong> required" required>
+                        <option value=""></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                      </select>
                     </div>
                     <div class="col-sm-12">
                       <button type="submit" class="btn btn-outline-success form-control"  style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
@@ -162,6 +174,17 @@
               '<div class="col-sm-4">Description:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
                 '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Description <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
+              '</div>' +
+              '<div class="col-sm-4">Sequence #:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<select id="edit_seq" class="form-control" data-parsley-required-message="*<strong>Sequence</strong> required" required>'+
+                    '<option value=""></option>' +
+                    '<option value="1">1</option>' +
+                    '<option value="2">2</option>' +
+                    '<option value="3">3</option>' +
+                    '<option value="4">4</option>' +
+                    '<option value="5">5</option>' +
+                '</select>' + 
               '</div>' 
             );
         } 
@@ -182,6 +205,7 @@
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
                         mod_id : $('#CurrentPage').val(),
+                        seq : $('#new_rgn_seq').val(),
                       },
                       success: function(data) {
                         if (data == 'DONE') {
@@ -211,7 +235,7 @@
                $.ajax({
                   url: "{{ asset('/mf/save_hfst') }}",
                   method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
+                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val(), seq : $('#edit_seq').val()},
                   success: function(data){
                       if (data == "DONE") {
                           alert('Successfully Edited Application Type');

@@ -14,7 +14,7 @@
                   <h6>Republic of the Philippines</h6>
                   <h6>DEPARTMENT OF HEALTH</h6>
                   <h5>Order of Payment</h5>
-                  <h4><strong>{{$oop_data->oop_desc}}</strong></h4>
+                  <h4><strong>@isset($oop_data){{$oop_data->oop_desc}}@endisset</strong></h4>
                 </th>
                 <th style="width:10%"></th>
               </tr>
@@ -32,13 +32,13 @@
                   <td colspan="4">Date: <span id="DateToday" class="font-weight-bold"></span></td>
                 </tr>
                 <tr>
-                  <td colspan="4">Name of Hospital: <span class="font-weight-bold">{{$AppData->facilityname}}</span></td>
+                  <td colspan="4">Name of Hospital: <span class="font-weight-bold">@isset($AppData){{$AppData->facilityname}}@endisset</span></td>
                 </tr>
                 <tr>
-                    <td colspan="4">Address: <span class="font-weight-bold">{{$AppData->streetname}}, {{$AppData->brgyname}}, {{$AppData->cmname}}, {{$AppData->provname}} - {{$AppData->zipcode}} {{$AppData->rgn_desc}}</span></td>
+                    <td colspan="4">Address: <span class="font-weight-bold">@isset($AppData){{$AppData->streetname}}, {{$AppData->brgyname}}, {{$AppData->cmname}}, {{$AppData->provname}} - {{$AppData->zipcode}} {{$AppData->rgn_desc}}@endisset</span></td>
                 </tr>
                 <tr>
-                    <td colspan="3">To CASHIER: Please charge the amount of&nbsp;&nbsp;<span id="WTotalHere" style="font-weight: bold;text-decoration: underline;">{{$OOPDATA->oop_totalword}}</span></td>
+                    <td colspan="3">To CASHIER: Please charge the amount of&nbsp;&nbsp;<span id="WTotalHere" style="font-weight: bold;text-decoration: underline;">@isset($OOPDATA){{$OOPDATA->oop_totalword}}@endisset</span></td>
                     <td>(Php&nbsp;<span id="TotalHere" style="font-weight: bold;text-decoration: underline;"></span>)&nbsp;for:&nbsp;<span style="font-weight: bold">{{-- {{$AppData->contactperson}} --}}</span></td>
                 </tr>
                 </tbody>
@@ -71,7 +71,7 @@
                       </thead>
                       <tbody> 
                         {{-- Bills --}}
-                       @if ($Bills)
+                       @if (isset($Bills))
                          @foreach ($Bills as $bill)
                            <tr>
                                 <td style="font-weight: bold">{{$bill->chg_code}}</td>
@@ -106,7 +106,7 @@
                 <tbody>
                   <tr>
                     <td >Prepared by:</td>
-                    <td class="text-center" style="font-weight: bolder;text-transform: uppercase;">@if($EmployeeData->grpid == "NA") Administrator @else {{$EmployeeData->name}} @endif</td>
+                    <td class="text-center" style="font-weight: bolder;text-transform: uppercase;">@isset($EmployeeData) @if($EmployeeData->grpid == "NA") Administrator @else{{$EmployeeData->name}} @endif @endisset</td>
                     <td>Recieved the above payment/s:</td>
                     <td></td>
                   </tr>
@@ -156,9 +156,9 @@
     loadDateToday();
   });
   function loadDateToday(){
-    var n = moment('{{$OOPDATA->oop_date}}').format('LL');
+    var n = moment('@isset($OOPDATA){{$OOPDATA->oop_date}}@endisset').format('LL');
     $('#DateToday').append(n);
-    var TotalPhp = numberWithCommas({{$OOPDATA->oop_total}}) + '.00';
+    var TotalPhp = numberWithCommas(@isset($OOPDATA){{$OOPDATA->oop_total}}@endisset) + '.00';
     $('#TotalHere').empty();
     $('#TotalHere').append(TotalPhp);
   }

@@ -51,7 +51,7 @@
             <table class="table table-hover display" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 10%">OOP - #</th>
+                  <th style="width: 10%">OOP</th>
                   <th style="width: 10%">Code</th>
                   <th style="width: 20%">Charge</th>
                   <th style="width: 10%">Type</th>
@@ -188,9 +188,11 @@
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                      <select id="appID" data-parsley-required-message="*<strong>Order of Payment</strong> required" class="form-control" required>  
                             <option value="">Select Order of Payment ...</option>
-                            @foreach ($OOPs as $OOP)
-                              <option value="{{$OOP->oop_id}}">{{$OOP->oop_desc}}</option>
-                            @endforeach
+                            @isset($OOPs)
+                              @foreach ($OOPs as $OOP)
+                                <option value="{{$OOP->oop_id}}">{{$OOP->oop_desc}}</option>
+                              @endforeach
+                            @endisset
                         </select>
                     </div>
                   </div>
@@ -287,9 +289,9 @@
                     	var d = data.data[i];
                     	var sq = "";
                     	if (data.TotalNumber > 1) {
-                    		if (d.chgopp_seq == 1) {sq='&nbsp;<a href="#"><button onclick="Rearranged(\'down\',\''+d.oop_id+'\','+d.chgopp_seq+','+d.chgopp_id+')" class="btn btn-info" title="Go Down"><i class="fa fa-sort-down"></i></button></a>';}
-                    		else if (d.chgopp_seq > 1 && d.chgopp_seq < data.TotalNumber) {sq = '&nbsp;<a href="#"><button onclick="Rearranged(\'up\',\''+d.oop_id+'\','+d.chgopp_seq+','+d.chgopp_id+')" class="btn btn-warning" title="Go Up"><i class="fa fa-sort-up"></i></button></a>&nbsp;<a href="#"><button  onclick="Rearranged(\'down\',\''+d.oop_id+'\','+d.chgopp_seq+','+d.chgopp_id+')" class="btn btn-info" title="Go Down"><i class="fa fa-sort-down"></i></button></a>';}
-                    		else {sq='&nbsp;<a href="#"><button onclick="Rearranged(\'up\',\''+d.oop_id+'\','+d.chgopp_seq+','+d.chgopp_id+')" class="btn btn-warning" title="Go Up"><i class="fa fa-sort-up"></i></button></a>';}
+                    		if (d.chgopp_seq == 1) {sq='&nbsp;<a href="#"><button onclick="Rearranged(\'down\',\''+d.oop_id+'\','+d.chgopp_seq+','+d.chgapp_id+')" class="btn btn-info" title="Go Down"><i class="fa fa-sort-down"></i></button></a>';}
+                    		else if (d.chgopp_seq > 1 && d.chgopp_seq < data.TotalNumber) {sq = '&nbsp;<a href="#"><button onclick="Rearranged(\'up\',\''+d.oop_id+'\','+d.chgopp_seq+','+d.chgapp_id+')" class="btn btn-warning" title="Go Up"><i class="fa fa-sort-up"></i></button></a>&nbsp;<a href="#"><button  onclick="Rearranged(\'down\',\''+d.oop_id+'\','+d.chgopp_seq+','+d.chgapp_id+')" class="btn btn-info" title="Go Down"><i class="fa fa-sort-down"></i></button></a>';}
+                    		else {sq='&nbsp;<a href="#"><button onclick="Rearranged(\'up\',\''+d.oop_id+'\','+d.chgopp_seq+','+d.chgapp_id+')" class="btn btn-warning" title="Go Up"><i class="fa fa-sort-up"></i></button></a>';}
 
                     	}
                       var test = (d.chg_rmks == null)? 'No Remarks' : d.chg_rmks;
@@ -303,7 +305,7 @@
                                 d.remarks,
                                 '<center>'+
                                   '<a href="#"><button data-toggle="modal" data-target="#ShowMeTheMoney" onclick="AddAmt('+d.amt+','+d.chgapp_id+',\''+d.chg_desc+'\', \''+d.remarks+'\')" class="btn btn-success" title="Modify Amount"><i class="fa fa-edit"></i></button></a>&nbsp;'+
-                                  '<a href="#"><button  onclick="DelUploaded('+d.chgopp_id+',\''+d.chg_desc+'\', \''+d.oop_desc+'\',\''+d.oop_id+'\')" class="btn btn-danger" title="Remove Charge"><i class="fa fa-trash"></i></button></a>'+sq +
+                                  '<a href="#"><button  onclick="DelUploaded('+d.chgapp_id+',\''+d.chg_desc+'\', \''+d.oop_desc+'\',\''+d.oop_id+'\')" class="btn btn-danger" title="Remove Charge"><i class="fa fa-trash"></i></button></a>'+sq +
                                 '</center>'
                               ])
                            .draw();

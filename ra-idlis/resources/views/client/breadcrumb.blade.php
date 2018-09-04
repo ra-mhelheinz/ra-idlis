@@ -1,4 +1,4 @@
- 	<div class="sticky-top">
+{{--  	<div class="sticky-top">
   	<div class="btn-group breadcrumb-success btn-breadcrumb">
             <a href="{{asset('client/home')}}" class="btn btn-successs"><i class="fa fa-home"></i></a>
             <a href="#" class="btn btn-successs visible-lg-block visible-md-block" id="first">APPLY</a>
@@ -143,4 +143,45 @@
               }
 	        	}
         	}, 1);
-        </script>
+        </script> --}}
+ <div class="bc-icons-2" >
+    <ol class="breadcrumb amber lighten-4" style="background-color:#28a745; " >
+      <table style="width: 100%;">
+        <tr>
+          <td class="text-center"><li class="breadcrumb-item" style="border-bottom: 3px solid #28a745; cursor: pointer;" onclick="goUrl('home')"><div class="text-white"><i class="fa fa-home"></i> Home</div></li></td>
+          <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('apply')" class="breadcrumb-item"><div class="text-white" href="#"><label id="first" style="margin: 0"><i class="fa fa-edit"></i> 1. Apply</label></div></li></td>
+          <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('orderofpaymentc')" class="breadcrumb-item"><div class="text-white" href="#" ><label id="second" style="margin: 0"><i class="fa fa-credit-card"></i> 2. Payment</label></div></li></td>
+          <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('evaluation')" class="breadcrumb-item"><div class="text-white" href="#" ><label id="third" style="margin: 0"><i class="fa fa-check"></i> 3. Evaluation</label></div></li></td>
+          <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('inspection')" class="breadcrumb-item"><div class="text-white" href="#" ><label id="fourth" style="margin: 0"><i class="fa fa-search"></i> 4. Inspection</label></div></li></td>
+          <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('issuance')" class="breadcrumb-item"><div class="text-white" href="#" ><label id="fifth" style="margin: 0"><i class="fa fa-print"></i> 5. Issuance</label></div></li></td>
+      </tr>
+      </table>
+    </ol>
+</div>
+
+<script type="text/javascript">
+  
+  function goUrl(home) {
+    window.location.href = '{{asset('client')}}/'+home;
+  }
+
+  function goUrl(apply) {
+    window.location.href = '{{asset('client')}}/'+apply;
+  }
+
+  function goUrl(orderofpaymentc) {
+    window.location.href = '{{asset('client')}}/'+orderofpaymentc;
+  }
+
+  function goUrl(evaluation) {
+    window.location.href = '{{asset('client')}}/'+evaluation;
+  }
+
+  function goUrl(inspection) {
+    window.location.href = '{{asset('client')}}/'+inspection;
+  }
+
+  function goUrl(issuance) {
+    window.location.href = '{{asset('client')}}/'+issuance;
+  }
+</script>

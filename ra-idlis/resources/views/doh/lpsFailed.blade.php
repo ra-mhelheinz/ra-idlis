@@ -7,7 +7,7 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Evaluate Applicants
+           Failed Applications
         </div>
         <div class="card-body table-responsive">
             <div style="float:left;margin-bottom: 5px">
@@ -26,11 +26,11 @@
                 @endif
               </datalist>
               &nbsp;
-              @isset($employeeGRP)
-                @if ($employeeGRP == "NA")
-                <input type="text" class="form-control" id="filtererReg" list="rgn_list" onchange="" placeholder="Select Region">
-                @endif
-              @endisset
+			  @isset($employeeGRP)
+	              @if ($employeeGRP == "NA")
+	              <input type="text" class="form-control" id="filtererReg" list="rgn_list" onchange="" placeholder="Select Region">
+	              @endif
+			  @endisset
               <datalist id="rgn_list">
                 @if (isset($regions))
                   @foreach ($regions as $region)
@@ -39,7 +39,7 @@
                 @endif
               </datalist>
               &nbsp;
-              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('@isset($employeeGRP){{$employeeGRP}}@else{{'LO'}}@endisset',@isset($employeeREGION){{$employeeREGION}}@else{{'00'}}@endisset);">Filter</button>
+              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('@isset($employeeGRP){{$employeeGRP}}@else{{'#'}}@endisset',@isset($employeeREGION){{$employeeREGION}}@else{{'#'}}@endisset);">Filter</button>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
            </div>
@@ -59,13 +59,14 @@
                 <tbody id="FilterdBody">
                     @if (isset($BigData))
                       @foreach ($BigData as $data)
+                      @if($data->status == 'RA' || $data->status == 'RE' || $data->status == 'RI')
                       @php
                         $status = '';
                         $paid = $data->appid_payment;
                         $reco = $data->isrecommended;
                         $ifdisabled = '';$color = '';
                         
-                        // if($data->status == 'P'){
+                        // if($data->status == 'P' || $data->status == 'RA' || $data->status == 'RE' || $data->status == 'RI' ){
                         //   $ifdisabled = 'disabled';
                         // }
 
@@ -79,9 +80,10 @@
                         <td class="text-center">{{$data->aptdesc}}</td>
                         <td class="text-center" style="font-weight:bold;">{{$data->trns_desc}}</td>
                           <td><center>
-                              <button type="button" title="Evaluate {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}', '{{$data->brgyname}}', '{{$data->classname}}','{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}', '{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}', '{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});"  {{$ifdisabled}}><i class="fa fa-fw fa-clipboard-check" {{$ifdisabled}}></i></button>
+                              <button type="button" title="View information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}});"  {{$ifdisabled}}><i class="fa fa-fw fa-clipboard-check" {{$ifdisabled}}></i></button>
                           </center></td>
                       </tr>
+                      @endif
                       @endforeach
                     @endif
                 </tbody>
@@ -175,7 +177,7 @@
                 rgnid = id[test];
               }
           } else {
-            rgnid = '@isset($employeeREGION){{$employeeREGION}}@else{{'00'}}@endisset';
+            rgnid = '@isset($employeeREGION){{$employeeREGION}}@else{{0}}@endisset';
           } 
         }
 
@@ -219,7 +221,7 @@
                                   '<td class="text-center">'+data[i].aptdesc+'</td>' +
                                   '<td class="text-center"><strong>'+data[i].trns_desc+'</strong></td>'+
                                   '<td><center>'+
-                                        '<button type="button" title="Evaluate '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+');"  '+ifdisabled+'><i class="fa fa-fw fa-clipboard-check"></i></button>'+
+                                        '<button type="button" title="Evaluate '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+');"  '+ifdisabled+'><i class="fa fa-fw fa-clipboard-check"></i></button>'+
                                   '</center></td>'+
                                   // data-toggle="modal" data-target="#GodModal"
                                 '</tr>'
@@ -233,74 +235,8 @@
 
         }        
     }
-    function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment){
-        window.location.href = "{{ asset('/employee/dashboard/lps/evaluate') }}/" + appid;
-        // var status = '';
-        // var paid = appid_payment;
-        // var ifdisabled = '';
-        // if (isrecommended == null) {
-        //     tatus = "For Evaluation";
-        //   }
-        // if (paid == null) {
-        //      status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
-
-        //   }
-        // $('#ViewBody').empty();
-        // $('#ViewBody').append(
-        //     '<div class="row">'+
-        //         '<div class="col-sm-4">Facility Name:' +
-        //         '</div>' +
-        //         '<div class="col-sm-8">' + facilityname +
-        //         '</div>' +
-        //     '</div>' +
-        //     // '<br>' + 
-        //     '<div class="row">'+
-        //         '<div class="col-sm-4">Address:' +
-        //         '</div>' +
-        //         '<div class="col-sm-8">' + streetname + ', ' + brgyname + ', ' + cmname + ', ' + provname + ' - ' + zipcode +
-        //         '</div>' +
-        //     '</div>' +
-        //     '<div class="row">'+
-        //         '<div class="col-sm-4">Owner:' +
-        //         '</div>' +
-        //         '<div class="col-sm-8">' + authorizedsignature + 
-        //         '</div>' +
-        //     '</div>' +
-        //     '<div class="row">'+
-        //         '<div class="col-sm-4">Applying for:' +
-        //         '</div>' +
-        //         '<div class="col-sm-8">' + hfser_id + ' ('+hfser_desc+') - ' + aptdesc +
-        //         '</div>' +
-        //     '</div>' +
-        //     '<div class="row">'+
-        //         '<div class="col-sm-4">Time and Date:' +
-        //         '</div>' +
-        //         '<div class="col-sm-8">' + formattedTime + ' - ' + formattedDate +
-        //         '</div>' +
-        //     '</div>' +
-        //     '<div class="row">'+
-        //         '<div class="col-sm-4">Status:' +
-        //         '</div>' +
-        //         '<div class="col-sm-8">' +status +
-        //         '</div>' +
-        //     '</div>'
-        //   );
-
-        // $.ajax({
-        //     url : '{{ asset('/lps/getLPSUploads') }}' ,
-        //     method : 'POST',
-        //     data : {_token:$('#token').val(),appid: appid},
-        //     success : function (data){
-        //         if (data != 'NONE') {
-        //                 $('#ViewBody').empty();
-        //                 for (var i = 0; i < data.length; i++) {
-        //                   // data[i]
-        //                 }
-        //         } else{
-        //           /// ERROR / EMPTY
-        //         }
-        //     },  
-        // });
+    function showData(appid){
+        window.location.href = "{{ asset('/employee/dashboard/lps/failed') }}/" + appid;
     } 
 </script>
 @endsection

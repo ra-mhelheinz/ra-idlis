@@ -25,7 +25,7 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           View Pre-Assessment {{-- <a href="#" title="Add New Assessment" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a> --}}
+           View Pre-Assessment <button type="button" class="btn btn-primary" onclick="window.history.back();">Back</button>
            <div style="float:right;display: inline-block;">
             <form class="form-inline">
               <label>Filter : &nbsp;</label>
@@ -66,7 +66,7 @@
           </div>
           <div class="container">
             <center>
-              <button class="btn btn-primarys" onclick="window.history.back();">Back</button>
+              
               </button>
             </center> 
           </div>

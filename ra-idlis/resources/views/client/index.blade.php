@@ -3,6 +3,17 @@
 <link rel="stylesheet" type="text/css" href="{{asset('ra-idlis/public/engine1/style.css')}}" />
 <script type="text/javascript" src="{{asset('ra-idlis/public/engine1/jquery.js')}}"></script>
 @section('content')
+@php
+  $uid = session('client_data')->uid;
+  $check_assess = DB::table('app_assessment')->where('draft', '=', '0')->where('uid', '=', session('client_data')->uid)->get();
+  $check_assess1 = DB::table('app_assessment')->where('draft', '=', '0')->where('complied', '=', '1')->where('uid', '=', session('client_data')->uid)->get();
+  $check_asspp = DB::table('assessment')->get();
+  $newSql = "SELECT draft , uid FROM app_assessment WHERE draft != '0' AND uid = '$uid' GROUP BY draft, uid";
+  $check_drafts = DB::select($newSql);
+  $check_counter = -1;
+  if (count($check_assess) < 1) {$check_counter = -1; } else {$check_counter = 0; foreach ($check_assess as $check) {if ($check->complied == '0') {$check_counter++; } } } 
+  $status = "complied";
+@endphp
 <style type="text/css">
   td{
     font-size: 13px;
@@ -10,6 +21,21 @@
     overflow: hidden; 
     white-space:nowrap;
   }
+  .fa-recycle {
+    -webkit-animation: rotation 2s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(359deg);
+    }
+}
+
+  #syd { @if(count($check_assess1) != count($check_asspp) && ($check_counter > 0 || $check_counter < 0))  pointer-events: none; @endif } 
+
 </style>
 @include('client.nav')
   <div class="modal" id="myModal" style="overflow: auto; z-index: 1041;">
@@ -108,7 +134,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-3 col-md-12 col-lg-3">
-            <div class="card my-4" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;">
+            <div class="card my-4" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;box-shadow: -5px 5px 10px rgba(0,0,0,0.25);">
             <h5 class="card-header">Search</h5>
             <div class="card-body" style="height: 80px;">
               <div class="input-group">
@@ -119,7 +145,7 @@
               </div>
             </div>
           </div>
-             <div class="card my-4 introjs-showElement introjs-relativePosition"  data-intro="Announcements<br><small>Here is where new Announcements can be found.</small>" data-step="10" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;">
+             <div class="card my-4 introjs-showElement introjs-relativePosition"  data-intro="Announcements<br><small>Here is where new Announcements can be found.</small>" data-step="10" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;box-shadow: -5px 5px 10px rgba(0,0,0,0.25);">
             <h5 class="card-header">Announcements</h5>
             <div class="cardb" style="padding: 1.25rem;flex: 1 1 auto;">
              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" >
@@ -150,103 +176,82 @@
               </div>
             </div>
           </div>
-          <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="Definition of Terms<br><small>Click this link to read our Definition of Terms</small>" data-step="11" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;">
-            <p class="card-header"><small>Click for our <i class="fa fa-hand-o-right"></i>&nbsp;<a href="">Definition of Terms</a></small></p>
+          <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="Definition of Terms<br><small>Click this link to read our Definition of Terms</small>" data-step="11" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;box-shadow: -5px 5px 10px rgba(0,0,0,0.25);">
+            <p class="card-header"><small>Click for our <i class="fa fa-hand-o-right"></i>&nbsp;<a href="">Definition of Terms</a></small>
+            </p>
           </div>
-          <div class="text-center introjs-showElement introjs-relativePosition" data-intro="FAQs<br><small></small>" data-step="12">
+          <div class="text-center introjs-showElement introjs-relativePosition" data-intro="FAQs<br><small></small>" data-step="13">
               <img src="{{asset('ra-idlis/public/img/FAQ.png')}}">
           </div>
           </div>
           <div  class="col-sm-9 col-md-12 col-lg-9">
             <div class="row">
               <div class="col-sm-12">
-              {{-- <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="<b>Status Banner</b><br><small>In this banner is where you can see the status of your Application/s.</small>" data-step="4">
-              <div class="cardb" style="flex: 1 1 auto;padding: 1.25rem;">
-                <div class="row">
-                  <div class="col-sm-4"><small>List of Applications Status:</small></div>
-                  <div class="col-sm-4"><small>Application Type:</small></div>
-                  <div class="col-sm-4"><small>Date Applied:</small></div>
-                  <div class="col-sm-4"><small>Date Evaluated:</small></div>
-                  <div class="col-sm-4"><small>Date Inspected:</small></div>
-                  <div class="col-sm-4"><small>Date Issued:</small></div>
-                  <div class="col-sm-4"><small>Date Printed:</small></div>
-                  <div class="col-sm-4"><small>Status:</small></div>
-                  <div class="col-sm-4"><small>LTO No:</small></div>
-                  <div class="col-sm-4 offset-4"><small>Validity Date:</small></div>
-                </div>
-              </div>
-            </div> --}}
-{{--               <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="<b>Status Banner</b><br><small>In this banner is where you can see the status of your Application/s.</small>" data-step="4" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745">
+              <div class="card my-4 introjs-showElement introjs-relativePosition" data-intro="<b>Status Banner</b><br><small>In this banner is where you can see the status of your submitted Application/s.</small>" data-step="3" style="border-radius: 3px 3px 0 0;border-top: 2px solid #28a745;box-shadow: -5px 5px 10px rgba(0,0,0,0.25);">
               <div class="card-header" id="headingOne">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Click to View Status
-                  </button>
+                  <a class="card-link" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                   Application/s Status
+                  </a>
              </div>
 
-              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="border-radius: 3px 3px 0 0;">
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion" style="border-radius: 3px 3px 0 0;">
                 <div style="flex: 1 1 auto;padding: 1.25rem;" class="table-responsive">
-
-                        <table class="table table-bordered" style="border-left: 2px solid #28a745">
+                    <table class="table table-bordered table-hover">
                       <thead>
-                        <tr class="text-center" style="border-bottom: 1px solid #ddd; ">
+                         <tr class="text-center" style="border-bottom: 1px solid #ddd; ">
                          
                           <td>List of Application</td>
                           <td>Application Type</td>
                           <td>Date Applied</td>
                           <td>Date Evaluated</td>
-                          <td><i class="fa fa-gear"></i></td>
+                          <td>Date Inspected</td>
+                          <td>Status</td>
 
-                        </tr>
-                        <tr class="text-center">
-                          <td >s</td>
-                          <td >s</td>
-                          <td >Date Applied</td>
-                          <td >Date Evaluated</td>
-                          <td ><a href="{{asset('client/status')}}"><img src="{{asset('ra-idlis/public/img/view.png')}}" style="width: 25px;"></a></td>
                         </tr>
                       </thead>
+                      <tbody>
+                        @if(count($getApp) > 0)
+                          @foreach($getApp AS $getApps)
+                            <tr class="text-center">
+                              <td>{{$getApps->hfser_desc}}</td>
+                              <td>{{$getApps->hfser_id}}</td>
+                              <td>{{$getApps->t_date}}</td>
+                              <td>{{$getApps->proposedInspectiondate}}</td>
+                              <td>{{$getApps->proposedInspectiondate}}</td>
+                              <td><span @if($getApps->canapply == 0) class="badge badge-warning" @elseif($getApps->canapply == 1) class="badge badge-danger" @else class="badge badge-success" @endif>@if($getApps->canapply == 0) Pending @elseif($getApps->canapply == 1) Rejected @else Approved @endif</span></td>
+                            </tr>
+                          @endforeach
+                        @endif
+                      </tbody>
                     </table>
-  
+                  </div>
+              </div>
+            </div>
+            </div>
+            </div>
+            <div class="row" >
+              <div class="col-sm-12">
+                <div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="4">
+                  <div class="row">
+                    <div class="col-sm-6" >
+                      <div class="icon"><i class="fa fa-clipboard"></i></div>
+                      <h4 class="title text-uppercase"><strong><a @if($check_counter == 0) href="{{asset('client/preassessment')}}/view" @elseif($check_counter > 0) href="{{asset('client/preassessment')}}/{{$status}}" @else href="{{asset('client/preassessment')}}" @endif>Self Assessment</a></strong></h4>
+                      <p class="description">Guide for self-assessment of the Health Facility in preparation for inspection monitoring visits</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="card" @if($check_counter > -1 && count($check_assess1) == count($check_asspp)) style="border-color: #28a745;" @else style="border-color: #ff0000;" @endif>
+                           @if(count($check_assess1) == count($check_asspp)) <div class="card-header">Completed!</div> @elseif($check_counter < 0)  @else <div class="card-header">Incomplete!</div> @endif 
+                          <div class="card-body" style="height: auto !important;color: #006400;">@if(count($result)<1)Please take the Pre-assessment first. @else @isset($draft_ok) Result: Complied({{$draft_ok}}), <label style="color: red;">Not Complied({{$draft_not}})</label> @else No Result @endisset @endif</div>
+                      </div>                           
+                      @if(count($check_drafts) > 0) <label style="float: right;">Drafts saved: {{count($check_drafts)}}</label> @endif
+                       
+                    </div>     
+                  </div>
                 </div>
               </div>
-            </div> --}}
-            </div>
-            </div>
-            @php
-              $check_assess = DB::table('app_assessment')->where('draft', '=', '0')->where('uid',session('client_data')->uid)->get();
-              $check_counter = 0;
-            if ($check_assess->count() <= 0) {
-              $check_counter++;
-            }
-           foreach ($check_assess as $check) {
-             if ($check->complied == '0') {
-               $check_counter++;
-             }
-           }
-           $status = "complied";
-           // dd($check_counter);
-
-            @endphp
-             <div class="row" >
-             <div class="col-sm-12">
-             	<div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="5"  @if($check_counter == 0) style="pointer-events: none;" @endif>
-                <div class="row">
-                <div class="col-sm-6" >
-              <div class="icon"><i class="fa fa-clipboard"></i></div>
-              <h4 class="title"><a @if($check_assess->count() <= 0) href="{{asset('client/preassessment2')}}" @else href="{{asset('client/preassessment2')}}/{{$status}}" @endif>Pre assessment</a></h4>
-              <p class="description">Guide for self-assessment of the Health Facility in preparation for inspection monitoring visits</p>
-                </div>
-                <div class="col-sm-6">
-              <div class="card" style="border-color: #28a745;">
-                <div class="card-body" style="height: auto !important;color: #006400;">Result : @if($result->count()==0)Please take the Pre-assessment first. @else @isset($draft_ok) Complied({{$draft_ok}}), <label style="color: red;">Not Complied({{$draft_not}})</label> @else No Result @endisset @endif</div>
-              </div> 
-              </div>       
-            </div>
-            </div>
-            </div>
             </div>
             
-            @if($check_counter > 0)
+            @if(count($check_assess1) != count($check_asspp) && ($check_counter > 0 || $check_counter < 0))
              <div class="alert alert-danger" id="alert" role="alert" style="display: none;">
                 <strong>Oh snap!</strong> You must go first to Pre-assessment.
             </div>
@@ -257,14 +262,14 @@
                  setTimeout(function(){$('#alert').fadeOut(500) }, 2000);
                 
               }
-              
+              @if(count($check_assess1) != count($check_asspp) && ($check_counter > 0 || $check_counter < 0)) document.getElementById('maykayey').setAttribute('onclick', 'disbool()'); @endif
             </script>
-            <div class="disbool" onclick="disbool()" >
-            <div class="row" id="syd" @if($check_counter > 0 ) style="pointer-events: none;@endif " >
+            <div id="maykayey" class="disbool" @if(count($check_assess1) != count($check_asspp) && ($check_counter > 0 || $check_counter < 0)) onclick="disbool()" @endif>
+            <div class="row" id="syd" @if(count($check_assess1) != count($check_asspp) && ($check_counter > 0 || $check_counter < 0)) style="pointer-events: none;" @endif>
           <div class="col-lg-6 introjs-showElement introjs-relativePosition" >
             <div class="box wow fadeInLeft" id="textSample" data-intro="Step 1 <br><b>Apply</b><br><small>The very first step is to apply</small>" data-step="5">
               <div class="icon"><i class="fa fa-edit"></i></div>
-              <h4 class="title"><a href="{{asset('client/apply')}}">Step 1. Apply</a></h4>
+              <h4 class="title text-uppercase"><a href="{{asset('client/apply')}}">Step 1. Apply</a></strong></h4>
               <p class="description">Fill-in application form and submit requirements online.</p>
             </div>
           </div>
@@ -272,8 +277,8 @@
           <div class="col-lg-6 introjs-showElement introjs-relativePosition">
             
             <div class="box wow fadeInRight" data-intro="Step 2 <br><b>Payment</b><br><small>You may pay through the internet with Paypal and DragOnPay or you can pay through MLhuillierPayment process for evaluation and inspection to be process.</small>" data-step="6">
-              <div class="icon"><i class="fa fa-check"></i></div>
-              <h4 class="title"><a href="{{asset('client/orderofpaymentc')}}">Step 2. Payment</a></h4>
+              <div class="icon"><i class="fa fa-credit-card"></i></div>
+              <h4 class="title text-uppercase"><strong><a href="{{asset('client/orderofpaymentc')}}">Step 2. Payment</a></strong></h4>
               <p class="description">You need to pay for the evaluation and inspection process.{{--  <br> You may pay through the internet with Paypal and DragOnPay or you can pay through MLhuillierPayment process for evaluation and inspection to be process --}}</p>
             </div>
           </div>
@@ -281,7 +286,7 @@
             
             <div class="box wow fadeInRight" data-intro="Step 2 <br><b>Evaluate</b><br><small>After submitting the application form, you'll have to wait for your application to be evaluated. Click the 'View your evaluation status' link to view your evaluation status</small>" data-step="7">
               <div class="icon"><i class="fa fa-check"></i></div>
-              <h4 class="title"><a href="{{asset('client/evaluate')}}">Step 3. Evaluate</a></h4>
+              <h4 class="title text-uppercase"><strong><a href="{{asset('client/evaluate')}}">Step 3. Evaluate</a></strong></h4>
               <p class="description">DOH will evaluate your submitted documents and notify your schedule of inspection.</p>
               <p><a href="{{asset('client/evaluate')}}">View your evaluation status</a></p>
             </div>
@@ -290,20 +295,25 @@
           <div class="col-lg-6 introjs-showElement introjs-relativePosition">
             <div class="box wow fadeInLeft" data-intro="Step 4 <br><b>Inspection</b><br><small>After evaluating your application, DOH will then Inspect the application for approval to be issued</small>" data-step="8">
               <div class="icon"><i class="fa fa-search"></i></div>
-              <h4 class="title"><a href="{{asset('client/inspection')}}">Step 4. Inspection</a></h4>
+              <h4 class="title text-uppercase"><strong><a href="{{asset('client/inspection')}}">Step 4. Inspection</a></strong></h4>
               <p class="description">DOH will conduct inspection and notify the status of your application.</p>
             </div>
           </div>
-          <div class="col-lg-3"></div>
           <div class="col-lg-6 introjs-showElement introjs-relativePosition">
             <div class="box wow fadeInRight"  data-intro="Step 5 <br><b>Issuance</b><br><small>After evaluating and inspection, the application is good for Issuance</small>" data-step="9">
               <div class="icon"><i class="fa fa-print"></i></div>
-              <h4 class="title"><a href="{{asset('client/issuance')}}">Step 5. Issuance</a></h4>
+              <h4 class="title text-uppercase"><strong><a href="{{asset('client/issuance')}}">Step 5. Issuance</a></strong></h4>
               <p class="description">You can now print your application online.</p>
-              <p>Issuance Status:<font style="color:orange;">PENDING</font> </p>
+              {{-- <p>Issuance Status:<font style="color:orange;">PENDING</font> </p> --}}
             </div>
           </div>
-         <div class="col-lg-3"></div>
+         <div class="col-lg-6">
+            <div class="box wow fadeInRight"  data-intro="" data-step="">
+              <div class="icon"><i class="fa fa-recycle"></i></div>
+              <h4 class="title text-uppercase"><strong><a href="{{asset('client/modifiers')}}">Application for Change</a></strong></h4>
+              <p class="description"></p>
+            </div>
+         </div>
            </div>
           </div>
           </div>
@@ -330,5 +340,6 @@
         <td class="td"><img src="{{asset('ra-idlis/public/img/nobreak.jpg')}}"  width="125" height="60"></td> 
     </table> --}}
   </div>
+  <hr>
   @include('client.sitemap')
 @endsection

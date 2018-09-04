@@ -104,7 +104,7 @@
                       </center></td>
                       <td><center> {{-- INSPECTION --}}
                         <h5>
-                          @if ($data->agreedInspectiondate != null)
+                          @if ($data->isInspected != null)
                             <span class="badge badge-success">Yes</span>
                           @else 
                             <span class="badge badge-warning">Pending</span>
@@ -216,7 +216,6 @@
             });
       }
     function FilterData(grpID,rgnID){
-
         var hfser_id = '';
         var facid = $('#fa_list').val();
         var rgnid = '';

@@ -11,261 +11,419 @@
   </script>
 @endif
 @php 
-$paymentstart = 1; $paymentend = 5;
+	$paymentstart = 1; $paymentend = 5;
+	$sqlPayment = "SELECT apo.appop_id, apo.oop_id, oop_desc, oop_total, apf.status, apf.aptid, ts.trns_desc FROM appform_oopdata appo LEFT JOIN appform_orderofpayment apo ON apo.appop_id = appo.appop_id LEFT JOIN appform apf ON apf.appid = apo.appid LEFT JOIN trans_status ts ON ts.trns_id = apf.status LEFT JOIN orderofpayment opo ON opo.oop_id = apo.oop_id WHERE apf.uid = '$clientData->uid' AND (apf.status != 'A') AND ts.allowedpayment != 0";
+	$getAppPayment = DB::select($sqlPayment);
+	$appform = DB::select("SELECT ap.appid, ap.aptid, x8.facilityname, hf.hfser_desc, aat.aptdesc, ts.trns_desc, ap.hfser_id FROM appform ap INNER JOIN x08 x8 ON x8.uid = ap.uid INNER JOIN hfaci_serv_type hf ON hf.hfser_id = ap.hfser_id INNER JOIN apptype aat ON aat.aptid = ap.aptid LEFT JOIN trans_status ts ON ts.trns_id = ap.status WHERE ap.uid = '$clientData->uid' AND ap.status != 'A' AND ts.allowedpayment != 0");
+	$oop = DB::select('SELECT * FROM orderofpayment ORDER BY oop_desc ASC');
+	$category = DB::select('SELECT oc.*, co.aptid, ap.aptdesc, (SELECT GROUP_CONCAT(cat_id) AS cat_id1 FROM category WHERE cat_id IN (SELECT cat_id FROM charges WHERE chg_code IN (SELECT chg_code FROM chg_app WHERE oop_id = oc.oop_id))) AS cat_id1, (SELECT GROUP_CONCAT(cat_desc) AS cat_desc1 FROM category WHERE cat_id IN (SELECT cat_id FROM charges WHERE chg_code IN (SELECT chg_code FROM chg_app WHERE oop_id = oc.oop_id))) AS cat_desc1 FROM orderofpayment oc LEFT JOIN (SELECT GROUP_CONCAT(ca.cat_id) AS cat_id, GROUP_CONCAT(ca.chg_code) AS chg_code, GROUP_CONCAT(ca.chg_desc) AS chg_desc, GROUP_CONCAT(ca.amt) AS amt, ca.aptid, co.oop_id FROM chg_app co LEFT JOIN (SELECT ch.*, ca.amt, ca.aptid FROM charges ch INNER JOIN chg_app ca ON ca.chg_code = ch.chg_code ORDER BY cat_id, chg_code) ca ON co.chg_code = ca.chg_code GROUP BY co.oop_id, ca.aptid) co ON co.oop_id = oc.oop_id LEFT JOIN apptype ap ON ap.aptid = co.aptid');
+	$charges = DB::select("SELECT DISTINCT ch.*, ca.amt, ca.aptid, ca.chgapp_id FROM chg_app ca LEFT JOIN charges ch ON ca.chg_code = ch.chg_code LEFT JOIN category ct ON ct.cat_id = ch.cat_id WHERE ct.cat_type = 'C'");
+	$chg_app = array();
 @endphp
-@include('client.breadcrumb')
+<div class="container">@include('client.breadcrumb')</div>
 <script type="text/javascript">
-  document.getElementById('second').style = "color: blue;";
+	  	document.getElementById('second').style = "margin:0;border-bottom: 3px solid #f2e20c;";
 </script>
-<div class="container-fluid">
-  <div class="jumbotron" style="background-color: #fff;">
-    <div class="row">
-            <div class="col-md-8">
-                <div id="accordion">
-                      @php
-                      $i = 0;
-                      @endphp
-                      @php
-                        $asdf = "";
-                        $asdf1 = "";
-                        $cat = DB::table('category')->get();
-                        $apptype = DB::table('apptype')->get();
-                        $oop = DB::table('orderofpayment')->get();
-                        // $chg_app = DB::table('chg_app')->where('chg_code', '=', $charge->chg_code)->get();
-                        $appformtry = "SELECT oop_desc, oop_total, apf.status FROM appform_oopdata appo LEFT JOIN appform_orderofpayment apo ON apo.appop_id = appo.appop_id LEFT JOIN appform apf ON apf.appid = apo.appid LEFT JOIN orderofpayment opo ON opo.oop_id = apo.oop_id WHERE apf.uid = '$clientData->uid' AND (apf.status != NULL OR apf.status != '')";
-                        $appform = DB::select($appformtry);
-                        $tikas = "SELECT appid, ch.chg_desc, ch.chg_exp, ch.chg_rmks, remarks, aat, aap, oop_desc, oop_id, _all.cat_id FROM charges ch LEFT JOIN (SELECT GROUP_CONCAT(amt) AS aat, GROUP_CONCAT(chgapp_id) AS appid, GROUP_CONCAT(aptdesc) AS aap, oop_desc, oop_id, ca.chg_code, cat_id, remarks FROM (SELECT DISTINCT ca.*, ch.cat_id, aptdesc, oop_desc, opo.oop_id FROM chg_app ca LEFT JOIN charges ch ON ch.chg_code = ca.chg_code LEFT JOIN apptype apt ON ca.aptid = apt.aptid LEFT JOIN chg_oop cho ON cho.chgapp_id = ca.chgapp_id LEFT JOIN orderofpayment opo ON opo.oop_id = cho.oop_id INNER JOIN appform ON appform.aptid = ca.aptid) ca GROUP BY oop_desc, oop_id, ca.chg_code, cat_id, remarks ORDER BY ca.chg_code, cat_id) _all ON ch.chg_code = _all.chg_code";
-                        $bungkag = DB::select($tikas);
-                        // dd($chg_app);
-                      @endphp
-                      <div class="row">
-                        <div class="col-sm-6">
-                        <select id="category" class="form-control" onchange="fighting(this.value, document.getElementById('orderofpayment').value)">
-                          <option hidden value="maoni">Select Category</option>
-                          @foreach($cat as $cate)
-                          <option value="{{$cate->cat_id}}">{{$cate->cat_desc}}</option>
-                          @endforeach
-                        </select>
-                        </div>
-                        <div class="col-sm-6">
-                        <select id="orderofpayment" class="form-control" onchange="fighting(document.getElementById('category').value, this.value)">
-                          <option hidden value="maoni">Select Order of Payment</option>
-                          @foreach($oop as $oops)
-                          <option value="{{$oops->oop_id}}">{{$oops->oop_desc}}</option>
-                          @endforeach
-                        </select>
-                        </div>
-                      </div>
-                      <br>
-                      @php
-                      $i = 0;
-                      @endphp
-                      @for($j = 0; $j < count($bungkag); $j++)
-                        <?php $ctout = explode(",", $bungkag[$j]->appid); $aat = explode(",", $bungkag[$j]->aat); $ctout = explode(",", $bungkag[$j]->appid); $aap = explode(",", $bungkag[$j]->aap); ?>
-                          <div id="labhi{{$i}}" class="card fightingclass {{$bungkag[$j]->oop_id}}" name="{{$bungkag[$j]->cat_id}}" style="margin-bottom: 2%;box-shadow: 2px 5px 10px rgba(0,0,0,0.25);" hidden>
-                          <div class="card-header" style="color: #28a745;cursor:pointer;padding: 0" >
-                            <a class="card-link" id="payment_{{$i}}">
-                                <div class="row">
-                                  <div class="col-sm-10">
-                                    <p name="fightingmama{{$i}}" style="margin-bottom: 0;margin-top: 3%;margin-left: 2%;">{{$bungkag[$j]->chg_desc}} {{$bungkag[$j]->remarks}} ({{$bungkag[$j]->chg_exp}} {{$bungkag[$j]->chg_rmks}})</p>
-                                  </div>
-                                  <div class="col-sm-2" >
-                                    <button data-toggle="collapse" data-target="#collapseOne{{$i}}" id="addbtn{{$i}}" onclick="addbtn({{$i}})" class="btn btn-block yamod" style="background-color: #28B463;padding: 19px;font-size: 18px ;border-radius: 0;color: #fff;margin: 0;cursor: pointer;" value="inactive">
-                                      <i class="fa fa-plus"></i>
-                                    </button> 
-                                  </div>
-                                </div>
-                            </a>
-                          </div>
-                          <div id="collapseOne{{$i}}" class="collapse" data-parent="#accordion">
-                            <div class="card-body">
-                              <table id=" " class="table" style="width: 100%;">
-                                <tr>
-                                  <td></td>
-                                  <td style="width: 60%;">Order of Payment</td>
-                                  <td hidden>Application ID</td>
-                                  <td style="width: 20%;" class="text-center">Application Status</td>
-                                  <td style="width: 20%;" class="text-center">Amount</td>
-                                </tr>
-                                @for($k = 0; $k < count($ctout); $k++)
-                                  <tr id="bubblyface{{$i}}">
-                                    <td><input type="radio" class="radioni" name="radioforchoose{{$i}}" id="radioforchoose{{$i}}{{$k}}"></td>
-                                    <td><label for="radioforchoose{{$i}}{{$k}}" name="imongmamaenervon{{$i}}">{{$bungkag[$j]->oop_desc}}</label></td>
-                                      <td hidden name="anothermama{{$i}}">{{$ctout[$k]}}</td>
-                                      <td class="text-center" name="formama{{$i}}">{{$aap[$k]}}</td>
-                                      <td class="text-center">&#8369;<label name="imongmama{{$i}}">{{$aat[$k]}}</label></td>
-                                  </tr>
-                                @endfor
-                              </table>
-                              <div class="row">
-                                <div class="col-sm-5"></div>
-                                 <div class="col-sm-5"></div>
-                                 <div class="col-sm-2"><button class="btn btn-success btn-block" id="addsummary{{$i}}" onclick="addsummary({{$i}})" style="border-radius: 0;background-color: #28B463;"><i class="fa fa-plus-circle"></i> Add</button></div>
-                               </div>
-                            </div>
-                          </div>
-                        </div>
-                        @php
-                        $i++;
-                        @endphp
-                    @endfor
-                  </div>
 
-              </div>
-              <div class="col-md-4">
-                <div class="sticky-top">
-                  <div id="asdfsqwqqwewqwee"></div>
-                  <div class="card text-white bg-light mb-3" style="border-top: 2px solid #ebda0f;border-radius: 0;box-shadow: 2px 5px 10px rgba(0,0,0,0.25);">
-                    <form method="POST" action="{{asset('client/payment')}}">
-                      {{csrf_field()}}
-                      <div class="card-header text-center" style="color: #28a745;background-color: #fff;">Payment Summary</div>
-                      <div class="card-body" id="paymentcont">
-                        <span style="color: red;">None</span>
-                      </div>
-                      <div class="card-footer">
-                        <span style="color: black; padding: .375rem .75rem;">Total &#8369;<label id="zxcasd1" style="padding: .375rem;">0</label>
+<div class="container">
+  	<div class="jumbotron" style="background-color: #fff;box-shadow: -5px 5px 10px rgba(0,0,0,0.25);border:1px solid rgba(0,0,0,.1)">
+		<div class="tab-content" id="myTabContent">
+			<div name="sorrybread" class="tab-pane fade show active" id="oop0" role="tabpanel" aria-labelledby="oop0-tab" >
+				<h3>Select Application Type</h3>
+			    <div class="list-group">
+			    	@if(count($appform) > 0)
+			  			@for($i = 0; $i < count($appform); $i++)
+						  	<label for="apptype{{$i}}" class="list-group-item list-group-item-action list-group-item-success" style="cursor: pointer;"><input id="apptype{{$i}}" type="radio" name="apptype" value="{{$appform[$i]->aptid}}" class="{{$appform[$i]->hfser_id}} {{$appform[$i]->appid}}"><span name="appname">&nbsp;{{$appform[$i]->facilityname}} - {{$appform[$i]->hfser_desc}} ({{$appform[$i]->aptdesc}})</span><span style="float: right;">Status: {{$appform[$i]->trns_desc}}</span></label>
+						@endfor
+					@else
+						<br>
+						<center><p id="noRecord" style="color: black;">Applications are either rejected or deleted, or not yet applied to an application.</p></center>
+						<script type="text/javascript">
+							setInterval(function() {
+								if(document.getElementById('noRecord').style.color == "black") {
+									document.getElementById('noRecord').style.color = "red";
+								} else {
+									document.getElementById('noRecord').style.color = "black";
+								}
+							}, 500);
+						</script>
+					@endif
+				</div>
+			</div>
+			<div name="sorrybread" class="tab-pane fade" id="oop1" role="tabpanel" aria-labelledby="oop1-tab">
+				<h3>Select Order of Payment</h3>
+			    <div class="list-group">
+			    	@if(count($oop) > 0)
+						@for($i = 0; $i < count($oop); $i++)
+							<label name="oopname" for="oooop{{$i}}" class="list-group-item list-group-item-action list-group-item-primary" style="cursor: pointer;"><input id="oooop{{$i}}" type="radio" name="oooop" value="{{$oop[$i]->oop_id}}">&nbsp;{{$oop[$i]->oop_desc}}</label>
+						@endfor
+					@else
+						<p>No record(s) for Order of Payment yet.</p>
+					@endif
+				</div>
+			</div>
+			<div name="sorrybread" class="tab-pane fade" id="oop2" role="tabpanel" aria-labelledby="oop2-tab">
+				<div class="row">
+					<div id="getId" class="col-sm-7">
+						<h4>Select Add-ons</h4>
+						<div class="row">
+							<div class="col-md-12">Application Type: <span id="editapp"></span></div>
+							<div class="col-md-12">Order Of Payment: <span id="editoop"></span></div>
+						</div>
+						<div id="accordion">
+							@for($i = 0; $i < count($category); $i++)
+							  <?php $cat_id1 = explode(",", $category[$i]->cat_id1); $cat_desc1 = explode(",", $category[$i]->cat_desc1); ?>
+							  <div style="box-shadow: -5px 5px 10px rgba(0,0,0,0.25);border-radius: 5px;" id="imongmama{{$i}}" name="{{$category[$i]->aptid}}" class="card fighting {{$category[$i]->oop_id}}">
+							    <a style="border-radius: 5px;" class="card-link bg-success text-white" data-toggle="collapse" href="#collapseOne{{$i}}" aria-expanded="true" aria-controls="collapseOne{{$i}}" onclick="change_aft('collapseOne{{$i}}')"><div class="card-header" id="headingOne{{$i}}">
+							          {{$category[$i]->oop_desc}}
+							    </div></a>
 
-                          <button id="asdfgggg" type="submit" style="background-color: #ebda0f;border-top-right-radius : 5px;border-top-left-radius : 5px;border-radius: 0;padding: .375rem .75rem; border: 1px solid transparent; float: right;" hidden>Continue <i class="fa fa-angle-right"></i>
-                            </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-      </div>
-    </div>
-  </div>
+							    <div id="collapseOne{{$i}}" class="collapse show" aria-labelledby="headingOne{{$i}}" data-parent="#accordion">
+							      <div class="card-body">
+							      	<div id="accordion{{$i}}">
+							      		@for($o = 0; $o < count($cat_id1); $o++)
+										  <div class="card" >
+										    <a class="card-link" data-toggle="collapse" href="#collapseOneTwo{{$i}}{{$o}}" aria-expanded="true" aria-controls="collapseOneTwo{{$i}}{{$o}}" onclick="change_aft('collapseOneTwo{{$i}}{{$o}}')"><div class="card-header" id="headingOne{{$i}}{{$o}}">
+												{{$cat_desc1[$o]}}
+										    </div></a>
+
+										    <div id="collapseOneTwo{{$i}}{{$o}}" class="collapse" aria-labelledby="headingOne{{$i}}{{$o}}" data-parent="#accordion1">
+										      <div class="card-body">
+										      	<table class="table">
+										      		<tr>
+										      			<th>Description</th>
+										      			<th class="text-center">Amount</th>
+										      			<th class="text-center">Option</th>
+										      		</tr>
+										      		<?php $code = array(); ?>
+											        @for($j = 0; $j < count($charges); $j++)
+											        	@if($charges[$j]->cat_id == $cat_id1[$o])
+											        	<?php $cheat = array_search($charges[$j]->chg_code, $code); ?>
+											        		@if($cheat == false)
+											        			<?php $cheat = array_push($code, $charges[$j]->chg_code); ?>
+												        		<tr>
+												        			<td>{{$charges[$j]->chg_desc}} {{$charges[$j]->chg_rmks}}</td>
+												        			<td class="text-center">&#8369;{{$charges[$j]->amt}}</td>
+												        			<td id="{{$i}}{{$o}}{{$j}}" class="text-center"><i class="fa fa-plus-circle" style="cursor: pointer;color: #28a745;" onclick="addSummary(['{{$charges[$j]->chg_code}}', '{{$cat_desc1[$o]}}', '{{$charges[$j]->chg_desc}} {{$charges[$j]->chg_rmks}}', '{{$charges[$j]->amt}}', '{{$charges[$j]->chgapp_id}}'], '{{$i}}{{$o}}{{$j}}')"></i></td>
+												        		</tr>
+												        	@endif
+											        	@endif
+											        @endfor
+										      	</table>
+										      </div>
+										    </div>
+										  </div>
+								  		@endfor
+									</div>
+							      </div>
+							    </div>
+							  </div>
+							@endfor
+						</div>
+					</div>
+					<div class="col-sm-5">
+						<div id="forStick" style="max-height: 100%;">
+							<div class="card" style="box-shadow: -5px 5px 10px rgba(0,0,0,0.25);">
+								<div class="card-header bg-success text-uppercase text-center" style="color:white;"><h5 style="margin:0;"><strong>Payment Summary</strong></h5></div>
+								<div class="card-body" style="overflow-y: scroll;">
+									<form id="formSubmit" name="formSubmit" method="POST" action="{{asset('client/payment')}}">
+										{{csrf_field()}}
+										<input type="hidden" name="hfser_id" id="hfser_id" value="">
+										<input type="hidden" name="appform_id" id="appform_id" value="">
+										@if(count($getAppPayment) > 0)
+											@for($i = 0; $i < count($getAppPayment); $i++)
+											<small><div id="paramatangtangimongmama{{$getAppPayment[$i]->aptid}}" name="{{$getAppPayment[$i]->aptid}}" class="fighting {{$getAppPayment[$i]->oop_id}}">
+												<p>PAYMENT<span style="float: right; color: red;">{{$getAppPayment[$i]->trns_desc}}</span></p>
+												<p>&#8369;{{$getAppPayment[$i]->oop_total}}</p>
+												<input type="hidden" name="desc[]" value="PAYMENT: {{$getAppPayment[$i]->oop_desc}}">
+												<input type="hidden" name="amount[]" value="{{$getAppPayment[$i]->oop_total}}">
+												<input type="hidden" name="chgapp_id[]" value="">
+											</div></small>
+											@endfor
+										@else
+											<small>Application form is either payed or not yet evaluated by the LO.</small>
+										@endif
+										<table class="table text-success">
+											<thead>
+												<tr>
+													<th>Description</th>
+													<th>Amount</th>
+													<th>Action</th>
+												</tr>
+											</thead>
+											<tbody id="paymentrecord">
+												<tr><td colspan="3">None</td></tr>
+											</tbody>
+										</table>
+									</form>
+								</div>
+								<div class="card-footer">
+									<label>Total: &#8369;<span id="tlpymnt">0</span></label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<button id="forprev" class="btn btn-info" style="float: left;" onclick="nst(-1)"><i class="fa fa-angle-left"></i> Prev</button>
+		<button id="fornext" class="btn btn-info" style="float: right;" onclick="nst(1)">Next <i class="fa fa-angle-right"></i></button>
+		<button id="forpaymentbtn" class="btn btn-warning" style="float: right;" form="formSubmit">Continue <i class="fa fa-credit-card"></i></button>
+
+	</div>
+				{{-- <div id="accordion">
+					<div class="card" style="box-shadow: -5px 5px 10px rgba(0,0,0,0.25);">
+					    <div class="card-header" id="headingOne">
+					      <h5 class="mb-0">
+					        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+					          Walk In Payment
+					        </button>
+					      </h5>
+					    </div>
+
+					    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+					      <div class="card-body">
+					      	<div class="container">
+					     	<div class="row">
+					     		<div class="col-sm-2"></div>
+					     		<div class="col-sm-4">Upload Official Receipt:</div>
+					     		<div class="col-sm-4"><input type="file" name=""></div>
+					     		<div class="col-sm-2"></div>
+					     	</div>
+					     	<div class="row">
+					     		<div class="col-sm-2"></div>
+					     		<div class="col-sm-4"><label>Date of Payment:</label></div>
+					     		<div class="col-sm-4"><input type="text" class="form-control" name=""></div>
+					     		<div class="col-sm-2"></div>
+					     	</div>
+					     	<div class="row">
+					     		<div class="col-sm-2"></div>
+					     		<div class="col-sm-4"><label>Reference Number</label></div>
+					     		<div class="col-sm-4"><input type="text" class="form-control" name=""></div>
+					     		<div class="col-sm-2"></div>
+					     	</div>
+					     	<div class="row">
+					     		<div class="col-sm-2"></div>
+					     		<div class="col-sm-4"><label>Amount:</label></div>
+					     		<div class="col-sm-4"><input type="text" class="form-control" name=""></div>
+					     		<div class="col-sm-2"></div>
+					     	</div>
+					       </div>
+					      </div>
+					      <div class="card-footer text-right">
+					      	<button id="forpaymentbtn" class="btn btn-success" form="formSubmit">Submit <i class="fa fa-send-o"></i></button>
+					      </div>
+					    </div>
+					  </div>
+				</div> --}}
+</div>
+ 
 <script type="text/javascript">
-  var asdf = "";
-  var intasd;
-  // var asdfj = [];
-  // var ttlasdf = [];
-  // var ttlasdf1 = [];
-  // var addsm = [];
-  // var foasdf = [];
-  var imongmama = [];
-  var laingmama = [];
+	var inOf2 = 0;
+	var curOop = "", cur_fac = "", cur_apid = "";
+	var forArr = [];
+	var forCode = [];
+	var forBtn = [];
+	var stickHeight_mn = 0;
+	var stickHeight_aft = 0;
+	var stickHeight_curr = 0;
+	var reuse = 0;
 
-  function addbtn(num){
-    asdf = num;
-    clearInterval(intasd);
-    intasd = setInterval(asdfgh, -1);
-  }
-  function asdfgh() {
-    var a = document.getElementById('addbtn'+asdf);
-    var b = document.getElementById('collapseOne'+asdf);
-    var content_active = '<i class="fa fa-times"></i>';
-    var content_inactive = '<i class="fa fa-plus"></i>';
-    var style_active = 'background-color: #ebda0f;padding: 19px;border-radius: 0;color: #28B463;margin: 0;cursor: pointer;';
-    var style_inactive = 'background-color: #28B463;padding: 19px;border-radius: 0;color: #fff;font-size: 18px;margin: 0;cursor: pointer;';
-    for(var i = 0; i < document.getElementsByClassName('yamod').length; i++){
-      document.getElementsByClassName('yamod')[i].innerHTML = content_inactive;
-      document.getElementsByClassName('yamod')[i].setAttribute('style', style_inactive);
-      document.getElementsByClassName('yamod')[i].value = 'inactive';
-    }
-    if (!b.classList.contains('show')) {
-      a.innerHTML = content_inactive;
-      a.setAttribute('style', style_inactive);
-      a.value = 'inactive';
-    } else {
-      a.innerHTML = content_active;
-      a.setAttribute('style', style_active);
-      a.value = 'active';
-    }
-  }
-  function fighting(fightvalue, anotherfighter) {
-    console.log([fightvalue, anotherfighter])
-    for(var i = 0; i < document.getElementsByClassName('fightingclass').length; i++){
-      document.getElementsByClassName('fightingclass')[i].setAttribute("hidden", true);
-    }
-    var inti = 0;
-    var cont1 = ((fightvalue != "maoni") ? true : false);
-    var cont2 = ((anotherfighter != "maoni") ? true : false);
-    if(cont1 == true) {
-      for(var i = 0; i < document.getElementsByName(fightvalue).length; i++){
-        if(cont2 == true) {
-          for(var j = 0; j < document.getElementsByClassName(anotherfighter).length; j++){
-            if(document.getElementsByClassName(anotherfighter)[j].getAttribute("name") == fightvalue){
-              document.getElementsByClassName(anotherfighter)[j].removeAttribute("hidden"); 
-            }
-          }
-        } else {
-          document.getElementsByName(fightvalue)[i].removeAttribute("hidden");
-        }
-      }
-    } else {
-      if(cont2 == true) {
-        for(var i = 0; i < document.getElementsByClassName(anotherfighter).length; i++){
-          document.getElementsByClassName(anotherfighter)[i].removeAttribute("hidden");
-        }
-      } else {
-        inti = 1;
-      }
-    }
+	function nst(inOf) {
+		inOf2 = inOf2 + inOf;
+		for(var i = 0; i < document.getElementsByName('sorrybread').length; i++) {
+			document.getElementsByName('sorrybread')[i].classList.remove('show');
+			document.getElementsByName('sorrybread')[i].classList.remove('active');
+		}
+		if(inOf2 == 0) {
+			document.getElementById('forprev').setAttribute("hidden", true);
+			document.getElementById('forpaymentbtn').setAttribute("hidden", true);
+		} else {
+			document.getElementById('forprev').removeAttribute("hidden");
+			document.getElementById('forpaymentbtn').setAttribute("hidden", true);
+		}
+		if(inOf2 == (document.getElementsByName('sorrybread').length - 1)) {
+			document.getElementById('fornext').setAttribute("hidden", true);
+			document.getElementById('forpaymentbtn').removeAttribute("hidden");
+		} else {
+			document.getElementById('fornext').removeAttribute("hidden");
+			document.getElementById('forpaymentbtn').setAttribute("hidden", true);
+		}
+		if(inOf2 > 0) {
+			laterbread();
+		}
 
-    if(inti == 1) {
-      for(var i = 0; i < document.getElementsByClassName('fightingclass').length; i++){
-        document.getElementsByClassName('fightingclass')[i].removeAttribute("hidden");
-      }
-    }
-  }
-  function addsummary(mama){
-    for(var i = 0; i < document.getElementsByName('radioforchoose'+mama).length; i++){
-      if(document.getElementsByName('radioforchoose'+mama)[i].checked == true) {
-        var imongpapa = [document.getElementsByName('anothermama'+mama)[i].textContent, document.getElementsByName('fightingmama'+mama)[i].textContent, document.getElementsByName('imongmamaenervon'+mama)[i].textContent, document.getElementsByName('formama'+mama)[i].textContent, document.getElementsByName('imongmama'+mama)[i].textContent];
+		document.getElementsByName('sorrybread')[inOf2].classList.add('show');
+		document.getElementsByName('sorrybread')[inOf2].classList.add('active');
+	}
+	function laterbread() {
+		var aptid = "";
+		var oop_id = "";
+		var appname = "";
+		var oopname = "";
+		if(curOop != "") {
+			if(curOop == oop_id) {
 
-        var indOf = laingmama.indexOf(document.getElementsByName('anothermama'+mama)[i].textContent);
-        if(indOf > -1) {
-          laingmama.splice(indOf, 1, document.getElementsByName('anothermama'+mama)[i].textContent);
-          imongmama.splice(indOf, 1, imongpapa);
-        } else {
-          laingmama.push(document.getElementsByName('anothermama'+mama)[i].textContent);
-          imongmama.push(imongpapa);
-        }
-      }
-    }
-    imongmamamhelf();
-  }
+			} else {
+				document.getElementById('paymentrecord').innerHTML = '<tr><td colspan="3">None</td></tr>';
+				document.getElementById('tlpymnt').innerHTML = '0';
+				forArr = []; forCode = []; forBtn = [];
+				curOop = oop_id;
+			}
+		} else {
+			forArr = []; forCode = []; forBtn = [];
+			curOop = oop_id;
+		}
+ 		for(var i = 0; i < document.getElementsByClassName('fighting').length; i++) {
+ 			document.getElementsByClassName('fighting')[i].setAttribute('hidden', true);
+ 		}
+		for(var i = 0; i < document.getElementsByName('oooop').length; i++) {
+			if(document.getElementsByName('oooop')[i].checked == true) {
+				oop_id = document.getElementsByName('oooop')[i].value;
+				oopname = document.getElementsByName('oopname')[i].textContent;
+			}
+		}
+		for(var i = 0; i < document.getElementsByName('apptype').length; i++) {
+			if(document.getElementsByName('apptype')[i].checked == true) {
+				aptid = document.getElementsByName('apptype')[i].value;
+				appname = document.getElementsByName('appname')[i].textContent;
+				cur_fac = document.getElementsByName('apptype')[i].classList[0];
+				cur_apid = document.getElementsByName('apptype')[i].classList[1];
+				localStorage.setItem('cur_fac', document.getElementsByName('apptype')[i].classList[0]);
+				localStorage.setItem('cur_apid', document.getElementsByName('apptype')[i].classList[1]);
+				document.getElementById('hfser_id').value = document.getElementsByName('apptype')[i].classList[0];
+				document.getElementById('appform_id').value = document.getElementsByName('apptype')[i].classList[1];
+			}
+		}
 
-  function imongmamamhelf() {
-    document.getElementById('paymentcont').innerHTML = "";
-    if(imongmama.length < 1) {
-      document.getElementById('paymentcont').innerHTML = '<span style="color: red;">None</span>';
-      document.getElementById('zxcasd1').innerHTML = '0';
-      document.getElementById('asdfgggg').setAttribute('hidden', true);
-    } else {
-      var total = 0;
-      for(var i = 0; i < imongmama.length; i++){
-        document.getElementById('paymentcont').innerHTML += '<button type="button"  class="btn-block text-left" data-toggle="collapse" data-target="#psummary'+i+'" style="border: 0;background-color: #fff;">'+'<small>'+imongmama[i][1]+'</small>'+'<i class="fa fa-angle-down" style="float: right; margin-top: 3px;"></i></button><div id="psummary'+i+'" class="container collapse" style="color: #000;"><small>'+imongmama[i][2]+' '+imongmama[i][3]+' (&#8369;'+imongmama[i][4]+')<input type="hidden" name="desc[]" value="'+imongmama[i][2]+' ('+imongmama[i][1]+')"><input type="hidden" name="amount[]" value="'+imongmama[i][4]+'"></small><i class="fa fa-times-circle" style="color:red; float:right;cursor:pointer;margin-top: 5px;" onclick="del_item('+i+')"></i></div>';
-        total = total + parseInt(imongmama[i][4]);
-      }
-      document.getElementById('zxcasd1').innerHTML = total;
-      document.getElementById('asdfgggg').removeAttribute('hidden');
-    }
-  }
+	 	if(aptid == "") { nst(-1); }
+	 	if(oop_id == "" && inOf2 > 1) { nst(-1); }
+		if(aptid != "" && oop_id != "") {
+			localStorage.setItem('curOop', curOop);
+	 		for(var i = 0; i < document.getElementsByName(aptid).length; i++) {
+	 			var id = document.getElementsByName(aptid)[i].id;
+ 				if(document.getElementById('paramatangtangimongmama'+aptid) != null) {
+ 					document.getElementById('paramatangtangimongmama'+aptid).getElementsByTagName('input')[0].setAttribute('name', '');
+					document.getElementById('paramatangtangimongmama'+aptid).getElementsByTagName('input')[1].setAttribute('name', '');
+ 				}
+	 			for(var j = 0; j < document.getElementsByClassName(oop_id).length; j++) {
+		 			if(id == document.getElementsByClassName(oop_id)[j].id) {
+		 				document.getElementById(id).removeAttribute('hidden');
+		 				if(document.getElementById('paramatangtangimongmama'+aptid) != null) {
+		 					document.getElementById('paramatangtangimongmama'+aptid).getElementsByTagName('input')[0].setAttribute('name', 'desc[]');
+		 					document.getElementById('paramatangtangimongmama'+aptid).getElementsByTagName('input')[1].setAttribute('name', 'amount[]');
+		 				}
+		 				document.getElementById('editapp').innerHTML = appname;
+		 				document.getElementById('editoop').innerHTML = oopname;
 
-  function del_item(inOf2) {
-    laingmama.splice(inOf2, 1);
-    imongmama.splice(inOf2, 1);
-    imongmamamhelf()
-  }
-   function asddfasfsfasdfasdf() { if(window.scrollY > 149) { document.getElementById('asdfsqwqqwewqwee').setAttribute("style", "height: 28px;"); } else { document.getElementById('asdfsqwqqwewqwee').setAttribute("style", ""); } }
-  window.addEventListener('scroll', asddfasfsfasdfasdf);
-  // window.addEventListener('load', asddfasfsfasdfasdf);
-  window.addEventListener('load', function(){
-    asddfasfsfasdfasdf(); loadallradion();
-  });
-  function loadallradion() {
-    var bol = localStorage.getItem('forradio');
-    var j = 0;
-    if(bol == undefined || bol == null) { } else { var arrsim = bol.split(','); for(var i = 0; i < arrsim.length; i++) { document.getElementsByClassName('radioni')[arrsim[i]].checked = true; document.getElementsByClassName('radioni')[arrsim[i]].click(); } }
-    for(var i = 0; i < document.getElementsByClassName('radioni').length; i++) { if(document.getElementsByClassName('radioni')[i].checked == false){ if(document.getElementsByClassName('radioni')[(i+1)].checked == false) { } else { document.getElementById('addsummary'+j).click(); } } else { document.getElementById('addsummary'+j).click(); } document.getElementsByClassName('radioni')[i].addEventListener('change', newfucn); document.getElementsByClassName('radioni')[(i+1)].addEventListener('change', newfucn); i++; j++; }
-  }
-  function newfucn() {
-    var sadfgag = [];
-    for(var i = 0; i < document.getElementsByClassName('radioni').length; i++) { if(document.getElementsByClassName('radioni')[i].checked == false){ if(document.getElementsByClassName('radioni')[(i+1)].checked == false) { } else { sadfgag.push((i+1)); } } else { sadfgag.push(i); } i++; }
-      localStorage.setItem('forradio', sadfgag);
-  }
+						stickHeight_mn = document.getElementById('getId').offsetHeight;
+		 			}
+		 		}
+	 		}
+	 	}
+	}
+	function sticktop() {
+	    var y = parseFloat((parseFloat(document.body.offsetHeight) - parseFloat(document.getElementById('forStick').offsetHeight)) - parseFloat(document.getElementById('forStick').offsetHeight)) - 35;
+		var x = parseFloat(parseFloat(window.innerHeight) + parseFloat(window.scrollY)) - parseFloat(document.getElementById('forStick').offsetHeight);
+		stickHeight_mn = ((stickHeight_mn < 1) ? document.getElementById('getId').offsetHeight : stickHeight_mn);
+		stickHeight_curr = document.getElementById('getId').offsetHeight;
+		var stickHeight = ((stickHeight_aft < 1) ? stickHeight_mn : stickHeight_aft);
+		if(window.scrollY > 149) {
+		    if(y <= x) {
+		        document.getElementById('forStick').setAttribute("style", 'max-height: 100%;');
+		        document.getElementById('forStick').getElementsByClassName('card')[0].style.height = ''+stickHeight+'px';
+		    } else {
+		    	//position: fixed; top: 0; margin-top: 28px; 
+		      	document.getElementById('forStick').setAttribute('style', 'max-height: 100%;');
+		        document.getElementById('forStick').getElementsByClassName('card')[0].style.height = ''+stickHeight+'px';
+		    }
+		}
+		else {
+		    document.getElementById('forStick').setAttribute("style", 'max-height: 100%;');
+		    document.getElementById('forStick').getElementsByClassName('card')[0].style.height = ''+stickHeight+'px';
+		}
+		setTimeout(function() {if(reuse > 0 && stickHeight_curr != stickHeight_aft) {suwayandaw(stickHeight_curr); }}, 430);
+	}
+	function addSummary(arr, btnid) {
+		var searchCode = forBtn.indexOf(btnid);
+		if(searchCode < 0) {
+			forArr.push(arr);
+			forBtn.push(btnid);
+			forCode.push(arr[0]);
+		}
+		disp_dt();
+	}
+	function disp_dt() {
+		var total = 0;
+		document.getElementById('paymentrecord').innerHTML = '';
+		localStorage.setItem('forArr', JSON.stringify(forArr));
+		localStorage.setItem('forBtn', JSON.stringify(forBtn));
+		localStorage.setItem('forCode', JSON.stringify(forCode));
+		for(var i = 0; i < forArr.length; i++) {
+			document.getElementById(forBtn[i]).getElementsByTagName('i')[0].setAttribute('class', 'fa fa-check');
+			document.getElementById(forBtn[i]).getElementsByTagName('i')[0].setAttribute('style', 'color: #28a745;');
+
+			document.getElementById('paymentrecord').innerHTML += '<tr><td>'+forArr[i][2]+'<input type="hidden" name="chgapp_id[]" value="'+forArr[i][4]+'"><input type="hidden" name="desc[]" value="'+forArr[i][2]+'"></td><td>&#8369;'+forArr[i][3]+'<input type="hidden" name="amount[]" value="'+forArr[i][3]+'"></td><td class="text-center"><i class="fa fa-times-circle" style="cursor: pointer;color: #C60000;" onclick="delSummary('+i+')"></i></td></tr>';
+			total=total+parseInt(forArr[i][3]);
+		}
+		document.getElementById('tlpymnt').innerHTML = total;
+	}
+	function delSummary(inf) {
+		document.getElementById(forBtn[inf]).getElementsByTagName('i')[0].setAttribute('class', 'fa fa-plus-circle');
+		document.getElementById(forBtn[inf]).getElementsByTagName('i')[0].setAttribute('style', 'cursor: pointer; color: #28a745;');
+
+		forArr.splice(inf, 1);
+		forBtn.splice(inf, 1);
+		forCode.splice(inf, 1);
+		disp_dt();
+	}
+	function onLoadCheck() {
+		if(localStorage.getItem('forArr') != null || localStorage.getItem('forArr') != undefined) {
+			forArr = JSON.parse(localStorage.getItem('forArr'));
+			forBtn = JSON.parse(localStorage.getItem('forBtn'));
+			forCode = JSON.parse(localStorage.getItem('forCode'));
+			curOop = localStorage.getItem('curOop');
+			cur_fac = localStorage.getItem('cur_fac');
+		}
+	}
+	function change_aft(div_cl) {
+		var forInterval_cl;
+		var bool_stat;
+		clearTimeout(forInterval_cl);
+		forInterval_cl = setInterval(function() {
+			stickHeight_curr = document.getElementById('getId').offsetHeight;
+			bool_stat = document.getElementById(div_cl).classList.contains('show');
+			if(bool_stat == true) {
+				reuse++;
+				stickHeight_aft = document.getElementById('getId').offsetHeight;
+				clearTimeout(forInterval_cl);
+				sticktop();
+			} else {
+				if(reuse > 0) { reuse--; }
+				stickHeight_aft = stickHeight_mn;
+				clearTimeout(forInterval_cl);
+				// suwayandaw(document.getElementById('getId').offsetHeight);
+			}
+		}, 430);
+	}
+	function suwayandaw(stHeight) {
+		stickHeight_aft = stHeight;
+	}
+	// function stickTopGroup() {
+	// 	var downDiv = document.getElementById('myTabContent').offsetTop + document.getElementById('formSubmit').offsetTop;
+	// 	if(window.scrollY < downDiv) {
+
+	// 	} else {
+	// 		document.getElementById('forStick').getElementsByClassName('card')[0].getElementsByClassName('card-body')[0].style.marginTop = document.getElementsByClassName('sticky-top')[0].offsetHeight + (window.scrollY - downDiv)+'px';
+	// 	}
+	// }
+	window.addEventListener('load', function() {
+		onLoadCheck();
+	});
+	setInterval(sticktop, -1);
+	nst(0);
 </script>
+<hr>
 @include('client.sitemap')
- @endsection
+@endsection

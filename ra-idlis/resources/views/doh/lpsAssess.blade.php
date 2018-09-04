@@ -19,21 +19,27 @@
                         <option value="">Select Application Type.. </option>
                </select>
                <datalist id="grp_list">
+                @isset($types)
                 @foreach ($types as $type)
                   <option value="{{$type->hfser_id}}">{{$type->hfser_desc}}</option>
                 @endforeach
+                @endisset
               </datalist>
               &nbsp;
-              @if ($employeeGRP == "NA")
-              <input type="text" class="form-control" id="filtererReg" list="rgn_list" onchange="" placeholder="Select Region">
-              @endif
+              @isset($employeeGRP)
+                @if ($employeeGRP == "NA")
+                <input type="text" class="form-control" id="filtererReg" list="rgn_list" onchange="" placeholder="Select Region">
+                @endif
+              @endisset
               <datalist id="rgn_list">
-                @foreach ($regions as $region)
-                  <option value="{{$region->rgn_desc}}">{{$region->rgnid}}</option>
-                @endforeach
+                @isset($regions)
+                  @foreach ($regions as $region)
+                    <option value="{{$region->rgn_desc}}">{{$region->rgnid}}</option>
+                  @endforeach
+                @endisset
               </datalist>
               &nbsp;
-              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});">Filter</button>
+              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('@isset($employeeGRP){{$employeeGRP}}@endisset',@isset($employeeREGION){{$employeeREGION}}@endisset);">Filter</button>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
            </div>
@@ -58,33 +64,26 @@
                         $paid = $data->appid_payment;
                         $reco = $data->isrecommended;
                         $ifdisabled = '';$color = '';
-                          if ($data->isrecommended === null) {
-                              $status = 'For Evaluation';
-                              $color = 'blue';
-                          } else if ($data->isrecommended == 0){
-                            $status = 'Application Rejected';
-                            $color = 'red';
-                          }
-                          else {
-                             $status = 'Application Approved';
-                             $color = 'green';
-                          }
-                          if ($paid == null || paid == 0) {
-                              $status = 'For Evaluation (Not Paid)';
-                              $color = 'red';
-                              $ifdisabled = 'disabled';
-                          }
+                        // if ($data->isInspected == null ) {
+                        //       $OptBtn = "<button type=\"button\" title=\"Assess ".$data->facilityname."\" class=\"btn-defaults\" onclick=\"window.location.href=\"".asset('employee/dashboard/lps/assess')."/".$data->appid."/inspect\"  ".$ifdisabled."><i class=\"fa fa-fw fa-clipboard-check\"></i></button>";
+                        //   } else {
+                        //       $OptBtn = "<button type\"button\" title=\"View ".$data->facilityname."\" class=\"btn-defaults\" onclick=\"window.location.href=\'".asset('employee/dashboard/lps/assess')."/".$data->appid."/view\"  ".$ifdisabled."><i class=\"fa fa-fw fa-clipboard-check\"></i></button>";
+                        //   }
                       @endphp
                       <tr>
                         <td>{{$data->hfser_id}}</td>
                         <td>{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}</td>
                         <td><strong>{{$data->facilityname}}</strong></td>
-                        <td>{{$data->facname}}</td>
-                        <td>{{$data->formattedDate}}</td>
+                        <td class="text-center">{{$data->facname}}</td>
+                        <td class="text-center">{{$data->formattedDate}}</td>
                         <td>{{$data->aptdesc}}</td>
-                        <td style="color:{{$color}};font-weight:bold;">{{$status}}</td>
+                        <td style="color:{{$color}};font-weight:bold;" class="text-center">{{$data->trns_desc}}</td>
                           <td>
-                              <button type="button" title="Evaluate {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}', '{{$data->brgyname}}', '{{$data->classname}}','{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}', '{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', {{$data->provname}}, '{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', {{$data->isrecommended}}', '{{$data->hfser_id}}', {{$data->appid_payment}});"  {{$ifdisabled}}><i class="fa fa-fw fa-clipboard-check"></i></button>
+                            @if ($data->isInspected != null)
+                              <button type="button" title="Assess {{$data->facilityname}}" class="btn-defaults" onclick="window.location.href='{{asset('employee/dashboard/lps/assess')}}/{{$data->uid}}/{{$data->appid}}/inspect'"><i class="fa fa-fw fa-clipboard-check"></i></button>
+                            @else
+                                  <button type="button" title="View {{$data->facilityname}}" class="btn-defaults" onclick="window.location.href='{{asset('employee/dashboard/lps/assess')}}/{{$data->uid}}/{{$data->appid}}/view'"><i class="fa fa-fw fa-clipboard-check"></i></button>
+                            @endif
                           </td>
                       </tr>
                       @endforeach
@@ -180,7 +179,7 @@
                 rgnid = id[test];
               }
           } else {
-            rgnid = '{{$employeeREGION}}';
+            rgnid = '@isset($employeeREGION){{$employeeREGION}}@else{{0}}@endisset';
           } 
         }
 
@@ -189,10 +188,11 @@
               url: '{{asset('/lps/getLPS')}}',
               method: 'POST',
               data : {_token : $('#token').val(), hfser_ID : hfser_id, facID : facid, rgnID : rgnid, grpid : grpID},
-              success : function(data){
+              success : function(x){
                 // console.log(data);
                   if (data != 'NONE') {
                       $('#FilterdBody').empty();
+                      var data = x.data;
                       for (var i = 0; i < data.length; i++) {
                           var status = '';
                           var paid = data[i].appid_payment;
@@ -212,7 +212,12 @@
                           //     // status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
                           //     // ifdisabled = 'disabled';
                           // }
-                          
+                          var OptBtn = ''
+                          if (data[i].isInspected == null ) {
+                              OptBtn = '<button type="button" title="Assess '+data[i].facilityname+'" class="btn-defaults" onclick="window.location.href=\'{{asset('employee/dashboard/lps/assess')}}/'+data[i].appid+'/inspect\'"  '+ifdisabled+'><i class="fa fa-fw fa-clipboard-check"></i></button>';
+                          } else {
+                              OptBtn = '<button type="button" title="View '+data[i].facilityname+'" class="btn-defaults" onclick="window.location.href=\'{{asset('employee/dashboard/lps/assess')}}/'+data[i].appid+'/view\'"  '+ifdisabled+'><i class="fa fa-fw fa-clipboard-check"></i></button>';
+                          }
                           // var app = data[i].approved
                           $('#FilterdBody').append(
                                 '<tr>'+
@@ -224,8 +229,7 @@
                                   '<td class="text-center">'+data[i].formattedDate+'</td>'+
                                   '<td class="text-center">'+data[i].aptdesc+'</td>' +
                                   '<td class="text-center">'+data[i].trns_desc+'</td>'+
-                                  '<td><center>'+
-                                        '<button type="button" title="Evaluate '+data[i].facilityname+'" class="btn-defaults" onclick="window.location.href=\'{{asset('employee/dashboard/lps/assess')}}/'+data[i].appid+'\'"  '+ifdisabled+'><i class="fa fa-fw fa-clipboard-check"></i></button>'+
+                                  '<td><center>' + OptBtn +
                                   // showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+');
                                   '</center></td>'+
                                   // data-toggle="modal" data-target="#GodModal"

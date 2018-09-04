@@ -140,7 +140,7 @@
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                             </ul>
                         </li>
-                        {{-- <li><a href="{{ asset('/employee/dashboard/mf/settings')}}">&nbsp;&nbsp;<i class="fa fa-gears"></i>&nbsp;System Settings</a></li> --}}
+                        <li><a href="{{ asset('/employee/dashboard/mf/settings')}}">&nbsp;&nbsp;<i class="fa fa-gears"></i>&nbsp;System Settings</a></li>
                         @endif
                     </ul>
                 </li>
@@ -153,8 +153,11 @@
                         @endif
                         <li class=""><a href="{{asset('/employee/dashboard/lps/evaluate')}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
                         <li class=""><a href="{{asset('/employee/dashboard/lps/assess')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
-                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
-                        <li class=""><a href="{{-- {{asset('employee/dashboard/personnel/regional')} --}}#">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/cashier')}}">&nbsp;&nbsp;&nbsp;&nbsp;Cashiering</a></li>
+                        @if ($employeeData->grpid == 'NA' || $employeeData->grpid == "RA")
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/approval')}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
+                        @endif
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/failed')}}">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>
                     </ul>
                 </li>
                 <li><a href="#" ><i class="fa fa-chart-bar"></i> Report</a></li>                
@@ -167,9 +170,13 @@
                             </li>
                             @endif
                             <li>
+                                @if($employeeData->grpid == 'NA' || $employeeData->grpid == 'RA')
                                 <a href="{{ route('mngSystemUsers') }}"><i class="fa fa-user-circle"></i> System Users</a>
+                                @endif
                                 <a href="{{ asset('employee/dashboard/manage/applicants') }}"><i class="fa fa-users"></i> Applicant Accounts</a>
+                                @if ($employeeData->grpid == 'NA')
                                 <a href="{{ asset('employee/dashboard/manage/system_logs') }}"><i class="fa fa-history"></i> System Logs</a>
+                                @endif
                             </li>
                             {{-- <li><a href="#perso" data-toggle="collapse"><i class="fa fa-fw fa-users"></i> Users
                                 </a>

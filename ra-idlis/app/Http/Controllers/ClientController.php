@@ -11,6 +11,7 @@ use Hash;
 use Illuminate\Support\Facades\Storage;
 use DB;
 use Carbon\Carbon;
+use Session;
 class ClientController extends Controller
 {
     public function clientlogin(Request $request){
@@ -102,7 +103,6 @@ class ClientController extends Controller
           }
           else {
             // $data1 = array('name'=>$data['facility_name'], 'token'=>$data['token']);
-   
             // Mail::send(['text'=>'mail'], $data1, function($message) use ($data) {
             //    $message->to($data['email'], $data['facility_name'])->subject
             //       ('Verify your Account in DOH OLRS');
@@ -141,27 +141,38 @@ class ClientController extends Controller
         }    
     }
     public function home(Request $request){
+      $result = [];
+      $draft_ok = 0;
+      $draft_not = 0;
     	if($request->isMethod('get')){
         $employeeData = session('client_data');
         $result = DB::table('app_assessment')->where('uid', '=', $employeeData->uid )->where('draft', '=', '0')->get();
+        $clientAppyInformation = "SELECT hf.hfser_desc, ap.hfser_id, ap.t_date, ap.proposedInspectiondate, ap.proposedInspectiondate, ts.canapply FROM appform ap LEFT JOIN hfaci_serv_type hf ON ap.hfser_id = hf.hfser_id LEFT JOIN trans_status ts ON ts.trns_id = ap.status WHERE ap.uid = '$employeeData->uid'";
+        $getApp = DB::select($clientAppyInformation);
         $draft_ok = 0;
         $draft_not = 0;
-        foreach ($result as $ind_res) {
-          switch ($ind_res->complied) {
-            case $ind_res=='0':
-              $draft_not++;
-              break;
-            case $ind_res!='0':
-              $draft_ok++;
-              break;
-            
-            default:
-              $draft_not++;
-              break;
-          }
+        if(count($result) > 0) {
+          foreach ($result as $ind_res) {
+            switch ($ind_res->complied) {
+              case $ind_res=='0':
+                $draft_not++;
+                break;
+              case $ind_res!='0':
+                $draft_ok++;
+                break;
+              
+              default:
+                $draft_not++;
+                break;
+            }
 
+          }
+        } else {
+          $result = [];
+          $draft_ok = -1;
+          $draft_not = -1;
         }
-    		return view('client.index', compact(['result'],['draft_ok'],['draft_not']));
+    		return view('client.index', compact(['result'],['draft_ok'],['draft_not'],['getApp']));
     	}
     }
     public function apply(Request $request){
@@ -174,35 +185,63 @@ class ClientController extends Controller
      		return view('client.apply', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     	}
     }
-     public function evaluate(Request $request){
+     public function evaluate(Request $request, $appid){
     	if($request->isMethod('get')){
-          // $data0 = DB::table('appform')
-          //               ->join('x08', 'appform.uid', '=', 'x08.uid')
-          //               ->join('barangay', 'x08.barangay', '=', 'barangay.brgyid')
-          //               ->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
-          //               ->join('province', 'x08.province', '=', 'province.provid')
-          //               ->join('type_facility', 'appform.hfser_id', '=', 'type_facility.hfser_id') 
-          //               ->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
-          //               // ->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
-          //               // , 'orderofpayment.*'
-          //               ->select('appform.uid', 'appform.appid', 'appform.isrecommended', 'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'appform.recommendedtime', 'appform.recommendeddate', 'type_facility.*', 'appform.proposedInspectiontime', 'appform.proposedInspectiondate', 'appform.status', 'trans_status.trns_desc')
-          //               ->where('appform.appid', '=', $appid)
-          //               // , 'type_facility.*', 'orderofpayment.*'
-          //               // ->where('type_facility.facid', '=', 'appform.facid')
-          //               ->first();
-          //   if ($data0->recommendedtime !== null && $data0->recommendeddate !== null) {
-          //     $newT = Carbon::parse($data0->proposedInspectiontime);
-          //     $data0->formattedPropTime = $newT->format('g:i A');
-          //     $newD = Carbon::parse($data0->proposedInspectiondate);
-          //     $data0->formattedPropDate = $newD->toFormattedDateString();
-          //   }
-          //   $data1 = DB::table('appform')
-          //               ->join('app_upload', 'appform.appid', '=', 'app_upload.app_id')
-          //               ->join('upload', 'app_upload.upid', '=', 'upload.upid')
-          //               ->select('appform.appid', 'appform.facid', 'app_upload.*', 'upload.updesc')
-          //               ->where('appform.appid', '=', $appid)
-          //               ->get();
-    		return view('client.evaluate');
+        $data0 = DB::table('appform')
+                        ->join('x08', 'appform.uid', '=', 'x08.uid')
+                        ->join('barangay', 'x08.barangay', '=', 'barangay.brgyid')
+                        ->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+                        ->join('province', 'x08.province', '=', 'province.provid')
+                        ->join('type_facility', 'appform.hfser_id', '=', 'type_facility.hfser_id') 
+                        ->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+                        // ->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
+                        // , 'orderofpayment.*'
+                        ->select('appform.uid', 'appform.appid', 'appform.isrecommended', 'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'appform.recommendedtime', 'appform.recommendeddate', 'type_facility.*', 'appform.proposedInspectiontime', 'appform.proposedInspectiondate', 'appform.status', 'trans_status.trns_desc')
+                        ->where('appform.appid', '=', $appid)
+                        // , 'type_facility.*', 'orderofpayment.*'
+                        // ->where('type_facility.facid', '=', 'appform.facid')
+                        ->first();
+            if ($data0->recommendedtime !== null && $data0->recommendeddate !== null) {
+              $newT = Carbon::parse($data0->proposedInspectiontime);
+              $data0->formattedPropTime = $newT->format('g:i A');
+              $newD = Carbon::parse($data0->proposedInspectiondate);
+              $data0->formattedPropDate = $newD->toFormattedDateString();
+            }
+          $data1 = DB::table('appform')
+                        ->join('app_upload', 'appform.appid', '=', 'app_upload.app_id')
+                        ->join('upload', 'app_upload.upid', '=', 'upload.upid')
+                        ->select('appform.appid', 'appform.facid', 'app_upload.*', 'upload.updesc')
+                        ->where('appform.appid', '=', $appid)
+                        ->get();
+            $data2 = DB::table('appform') // Rejected Applications
+                        ->join('app_upload', 'appform.appid', '=', 'app_upload.app_id')
+                        ->join('upload', 'app_upload.upid', '=', 'upload.upid')
+                        ->select('appform.appid', 'app_upload.*', 'upload.updesc')
+                        ->where('appform.appid', '=', $appid)
+                        ->where('app_upload.evaluation', '=', 0)
+                        ->get();
+            $data3 = DB::table('appform') // Applications
+                        ->join('app_upload', 'appform.appid', '=', 'app_upload.app_id')
+                        ->join('upload', 'app_upload.upid', '=', 'upload.upid')
+                        ->select('appform.appid', 'app_upload.*', 'upload.updesc')
+                        ->where('appform.appid', '=', $appid)
+                        // ->where('app_upload.evaluation', '=', 0)
+                        ->get();
+            $data4 = DB::table('appform') // Approved Applications
+                        ->join('app_upload', 'appform.appid', '=', 'app_upload.app_id')
+                        ->join('upload', 'app_upload.upid', '=', 'upload.upid')
+                        ->select('appform.appid', 'app_upload.*', 'upload.updesc')
+                        ->where('appform.appid', '=', $appid)
+                        ->where('app_upload.evaluation', '=', 1)
+                        ->get();
+            $data5 = DB::table('appform') // Approved Applications
+                        ->join('app_upload', 'appform.appid', '=', 'app_upload.app_id')
+                        ->join('upload', 'app_upload.upid', '=', 'upload.upid')
+                        ->select('appform.appid', 'app_upload.*', 'upload.updesc')
+                        ->where('appform.appid', '=', $appid)
+                        ->where('app_upload.evaluation', '=', null)
+                        ->get();
+    		return view('client.evaluate', ['AppData'=> $data0,     'UploadData' => $data1, 'numOfX' => count($data2), 'numOfApp' => count($data3), 'numOfAprv'=> count($data4), 'numOfNull' => count($data5)]);
     	}
     }
     public function apply2(Request $request){
@@ -212,8 +251,12 @@ class ClientController extends Controller
       }
     }
     public function inspection(Request $request){
+      $employeeData = session('client_data');
     	if($request->isMethod('get')){
-    		return view('client.inspection');
+        $sql = "SELECT asmt.asmt_id, asmt.asmt_name, aa.isapproved, aa.remarks, pp.partid, pp.partdesc FROM assessment asmt INNER JOIN app_assessment aa ON asmt.asmt_id = aa.asmt_id LEFT JOIN part pp ON pp.partid = asmt.partid WHERE aa.uid = '$employeeData->uid'";
+        $insql = DB::select($sql);
+        $part = DB::table('part')->get();
+    		return view('client.inspection', ['inspect' => $insql, 'part'=>$part], compact(['insql']));
     	}
     }
       public function inspection2(Request $request){
@@ -227,9 +270,15 @@ class ClientController extends Controller
     	}
     }
      public function issuance(Request $request){
+      $data = session('client_data');
+      $sql = "SELECT x8.facilityname, ft.facname, CONCAT(x8.streetname, ', ', bg.brgyname, ', ', cm.cmname, ', ', rg.rgn_desc) AS loc, cl.classname, CONCAT(UPPER(x8.rgnid), '-', UPPER(LPAD(ap.appid, 4, '0')), '-', UPPER(ap.facid), '-', UPPER(ap.ocid)) AS license, CONCAT('1 January – 31 December ', (CASE WHEN EXTRACT(MONTH FROM x8.t_date) < (SELECT mtny FROM m99 LIMIT 1) THEN EXTRACT(YEAR FROM x8.t_date) ELSE (EXTRACT(YEAR FROM x8.t_date) - 1) END)) AS validity, x8.t_date, (SELECT sec_name FROM m99) AS sec_name, hs.hfser_desc FROM appform ap LEFT JOIN x08 x8 ON ap.uid = x8.uid LEFT JOIN facilitytyp ft ON ft.facid = ap.facid LEFT JOIN region rg ON rg.rgnid = x8.rgnid LEFT JOIN city_muni cm ON cm.cmid = x8.city_muni LEFT JOIN barangay bg ON bg.brgyid = x8.barangay LEFT JOIN class cl ON cl.classid = ap.classid LEFT JOIN hfaci_serv_type hs ON hs.hfser_id = ap.hfser_id WHERE ap.uid = '$data->uid' AND ap.status = 'A'";
+      $issuance = DB::select($sql);
     	if($request->isMethod('get')){
-    		return view('client.issuance');
+    		return view('client.issuance', ['issuance'=>$issuance]);
     	}
+      if($request->isMethod('post')) {
+        dd($request->all());
+      }
     }
     public function orderofpaymentc(Request $request){
         if($request->isMethod('get')){
@@ -334,11 +383,6 @@ class ClientController extends Controller
     
     public function FORM(Request $request, $id_type){
       if ($request->isMethod('get')) {
-          // ->join('region', 'x08.rgnid', '=', 'region.rgnid')
-          //                           ->join('province', 'x08.province', '=', 'province.provid')
-          //                           ->select('x08.*', 'region.rgn_desc', 'province.provname')
-          //                           ->where('x08.uid', '=', $uname)
-          //                           ->first()
             session()->flash('taeform', $id_type);
             $personnel =DB::table('personnel')->get();
             $selectedType = strtoupper($id_type);
@@ -367,7 +411,13 @@ class ClientController extends Controller
                               ->get();
             $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();            
             // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
-          return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld, 'position'=>$position, 'section'=>$section, 'department'=>$department, 'traintype'=>$traintype, 'plicensetype'=>$plicensetype, 'appidinc'=>$appidinc->appid+1]);
+            $imongmama = "SELECT ap.uid FROM (SELECT * FROM appform WHERE uid = '$asd->uid' AND hfser_id = '$selectedType' ORDER BY t_date DESC LIMIT 1) ap INNER JOIN trans_status ts ON ap.status = ts.trns_id WHERE ts.canapply IN (2, 0)";
+            $tothemagical = DB::select($imongmama);
+          if(count($tothemagical) > 0) {
+            return redirect()->route('client.home');
+          } else {
+            return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$id_type,'uploads'=>$upld, 'position'=>$position, 'section'=>$section, 'department'=>$department, 'traintype'=>$traintype, 'plicensetype'=>$plicensetype, 'appidinc'=>$appidinc->appid+1, 'isview'=>false]);
+          }
           // , 'appidinc'=>$appidinc->appid+1
       }
         if ($request->isMethod('post')) {
@@ -481,103 +531,73 @@ class ClientController extends Controller
       }
     }
     public function preassessment(Request $request){
-
-        $employeeData = session('client_data');
-        $assessment = DB::table('assessment')->get();
-        $app_assessment = DB::table('app_assessment')->where('uid', '=', $employeeData->uid )->where('draft', '!=', '0')->distinct()->get(['draft', 'sa_tdate']);
-        $countass = DB::table('part')->get();
+      $employeeData = session('client_data');
+      $assessment = DB::table('assessment')->get();
+      $assessment_user = DB::table('app_assessment')->where('uid', '=', $employeeData->uid)->where('draft', '=', '0')->get();
+      $app_assessment = DB::table('app_assessment')->where('uid', '=', $employeeData->uid )->where('draft', '!=', '0')->distinct()->get(['draft', 'sa_tdate']);
+      $countass = DB::table('part')->get();
+      $dt = Carbon::now();
+      $dateNow = $dt->toDateString();
+      $timeNow = $dt->toTimeString();
       if($request->isMethod('get')){
-        return view('client.preassessment', ['assessment'=>$assessment, 'app_assessment'=>$app_assessment, 'countass'=>$countass]);
+        if(count($assessment_user) > 0) {
+          return redirect()->route('client.home');
+        } else {
+          return view('client.preassessment', ['assessment'=>$assessment, 'app_assessment'=>$app_assessment, 'countass'=>$countass, 'userAssessment'=>[], 'iscomplied'=>false, 'isview'=>false]);
+        }
       }
       if ($request->isMethod('post')) {
-        // if (count($request->radio) > 0) {
-        //   for ($i=0; $i < count($request->radio); $i++) { 
-        //     dd($i);
-        //   }
+        // if($request->isstatus == null || $request->isstatus == "") {
+          for($i = 0; $i < count($request->upID); $i++) {
+            if($request->complied[$request->upID[$i]] != null) {
+              $newAsmt = $request->upID[$i];
+              $newDraft = $request->isdraft;
+              $sqlCheck = "SELECT app_assess_id, fileName FROM app_assessment WHERE uid = '$employeeData->uid' AND asmt_id = '$newAsmt' AND draft = '$newDraft'";
+              $sqlCheckAss = DB::select($sqlCheck);
+              $FileUploaded = $request->file[$request->upID[$i]];
+              $fileNameToStore = null;
+
+              if($FileUploaded != null && $FileUploaded != 'uploaded') {
+                $filename = $FileUploaded->getClientOriginalName(); 
+                $filenameOnly = pathinfo($filename,PATHINFO_FILENAME); 
+                $fileExtension = $FileUploaded->getClientOriginalExtension();
+                $fileNameToStore = $employeeData->uid.'_'.$newAsmt.'.'.$fileExtension;
+                $path = $FileUploaded->storeAs('public/uploaded', $fileNameToStore);
+                $fileSize = $FileUploaded->getClientSize();
+              } else {
+                $fileNameToStore = ((count($sqlCheckAss) < 1) ? null : $sqlCheckAss[0]->fileName);
+              }
+
+              if(count($sqlCheckAss) > 0) {
+                try { if($sqlCheckAss[0]->fileName != null && ($FileUploaded != null && $FileUploaded != "uploaded")) { Storage::delete('public/uploaded/'.$sqlCheckAss[0]->fileName); } } catch(Exception $e) { }
+                DB::table('app_assessment')->where('uid', '=', $employeeData->uid)->where('uid', '=', $employeeData->uid)->where('draft', '=', $newDraft)->update([
+                  // 'appid'=>$appid[0]->appid,
+                  'asmt_id'=>$request->upID[$i],
+                  'sa_remarks'=>$request->remarks[$request->upID[$i]],
+                  'sa_tdate'=>$dateNow,
+                  'sa_ttime'=>$timeNow,
+                  'fileName'=>$fileNameToStore,
+                  'draft'=>$request->isdraft,
+                  'complied'=>$request->complied[$request->upID[$i]],
+                  'uid'=>$employeeData->uid
+                ]);
+              } else {
+                DB::table('app_assessment')->insert([
+                  // 'appid'=>$appid[0]->appid,
+                  'asmt_id'=>$request->upID[$i],
+                  'sa_remarks'=>$request->remarks[$request->upID[$i]],
+                  'sa_tdate'=>$dateNow,
+                  'sa_ttime'=>$timeNow,
+                  'fileName'=>$fileNameToStore,
+                  'draft'=>$request->isdraft,
+                  'complied'=>$request->complied[$request->upID[$i]],
+                  'uid'=>$employeeData->uid
+                ]);
+              }
+            }
+          }
+          return redirect()->route('client.home');
         // }
-        // dd($request->all());
-        $NewId = DB::getPdo()->lastInsertId();
-
-        switch ($request['submitpre']) {
-          case 1:
-           $draftxt = $request['savetxt'];
-           session()->flash('draft_success','Successfully save to draft');
-           session()->flash('alert-type','info');
-           $route = back();
-           $compliedd = 0;
-        $draftaken = DB::table('app_assessment')->where('draft', '=', $request->savetxt)->exists();
-          if (empty($request->savetxt)) {
-             session()->flash('draft_success','Draft name Required');
-           session()->flash('alert-type','danger');
-          }
-        else if ($draftaken == true) {
-           session()->flash('draft_success','Draft name already been taken');
-           session()->flash('alert-type','danger');
-           return back();
-        }
-
-            break;
-          case 0:
-           $draftxt = 0;
-           session()->flash('pre_success','Completed Assessment, you may now proceed to next step.');
-           $route = redirect()->route('client.home');
-            break;
-          default:
-            
-            break;
-        }
-
-        for ($i=0; $i < count($request->upID); $i++) {
-            $compliedd = 0;
-            if ($request->complied[$request->upID[$i]]!= null) {
-                $compliedd = $request->complied[$request->upID[$i]];
-            }
-            
-            $dt = Carbon::now();
-            $complied = $compliedd;
-            $fileup = $request->file[$i];
-            $remarks = $request->remarks[$i];
-            $dateNow = $dt->toDateString(); /// Date
-            $timeNow = $dt->toTimeString(); /// Time
-
-            DB::table('app_assessment')->insert([
-                    'uid' => $employeeData->uid,
-                    'sa_remarks' => $remarks,
-                    't_date' =>  $dateNow,
-                    't_time' => $timeNow,
-                    'sa_tdate' => $dateNow,
-                    'sa_ttime' => $timeNow,
-                    'draft' => $draftxt,
-                    'complied' => $complied,
-            ]);
-            if ($fileup != null) {
-            try { $filename = $fileup->getClientOriginalName(); } catch(Exception $e) {}
-                                // $FileUploaded->store('public/uploaded');
-                                // FILENAME
-            try { $filenameOnly = pathinfo($filename,PATHINFO_FILENAME ); } catch(Exception $e) {} // FILE NAME ONLY
-            // EXTENSION
-            try { $fileExtension = $fileup->getClientOriginalExtension(); } catch(Exception $e) {}
-                                // FILENAME TO STORE
-            $fileNameToStore = $filename.'_'.time().'.'.$fileExtension; 
-                                // UPLOAD FILE
-            try { $path = $fileup->storeAs('public/uploaded', $fileNameToStore); } catch(Exception $e) {} // UPLOAD FILE
-                                // FILE SIZE
-            try { $fileSize = $fileup->getClientSize();   } catch(Exception $e) {}
-                                /////////////////////////////////////////////////////// UPLOAD FILE
-            $InsertUpload = array(
-                'app_id' => $NewId,
-                'filepath'=> $fileNameToStore,
-                'fileExten' => $fileExtension,
-                'fileSize' => $fileSize,
-                't_date' => $dateNow,
-                't_time' => $timeNow,
-                'ipaddress' =>request()->ip(),
-              );
-            DB::table('app_upload')->insert($InsertUpload);
-            }
-
-          }
-        return $route;
       }
     }
     public function preassessment2(Request $request){
@@ -598,12 +618,13 @@ class ClientController extends Controller
         return view('client.preassessment2', ['assessment'=>$assessment, 'app_assessment'=>$app_assessment]);
       }
       if ($request->isMethod('post')) {
+          // dd($request->all());
           switch ($request['submitpre']) {
           case 1:
            $draftaken = DB::table('app_assessment')->where('draft', '=', $request->savetxt)->exists();
            $draftxt = $request['savetxt'];
            session()->flash('draft_success','Successfully save to draft');
-           session()->flash('alert-type','info');
+           session()->flash('alert-type','info'); 
            $route = back();
            $compliedd = 0;
           if (empty($request->savetxt)) {
@@ -633,51 +654,50 @@ class ClientController extends Controller
             
             break;
         }
-// dd($request->all());
          for ($i=0; $i < count($request->upID); $i++) {
-            $compliedd = 0;
-            if ($request->complied[$request->upID[$i]]!= null) {
-                $compliedd = $request->complied[$request->upID[$i]];
-            }
-            
-            $dt = Carbon::now();
-            $asmt_id = $request->upID[$i];
-            $complied = $compliedd;
-            $fileup = $request->file[$i];
-            $remarks = $request->remarks[$i];
-            $dateNow = $dt->toDateString(); /// Date
-            $timeNow = $dt->toTimeString(); /// Time
-
-            switch ($request['submitpre']) {
-              case 'update':
-                DB::table('app_assessment')->where('asmt_id', '=', $asmt_id)->update([
-                    'uid' => $employeeData->uid,
-                    'asmt_id' => $asmt_id,
-                    'sa_remarks' => $remarks,
-                    // 't_date' =>  $dateNow,
-                    // 't_time' => $timeNow,
-                    'sa_tdate' => $dateNow,
-                    'sa_ttime' => $timeNow,
-                    'draft' => $draftxt,
-                    'complied' => $complied,
-            ]);
-                break;
-              
-              default:
-                DB::table('app_assessment')->insert([
-                    'uid' => $employeeData->uid,
-                    'asmt_id' => $asmt_id,
-                    'sa_remarks' => $remarks,
-                    // 't_date' =>  $dateNow,
-                    // 't_time' => $timeNow,
-                    'sa_tdate' => $dateNow,
-                    'sa_ttime' => $timeNow,
-                    'draft' => $draftxt,
-                    'complied' => $complied,
-            ]);
-                break;
-            }
+          $compliedd = 0;
+          if ($request->complied[$request->upID[$i]]!= null) {
+              $compliedd = $request->complied[$request->upID[$i]];
           }
+          
+          $dt = Carbon::now();
+          $asmt_id = $request->upID[$i];
+          $complied = $compliedd;
+          $fileup = $request->file[$i];
+          $remarks = $request->remarks[$i];
+          $dateNow = $dt->toDateString(); /// Date
+          $timeNow = $dt->toTimeString(); /// Time
+
+          switch ($request['submitpre']) {
+            case 'update':
+              DB::table('app_assessment')->where('asmt_id', '=', $asmt_id)->update([
+                  'uid' => $employeeData->uid,
+                  'asmt_id' => $asmt_id,
+                  'sa_remarks' => $remarks,
+                  // 't_date' =>  $dateNow,
+                  // 't_time' => $timeNow,
+                  'sa_tdate' => $dateNow,
+                  'sa_ttime' => $timeNow,
+                  'draft' => $draftxt,
+                  'complied' => $complied,
+          ]);
+              break;
+            
+            default:
+              DB::table('app_assessment')->insert([
+                  'uid' => $employeeData->uid,
+                  'asmt_id' => $asmt_id,
+                  'sa_remarks' => $remarks,
+                  // 't_date' =>  $dateNow,
+                  // 't_time' => $timeNow,
+                  'sa_tdate' => $dateNow,
+                  'sa_ttime' => $timeNow,
+                  'draft' => $draftxt,
+                  'complied' => $complied,
+          ]);
+              break;
+          }
+        }
           // session()->flash('save_success', 'Completed Assessment, you may now proceed to next step.');
           return $route;
       }
@@ -829,4 +849,289 @@ class ClientController extends Controller
             // return 'DONE';
       }
     }
+
+  public function goToken(Request $req, $token, $pmt) {
+    if($req->isMethod('post')) {
+      
+    }
+    if($req->isMethod('get')) {
+      $desc = Session::get('desc');
+      $amount = Session::get('amount');
+      $hfser_id = Session::get('hfser_id');
+      $chgapp_id = Session::get('chgapp_id');
+      $appform_id = Session::get('appform_id');
+      $hfser_desc = Session::get('hfser_desc');
+      $client_save = session('client_data');
+      $dt = Carbon::now();
+      for($i = 0; $i < count($amount); $i++) {
+        $chg_num = DB::table('chg_app')->where('chgapp_id', '=', (($chgapp_id[$i] == "") ? $pmt : $chgapp_id[$i]))->select('chg_num')->first();
+        DB::table('chgfil')->insert([
+          'chgapp_id'=>(($chgapp_id[$i] == "") ? $pmt : $chgapp_id[$i]),
+          'chg_num'=>($chg_num->chg_num ?? 0),
+          'appform_id'=>$appform_id,
+          'chgapp_id_pmt'=>$pmt,
+          'reference'=>$desc[$i],
+          'amount'=>$amount[$i],
+          't_date'=>$dt->toDateString(),
+          't_time'=>$dt->toTimeString(),
+          't_ipaddress'=>request()->ip(),
+          'uid'=>$client_save->uid,
+          'sysdate'=>$dt->toDateString(),
+          'systime'=>$dt->toTimeString()
+        ]);
+        if($chgapp_id[$i] != "") {
+          $updChgnum = array('chg_num'=>(intval($chg_num->chg_num) + 1));
+          DB::table('chg_app')->where('chgapp_id', '=', $chgapp_id[$i])->update($updChgnum);
+        } else {
+          if($pmt != "") {
+            $updChgnum = array('chg_num'=>(intval($chg_num->chg_num) + 1));
+            DB::table('chg_app')->where('chgapp_id', '=', $pmt)->update($updChgnum);
+          }
+        }
+      }
+      if($pmt != "") {
+        $updAppstat = array('status'=>'PP');
+        DB::table('appform')->where('appid', '=', $appform_id)->update($updAppstat);
+      }
+      session()->flash('succ_mess', 'Successfully updated payment information.');
+      return redirect()->route('client.home');
+    }
+  }
+
+  public function delete_pform(Request $req, $pid) {
+    if($req->isMethod('post')) {
+      $tables = ['ptrainings', 'peligibility', 'personnelwork', 'personnel'];
+      for($i = 0; $i < count($tables); $i++) {
+        DB::table($tables[$i])->where('pid', '=', $pid)->delete();
+      }
+      return 'Successfully deleted personnel';
+    }
+    if($req->isMethod('get')) {
+      $tables = ['ptrainings', 'peligibility', 'personnelwork', 'personnel'];
+      for($i = 0; $i < count($tables); $i++) {
+        DB::table($tables[$i])->where('pid', '=', $pid)->delete();
+      }
+      return 'Successfully deleted personnel';
+    }
+  }
+
+  public function preassessmentstat(Request $req, $status) {
+      $dt = Carbon::now();
+      $dateNow = $dt->toDateString();
+      $timeNow = $dt->toTimeString();
+      $employeeData = session('client_data');
+      $assessment = DB::table('assessment')->get();
+      $app_assessment = DB::table('app_assessment')->where('uid', '=', $employeeData->uid )->where('draft', '!=', '0')->distinct()->get(['draft', 'sa_tdate']);
+      $userSql = "SELECT asp.*, asm.asmt_name, asm.partid, asm.asmt_use FROM app_assessment asp LEFT JOIN assessment asm ON asp.asmt_id = asm.asmt_id WHERE uid = '$employeeData->uid' AND draft = '0'";
+      $userSql_chk = "SELECT asp.*, asm.asmt_name, asm.partid, asm.asmt_use FROM app_assessment asp LEFT JOIN assessment asm ON asp.asmt_id = asm.asmt_id WHERE uid = '$employeeData->uid' AND draft = '0' AND complied = '1'";
+      $userAssessment = DB::select($userSql);
+      $userAssessment_chk = DB::select($userSql_chk);
+      $countass = DB::table('part')->get();
+    if($req->isMethod('get')) {
+      if(count($userAssessment) < 1 || count($assessment) == count($userAssessment_chk)) {
+        if(count($assessment) == count($userAssessment_chk) && $status == "view") {
+          return view('client.preassessment', ['assessment'=>$assessment, 'app_assessment'=>$app_assessment, 'status'=>'update', 'userAssessment'=>$userAssessment, 'countass'=>$countass, 'iscomplied'=>true, 'isview'=>true]);
+        } else {
+          return redirect()->route('client.home');
+        }
+      } else {
+        return view('client.preassessment', ['assessment'=>$assessment, 'app_assessment'=>$app_assessment, 'status'=>'update', 'userAssessment'=>$userAssessment, 'countass'=>$countass, 'iscomplied'=>true, 'isview'=>false]);
+      }
+    }
+    if($req->isMethod('post')) {
+      // dd($req->all());
+      // if($req->isstatus == "update") {
+        for($i = 0; $i < count($req->upID); $i++) {
+          if($req->complied[$req->upID[$i]] != null) {
+            $newAsmt = $req->upID[$i];
+            $newDraft = $req->isdraft;
+            $sqlCheck = "SELECT app_assess_id, fileName FROM app_assessment WHERE uid = '$employeeData->uid' AND asmt_id = '$newAsmt' AND draft = '$newDraft'";
+            $sqlCheckAss = DB::select($sqlCheck);
+            $FileUploaded = $req->file[$req->upID[$i]];
+            $fileNameToStore = null;
+
+            if($FileUploaded != null && $FileUploaded != "uploaded") {
+              $filename = $FileUploaded->getClientOriginalName(); 
+              $filenameOnly = pathinfo($filename,PATHINFO_FILENAME); 
+              $fileExtension = $FileUploaded->getClientOriginalExtension();
+              $fileNameToStore = $employeeData->uid.'_'.$newAsmt.'.'.$fileExtension;
+              $path = $FileUploaded->storeAs('public/uploaded', $fileNameToStore);
+              $fileSize = $FileUploaded->getClientSize();
+            } else {
+              $fileNameToStore = ((count($sqlCheckAss) < 1) ? null : $sqlCheckAss[0]->fileName);
+            }
+            if(count($sqlCheckAss) > 0) {
+                try { if($sqlCheckAss[0]->fileName != null && ($FileUploaded != null && $FileUploaded != "uploaded")) { Storage::delete('public/uploaded/'.$sqlCheckAss[0]->fileName); } } catch(Exception $e) { }
+              DB::table('app_assessment')->where('uid', '=', $employeeData->uid)->where('asmt_id', '=', $newAsmt)->where('draft', '=', $newDraft)->update([
+                // 'appid'=>$appid[0]->appid,
+                'asmt_id'=>$req->upID[$i],
+                'sa_remarks'=>$req->remarks[$req->upID[$i]],
+                'sa_tdate'=>$dateNow,
+                'sa_ttime'=>$timeNow,
+                'fileName'=>$fileNameToStore,
+                'draft'=>$req->isdraft,
+                'complied'=>$req->complied[$req->upID[$i]],
+                'uid'=>$employeeData->uid
+              ]);
+            } else {
+              // dd($sqlCheck);
+              DB::table('app_assessment')->insert([
+                // 'appid'=>$appid[0]->appid,
+                'asmt_id'=>$req->upID[$i],
+                'sa_remarks'=>$req->remarks[$req->upID[$i]],
+                'sa_tdate'=>$dateNow,
+                'sa_ttime'=>$timeNow,
+                'fileName'=>$fileNameToStore,
+                'draft'=>$req->isdraft,
+                'complied'=>$req->complied[$req->upID[$i]],
+                'uid'=>$employeeData->uid
+              ]);
+            }
+          }
+        }
+        return redirect()->route('client.home');
+      // }
+    }
+  }
+
+  public function preassessmentdraft(Request $req, $draft) {
+    $dt = Carbon::now();
+    $dateNow = $dt->toDateString();
+    $timeNow = $dt->toTimeString();
+    $employeeData = session('client_data');
+    $assessment = DB::table('assessment')->get();
+    $app_assessment = DB::table('app_assessment')->where('uid', '=', $employeeData->uid )->where('draft', '!=', '0')->distinct()->get(['draft', 'sa_tdate']);
+    $userSql = "SELECT asm.*, asp.appid, asp.sa_remarks, asp.draft, asp.complied, asp.uid FROM assessment asm LEFT JOIN (SELECT * FROM app_assessment WHERE uid = '$employeeData->uid' AND draft = '$draft') asp ON asp.asmt_id = asm.asmt_id";
+    $userSql_chk = "SELECT asp.*, asm.asmt_name, asm.partid, asm.asmt_use FROM app_assessment asp LEFT JOIN assessment asm ON asp.asmt_id = asm.asmt_id WHERE uid = '$employeeData->uid' AND draft = '$draft' AND complied = '1'";
+    $userAssessment = DB::select($userSql);
+    $userAssessment_chk = DB::select($userSql_chk);
+    $countass = DB::table('part')->get();
+    if($req->isMethod('get')) {
+      if($draft != "") {
+        if(count($userAssessment) < 1) {
+          return redirect()->route('client.home');
+        } else {
+          return view('client.preassessment', ['assessment'=>$assessment, 'app_assessment'=>$app_assessment, 'status'=>'update', 'userAssessment'=>$userAssessment, 'countass'=>$countass, 'drafts'=>$draft, 'iscomplied'=>false, 'isview'=>false]);
+        }
+      } else {
+        return redirect()->route('client.home');
+      }
+    }
+    if($req->isMethod('post')) {
+      // if($req->isstatus == "update") {
+        for($i = 0; $i < count($req->upID); $i++) {
+          if($req->complied[$req->upID[$i]] != null) {
+            $newAsmt = $req->upID[$i];
+            $newDraft = $req->isdraft;
+            $sqlCheck = "SELECT app_assess_id, fileName FROM app_assessment WHERE uid = '$employeeData->uid' AND asmt_id = '$newAsmt' AND draft = '$newDraft'";
+            $sqlCheckAss = DB::select($sqlCheck);
+            $FileUploaded = $req->file[$req->upID[$i]];
+            $fileNameToStore = null;
+
+            if($FileUploaded != null && $FileUploaded != 'uploaded') {
+              $filename = $FileUploaded->getClientOriginalName(); 
+              $filenameOnly = pathinfo($filename,PATHINFO_FILENAME); 
+              $fileExtension = $FileUploaded->getClientOriginalExtension();
+              $fileNameToStore = $employeeData->uid.'_'.$newAsmt.'.'.$fileExtension;
+              $path = $FileUploaded->storeAs('public/uploaded', $fileNameToStore);
+              $fileSize = $FileUploaded->getClientSize();
+            } else {
+              $fileNameToStore = ((count($sqlCheckAss) < 1) ? null : $sqlCheckAss[0]->fileName);
+            }
+            if(count($sqlCheckAss) > 0) {
+                try { if($sqlCheckAss[0]->fileName != null && ($FileUploaded != null && $FileUploaded != "uploaded")) { Storage::delete('public/uploaded/'.$sqlCheckAss[0]->fileName); } } catch(Exception $e) { }
+              DB::table('app_assessment')->where('uid', '=', $employeeData->uid)->where('asmt_id', '=', $newAsmt)->where('draft', '=', $newDraft)->update([
+                // 'appid'=>$appid[0]->appid,
+                'asmt_id'=>$req->upID[$i],
+                'sa_remarks'=>$req->remarks[$req->upID[$i]],
+                'sa_tdate'=>$dateNow,
+                'sa_ttime'=>$timeNow,
+                'fileName'=>$fileNameToStore,
+                'draft'=>$req->isdraft,
+                'complied'=>$req->complied[$req->upID[$i]],
+                'uid'=>$employeeData->uid
+              ]);
+            } else {
+              // dd($sqlCheck);
+              DB::table('app_assessment')->insert([
+                // 'appid'=>$appid[0]->appid,
+                'asmt_id'=>$req->upID[$i],
+                'sa_remarks'=>$req->remarks[$req->upID[$i]],
+                'sa_tdate'=>$dateNow,
+                'sa_ttime'=>$timeNow,
+                'fileName'=>$fileNameToStore,
+                'draft'=>$req->isdraft,
+                'complied'=>$req->complied[$req->upID[$i]],
+                'uid'=>$employeeData->uid
+              ]);
+            }
+          }
+        }
+        return redirect()->route('client.home');
+      // }
+    }
+  }
+  public function evaluate1(Request $req) {
+    $data = session('client_data');
+    $uploadSql = "SELECT hf.* FROM hfaci_serv_type hf INNER JOIN appform ap ON hf.hfser_id = ap.hfser_id WHERE ap.uid = '$data->uid'";
+    $upload = DB::select($uploadSql);
+    if($req->isMethod('get')) {
+      $sql = "SELECT af.appid, af.uid, af.hfser_id, af.recommendeddate AS proposedInspectiondate, af.recommendedtime AS proposedInspectiontime, af.isrecommended AS isInspected, GROUP_CONCAT(au.evaluation) AS evaluation, GROUP_CONCAT(REPLACE(up.upid, ',', '')) AS upid, GROUP_CONCAT(REPLACE(up.updesc, ',', '')) AS updesc, GROUP_CONCAT(REPLACE(au.remarks, ',', '')) AS remarks FROM appform af LEFT JOIN app_upload au ON au.app_id = af.appid LEFT JOIN upload up ON au.upid = up.upid WHERE af.uid = '$data->uid' GROUP BY af.appid, af.uid, af.hfser_id, af.recommendeddate, af.recommendedtime, af.isrecommended";
+      $getSql = DB::select($sql);
+      if(count($getSql) > 0) {
+        return view('client.evaluate', ['evaluate'=>$getSql, 'upload'=>$upload]);
+      } else {
+        // return view('client.home', ['err_msg'=>'Error']);
+        return view('client.evaluate', ['evaluate'=>[], 'upload'=>[]]);
+      }
+    } else { 
+
+    }
+  }
+  public function modifiers(Request $request){
+    if($request->isMethod('get')) {
+      return view('client.modifiers');
+    }
+  }
+  public function viewapply(Request $req, $appform1) {
+    if($req->isMethod("get")) {
+      // session()->flash('taeform', $appform);
+      $personnel =DB::table('personnel')->get();
+      $selectedType = strtoupper($appform1);
+      $position = DB::table('position')->get();
+      $plicensetype = DB::table('plicensetype')->get();
+      $section = DB::table('section')->get();
+      $department = DB::table('department')->get();
+      $traintype = DB::table('ptrainings_trainingtype')->get();
+      $asd = session('client_data');
+      $appform = DB::table('appform')->where("uid", "=", $asd->uid)->where([["draft", "!=", "0"], ["hfser_id", "=", $selectedType]])->get();
+      $fatype = DB::table('type_facility')
+                        ->join('facilitytyp','type_facility.facid', '=', 'facilitytyp.facid')
+                        ->select('type_facility.*','facilitytyp.*')
+                        ->where('type_facility.hfser_id','=', $selectedType)
+                        ->get(); // Facility Type
+      $ownsh = DB::table('ownership')->get(); // Ownership Type
+      $aptyp = DB::table('apptype')->get(); // Application Stype
+      $clss = DB::table('class')->get(); // Class
+      
+      $hfaci = DB::table('hfaci_serv_type')->where('hfser_id','=',$selectedType)->first();
+      $upld = DB::table('facility_requirements')
+                        ->join('upload','facility_requirements.upid','=','upload.upid')
+                        ->join('type_facility','facility_requirements.typ_id', '=', 'type_facility.tyf_id')
+                        ->select('facility_requirements.*','upload.*','type_facility.*')
+                        ->where('type_facility.hfser_id','=', $selectedType)
+                        ->get();
+      $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();            
+      // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
+      $sendform = DB::table('appform')->where('uid', '=', $asd->uid)->where('hfser_id', '=', $selectedType)->orderBy('t_date', 'desc')->limit(1)->select("*")->first();
+      $sendform1 = DB::table('app_upload')->where('app_id', '=', $sendform->appid)->orderBy('t_date', 'desc')->limit(1)->select("*")->get();
+      $imongmama = "SELECT ap.uid FROM (SELECT * FROM appform WHERE uid = '$asd->uid' AND hfser_id = '$selectedType' ORDER BY t_date DESC LIMIT 1) ap INNER JOIN trans_status ts ON ap.status = ts.trns_id WHERE ts.canapply IN (2)";
+      $tothemagical = DB::select($imongmama);
+      if(count($tothemagical) > 0) {
+        return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$appform1,'uploads'=>$upld, 'position'=>$position, 'section'=>$section, 'department'=>$department, 'traintype'=>$traintype, 'plicensetype'=>$plicensetype, 'appidinc'=>$appidinc->appid+1, 'isview'=>true, 'sendform'=>[$sendform, $sendform1]]);
+      } else {
+        return redirect()->route('client.home');
+      }
+    }
+  } 
 }

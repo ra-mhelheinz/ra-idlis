@@ -4,12 +4,19 @@
 @endsection
 @section('content')
 <div class="content p-4">
+  @isset($Holidays)
+    <datalist id="HolidaysList">
+        @foreach ($Holidays as $day)
+          <option id="{{$day->hdy_date}}_dt" typ="{{$day->hdy_typ}}">{{$day->hdy_desc}}</option>
+        @endforeach
+    </datalist>
+  @endisset
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
           <input type="text" id="NumberOfRejected" value="@isset ($numOfX) {{$numOfX}} @endisset" hidden>
           <input type="" id="token" value="{{ Session::token() }}" hidden>
            Evaluation
-           <button class="float-right btn btn-primarys" onclick="window.history.back();">Back</button>
+           <button class="btn btn-primary" onclick="window.history.back();">Back</button>
         </div>
         <div class="card-body">
             <table class="table table-borderless">
@@ -17,8 +24,8 @@
             <tr>
               <td width="80%">
                 <h2>@isset($AppData) {{$AppData->facilityname}} @endisset</h2>
-                <h5>{{$AppData->streetname}}, {{$AppData->brgyname}}, {{$AppData->cmname}}, {{$AppData->provname}}</h5>
-                <h6>Status: @if ($AppData->isrecommended === null) <span style="color:blue">For Evaluation</span> @elseif($AppData->isrecommended == 1)  <span style="color:green">Application Accepted</span> @else <span style="color:red">Application Rejected</span> @endif</h6>
+                <h5>@isset($AppData) {{strtoupper($AppData->streetname)}}, {{strtoupper($AppData->brgyname)}}, {{$AppData->cmname}}, {{$AppData->provname}} @endisset</h5>
+                <h6>@isset($AppData) Status: @if ($AppData->isrecommended === null) <span style="color:blue">For Evaluation</span> @elseif($AppData->isrecommended == 1)  <span style="color:green">Accepted Evaluation</span> @else <span style="color:red">Rejected Evaluation</span> @endif @endisset</h6>
               </td>
               <td width="5%"></td>
               <td width="15%">
@@ -29,7 +36,7 @@
           </thead>
           <tbody>
       <form id="EvalForm" data-parsley-validate>
-            <input type="text" name="TotalNumber" value="{{count($UploadData)}}" hidden>
+            <input type="text" name="TotalNumber" value="@isset($UploadData){{count($UploadData)}}@endisset" hidden>
             @if (isset($UploadData))
               @foreach ($UploadData as $UpData) 
                 <tr>
@@ -72,42 +79,49 @@
           <div class="col-sm-6" >
               <label>Recommended for Inspection?</label>
                     <!-- data-toggle="modal" data-target="#exampleModalCenter" -->
-              @if ($AppData->isrecommended === null)
-              <button type="button"  class="btn-primarys" style="background-color:#82d202" onclick="Recommended4Inspection(1);">Yes</button>
-              <button type="button" class="btn-defaults" onclick="Recommended4Inspection(0);">No</button>
-              @elseif($AppData->isrecommended == '0')
-              <span style="color: red;font-weight: bolder">NO </span>
-              @else
-              <span style="color: green;font-weight: bolder">YES </span>
-              @endif
+              @isset($AppData)
+                @if ($AppData->isrecommended === null)
+                <button type="button"  class="btn-primarys" style="background-color:#82d202" onclick="Recommended4Inspection(1);">Yes</button>
+                <button type="button" class="btn-defaults" onclick="Recommended4Inspection(0);">No</button>
+                @elseif($AppData->isrecommended == '0')
+                <span style="color: red;font-weight: bolder">NO </span>
+                @else
+                <span style="color: green;font-weight: bolder">YES </span>
+                @endif
+              @endisset
               &nbsp;
-              @if ($OPPok === null AND $AppData->isrecommended == 1)
-                <button type="button" class="btn btn-info" title="Order of Payment" data-target="#ShowList" data-toggle="modal"  {{-- onclick="location.href='{{ asset('/employee/dashboard/lps/evaluate/')}}/{{$AppData->appid}}/{{$OOPs->oop_id}}/add'" --}}><i class="fa fa-plus" aria-hidden="true"></i></button>
-              @elseif($OPPok !== null AND $AppData->isrecommended == 1)
-                <button type="button" class="btn btn-info" title="Order of Payment" onclick="location.href='{{ asset('/employee/dashboard/lps/evaluate/')}}/{{$AppData->appid}}/{{$OPPok->oop_id}}/view'"><i class="fa fa-eye" aria-hidden="true"></i></button>
-              @endif
+              @isset($OPPok)
+                @if ($OPPok === null AND $AppData->isrecommended == 1)
+                  <button type="button" class="btn btn-info" title="Order of Payment" data-target="#ShowList" data-toggle="modal"  {{-- onclick="location.href='{{ asset('/employee/dashboard/lps/evaluate/')}}/{{$AppData->appid}}/{{$OOPs->oop_id}}/add'" --}}><i class="fa fa-plus" aria-hidden="true"></i></button>
+                @elseif($OPPok !== null AND $AppData->isrecommended == 1)
+                  <button type="button" class="btn btn-info" title="Order of Payment" onclick="location.href='{{ asset('/employee/dashboard/lps/evaluate/')}}/{{$AppData->appid}}/{{$OPPok->oop_id}}/view'"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                @endif
+              @endisset
           </div>  
           <div class="col-sm-6">
             <span>
-              <label class="form-inline">Proposed Date of Inspection:&nbsp;
-              @if ($AppData->isrecommended === null)
-                <input type="date" id="propDate" class="form-control" {{-- data-parsley-required-message="Required" --}} required></label>
-              @elseif($AppData->isrecommended == '0')
-              <span style="color: red;font-weight: bolder">None </span>
-              @else 
-              <span style="color: green;font-weight: bolder">{{$AppData->formattedPropDate}} </span>
-              
-              @endif
+              <label class="form-inline">Date of Inspection:&nbsp;
+              @isset($AppData)
+                @if ($AppData->isrecommended === null)
+                  <input type="date" id="propDate" data-toggle="tooltip" title="Recommended Date : @isset($DateString){{$DateString}}@endisset" class="form-control" onchange="chckDate();" value="@isset($ActualString){{$ActualString}}@endisset" required>&nbsp;</label>
+                @elseif($AppData->isrecommended == '0')
+                <span style="color: red;font-weight: bolder">None </span>
+                @else 
+                <span style="color: green;font-weight: bolder">{{$AppData->formattedPropDate}}</span>
+                @endif
+              @endisset
             </span>
             <span>
-              <label class="form-inline">Proposed Time of Inspection:&nbsp;
-              @if ($AppData->isrecommended === null)
-              <input type="time" class="form-control" data-parsley-required-message="Required" id="propTime" required>
-              @elseif($AppData->isrecommended == '0')
-              <span style="color: red;font-weight: bolder">None </span>
-              @else
-              <span style="color: green;font-weight: bolder">{{$AppData->formattedPropTime}} </span>
-              @endif
+              <label class="form-inline">Time of Inspection:&nbsp;
+              @isset($AppData)
+                @if ($AppData->isrecommended === null)
+                <input type="time" class="form-control" data-toggle="tooltip" title="Recommended time is between 8:00 AM to 5:00 PM" data-parsley-required-message="Required" id="propTime" onchange="chckTime();" value="08:00" required>
+                @elseif($AppData->isrecommended == '0')
+                <span style="color: red;font-weight: bolder">None </span>
+                @else
+                <span style="color: green;font-weight: bolder">{{$AppData->formattedPropTime}} </span>
+                @endif
+              @endisset
             </span>
           </form>    
           </div>    
@@ -123,7 +137,7 @@
               <div class="modal-body">
                 <h4 class="modal-title text-center"><strong>Evaluate</strong></h4>
                 <hr>
-                <form id="EvalFormConfirm" action="{{ asset('employee/dashboard/lps/evaluate') }}/{{$appID}}" method="POST" data-parsley-validate>
+                <form id="EvalFormConfirm" action="{{ asset('employee/dashboard/lps/evaluate') }}/@isset($appID){{$appID}}@else # @endisset" method="POST" data-parsley-validate>
                   @csrf
                   <input type="hidden" name="appUp_ID" value="">
                   <input type="hidden" name="evalYesNo" value="">
@@ -168,11 +182,11 @@
           <ol><a href="{{asset('headorderofpayment4')}}">Certificate of Need/Permit to Construct </a></ol>
           <ol><a href="{{asset('headorderofpayment5')}}">Dental Laboratory</a></ol>
           <ol><a href="{{asset('headorderofpayment6')}}">Non-Hospital Based with Ancillary</a></ol> --}}
-          @if ($OOPS)
+          @isset ($OOPS)
             @foreach ($OOPS as $oop)
               <ol><a href="{{ asset('/employee/dashboard/lps/evaluate/')}}/{{$AppData->appid}}/{{$oop->oop_id}}/add">{{$oop->oop_desc}}</a></ol>
             @endforeach
-          @endif
+          @endisset
        </ul>
        <div class="text-center"><button type="button" class="btn btn-warning showHospit" data-dismiss="modal" style="display:none" onclick="showNow2()">Cancel</button></div>
        </div>
@@ -227,7 +241,8 @@
   </div>
 </div>
 <script type="text/javascript">
-        var numOfUploads = {{$numOfApp}}, numOfRejected = {{$numOfX}}, numofAprv = {{$numOfAprv}}, numOfNull = {{$numOfNull}}, apid = {{$appID}};
+        $(document).ready(function(){ $('[data-toggle="tooltip"]').tooltip();});
+        var numOfUploads = @isset($numOfApp){{$numOfApp}}@else 0 @endisset, numOfRejected = @isset($numOfX){{$numOfX}}@else 0 @endisset, numofAprv = @isset($numOfAprv){{$numOfAprv}}@else 0 @endisset, numOfNull = @isset($numOfNull){{$numOfNull}}@else 0 @endisset, apid = @isset($appID){{$appID}}@else 0 @endisset, DateError = 0, DateErrorMsg ='',TimeError = 0;
         function showNow(){
           $('.showHospit').show();
           $('.showConfirm').hide();
@@ -310,9 +325,15 @@
                   } else if (PropDate == "") {
                     $('#propDate').focus();
                     alert("Please propose date for inspection.");
+                  } else if (DateError == 1) {
+                    alert(DateErrorMsg);
+                    $('#propDate').focus();
                   } else if (PropTime == ""){
                     $('#propTime').focus();
                     alert("Please propose time for inspection.");
+                  } else if (TimeError == 1){
+                    $('#propTime').focus();
+                    alert("The recommended inspection time is between 8:00 AM to 5:00 PM");
                   } else{
                     $('#ConfirmMessage').append('&nbsp;&nbsp;&nbsp;&nbsp;Are sure you want to <span style="color:green">accept</span> this application?');
                     $('#ModalYesButton').attr('onclick','ApproveApplication()');
@@ -328,7 +349,7 @@
                   $('#ModalYesButton').attr('onclick','RejectApplication()');
                   $('#modalins').modal('toggle');
                 } else {
-                  alert('All upload has been approved. Cannot proceed on rejecting for inspection.');
+                  alert('All upload has been approved. Cannot proceed on rejecting the evaluation for inspection.');
                 }
             }
           }
@@ -348,8 +369,13 @@
                   if (data == 'DONE') {
                     alert('Successfully Rejected Application');
                     location.reload();
+                  } else if (data == 'ERROR'){
+                      $('#ERROR_MSG2').show(100);
                   }
-                },
+                }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                   console.log(errorThrown);
+                   $('#ERROR_MSG2').show(100);
+                }
 
             });
       }
@@ -362,9 +388,66 @@
                 if (data == 'DONE') {
                     alert('Successfully Accepted Application');
                     location.reload();
+                  } else if (data == 'ERROR') {
+                    $('#ERROR_MSG2').show(100);
                   }
-            },
+            }, error : function (XMLHttpRequest, textStatus, errorThrown){
+                console.log(errorThrown);
+                $('#ERROR_MSG2').show(100);
+            }
         });
+      }
+      function chckDate(){
+        var dateVal = $('#propDate').val();
+        var recoDate = "@isset($AfterDay){{$AfterDay}}@else # @endisset";
+        var DateNow = "@isset($DateNow){{$DateNow}}@else # @endisset"
+        if(new Date(dateVal) > new Date(recoDate)){ // Check if its within 30 days 
+          alert('The inspection date should be within 30 days the evaluation date.');
+          DateError = 1;
+          DateErrorMsg = 'The inspection date should be within 30 days the evaluation date.';
+          $('#propDate').focus();
+        } else if(new Date(dateVal) < new Date(DateNow)) {
+            alert('The inspection date should not be before the evaluation date.');
+            DateError = 1;
+            DateErrorMsg = 'The inspection date should not be before the evaluation date.';
+            $('#propDate').focus();
+        }else { 
+            var ChckIfWeekend = new Date(dateVal);
+            DateError = 0;
+            DateErrorMsg = '';
+            if(ChckIfWeekend.getDay() == 6 || ChckIfWeekend.getDay() == 0) { // Check if its a weekend or not
+                alert('The inspection date should be on weekdays.');
+                DateError = 1;
+                DateErrorMsg = 'The inspection date should be 30 days after the evaluation date.';
+                $('#propDate').focus();
+              } else {
+                   DateError = 0;
+                   DateErrorMsg = '';
+                   var x = $('#'+dateVal+'_dt').text();
+                   if (x) {
+                      var y = $('#'+dateVal+'_dt').attr('typ');
+                      var msg = 'The selected date is a '+y+' holiday : '+x+'.';
+                      alert(msg);
+                      DateError = 1;
+                      DateErrorMsg = msg;
+                   } else {
+                      DateError = 0;
+                      DateErrorMsg = '';
+                   }
+              } 
+        }
+      }
+      function chckTime(){
+          var format = 'hh:mm';
+          // var time = moment() gives you current time. no format required.
+          var time = moment($('#propTime').val(),format),
+            beforeTime = moment('07:59',format),
+            afterTime = moment('17:01',format);
+          if (time.isBetween(beforeTime, afterTime)) {
+            TimeError = 0;
+          } else {
+            TimeError = 1;
+          }
       }
       </script>
 @endsection
