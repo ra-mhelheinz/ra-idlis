@@ -479,8 +479,9 @@
                   var GrpID =  $('#SelectedEmployeeGrpID').attr('value');
                   var RgnID = $('#SelectedEmployeeRgnID').attr('value');
                   alert('Successfully Changed Application');
-                  FilterData(GrpID, RgnID);
-                  $('#GoddessModal').modal('toggle');
+                  // FilterData(GrpID, RgnID);
+                  // $('#GoddessModal').modal('toggle');
+                  location.reload();
                 }
             },
           });

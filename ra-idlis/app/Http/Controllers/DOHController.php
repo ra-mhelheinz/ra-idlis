@@ -136,7 +136,8 @@
 	                			if ($data->isActive == 1) {
 			                		$employeeData =	DB::table('x08')
 				                                ->join('region', 'x08.rgnid', '=', 'region.rgnid')
-				                                ->select('x08.*', 'region.rgn_desc')
+				                                ->join('x07', 'x08.grpid', '=', 'x07.grp_id')
+				                                ->select('x08.*', 'region.rgn_desc', 'x07.grp_desc')
 				                                ->where('x08.uid', '=', $data->uid)
 				                                ->first()
 				                                ;
@@ -184,7 +185,123 @@
 			return redirect()->route('employee');
 		}
 		public function dashboard(){
-			return view('doh.dashboard');
+			try {
+					$Cur_useData = $this->getCurrentUserAllData();
+					$getData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'x08.uid' )
+										->where('appform.draft', '=', 0)
+										->first();
+					if (!isset($getData)) {
+								return view('doh.dashboard');
+						} else {
+							if ($Cur_useData['grpid'] == 'NA') { // National Administrator *DONE
+									$data = DB::table('appform')
+											->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+											->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+											->join('x08', 'appform.uid', '=', 'x08.uid')
+											->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+											->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+											->join('province', 'x08.province', '=', 'province.provid')
+											->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+											->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+											->select('appform.*', 'trans_status.trns_desc', 'apptype.aptdesc', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'x08.uid' )
+											->where('appform.draft', '=', 0)
+											->get();
+							} else if ($Cur_useData['grpid'] == 'RA' || $Cur_useData['grpid'] == 'DC')  { // Regional Administrator and Division Chief *DONE
+									$data = DB::table('appform')
+											->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+											->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+											->join('x08', 'appform.uid', '=', 'x08.uid')
+											->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+											->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+											->join('province', 'x08.province', '=', 'province.provid')
+											->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+											->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+											->select('appform.*', 'trans_status.trns_desc' ,'apptype.aptdesc', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'x08.uid' )
+											->where([['appform.draft', '=', 0], ['appform.assignedRgn', '=', $Cur_useData['rgnid'], ['appform.assignedLO', '=', null]]])
+											->get();
+							} else if ($Cur_useData['grpid'] == 'CS') { // Cashier *DONE
+									$data = DB::table('appform')
+											->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+											->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+											->join('x08', 'appform.uid', '=', 'x08.uid')
+											->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+											->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+											->join('province', 'x08.province', '=', 'province.provid')
+											->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+											->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+											->select('appform.*', 'trans_status.trns_desc' ,'apptype.aptdesc', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'x08.uid' )
+											->where([['appform.draft', '=', 0], ['appform.status', '=', 'FPE']])
+											->get();
+							} else { 
+									$data = DB::table('appform')
+											->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+											->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+											->join('x08', 'appform.uid', '=', 'x08.uid')
+											->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+											->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+											->join('province', 'x08.province', '=', 'province.provid')
+											->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+											->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+											->select('appform.*', 'trans_status.trns_desc' ,'apptype.aptdesc', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'x08.uid' )
+											->where([['appform.draft', '=', 0], ['appform.assignedLO', '=', $Cur_useData['cur_user']]])
+											->get();
+							}
+
+							if (isset($data)) {
+								for ($i=0; $i < count($data); $i++) {
+									if (isset($data[$i]->proposedInspectiondate)) {
+											/////  Inspection Date & Time
+											$time = $data[$i]->proposedInspectiontime;
+											$newT = Carbon::parse($time);
+											$data[$i]->formattedTimeInspection = $newT->format('g:i A');
+
+											$date = $data[$i]->proposedInspectiondate;
+											$newD = Carbon::parse($date);
+											$DateNow = Carbon::parse($Cur_useData['date']);
+
+											$data[$i]->formattedDateInspection = $newD->toFormattedDateString();
+											/////  Inspection Date & Time
+											
+											/////  Compare Dates
+											if ($newD->toDateString() == $Cur_useData['date']) { // Date Today
+												$data[$i]->checkInspectDate = 'green';
+											}  elseif ( $newD->gt($DateNow) ) { // Overdue
+												$data[$i]->checkInspectDate = 'red';
+											} else {
+												$data[$i]->checkInspectDate = 'black'; // Not Due
+											}
+											/////  Compare Dates
+											
+											///// Check Status
+											if ($data[$i]->status == 'A') { // APPROVED
+												$data[$i]->statColor = 'green';
+											} else if ($data[$i]->status == 'FA' || $data[$i]->status == 'FE'  || $data[$i]->status == 'FI'  || $data[$i]->status == 'P'  || $data[$i]->status == 'PP'  ) { // PENDING
+												$data[$i]->statColor = 'yellow';
+											} else { // REJECTED
+												$data[$i]->statColor = 'red';
+											}
+											///// Check Status
+																					
+									}
+								}
+							}	
+
+						}
+						
+					// return dd($data);
+					return view('doh.dashboard', ['BigData'=>$data, 'grpid' => $Cur_useData['grpid']]);
+			} catch (Exception $e) {
+				$TestError = $this->SystemLogs($e->getMessage());
+				session()->flash('system_error','ERROR');
+				return view('doh.dashboard');
+			}
 		}
 		public function regionalAdmins(Request $request){ // Personnel/Regional Admin Page
 			if ($request->isMethod('get')) {
@@ -823,7 +940,7 @@
 										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
 										->where('appform.draft', '=', 0)
 										->get();
-							}else if ($Cur_useData['grpid'] == 'RA') {
+							}else if ($Cur_useData['grpid'] == 'RA' || $Cur_useData['grpid'] == 'DC') {
 								$anotherData = DB::table('appform')
 										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
 										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
@@ -856,7 +973,7 @@
 										->where('appform.assignedLO', '=', $Cur_useData['cur_user'])
 										->where('appform.draft', '=', 0)
 										->get();
-							} else if ($Cur_useData['grpid'] == 'RA'){
+							} else if ($Cur_useData['grpid'] == 'RA' || $Cur_useData['grpid'] == 'DC'){
 								$anotherData = DB::table('appform')
 										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
 										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
@@ -1460,7 +1577,9 @@
 				try {
 					$asMent = DB::table('assessment')->get();
 					$part = DB::table('part')->get();
-					return view('doh.mfasment', ['asments'=>$asMent, 'parts'=>$part]);
+					$data = DB::table('facilitytyp')->get();
+					$data1 = DB::table('cat_assess')->get();
+					return view('doh.mfasment', ['asments'=>$asMent, 'parts'=>$part, 'faci'=>$data,'cat'=> $data1]);
 				} catch (Exception $e) {
 					$TestError = $this->SystemLogs($e->getMessage());
 					session()->flash('system_error','ERROR');
@@ -3024,6 +3143,59 @@
 					$TestError = $this->SystemLogs($e->getMessage());
 					session()->flash('system_error','ERROR');
 					return view('doh.lpsFailedOne');
+				}
+			}
+		}
+		public function Team(Request $request){
+			if ($request->isMethod('get')) {
+				try {	
+						$data = DB::table('region')->get();
+						$data2 = DB::table('team')
+										->join('region', 'team.rgnid', '=', 'region.rgnid')
+										->get();
+						// return dd($data2);
+						return view('doh.mfTest', ['region' => $data, 'team' =>$data2]);
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					session()->flash('system_error','ERROR');
+					return view('doh.mfTest');
+				}
+			}
+			if ($request->isMethod('post')) {
+				try {
+						DB::table('team')->insert([
+										'teamid' => $request->id,
+										'teamdesc' => $request->name,
+										'rgnid' => $request->rgn,
+									]);
+						return 'DONE';
+				} catch (Exception $e) {
+						$TestError = $this->SystemLogs($e->getMessage());
+						return 'ERROR';
+				}
+			}
+		}
+		public function AsmtCategory(Request $request){
+			if ($request->isMethod('get')) {
+				try {
+						$data = DB::table('cat_assess')->get();
+						return view('doh.mfAsmtCat', ['cat' => $data]);	
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					session()->flash('system_error','ERROR');
+					return view('doh.mfAsmtCat');	
+				}
+			}
+			if ($request->isMethod('post')) {
+				try {
+					DB::table('cat_assess')->insert([
+							'caid'=> $request->id,
+							'categorydesc' => $request->name
+						]);
+					return 'DONE';
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					return 'ERROR';
 				}
 			}
 		}

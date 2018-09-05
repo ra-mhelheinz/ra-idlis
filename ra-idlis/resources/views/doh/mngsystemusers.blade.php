@@ -140,19 +140,6 @@
 	            </div>
             </div>
             <div class="row">
-            	<div class="col-sm-4">Type:</div>
-            	<div class="col-sm-8" style="margin:0 0 .8em 0;">
-            		<select class="form-control" name="typ" data-parsley-required-message="*<strong>Type</strong> required" required="">
-            			<option value=""></option>
-            		@if (isset($types))
-            			@foreach ($types as $type123)
-            			<option value="{{$type123->grp_id}}">{{$type123->grp_desc}}</option>
-            			@endforeach		
-            		@endif	
-            		</select>
-            	</div>
-            </div>	
-            <div class="row">
             	<div class="col-sm-4" >Region:</div>
 	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
 	            <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="">
@@ -164,7 +151,20 @@
 	                @endif
 	            </select> 
 	            </div>
-            </div>	
+            </div>
+            <div class="row">
+              <div class="col-sm-4">Type:</div>
+              <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                <select class="form-control" name="typ" data-parsley-required-message="*<strong>Type</strong> required" required="">
+                  <option value=""></option>
+                @if (isset($types))
+                  @foreach ($types as $type123)
+                  <option value="{{$type123->grp_id}}">{{$type123->grp_desc}}</option>
+                  @endforeach   
+                @endif  
+                </select>
+              </div>
+            </div>              	
             <div class="row">
             	<div class="col-sm-4">Position:</div>
 	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -172,9 +172,17 @@
 	            </div>
             </div>
             <div class="row">
+              <div class="col-sm-4">Team:</div>
+              <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                 <select class="form-control" name="team" data-parsley-required-message="*<strong>Team</strong> required">
+                   
+                 </select>
+              </div> 
+            </div>
+            <div class="row">
               <div class="col-sm-4">Default Facility Assignment:</div>
               <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                <select class="form-control">
+                <select class="form-control" name="def_faci">
                   <option value=""></option>
                   @isset($facilitys)
                     @foreach ($facilitys as $dt)
@@ -251,6 +259,10 @@
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
               <span id="ViewLname" style="font-weight: bold"></span>
             </div>
+            <div class="col-sm-4">Region:</div>
+            <div class="col-sm-8" style="margin:0 0 .8em 0;">
+              <span id="ViewRegion" style="font-weight: bold"></span>
+            </div>
             <div class="col-sm-4">Type:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
               <span id="ViewType" style="font-weight: bold"></span>
@@ -259,9 +271,10 @@
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
               <span id="ViewPosi" style="font-weight: bold"></span>
             </div>
-            <div class="col-sm-4">Region:</div>
+
+            <div class="col-sm-4">Team:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
-              <span id="ViewRegion" style="font-weight: bold"></span>
+              <span id="ViewTeam" style="font-weight: bold"></span>
             </div>
             <div class="col-sm-4">Email Address:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -351,6 +364,7 @@
 		                    uname : $('input[name="uname"]').val(),
 		                    posti : $('input[name="position"]').val(),
 		                    pass : 	$('input[name="pass"]').val(),
+                        // def : $('select[name="def_faci"]').val(),
 		                  },
 		                  success: function(data) {
 		                    if (data === 'DONE') {
