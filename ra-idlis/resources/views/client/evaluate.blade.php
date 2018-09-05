@@ -51,7 +51,7 @@
 
 						@if(count($evaluate) > 0)
 							@foreach($evaluate AS $uploadAf)
-								<?php $newUpdate = explode(', ', $uploadAf->upid); $newEvaluate = explode(', ', $uploadAf->evaluation); $newDesc = explode(', ', $uploadAf->updesc); $newRemarks = explode(', ', $uploadAf->remarks); ?>
+								<?php $newUpdate = explode(',', $uploadAf->upid); $newEvaluate = explode(',', $uploadAf->evaluation); $newDesc = explode(',', $uploadAf->updesc); $newRemarks = explode(',', $uploadAf->remarks); ?>
 								<tbody id="up_{{$uploadAf->hfser_id}}" hidden="true" name="forevaluate">
 									@if(count($newUpdate) > 1)
 										@for($i = 0; $i < count($newUpdate); $i++)
@@ -60,10 +60,10 @@
 													{{$newDesc[$i]}}
 												</td>
 												<td>
-													<center><i @if($newEvaluate[$i] != null) @if($newEvaluate[$i] == 0) class="text-danger fa fa-times" @else class="text-success fa fa-check" @endif  @else class="text-warning fa fa-spinner" @endif style="font-size: 30px;"></i></center>
+													<center><i @if(count($newEvaluate) > $i) @if($newEvaluate[$i] != null) @if($newEvaluate[$i] == 0) class="text-danger fa fa-times" @else class="text-success fa fa-check" @endif  @else class="text-warning fa fa-spinner" @endif @endif style="font-size: 30px;"></i></center>
 												</td>
 												<td>
-													{{$newRemarks[$i]}}
+													@if(count($newRemarks) > $i) {{$newRemarks[$i]}} @endif
 												</td>
 											</tr>
 										@endfor

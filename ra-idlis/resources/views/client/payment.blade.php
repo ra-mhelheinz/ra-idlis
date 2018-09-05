@@ -73,7 +73,6 @@
   <div class="row">
     <div class="col-sm-12" style="margin-top: 5%; margin-bottom: 5%;">
             <div class="headingWrap">
-              <button></button>
                 <h3 class="headingTop text-center">Select Your Payment Method</h3>  
                 <p class="text-center">Created with bootsrap button and using radio button</p>
             </div>
@@ -140,7 +139,7 @@
                     </tr>
                   </table>
                 @else
-                  <label>No transactions made.</label> PiZZA
+                  <label>No transactions made.</label>
                 @endif
               </div>
               </div>

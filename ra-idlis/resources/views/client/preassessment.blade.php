@@ -240,7 +240,7 @@
                       <input id="radio_{{$assessments->asmt_id}}1" class="radio" name="complied[{{$assessments->asmt_id}}]" id="notcomplied_{{$assessments->asmt_id}}" type="radio" value="0"  @if(count($userAssessment) > 0) @if($assessments->complied == '0') checked @endif @endif hidden>
                         <label id="label_{{$assessments->asmt_id}}2" for="notcomplied_{{$assessments->asmt_id}}" class="label text-center" @if($isview == false) onclick="ch_rdb('{{$assessments->asmt_id}}', 2)" @endif><i class="fa fa-times"></i></label>
                     </div>
-                 {{--    <div name="forerr_2" class="col-sm-3 text-center forerr_2">
+                    <div name="forerr_2" class="col-sm-3 text-center forerr_2" hidden>
                       @if($isview == false)
                         @if(count($userAssessment) > 0)
                           @if($assessments->fileName != null)
@@ -271,7 +271,7 @@
                           @endif
                         @endif
                       @endif
-                    </div> --}}
+                    </div>
                     <div name="forerr_3" class="col-sm-4 text-center forerr_3">
                       @if($isview == false)
                         <textarea class="textarea" @if(count($userAssessment) > 0 && $assessments->sa_remarks != "") placeholder="{{$assessments->sa_remarks}}" @else placeholder="Remarks" @endif name="remarks[{{$assessments->asmt_id}}]" id="remarks_{{$assessments->asmt_id}}"></textarea>
@@ -347,10 +347,10 @@
                     }
                   }
                 } else {
-                  if(document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('typefile')[j].value == "") {
-                    cheat++;
-                    if(err_id == "") { err_id = "err"+((l==1)?l:l-1)+"_"+newtikas+""; }
-                  }
+                  // if(document.getElementById('assess'+((l==1)?l:l-1)).getElementsByClassName('typefile')[j].value == "") {
+                  //   cheat++;
+                  //   if(err_id == "") { err_id = "err"+((l==1)?l:l-1)+"_"+newtikas+""; }
+                  // }
                 }
               }
               newtikas++; newtikas++;
@@ -419,10 +419,10 @@
                     }
                   }
                 } else {
-                  if(document.getElementById('assess'+end).getElementsByClassName('typefile')[j].value == "") {
-                    cheat++;
-                    if(err_id == "") { err_id = "err"+end+"_"+newtikas+""; }
-                  }
+                  // if(document.getElementById('assess'+end).getElementsByClassName('typefile')[j].value == "") {
+                  //   cheat++;
+                  //   if(err_id == "") { err_id = "err"+end+"_"+newtikas+""; }
+                  // }
                 }
               }
               newtikas++; newtikas++;

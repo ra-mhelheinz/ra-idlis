@@ -151,7 +151,7 @@
           <td class="text-center"><li class="breadcrumb-item" style="border-bottom: 3px solid #28a745; cursor: pointer;" onclick="goUrl('home')"><div class="text-white"><i class="fa fa-home"></i> Home</div></li></td>
           <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('apply')" class="breadcrumb-item"><div class="text-white" href="#"><label id="first" style="margin: 0"><i class="fa fa-edit"></i> 1. Apply</label></div></li></td>
           <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('orderofpaymentc')" class="breadcrumb-item"><div class="text-white" href="#" ><label id="second" style="margin: 0"><i class="fa fa-credit-card"></i> 2. Payment</label></div></li></td>
-          <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('evaluation')" class="breadcrumb-item"><div class="text-white" href="#" ><label id="third" style="margin: 0"><i class="fa fa-check"></i> 3. Evaluation</label></div></li></td>
+          <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('evaluate')" class="breadcrumb-item"><div class="text-white" href="#" ><label id="third" style="margin: 0"><i class="fa fa-check"></i> 3. Evaluation</label></div></li></td>
           <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('inspection')" class="breadcrumb-item"><div class="text-white" href="#" ><label id="fourth" style="margin: 0"><i class="fa fa-search"></i> 4. Inspection</label></div></li></td>
           <td class="text-center"><li style="cursor: pointer;" onclick="goUrl('issuance')" class="breadcrumb-item"><div class="text-white" href="#" ><label id="fifth" style="margin: 0"><i class="fa fa-print"></i> 5. Issuance</label></div></li></td>
       </tr>
@@ -174,7 +174,7 @@
   }
 
   function goUrl(evaluation) {
-    window.location.href = '{{asset('client')}}/'+evaluation;
+    window.location.href = '{{asset('client')}}/'+evaluate;
   }
 
   function goUrl(inspection) {

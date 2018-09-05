@@ -1075,8 +1075,10 @@ class ClientController extends Controller
     $data = session('client_data');
     $uploadSql = "SELECT hf.* FROM hfaci_serv_type hf INNER JOIN appform ap ON hf.hfser_id = ap.hfser_id WHERE ap.uid = '$data->uid'";
     $upload = DB::select($uploadSql);
+    $uploadSql1 = "SELECT hf.*, au.* FROM app_upload au LEFT JOIN appform ap ON au.app_id = ap.appid INNER JOIN hfaci_serv_type hf ON hf.hfser_id = ap.hfser_id WHERE ap.uid = '$data->uid'";
+    $upload1 = DB::select($uploadSql1);
     if($req->isMethod('get')) {
-      $sql = "SELECT af.appid, af.uid, af.hfser_id, af.recommendeddate AS proposedInspectiondate, af.recommendedtime AS proposedInspectiontime, af.isrecommended AS isInspected, GROUP_CONCAT(au.evaluation) AS evaluation, GROUP_CONCAT(REPLACE(up.upid, ',', '')) AS upid, GROUP_CONCAT(REPLACE(up.updesc, ',', '')) AS updesc, GROUP_CONCAT(REPLACE(au.remarks, ',', '')) AS remarks FROM appform af LEFT JOIN app_upload au ON au.app_id = af.appid LEFT JOIN upload up ON au.upid = up.upid WHERE af.uid = '$data->uid' GROUP BY af.appid, af.uid, af.hfser_id, af.recommendeddate, af.recommendedtime, af.isrecommended";
+      $sql = "SELECT af.appid, af.uid, af.hfser_id, af.recommendeddate AS proposedInspectiondate, af.recommendedtime AS proposedInspectiontime, af.isrecommended AS isInspected, GROUP_CONCAT(COALESCE(au.evaluation, 0)) AS evaluation, GROUP_CONCAT(REPLACE(up.upid, ',', '')) AS upid, GROUP_CONCAT(REPLACE(up.updesc, ',', '')) AS updesc, GROUP_CONCAT(REPLACE(COALESCE(au.remarks, '-'), ',', '')) AS remarks FROM app_upload au LEFT JOIN upload up ON au.upid = up.upid LEFT JOIN appform af ON au.app_id = af.appid WHERE af.uid = '$data->uid' GROUP BY af.appid, af.uid, af.hfser_id, af.recommendeddate, af.recommendedtime, af.isrecommended";
       $getSql = DB::select($sql);
       if(count($getSql) > 0) {
         return view('client.evaluate', ['evaluate'=>$getSql, 'upload'=>$upload]);
@@ -1134,4 +1136,26 @@ class ClientController extends Controller
       }
     }
   } 
+  public function getNotif(Request $req, $uid) {
+    $data = session('client_data');
+    if($req->isMethod('get')) {
+      $sql = DB::table('notificiationlog')->where('uid', '=', $uid)->select('*')->orderBy('notfdate')->get();
+      echo $sql;
+    } else {
+
+    }
+  }
+  public function chgNotif(Request $req, $uid, $nid) {
+    $data = session('client_data');
+    if($req->isMethod('get')) {
+      $sql = DB::table('notificiationlog')->where('notfid', '=', $nid)->where('uid', '=', $uid)->select('*')->orderBy('notfdate')->get();
+      if(DB::table('notificiationlog')->where('uid', '=', $uid)->update(['status'=>1])) {
+        echo $sql;
+      } else {
+        echo $sql;
+      }
+    } else {
+
+    }
+  }
 }

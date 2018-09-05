@@ -58,7 +58,7 @@
                   ('Verify Email Account');
                $message->from('doholrs@gmail.com','DOH Support');
             });
-
+          session()->flash('emailsent', 'Email Sent. Check your inbox to verify account.');
               DB::table('x08')->insert(
                 [
                     'uid' => $data['uname'],
@@ -91,7 +91,6 @@
             return 'DONE';
           }
         }  
-      echo "HTML Email Sent. Check your inbox.";
    }
    public function attachment_email(){
       $data = array('name'=>"Virat Gandhi");

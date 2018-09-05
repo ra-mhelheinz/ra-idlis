@@ -61,6 +61,8 @@ Route::post('client/logout', 'ClientController@logout');
 Route::post('client/store', 'ClientController@store');
 Route::match(['get', 'post'], 'client/payment', 'ClientController@payment')->name('client.payment');
 Route::match(['get', 'post'], 'client/payment/{token}/{pmt}', 'ClientController@goToken');
+Route::match(['get', 'post'], 'client/notif/{uid}', 'ClientController@getNotif');
+Route::match(['get', 'post'], 'client/notif/chg/{uid}/{nid}', 'ClientController@chgNotif');
 
 Route::get('/LOdashboard', 'LOController@LOdashboard');
 Route::get('/LOprocess', 'LOController@LOprocess');

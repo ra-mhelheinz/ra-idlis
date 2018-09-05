@@ -89,8 +89,9 @@
 
 										    <div id="collapseOneTwo{{$i}}{{$o}}" class="collapse" aria-labelledby="headingOne{{$i}}{{$o}}" data-parent="#accordion1">
 										      <div class="card-body">
-										      	<table class="table">
+										      	<table class="table table-hover">
 										      		<tr>
+										      			<th>Charges</th>
 										      			<th>Description</th>
 										      			<th class="text-center">Amount</th>
 										      			<th class="text-center">Option</th>
@@ -102,7 +103,8 @@
 											        		@if($cheat == false)
 											        			<?php $cheat = array_push($code, $charges[$j]->chg_code); ?>
 												        		<tr>
-												        			<td>{{$charges[$j]->chg_desc}} {{$charges[$j]->chg_rmks}}</td>
+												        			<td>{{$charges[$j]->chg_desc}} </td>
+												        			<td>{{$charges[$j]->chg_exp}}</td>
 												        			<td class="text-center">&#8369;{{$charges[$j]->amt}}</td>
 												        			<td id="{{$i}}{{$o}}{{$j}}" class="text-center"><i class="fa fa-plus-circle" style="cursor: pointer;color: #28a745;" onclick="addSummary(['{{$charges[$j]->chg_code}}', '{{$cat_desc1[$o]}}', '{{$charges[$j]->chg_desc}} {{$charges[$j]->chg_rmks}}', '{{$charges[$j]->amt}}', '{{$charges[$j]->chgapp_id}}'], '{{$i}}{{$o}}{{$j}}')"></i></td>
 												        		</tr>
@@ -169,8 +171,39 @@
 		<hr>
 		<button id="forprev" class="btn btn-info" style="float: left;" onclick="nst(-1)"><i class="fa fa-angle-left"></i> Prev</button>
 		<button id="fornext" class="btn btn-info" style="float: right;" onclick="nst(1)">Next <i class="fa fa-angle-right"></i></button>
-		<button id="forpaymentbtn" class="btn btn-warning" style="float: right;" form="formSubmit">Continue <i class="fa fa-credit-card"></i></button>
-
+		<button data-toggle="modal" data-target="#myModal" id="forpaymentbtn" class="btn btn-warning" style="float: right;">Continue <i class="fa fa-credit-card"></i></button>
+		<div class="modal fade" id="myModal">
+	    <div class="modal-dialog modal-lg">
+	      <div class="modal-content">
+	      
+	        <!-- Modal Header -->
+	        <div class="modal-header">
+	          <h4 class="text-center">Payment Summary</h4>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	        <!-- Modal body -->
+	        <div class="modal-body">
+	          <hr>
+	          <div class="row">
+	          	<div class="col-sm-1 text-right"><input type="checkbox" name=""></div>
+	          	<div class="col-sm-11">
+	          		<b>I HAVE REVIEWED MY PAYMENT SUMMARY.</b>
+	          		 <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</small>
+      				<p></p>
+	          	</div>
+	          </div>
+	        </div>
+	        
+	        <!-- Modal footer -->
+	        <div class="modal-footer">
+	        	<button data-dismiss="modal" class="btn btn-secondary btn-block"><i class="fa fa-angle-left"></i> Back</button>
+	          	<button class="btn btn-warning btn-block"  form="formSubmit" style="margin-top: 0;">Continue <i class="fa fa-credit-card"></i></button>
+	        </div>
+	        
+	      </div>
+	    </div>
+	  </div>
 	</div>
 				{{-- <div id="accordion">
 					<div class="card" style="box-shadow: -5px 5px 10px rgba(0,0,0,0.25);">

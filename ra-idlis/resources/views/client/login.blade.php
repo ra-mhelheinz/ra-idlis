@@ -114,9 +114,17 @@ html, body, #canvasMap{
 </div> --}}
 <header>
 	<div id="forpush" style="position: absolute; right: 0; top: 0; left: 1; bottom: 1; margin-right: 10px; margin-top: 10px; max-width: 1000px; z-index: 100000000000000000000000000000000000000000;">
+		@if (session()->has('emailsent'))
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+		  <strong><i class="fa fa-exclamation"></i></strong> {{session()->get('emailsent')}} 
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		@endif
 		@if (session()->has('client_login'))
 		<div class="alert alert-danger alert-dismissible fade show" role="alert">
-		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('client_login')}} 
+		  <strong><i class="fa fa-exclamation"></i></strong> {{session()->get('client_login')}} 
 		  @if(session()->has('acc_id'))
 		  <a href="{{ asset('/resend') }}/{{session()->get('acc_id')}}">Resend Verification</a>
 		  @endif
@@ -127,7 +135,7 @@ html, body, #canvasMap{
 		@endif
 		@if (session()->has('logout_notif'))
 		<div id="asdf" class="alert alert-info alert-dismissible fade show" role="alert">
-		  <strong><i class="fas fa-exclamation"></i></strong> {{session()->get('logout_notif')}}
+		  <strong><i class="fa fa-exclamation"></i></strong> {{session()->get('logout_notif')}}
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
 		  </button>
@@ -212,7 +220,7 @@ html, body, #canvasMap{
 			<div class="col-sm-12" style="display :none">
 				@if (session()->has('reg_notif_success'))
 					<div class="alert alert-success alert-dismissible fade show" role="alert">
-					  <strong><i class="fas fa-check"></i></strong> {{ session()->get('reg_notif_success') }}
+					  <strong><i class="fa fa-check"></i></strong> {{ session()->get('reg_notif_success') }}
 					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					    <span aria-hidden="true">&times;</span>
 					  </button>
@@ -220,7 +228,7 @@ html, body, #canvasMap{
 				@endif
 				@if (session()->has('reg_notif_error'))
 					<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					  <strong><i class="fas fa-exclamation"></i></strong> {{ session()->get('reg_notif_error') }}
+					  <strong><i class="fa fa-exclamation"></i></strong> {{ session()->get('reg_notif_error') }}
 					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					    <span aria-hidden="true">&times;</span>
 					  </button>
@@ -228,7 +236,7 @@ html, body, #canvasMap{
 				@endif
 				@if ($errors->any())
 				    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-				    	<strong><i class="fas fa-exclamation"></i></strong>
+				    	<strong><i class="fa fa-exclamation"></i></strong>
 				        <ul>
 				            @foreach ($errors->all() as $error)
 				                <li>{{ $error }}</li>
@@ -469,41 +477,20 @@ html, body, #canvasMap{
         </button>
       </div>
       <div class="modal-body">
-        Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+	        Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+			Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
 
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+			Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
 
-Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+			Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
 
-Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+			Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
 
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+			Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
 
-Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+			Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
 
-Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-
-Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
-
-Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-
-Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
-
-Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-
-Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
-
-Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-
-Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+			Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
 			<div class="row">
 				<div class="col-sm-12">
 					<input type="checkbox" id="tcheck" name="" required> <label>I agree to Terms and Service</label>
