@@ -188,9 +188,8 @@
 	          <div class="row">
 	          	<div class="col-sm-1 text-right"><input type="checkbox" name=""></div>
 	          	<div class="col-sm-11">
-	          		<b>I HAVE REVIEWED MY PAYMENT SUMMARY.</b>
-	          		 <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</small>
-      				<p></p>
+	          		
+	          		 <p style="line-height: 1;"><b>I HAVE REVIEWED MY PAYMENT SUMMARY.</b><small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</small></p>
 	          	</div>
 	          </div>
 	        </div>

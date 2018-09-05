@@ -277,19 +277,17 @@
 											} else {
 												$data[$i]->checkInspectDate = 'black'; // Not Due
 											}
-											/////  Compare Dates
-											
-											///// Check Status
-											if ($data[$i]->status == 'A') { // APPROVED
-												$data[$i]->statColor = 'green';
-											} else if ($data[$i]->status == 'FA' || $data[$i]->status == 'FE'  || $data[$i]->status == 'FI'  || $data[$i]->status == 'P'  || $data[$i]->status == 'PP'  ) { // PENDING
-												$data[$i]->statColor = 'yellow';
-											} else { // REJECTED
-												$data[$i]->statColor = 'red';
-											}
-											///// Check Status
-																					
+											/////  Compare Dates										
+									}	
+									///// Check Status
+									if ($data[$i]->status == 'A') { // APPROVED
+										$data[$i]->statColor = 'green';
+									} else if ($data[$i]->status == 'FA' || $data[$i]->status == 'FE'  || $data[$i]->status == 'FI'  || $data[$i]->status == 'P'  || $data[$i]->status == 'PP'  ) { // PENDING
+										$data[$i]->statColor = 'yellow';
+									} else { // REJECTED
+										$data[$i]->statColor = 'red';
 									}
+									///// Check Status
 								}
 							}	
 

@@ -49,7 +49,7 @@
                                                     @endisset
                                                 @endif
                                                 <td class="text-center">{{$d->aptdesc}}</td>
-                                                <td class="text-center" style="background-color: {{$d->statColor}};color: white;font-weight: bold;text-shadow: 2px 2px 4px #000000">
+                                                <td class="text-center" style="background-color: @isset($d->statColor){{$d->statColor}}@endisset;color: white;font-weight: bold;text-shadow: 2px 2px 4px #000000">
                                                     {{$d->trns_desc}}
                                                 </td>
                                             </tr>
