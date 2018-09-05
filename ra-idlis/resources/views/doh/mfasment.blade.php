@@ -74,6 +74,28 @@
                         </button>
                     </div>
                     {{ csrf_field() }}
+                    <div class="col-sm-4">Facility:</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <select id="faci" class="form-control" data-parsley-required-message="*<strong>Facility</strong> required" required>
+                        <option value=""></option>
+                        @isset ($faci)
+                          @foreach ($faci as $t)
+                            <option value="{{$t->facid}}">{{$t->facname}}</option>
+                          @endforeach                            
+                        @endisset                        
+                      </select>
+                    </div>
+                    <div class="col-sm-4">Category</div>
+                    <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                      <select id="caid" class="form-control" data-parsley-required-message="*<strong>Category</strong> required" required>
+                        <option value=""></option>
+                        @isset($cat)
+                            @foreach ($cat as $c)
+                              <option value="{{$c->caid}}">{{$c->categorydesc}}</option>
+                            @endforeach
+                        @endisset                        
+                      </select>
+                    </div>
                     <div class="col-sm-4">Part:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
                       <select id="partid" data-parsley-required-message="*<strong>Part</strong> required" class="form-control" required>  
@@ -91,7 +113,7 @@
                     {{-- </div> --}}
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <input type="text" id="new_rgn_desc" name="fname" data-parsley-required-message="*<strong>Name</strong> required" class="form-control"  required>
+                    <textarea  id="new_rgn_desc" name="fname" data-parsley-required-message="*<strong>Name</strong> required" class="form-control"  required></textarea>                    
                     </div>
                     <div class="col-sm-12">
                       <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>

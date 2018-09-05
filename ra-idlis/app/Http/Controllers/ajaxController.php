@@ -55,6 +55,7 @@
 						return $data;
 					}
 			} catch (Exception $e) {
+				$data = $hos->SystemLogs($e->message());
 				return 'ERROR';
 			}
 		}
@@ -1190,6 +1191,37 @@
 					return 'ERROR';
 				}
 		}
+		public function saveTeam(Request $request){
+			try {
+					$data = array('teamdesc' => $request->name, 'rgnid' => $request->seq);
+
+					$test = DB::table('team')->where('teamid', '=', $request->id)->update($data);
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been updated in team table.');
+				    	return 'ERROR';
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function save_AsmtCat(Request $request){
+			try {
+					$data = array('categorydesc' => $request->name);
+					$test = DB::table('cat_assess')->where('caid', '=', $request->id)->update($data);
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been updated in cat_assess table.');
+				    	return 'ERROR';
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
 		// -------------------- EDIT -------------------- 
 		// -------------------- DELETE --------------------
 		public function delAppType(Request $request){
@@ -1511,6 +1543,33 @@
 			} catch (Exception $e) {
 				$data = $this->SystemLogs($e->getMessage());
 				return 'ERROR';
+			}
+		}
+		public function del_test(Request $request){
+			try {
+				$test = DB::table('team')->where('teamid', '=', $request->id)->delete();
+				if($test){
+					return 'DONE';
+				} else {	
+					$data = $this->SystemLogs('No data has been deleted in team table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function del_AsmtCat(Request $request){
+			try {
+				$test = DB::table('cat_assess')->where('caid', '=', $request->id)->delete();
+				if($test){
+					return 'DONE';
+				} else {	
+					$data = $this->SystemLogs('No data has been deleted in cat_assess table.');
+					return 'ERROR';
+				}
+			} catch (Exception $e) {
+				
 			}
 		}
 		// -------------------- DELETE --------------------

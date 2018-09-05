@@ -1,6 +1,7 @@
 @if (session()->exists('employee_login'))
     @php
      $employeeData = session('employee_login');
+     // dd($employeeData);
    @endphp
 
 <input type="hidden" id="global-token" value="{{ Session::token() }}" />
@@ -9,16 +10,11 @@
         <a class="navbar-brand" href="#">
             @if ($employeeData->grpid == 'NA')
                 National Admin
+            @else
+                {{$employeeData->grp_desc}}, {{$employeeData->rgn_desc}}
             @endif
-            @if ($employeeData->grpid == 'RA')
-                Regional Head, {{$employeeData->rgn_desc}}
-            @endif
-            @if ($employeeData->grpid == 'LO')
-                Licensing Officer, {{$employeeData->rgn_desc}}
-            @endif
-            @if ($employeeData->grpid == 'FDA')
-                FDA Officer, {{$employeeData->rgn_desc}}
-            @endif
+            {{-- @if($employeeData->grpid)
+            @endif --}}
         </a>
 
         <div class="navbar-collapse collapse">
@@ -83,6 +79,12 @@
                         <i class="fa fa-fw fa-wrench"></i> Master File
                     </a>
                     <ul id="sm_base" class="list-unstyled collapse">
+                        <li><a href="#Tean" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-users"></i>&nbsp;Team</a>
+                            <ul id="Tean" class="list-unstyled collapse">
+                                <li class="#"><a href="{{ asset('/employee/dashboard/mf/team') }}">&nbsp;&nbsp;&nbsp;&nbsp;Team</a></li>
+                                <li class="#"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Team Assignment</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#AppMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-clipboard-list"></i>&nbsp;Application</a>
                             <ul id="AppMenu" class="list-unstyled collapse">
                                 @if ($employeeData->grpid == 'NA')
@@ -135,7 +137,7 @@
                         </li>
                         <li><a href="#AssMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-tasks"></i>&nbsp;Assessment</a>
                             <ul id="AssMenu" class="list-unstyled collapse">
-                                {{-- <li class=""><a href="{{ asset('/employee/dashboard/mf/pre-assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Pre-Assessment</a></li> --}}
+                                <li class=""><a href="{{ asset('/employee/dashboard/mf/cat_assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Category</a></li>
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/part') }}">&nbsp;&nbsp;&nbsp;&nbsp;Part</a></li>
                                 <li class=""><a href="{{ asset('/employee/dashboard/mf/assessment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                             </ul>
@@ -148,13 +150,15 @@
                 <li><a href="#ProFlowMenu" data-toggle="collapse"><i class="fa fa-sitemap"></i> Process Flow</a>
                     <ul id="ProFlowMenu" class="list-unstyled collapse">
                         <li class=""><a href="{{asset('/employee/dashboard/lps')}}">&nbsp;&nbsp;&nbsp;&nbsp;View Application Status</a></li>
-                          @if ($employeeData->grpid == 'NA' || $employeeData->grpid == "RA")  
-                        <li class=""><a href="{{asset('/employee/dashboard/lps/assign')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assign Applications</a></li>
-                        @endif
-                        <li class=""><a href="{{asset('/employee/dashboard/lps/evaluate')}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
-                        <li class=""><a href="{{asset('/employee/dashboard/lps/assess')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
-                        <li class=""><a href="{{asset('/employee/dashboard/lps/cashier')}}">&nbsp;&nbsp;&nbsp;&nbsp;Cashiering</a></li>
                         @if ($employeeData->grpid == 'NA' || $employeeData->grpid == "RA")
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/evaluate')}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
+                        <li class=""><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Order of Payment</a></li>
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/cashier')}}">&nbsp;&nbsp;&nbsp;&nbsp;Cashiering</a></li>
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/assign')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assignment of Team</a></li>
+                        @endif
+                        <li class=""><a href="{{asset('/employee/dashboard/lps/assess')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
+                        @if ($employeeData->grpid == 'NA' || $employeeData->grpid == "RA")
+                        <li class=""><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Recommendation For Approval</a></li>
                         <li class=""><a href="{{asset('/employee/dashboard/lps/approval')}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
                         @endif
                         <li class=""><a href="{{asset('/employee/dashboard/lps/failed')}}">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>
