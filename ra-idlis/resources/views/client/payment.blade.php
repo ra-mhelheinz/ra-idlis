@@ -73,8 +73,7 @@
   <div class="row">
     <div class="col-sm-12" style="margin-top: 5%; margin-bottom: 5%;">
             <div class="headingWrap">
-                <h3 class="headingTop text-center">Select Your Payment Method</h3>  
-                <p class="text-center">Created with bootsrap button and using radio button</p>
+                <a href="{{asset('client/orderofpaymentc')}}" class="btn btn-info"><i class="fa fa-angle-left"></i> Back</a><h3 class="headingTop text-center">Select Your Payment Method</h3>  
             </div>
             <div class="paymentWrap">
               <div class="paymentBtnGroup row" data-toggle="buttons">
@@ -119,7 +118,7 @@
                 @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
                   <table style="width: 100%;" class="table">
                     <tr>
-                      <td style="width: 50%;">Description</td>
+                      <td style="width: 50%;">Charges</td>
                       <td style="width: 50%;" class="text-center">Amount</td>
                     </tr>
                     @php

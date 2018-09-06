@@ -171,25 +171,38 @@
 		<hr>
 		<button id="forprev" class="btn btn-info" style="float: left;" onclick="nst(-1)"><i class="fa fa-angle-left"></i> Prev</button>
 		<button id="fornext" class="btn btn-info" style="float: right;" onclick="nst(1)">Next <i class="fa fa-angle-right"></i></button>
-		<button data-toggle="modal" data-target="#myModal" id="forpaymentbtn" class="btn btn-warning" style="float: right;">Continue <i class="fa fa-credit-card"></i></button>
+		<button data-toggle="modal" data-target="#myModal" id="forpaymentbtn" class="btn btn-info" style="float: right;">Proceed <i class="fa fa-angle-right"></i></button>
 		<div class="modal fade" id="myModal">
 	    <div class="modal-dialog modal-lg">
 	      <div class="modal-content">
 	      
 	        <!-- Modal Header -->
 	        <div class="modal-header">
-	          <h4 class="text-center">Payment Summary</h4>
+	        	<div class="text-center">
+	          		<h4>Payment Summary</h4>
+	         	 </div>
 	          <button type="button" class="close" data-dismiss="modal">&times;</button>
 	        </div>
 	        
 	        <!-- Modal body -->
 	        <div class="modal-body">
+	        	<table class="table">
+	        		<thead>
+	        			<tr>
+	        				<th class="text-center">Charges</th>
+	        				<th class="text-center">Amount</th>
+	        			</tr>
+	        		</thead>
+	        		<tbody id="paymentrecorda">
+	        			<tr><td colspan="3">None</td></tr>
+	        		</tbody>
+	        	</table>
 	          <hr>
 	          <div class="row">
 	          	<div class="col-sm-1 text-right"><input type="checkbox" name=""></div>
 	          	<div class="col-sm-11">
 	          		
-	          		 <p style="line-height: 1;"><b>I HAVE REVIEWED MY PAYMENT SUMMARY.</b><small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</small></p>
+	          		 <p style="line-height: 1;"><b>I HAVE REVIEWED MY PAYMENT SUMMARY.</b> <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</small></p>
 	          	</div>
 	          </div>
 	        </div>
@@ -389,6 +402,7 @@
 	function disp_dt() {
 		var total = 0;
 		document.getElementById('paymentrecord').innerHTML = '';
+		document.getElementById('paymentrecorda').innerHTML = '';
 		localStorage.setItem('forArr', JSON.stringify(forArr));
 		localStorage.setItem('forBtn', JSON.stringify(forBtn));
 		localStorage.setItem('forCode', JSON.stringify(forCode));
@@ -397,6 +411,7 @@
 			document.getElementById(forBtn[i]).getElementsByTagName('i')[0].setAttribute('style', 'color: #28a745;');
 
 			document.getElementById('paymentrecord').innerHTML += '<tr><td>'+forArr[i][2]+'<input type="hidden" name="chgapp_id[]" value="'+forArr[i][4]+'"><input type="hidden" name="desc[]" value="'+forArr[i][2]+'"></td><td>&#8369;'+forArr[i][3]+'<input type="hidden" name="amount[]" value="'+forArr[i][3]+'"></td><td class="text-center"><i class="fa fa-times-circle" style="cursor: pointer;color: #C60000;" onclick="delSummary('+i+')"></i></td></tr>';
+			document.getElementById('paymentrecorda').innerHTML += '<tr><td class="text-center">'+forArr[i][2]+'<input type="hidden" name="chgapp_id[]" value="'+forArr[i][4]+'"><input type="hidden" name="desc[]"  value="'+forArr[i][2]+'"></td><td class="text-center">&#8369;'+forArr[i][3]+'<input type="hidden" name="amount[]" value="'+forArr[i][3]+'"></td></tr>';
 			total=total+parseInt(forArr[i][3]);
 		}
 		document.getElementById('tlpymnt').innerHTML = total;
