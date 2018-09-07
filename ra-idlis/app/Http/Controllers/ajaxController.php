@@ -501,6 +501,15 @@
 				return 'ERROR';
 			}
 		}
+		public function getTeamsData(Request $request){
+			try {
+					$data = DB::table('team')->where('rgnid', '=', $request->rgn)->get();
+					return $data;
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
 		// -------------------- SELECT --------------------
 		// -------------------- ADD --------------------
 		public function addCM(Request $request){ // Add New City/ Municipality
@@ -869,6 +878,16 @@
 			try {
 				$data = $this->InsertActLog($request->mod_id,"upd");
 				$updateData = array('asmt_name'=>$request->name);
+				if (isset($request->faci)) {
+					$updateData['facid'] = $request->faci;
+				} 
+				if (isset($request->cat)) {
+					$updateData['caid'] = $request->cat;
+				} 
+				if (isset($request->part)){
+					$updateData['partid'] = $request->part;
+				}
+				// return $updateData;
 				$test = DB::table('assessment')
 					->where('asmt_id', $request->id)
 					->update($updateData);

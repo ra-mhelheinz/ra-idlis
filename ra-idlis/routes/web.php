@@ -186,6 +186,7 @@ Route::post('/lps/getAssess', ['as'=>'getAssess', 'uses'=>'ajaxController@getAss
 Route::post('/mf/getCalendarEvents', ['as'=>'getCalendarEvents', 'uses'=>'ajaxController@getCalendarEvents']);
 Route::post('/mf/getCalendarEvents2', ['as'=>'getCalendarEvents2', 'uses'=>'ajaxController@getCalendarEvents2']);
 Route::post('lps/getPayment', ['as'=>'getPaymentData', 'uses'=>'ajaxController@getPaymentData']);
+Route::match(['get', 'post'],'mf/get_teams', ['as'=>'getTeamsData', 'uses'=>'ajaxController@getTeamsData']);
 //getRequirements
 // -------------------------------------- GET
 // -------------------------------------- UPDATE

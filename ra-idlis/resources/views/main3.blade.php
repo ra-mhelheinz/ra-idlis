@@ -56,9 +56,54 @@
             width: 36%;
             z-index: 9998;
         }
+        #return-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgb(0, 0, 0);
+            background: rgba(0, 0, 0, 0.7);
+            width: 50px;
+            height: 50px;
+            display: block;
+            text-decoration: none;
+            -webkit-border-radius: 35px;
+            -moz-border-radius: 35px;
+            border-radius: 35px;
+            display: none;
+            -webkit-transition: all 0.3s linear;
+            -moz-transition: all 0.3s ease;
+            -ms-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        #return-to-top i {
+            color: #fff;
+            margin: 0;
+            position: relative;
+            left: 16px;
+            top: 13px;
+            font-size: 19px;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            -ms-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        #return-to-top:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+        #return-to-top:hover i {
+            color: #fff;
+            top: 5px;
+        }
+
+
+        /* Extra Things */
+        body{background: #eee ;font-family: 'Open Sans', sans-serif;}h3{font-size: 30px; font-weight: 400;text-align: center;margin-top: 50px;}h3 i{color: #444;}
     </style>
 </head>
 <body class="bg-light">
+    
     @include('doh.nav')
 <script src="{{asset('ra-idlis/public/js/bootadmin.min.js')}}"></script>
 @if (session()->has('system_error'))
@@ -77,11 +122,25 @@
             </button>
     </div>
 @yield('content')
+<a href="javascript:" id="return-to-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
 <script type="text/javascript">
 $("body").append('<div class="pageloader"></div>');
   $(document).ready(function(){
     $(".pageloader").fadeOut(1000);
   });
+  // ===== Scroll to Top ==== 
+    $(window).scroll(function() {
+        if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
+            $('#return-to-top').fadeIn(200);    // Fade in the arrow
+        } else {
+            $('#return-to-top').fadeOut(200);   // Else fade out the arrow
+        }
+    });
+    $('#return-to-top').click(function() {      // When arrow is clicked
+        $('body,html').animate({
+            scrollTop : 0                       // Scroll to top of body
+        }, 500);
+    }); /// A PEN BY rdallaire 
 </script>
 </body>
 </html>

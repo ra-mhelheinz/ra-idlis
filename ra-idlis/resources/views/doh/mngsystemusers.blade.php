@@ -142,7 +142,7 @@
             <div class="row">
             	<div class="col-sm-4" >Region:</div>
 	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	            <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="">
+	            <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="" onchange="getTeams();">
 	            <option value=""></option>  
 	                @if (isset($region))
 	                  @foreach ($region as $regions)
@@ -155,7 +155,7 @@
             <div class="row">
               <div class="col-sm-4">Type:</div>
               <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                <select class="form-control" name="typ" data-parsley-required-message="*<strong>Type</strong> required" required="">
+                <select class="form-control" name="typ" data-parsley-required-message="*<strong>Type</strong> required" onchange="getTeams(); getDefFaci();" required="">
                   <option value=""></option>
                 @if (isset($types))
                   @foreach ($types as $type123)
@@ -171,15 +171,15 @@
 	            <input type="text" name="position" class="form-control" data-parsley-required-message="*<strong>Position</strong> required" required>
 	            </div>
             </div>
-            <div class="row">
+            <div id="TeamDiv" class="row" style="display: none">
               <div class="col-sm-4">Team:</div>
               <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                 <select class="form-control" name="team" data-parsley-required-message="*<strong>Team</strong> required">
-                   
+                 <select class="form-control" name="team">
+                    
                  </select>
               </div> 
             </div>
-            <div class="row">
+            <div id="DefFaciDiv" class="row" style="display: none">
               <div class="col-sm-4">Default Facility Assignment:</div>
               <div class="col-sm-8" style="margin:0 0 .8em 0;">
                 <select class="form-control" name="def_faci">
@@ -359,6 +359,8 @@
 		                    lname : $('input[name="lname"]').val(),
 		                    rgn : 	$('select[name="rgn"]').val(),
 		                    typ : 	$('select[name="typ"]').val(),
+                        team : $('select[name="team"]').val(),
+                        defaci : $('select[name="def_faci"]').val(),
 		                    email : $('input[name="email"]').val(),
 		                    cntno : $('input[name="cntno"]').val(),
 		                    uname : $('input[name="uname"]').val(),
@@ -513,6 +515,63 @@
 			$('#result').empty();
 	        $('#result').append(resultName);
 	        $('#passStr').attr('value',strength);
+        }
+        function getTeams(){
+          // data-parsley-required-message="*<strong>Team</strong> required"
+          var rgn = $('select[name="rgn"]').val();
+          var grp = $('select[name="typ"]').val();
+          $('select[name="team"]').attr('data-parsley-required-message','');
+          $('select[name="team"]').removeAttr('required');
+          // console.log('RGN :' + rgn + ', GRP : '+grp);
+          if (rgn != '' && grp == 'LO') {
+             $('#TeamDiv').show();
+             $('select[name="team"]').attr('data-parsley-required-message','*<strong>Team</strong> required');
+             $('select[name="team"]').attr('required','');
+             
+             $('select[name="team"]').empty();
+             $('select[name="team"]').append('<option value=""></option>');
+
+             $.ajax({
+                url : '{{ asset('mf/get_teams') }}',
+                method : 'GET',
+                data: {_token:$('input[name="_token"]').val(),rgn:rgn,grp:grp},
+                success: function(data){
+                if (data == 'ERROR') {
+                  $('#ACCError').show(100);
+                } else {
+                  $('select[name="team"]').empty();
+                  $('select[name="team"]').append('<option value=""></option>');
+
+                    for(var i = 0; i < data.length; i++){
+                        $('select[name="team"]').append('<option value="'+data[i].teamid+'">'+data[i].teamdesc+'</option>');
+                    }
+                }
+              }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                  $('#ACCError').show(100);
+              }
+             });
+
+          } else {
+            $('#TeamDiv').hide();
+            $('select[name="team"]').attr('data-parsley-required-message','');
+            $('select[name="team"]').removeAttr('required');
+          }
+        }
+        function getDefFaci(){
+          var grp = $('select[name="typ"]').val();
+
+           $('select[name="typ"]').attr('data-parsley-required-message','');
+           $('select[name="typ"]').removeAttr('required');
+
+           if (grp == 'LO') {
+              $('#DefFaciDiv').show();
+               $('select[name="typ"]').attr('data-parsley-required-message','*<strong>Default Facility Assignment</strong> required');
+               $('select[name="typ"]').attr('required','');
+           } else {
+              $('#DefFaciDiv').hide();
+              $('select[name="typ"]').attr('data-parsley-required-message','');
+              $('select[name="typ"]').removeAttr('required');
+           }
         }
     </script>
 @endsection

@@ -31,7 +31,7 @@
            <div style="float:right;display: inline-block;">
             <form class="form-inline">
               <label>Filter : &nbsp;</label>
-              <select style="width: auto;" class="form-control" id="filterer" onchange="filterGroup()">
+              <select style="width: auto;" class="form-control" id="filterer" {{-- onchange="filterGroup()" --}}>
                 <option value="">Select Part ...</option>
                 @if (isset($parts))
                   @foreach ($parts as $part)
@@ -43,16 +43,40 @@
               </form>
            </div>
         </div>
-        <div class="card-body">
-               <table class="table" style="overflow-x: scroll;" >
+        <div class="card-body table-responsive">
+               <table id="example" class="table" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 5%">ID</th>
-                  <th style="width: 75%">Name</th>
-                  <th style="width: 20%"><center>Options</center></th>
+                  <th style="width: auto;text-align: center;">Category</th>
+                  <th style="width: auto;text-align: center;">Facility</th>
+                  <th style="width: auto;text-align: center;">Part</th>
+                  <th style="width: auto;text-align: center;">ID</th>
+                  <th style="width: auto;text-align: center;">Name</th>
+                  <th style="width: auto;text-align: center;"><center>Options</center></th>
                 </tr>
               </thead>
               <tbody id="FilterdBody">
+                @isset ($asments)
+                  @foreach ($asments as $e)
+                    <tr>
+                      <td style="text-align: center">{{$e->caid}}</td>
+                      <td style="text-align: center">{{$e->facname}}</td>
+                      <td style="text-align: center">{{$e->partid}}</td>
+                      <td style="text-align: center">{{$e->asmt_id}}</td>
+                      <td>{{$e->asmt_name}}</td>
+                      <td><center>
+                        <div class="row">
+                          <span class="MA18_update">
+                            <button type="button" class="btn btn-outline-warning" onclick="showData({{$e->asmt_id}}, '{{$e->asmt_name}}', '{{$e->categorydesc}}', '{{$e->facname}}', '{{$e->partdesc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button>&nbsp;
+                            </span>
+                            <span class="MA18_cancel">
+                            <button type="button" class="btn btn-outline-danger" onclick="showDelete({{$e->asmt_id}}, '{{$e->asmt_name}}');" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-fw fa-trash"></i></button>
+                          </span>
+                        </div>
+                      </center></td>
+                    </tr>
+                  @endforeach
+                @endisset
               </tbody>
             </table>
         </div>
@@ -113,7 +137,7 @@
                     {{-- </div> --}}
                     <div class="col-sm-4">Description:</div>
                     <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                    <textarea  id="new_rgn_desc" name="fname" data-parsley-required-message="*<strong>Name</strong> required" class="form-control"  required></textarea>                    
+                    <textarea  id="new_rgn_desc" name="fname" rows="5" data-parsley-required-message="*<strong>Name</strong> required" class="form-control"  required></textarea>                    
                     </div>
                     <div class="col-sm-12">
                       <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Save</button>
@@ -185,16 +209,52 @@
       </div> 
     </div>
     <script type="text/javascript">
-        function showData(id,desc){
+        $(document).ready(function(){
+            $('#example').DataTable();
+        });
+        function showData(id,desc, cat, facname, partdesc){
           $('#EditBody').empty();
           $('#EditBody').append(
-              '<div class="col-sm-4">ID:</div>' +
+              '<div class="col-sm-6">ID:</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
                 '<input type="text" id="edit_name" value="'+id+'" class="form-control disabled" disabled>' +
-              '</div>' +
-              '<div class="col-sm-4">Description:</div>' +
+              '</div>' +   
+              '<div class="col-sm-7">Facility: ('+facname+')</div>' +
               '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
-                '<input type="text" id="edit_desc" value="'+desc+'" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>' +
+                '<select id="edit_faci" class="form-control">' +
+                  '<option value=""></option>' +
+                  @isset ($faci)
+                      @foreach ($faci as $f)
+                        '<option value="{{$f->facid}}">{{$f->facname}}</option>' +
+                      @endforeach
+                  @endisset
+                '</select>' +
+              '</div>' +  
+              '<div class="col-sm-7">Category: ('+cat+')</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<select id="edit_cat" class="form-control">' +
+                  '<option value=""></option>' +
+                  @isset ($cat)
+                      @foreach ($cat as $c)
+                        '<option value="{{$c->caid}}">{{$c->categorydesc}}</option>' +
+                      @endforeach
+                  @endisset
+                '</select>' +
+              '</div>' + 
+              '<div class="col-sm-7">Part: ('+partdesc+')</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<select id="edit_prt" class="form-control">' +
+                  '<option value=""></option>' +
+                  @isset ($parts)
+                      @foreach ($parts as $p)
+                        '<option value="{{$p->partid}}">{{$p->partdesc}}</option>' +
+                      @endforeach
+                  @endisset
+                '</select>' +
+              '</div>' +          
+              '<div class="col-sm-6">Description:</div>' +
+              '<div class="col-sm-12" style="margin:0 0 .8em 0;">' +
+                '<textarea rows="5" type="text" id="edit_desc" data-parsley-required-message="<strong>*</strong>Zip Code <strong>Required</strong>" placeholder="'+desc+'" class="form-control" required>'+desc+'</textarea>' +
               '</div>' 
             );
         }
@@ -245,6 +305,8 @@
                         id: $('#new_rgnid').val(),
                         name : $('#new_rgn_desc').val(),
                         partid : $('#partid').val(),
+                        caid : $('#caid').val(),
+                        faci : $('#faci').val(),
                         mod_id : $('#CurrentPage').val(),
                       },
                       success: function(data) {
@@ -271,10 +333,13 @@
              if (form.parsley().isValid()) {
                var x = $('#edit_name').val();
                var y = $('#edit_desc').val();
+               var faci = $('#edit_faci').val();
+               var cat = $('#edit_cat').val();
+               var part = $('#edit_prt').val();
                $.ajax({
                   url: "{{ asset('/mf/save_asmt') }}",
                   method: 'POST',
-                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val()},
+                  data : {_token:$('#token').val(),id:x,name:y,mod_id : $('#CurrentPage').val(), faci : faci, cat : cat, part : part},
                   success: function(data){
                       if (data == "DONE") {
                           alert('Successfully Edited Assessment');

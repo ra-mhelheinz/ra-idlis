@@ -401,8 +401,10 @@
 					$data2 = DB::table('region')->get();
 					
 					$data4 = DB::table('facilitytyp')->get();
+
+					$data5 = DB::table('team')->get();
 					// return dd($data3);
-					return view('doh.mngsystemusers', ['users'=>$data1,'region'=>$data2, 'types'=>$data3, 'facilitys' => $data4]);
+					return view('doh.mngsystemusers', ['users'=>$data1,'region'=>$data2, 'types'=>$data3, 'facilitys' => $data4, 'team' => $data5]);
 				} catch (Exception $e) {
 					$TestError = $this->SystemLogs($e->getMessage());
 					session()->flash('system_error','ERROR');
@@ -467,6 +469,8 @@
 				                    't_date' => $dateNow,
 				                    't_time' =>$timeNow,
 				                    'grpid' => $data['type'],
+				                    'def_faci' => $request->defaci,
+				                    'team' => $request->team,
 				                    'isActive' => 1,
 				                    'isAddedBy' => $addedby->uid,
 				                    'token' => $data['token'],
@@ -1573,10 +1577,15 @@
 		public function AsMent(Request $request){
 			if ($request->isMethod('get')) {
 				try {
-					$asMent = DB::table('assessment')->get();
+					$asMent = DB::table('assessment')
+								->join('cat_assess', 'assessment.caid', '=', 'cat_assess.caid')
+								->join('facilitytyp', 'assessment.facid', '=', 'facilitytyp.facid')
+								->join('part', 'assessment.partid', '=', 'part.partid')
+								->get();
 					$part = DB::table('part')->get();
 					$data = DB::table('facilitytyp')->get();
 					$data1 = DB::table('cat_assess')->get();
+					// return dd($asMent);
 					return view('doh.mfasment', ['asments'=>$asMent, 'parts'=>$part, 'faci'=>$data,'cat'=> $data1]);
 				} catch (Exception $e) {
 					$TestError = $this->SystemLogs($e->getMessage());
@@ -1588,9 +1597,10 @@
 				try {
 					$data = $this->InsertActLog($request->mod_id,"ad_d");
 					DB::table('assessment')->insert([
-							// 'asmt_id' => $request->id,
 							'asmt_name' => $request->name,
 							'partid' => $request->partid,
+							'facid' => $request->faci,
+							'caid' => $request->caid,
 						]);
 					return 'DONE';
 				} catch (Exception $e) {
@@ -2188,17 +2198,17 @@
 									// 'uid' => $Cur_useData['cur_user']
 								]);
 						}
-						// if ($request->hasNotApproved == 0) {$Stat = 'FPE';$x = 1;} 
-						// else { $Stat = 'RI';$x = 0;}
-						// $update = array(
-						// 				'status'=>$Stat,
-						// 				'isInspected'=> $x,
-						// 				'inspecteddate'=> $Cur_useData['date'],
-						// 				'inspectedtime'=> $Cur_useData['time'],
-						// 				'inspectedipaddr'=> $Cur_useData['ip'],
-						// 				'inspectedby'=> $Cur_useData['cur_user'],
-						// 			);
-						// $test = DB::table('appform')->where('appid', '=', $request->id)->update($update);
+						if ($request->hasNotApproved == 0) {$Stat = 'FPE';$x = 1;} 
+						else { $Stat = 'RI';$x = 0;}
+						$update = array(
+										'status'=>$Stat,
+										'isInspected'=> $x,
+										'inspecteddate'=> $Cur_useData['date'],
+										'inspectedtime'=> $Cur_useData['time'],
+										'inspectedipaddr'=> $Cur_useData['ip'],
+										'inspectedby'=> $Cur_useData['cur_user'],
+									);
+						$test = DB::table('appform')->where('appid', '=', $request->id)->update($update);
 						if ($test) {
 							return 'DONE';
 						} else {

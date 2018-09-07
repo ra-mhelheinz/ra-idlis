@@ -20,11 +20,12 @@
 
         </div>
         <div class="card-body">
-               <table class="table" style="overflow-x: scroll;" >
+               <table id="example" class="table" style="overflow-x: scroll;" >
               <thead>
                 <tr>
                   <th style="width: 5%">ID</th>
-                  <th style="width: 70%">Description</th>
+                  <th style="width: 65%">Description</th>
+                  {{-- <th style="width: 5%;text-align: center">Part #</th> --}}
                   <th style="width: 25%"><center>Options</center></th>
                 </tr>
               </thead>
@@ -34,6 +35,7 @@
                   <tr>
                     <td scope="row"> {{$part->partid}}</td>
                     <td>{{$part->partdesc}}</td>
+                    {{-- <td class="text-center">{{$part->partno}}</td> --}}
                     <td>
                       <center>
                         <span class="MA17_update">
@@ -152,6 +154,9 @@
     </div> 
     </div>
     <script type="text/javascript">
+      $(document).ready(function(){
+        $('#example').DataTable();
+      });
         function showData(id,desc){
           $('#EditBody').empty();
           $('#EditBody').append(
