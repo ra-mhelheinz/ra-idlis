@@ -26,16 +26,13 @@ class ClientController extends Controller
             session()->flush();
             $uname=strtoupper($request->input('log_uname'));
             $pass= $request->input('log_pass');
-            $pass = Hash::check('pass', $pass);
-            $data = DB::table('x08')
-                    ->where([ ['uid', '=', $uname], ['pwd', '=', $pass], ['grpid', '=', 'C'] ])
-                    ->select('*')
-                    ->first();
-            if ($data == null){
-              
-                session()->flash('client_login','Invalid Username/Password');
-                return back();
-            }
+            $data = DB::table('x08')->where('uid', '=', $uname)->where('grpid', '=', 'C')->select('*')->first();
+            $chkpass = Hash::check($pass, $data->pwd);
+            // dd([$data, $chkpass, $request->input('log_pass')]);
+              if ($chkpass != true){
+                  session()->flash('client_login','Invalid Username/Password');
+                  return back();
+              }
              else{
               $val_ver = DB::table('x08')->select('token', 'uid')->where('uid', '=', $uname)->first();
               if($val_ver->token != NULL) {
@@ -851,18 +848,47 @@ class ClientController extends Controller
     }
 
   public function goToken(Request $req, $token, $pmt) {
-    if($req->isMethod('post')) {
-      
-    }
-    if($req->isMethod('get')) {
-      $desc = Session::get('desc');
-      $amount = Session::get('amount');
-      $hfser_id = Session::get('hfser_id');
-      $chgapp_id = Session::get('chgapp_id');
-      $appform_id = Session::get('appform_id');
-      $hfser_desc = Session::get('hfser_desc');
-      $client_save = session('client_data');
-      $dt = Carbon::now();
+    $desc = Session::get('desc'); $amount = Session::get('amount'); $hfser_id = Session::get('hfser_id'); $chgapp_id = Session::get('chgapp_id'); $appform_id = Session::get('appform_id'); $hfser_desc = Session::get('hfser_desc'); $client_save = session('client_data'); $dt = Carbon::now(); $employeeData = session('client_data'); $FileUploaded = ""; $reqdate = "";
+    if(($desc != null || count($desc) > 0) && ($amount != null || count($amount) > 0) && ($hfser_id != null || count($hfser_id) > 0) && ($chgapp_id != null || count($chgapp_id) > 0) && ($appform_id != null || count($appform_id) > 0) && ($hfser_desc != null || count($hfser_desc) > 0)) {
+      if($req->isMethod('post')) {
+        if(isset($req->au_file)) {
+          $FileUploaded = $req->au_file;
+          if($FileUploaded != null) {
+            $filename = $FileUploaded->getClientOriginalName(); 
+            $filenameOnly = pathinfo($filename,PATHINFO_FILENAME); 
+            $fileExtension = $FileUploaded->getClientOriginalExtension();
+            $fileNameToStore = $employeeData->uid.'_'.$appform_id.'_PAYMENT.'.$fileExtension;
+            $path = $FileUploaded->storeAs('public/uploaded', $fileNameToStore);
+            $fileSize = $FileUploaded->getClientSize();
+          } else {
+            $fileNameToStore = ((count($sqlCheckAss) < 1) ? null : $sqlCheckAss[0]->fileName);
+          }
+          $InsertUpload = array(
+            'app_id' => $appform_id,
+            'upid'=>   NULL,
+            'filepath'=> $fileNameToStore,
+            'fileExten' => $fileExtension,
+            'fileSize' => $fileSize,
+            't_date' => $dt->toDateString(),
+            't_time' => $dt->toTimeString(),
+            'ipaddress' =>request()->ip()
+          );
+          DB::table('app_upload')->insert($InsertUpload);
+        }
+        if(isset($req->au_ref)) {
+          $desc[(count($desc) - 1)] = $req->au_ref;
+        }
+        if(isset($req->au_amount)) {
+          $amount[(count($amount) - 1)] = ($req->au_amount * -1);
+        }
+        if(isset($req->au_date)) {
+          $reqdate = $req->au_date;
+        } 
+      }
+      if($req->isMethod('get')) {
+
+      }
+      $getLstAu = DB::table('app_upload')->orderBy('apup_id', 'desc')->select('apup_id')->limit(1)->first();
       for($i = 0; $i < count($amount); $i++) {
         $chg_num = DB::table('chg_app')->where('chgapp_id', '=', (($chgapp_id[$i] == "") ? $pmt : $chgapp_id[$i]))->select('chg_num')->first();
         DB::table('chgfil')->insert([
@@ -870,6 +896,8 @@ class ClientController extends Controller
           'chg_num'=>($chg_num->chg_num ?? 0),
           'appform_id'=>$appform_id,
           'chgapp_id_pmt'=>$pmt,
+          'au_id'=>((isset($req->au_file)) ? $getLstAu->apup_id : NULL),
+          'au_date'=>((isset($req->au_date)) ? $reqdate : NULL),
           'reference'=>$desc[$i],
           'amount'=>$amount[$i],
           't_date'=>$dt->toDateString(),
@@ -893,7 +921,11 @@ class ClientController extends Controller
         $updAppstat = array('status'=>'PP');
         DB::table('appform')->where('appid', '=', $appform_id)->update($updAppstat);
       }
+      Session::forget('desc'); Session::forget('amount'); Session::forget('hfser_id'); Session::forget('chgapp_id'); Session::forget('appform_id'); Session::forget('hfser_desc');
       session()->flash('succ_mess', 'Successfully updated payment information.');
+      return redirect()->route('client.home');
+    } else {
+      session()->flash('succ_mess', 'No record selected.');
       return redirect()->route('client.home');
     }
   }

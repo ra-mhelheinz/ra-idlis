@@ -93,6 +93,7 @@
 								</tfoot>
 							@endforeach
 						@else
+							NO Application Submitted or Not yet Evaluated
 						@endif
 					</table>
 				</div>

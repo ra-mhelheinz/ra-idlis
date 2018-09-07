@@ -79,7 +79,7 @@
                         <td>{{$data->aptdesc}}</td>
                         <td style="color:{{$color}};font-weight:bold;" class="text-center">{{$data->trns_desc}}</td>
                           <td>
-                            @if ($data->isInspected != null)
+                            @if ($data->isInspected == null)
                               <button type="button" title="Assess {{$data->facilityname}}" class="btn-defaults" onclick="window.location.href='{{asset('employee/dashboard/lps/assess')}}/{{$data->uid}}/{{$data->appid}}/inspect'"><i class="fa fa-fw fa-clipboard-check"></i></button>
                             @else
                                   <button type="button" title="View {{$data->facilityname}}" class="btn-defaults" onclick="window.location.href='{{asset('employee/dashboard/lps/assess')}}/{{$data->uid}}/{{$data->appid}}/view'"><i class="fa fa-fw fa-clipboard-check"></i></button>

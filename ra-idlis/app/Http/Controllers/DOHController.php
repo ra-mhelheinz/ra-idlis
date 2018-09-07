@@ -2795,7 +2795,8 @@
 						/////  Pre Assessment
 						$data1 = DB::table('app_assessment') // Pre-Assessmment
 							->join('assessment', 'app_assessment.asmt_id', '=', 'assessment.asmt_id')
-							->where([['app_assessment.draft', '=', '0'], ['app_assessment.uid', '=', $data0->uid], ['app_assessment.t_date', '=', null], ['app_assessment.t_time', '=', null]])
+							->where([['app_assessment.draft', '=', '0'], ['app_assessment.uid', '=', $data0->uid]])
+							/// ['app_assessment.t_date', '=', null], ['app_assessment.t_time', '=', null]
 							->first();
 						
 							$time = $data1->sa_ttime;
@@ -2805,6 +2806,7 @@
 							$date = $data1->sa_tdate;
 							$newD = Carbon::parse($date);
 							$data1->formattedDate = $newD->toFormattedDateString();
+							
 						/////  Pre Assessment
 						/////  Evaluation
 						if ($data0->isrecommended != null) {
@@ -2894,7 +2896,7 @@
 
 						// $data1 = DB::table()
 
-						// return dd($data0);	
+						// return dd($data1);	
 						return view('doh.lpsApprovalOne', ['AppData'=>$data0,'PreAss'=>$data1, 'APPID' => $appid]);
 				} catch (Exception $e) {
 					$TestError = $this->SystemLogs($e->getMessage());
@@ -3046,7 +3048,8 @@
 						/////  Pre Assessment
 						$data1 = DB::table('app_assessment') // Pre-Assessmment
 							->join('assessment', 'app_assessment.asmt_id', '=', 'assessment.asmt_id')
-							->where([['app_assessment.draft', '=', '0'], ['app_assessment.uid', '=', $data0->uid], ['app_assessment.t_date', '=', null], ['app_assessment.t_time', '=', null]])
+							->where([['app_assessment.draft', '=', '0'], ['app_assessment.uid', '=', $data0->uid]])
+							//  ['app_assessment.t_date', '=', null], ['app_assessment.t_time', '=', null]
 							->first();
 						
 							$time = $data1->sa_ttime;
