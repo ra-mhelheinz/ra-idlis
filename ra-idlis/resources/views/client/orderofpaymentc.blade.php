@@ -13,8 +13,9 @@
 @php 
 	$paymentstart = 1; $paymentend = 5;
 	$sqlPayment = "SELECT apo.appop_id, apo.oop_id, oop_desc, oop_total, apf.status, apf.aptid, ts.trns_desc FROM appform_oopdata appo LEFT JOIN appform_orderofpayment apo ON apo.appop_id = appo.appop_id LEFT JOIN appform apf ON apf.appid = apo.appid LEFT JOIN trans_status ts ON ts.trns_id = apf.status LEFT JOIN orderofpayment opo ON opo.oop_id = apo.oop_id WHERE apf.uid = '$clientData->uid' AND (apf.status != 'A') AND ts.allowedpayment != 0";
+	$sqlAppform = "SELECT ap.appid, ap.aptid, x8.facilityname, hf.hfser_desc, aat.aptdesc, ts.trns_desc, ap.hfser_id FROM appform ap INNER JOIN x08 x8 ON x8.uid = ap.uid INNER JOIN hfaci_serv_type hf ON hf.hfser_id = ap.hfser_id INNER JOIN apptype aat ON aat.aptid = ap.aptid LEFT JOIN trans_status ts ON ts.trns_id = ap.status WHERE ap.uid = '$clientData->uid' AND ap.status != 'A' AND ts.allowedpayment != 0";
 	$getAppPayment = DB::select($sqlPayment);
-	$appform = DB::select("SELECT ap.appid, ap.aptid, x8.facilityname, hf.hfser_desc, aat.aptdesc, ts.trns_desc, ap.hfser_id FROM appform ap INNER JOIN x08 x8 ON x8.uid = ap.uid INNER JOIN hfaci_serv_type hf ON hf.hfser_id = ap.hfser_id INNER JOIN apptype aat ON aat.aptid = ap.aptid LEFT JOIN trans_status ts ON ts.trns_id = ap.status WHERE ap.uid = '$clientData->uid' AND ap.status != 'A' AND ts.allowedpayment != 0");
+	$appform = DB::select($sqlAppform);
 	$oop = DB::select('SELECT * FROM orderofpayment ORDER BY oop_desc ASC');
 	$category = DB::select('SELECT oc.*, co.aptid, ap.aptdesc, (SELECT GROUP_CONCAT(cat_id) AS cat_id1 FROM category WHERE cat_id IN (SELECT cat_id FROM charges WHERE chg_code IN (SELECT chg_code FROM chg_app WHERE oop_id = oc.oop_id))) AS cat_id1, (SELECT GROUP_CONCAT(cat_desc) AS cat_desc1 FROM category WHERE cat_id IN (SELECT cat_id FROM charges WHERE chg_code IN (SELECT chg_code FROM chg_app WHERE oop_id = oc.oop_id))) AS cat_desc1 FROM orderofpayment oc LEFT JOIN (SELECT GROUP_CONCAT(ca.cat_id) AS cat_id, GROUP_CONCAT(ca.chg_code) AS chg_code, GROUP_CONCAT(ca.chg_desc) AS chg_desc, GROUP_CONCAT(ca.amt) AS amt, ca.aptid, co.oop_id FROM chg_app co LEFT JOIN (SELECT ch.*, ca.amt, ca.aptid FROM charges ch INNER JOIN chg_app ca ON ca.chg_code = ch.chg_code ORDER BY cat_id, chg_code) ca ON co.chg_code = ca.chg_code GROUP BY co.oop_id, ca.aptid) co ON co.oop_id = oc.oop_id LEFT JOIN apptype ap ON ap.aptid = co.aptid');
 	$charges = DB::select("SELECT DISTINCT ch.*, ca.amt, ca.aptid, ca.chgapp_id FROM chg_app ca LEFT JOIN charges ch ON ca.chg_code = ch.chg_code LEFT JOIN category ct ON ct.cat_id = ch.cat_id WHERE ct.cat_type = 'C'");
@@ -37,7 +38,7 @@
 						@endfor
 					@else
 						<br>
-						<center><p id="noRecord" style="color: black;">Applications are either rejected or deleted, or not yet applied to an application.</p></center>
+						<center><p id="noRecord" style="color: black;">Application(s) may be rejected, deleted, or you have not applied to an application yet.</p></center>
 						<script type="text/javascript">
 							setInterval(function() {
 								if(document.getElementById('noRecord').style.color == "black") {
@@ -306,20 +307,7 @@
 		var aptid = "";
 		var oop_id = "";
 		var appname = "";
-		var oopname = "";
-		if(curOop != "") {
-			if(curOop == oop_id) {
-
-			} else {
-				document.getElementById('paymentrecord').innerHTML = '<tr><td colspan="3">None</td></tr>';
-				document.getElementById('tlpymnt').innerHTML = '0';
-				forArr = []; forCode = []; forBtn = [];
-				curOop = oop_id;
-			}
-		} else {
-			forArr = []; forCode = []; forBtn = [];
-			curOop = oop_id;
-		}
+		var oopname = ""
  		for(var i = 0; i < document.getElementsByClassName('fighting').length; i++) {
  			document.getElementsByClassName('fighting')[i].setAttribute('hidden', true);
  		}
@@ -340,6 +328,19 @@
 				document.getElementById('hfser_id').value = document.getElementsByName('apptype')[i].classList[0];
 				document.getElementById('appform_id').value = document.getElementsByName('apptype')[i].classList[1];
 			}
+		}
+		if(curOop != "") {
+			if(curOop == oop_id) {
+
+			} else {
+				document.getElementById('paymentrecord').innerHTML = '<tr><td colspan="3">None</td></tr>';
+				document.getElementById('tlpymnt').innerHTML = '0';
+				forArr = []; forCode = []; forBtn = [];
+				curOop = oop_id;
+			}
+		} else {
+			forArr = []; forCode = []; forBtn = [];
+			curOop = oop_id;
 		}
 
 	 	if(aptid == "") { nst(-1); }
