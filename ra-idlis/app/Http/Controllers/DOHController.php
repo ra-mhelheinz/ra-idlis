@@ -2721,6 +2721,65 @@
 				}
 			}
 		}
+		public function cashierTwo(Request $request, $appid){
+			if ($request->isMethod('get')) {
+				try {
+						$Cur_useData = $this->getCurrentUserAllData();
+						$data0 = DB::table('appform')
+												->join('x08', 'appform.uid', '=', 'x08.uid')
+												->join('barangay', 'x08.barangay', '=', 'barangay.brgyid')
+												->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+												->join('province', 'x08.province', '=', 'province.provid')
+												->join('type_facility', 'appform.hfser_id', '=', 'type_facility.hfser_id') 
+												->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+												// ->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
+												// , 'orderofpayment.*'
+												->select('appform.*',  'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'type_facility.*', 'trans_status.trns_desc')
+												->where('appform.appid', '=', $appid)
+												// , 'type_facility.*', 'orderofpayment.*'
+												// ->where('type_facility.facid', '=', 'appform.facid')
+												->first();
+						if ($data0->recommendedtime !== null && $data0->recommendeddate !== null) {
+							$newT = Carbon::parse($data0->proposedInspectiontime);
+							$data0->formattedPropTime = $newT->format('g:i A');
+							$newD = Carbon::parse($data0->proposedInspectiondate);
+							$data0->formattedPropDate = $newD->toFormattedDateString();
+						}
+						$data1 = DB::table('chgfil')
+										->join('chg_app', 'chgfil.chgapp_id', '=', 'chg_app.chgapp_id')
+										->join('orderofpayment', 'chg_app.oop_id', '=', 'orderofpayment.oop_id')
+										->where('chgfil.appform_id', '=', $appid)
+										->orderBy('chg_app.oop_id','asc')
+										->get();
+						$data2 = DB::table('chgfil')->where('appform_id', '=', $appid)->sum('amount');
+						$data3 = DB::table('chgfil')
+										->join('chg_app', 'chgfil.chgapp_id', '=', 'chg_app.chgapp_id')
+										->select('chg_app.oop_id')
+										->where('chgfil.appform_id', '=', $appid)->distinct()->get();
+						$data4 = DB::table('orderofpayment')->get();
+						$data5 = DB::table('chg_app')
+									->join('charges', 'chg_app.chg_code', '=', 'charges.chg_code')
+									->where('chg_app.aptid', '=', $data0->aptid)
+									->orderBy('chg_app.oop_id','asc')
+									->orderBy('chg_app.chgopp_seq', 'asc')
+									->get();
+						for ($i=0; $i < count($data5); $i++) { 
+							$data5[$i]->formattedAmt = 'PHP '.number_format($data5[$i]->amt,2);
+						}
+						// return dd($appid);
+						return view('doh.lpsCashierTwo',['AppData'=>$data0, 'Payments' => $data1, 'Sum' => $data2, 'OOPs' =>$data4, 'Chrges' =>$data5, 'APPID' => $appid]);
+				} catch (Exception $e) {
+					
+				}
+			}
+			if ($request->isMethod('post')) {
+				try {
+					
+				} catch (Exception $e) {
+					
+				}
+			}
+		}
 		public function Approval(Request $request){
 			if ($request->isMethod('get')) {
 				try {

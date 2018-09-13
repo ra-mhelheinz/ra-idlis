@@ -234,7 +234,7 @@
         }        
     }
     function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, appid_payment){
-        window.location.href = "{{ asset('/employee/dashboard/lps/cashier') }}/" + appid;
+        window.location.href = "{{ asset('/employee/dashboard/lps/orderofpayment') }}/" + appid;
         // var status = '';
         // var paid = appid_payment;
         // var ifdisabled = '';

@@ -140,7 +140,7 @@ Route::match(['get', 'post'], '/employee/dashboard/lps/assess', 'DOHController@A
 Route::match(['get', 'post'], '/employee/dashboard/lps/assess/{uid}/{appid}/inspect', 'DOHController@AssessOne');
 Route::match(['get', 'post'], '/employee/dashboard/lps/assess/{uid}/{appid}/view', 'DOHController@AssessView');
 Route::match(['get', 'post'], 'employee/dashboard/lps/cashier', 'DOHController@cashier');
-Route::match(['get', 'post'], 'employee/dashboard/lps/cashier/{appid}', 'DOHController@cashierOne');
+Route::match(['get', 'post'], 'employee/dashboard/lps/cashier/{appid}', 'DOHController@cashierTwo');
 Route::match(['get','post'],'/employee/dashboard/mf/category','DOHController@Category')->name('mfCategory');
 Route::match(['get', 'post'], '/employee/dashboard/mf/cat_assessment', 'DOHController@AsmtCategory');
 Route::match(['get','post'],'/employee/dashboard/mf/tstatus','DOHController@TransStatus')->name('mfTranStatus');
@@ -151,6 +151,7 @@ Route::match(['get', 'post'], 'employee/dashboard/lps/approval/{appid}', 'DOHCon
 Route::match(['get', 'post'], 'employee/dashboard/lps/failed', 'DOHController@FailedAps');
 Route::match(['get', 'post'], 'employee/dashboard/lps/failed/{appid}', 'DOHController@FailedApsOne');
 Route::match(['get', 'post'], '/employee/dashboard/lps/orderofpayment', 'DOHController@lpsOOP');
+Route::match(['get', 'post'], 'employee/dashboard/lps/orderofpayment/{appid}', 'DOHController@cashierOne');
 Route::match(['get', 'post'], '/employee/dashboard/grouprights/mng_grps', 'DOHController@MngGroupRights');
 Route::match(['get', 'post'], '/employee/dashboard/grouprights/mng_mods', 'DOHController@MngModules');
 Route::post('/employee/logout','DOHController@logout');
