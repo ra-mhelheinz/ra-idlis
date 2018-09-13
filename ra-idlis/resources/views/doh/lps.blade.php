@@ -39,38 +39,38 @@
                 @endif
               </datalist>
               &nbsp;
-              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" {{-- onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});" --}}>Filter</button>
+              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});">Filter</button>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
            </div>
             <table class="table table-hover" style="font-size:13px;" id="example">
                 <thead>
                 <tr>
-                    <th scope="col" style="text-align:center">Type</th>
-                    <th scope="col" style="text-align:center">Code</th>
-                    <th scope="col" style="text-align:center">Name of the Facility</th>
-                    <th scope="col" style="text-align:center">Type of Facility</th>
-                    <th scope="col" style="text-align:center">Type</th>
-                    <th scope="col" style="text-align:center">Date Applied</th>
+                    <th scope="col" style="text-align: center; width:auto">Type</th>
+                    <th scope="col" style="text-align: center; width:auto">Code</th>
+                    <th scope="col" style="text-align: center; width:auto">Name of the Facility</th>
+                    <th scope="col" style="text-align: center; width:auto">Type of Facility</th>
+                    <th scope="col" style="text-align: center; width:auto">Type</th>
+                    <th scope="col" style="text-align: center; width:auto">Date Applied</th>
                     {{-- <th scope="col" style="">Paid</th> --}}
                     <th scope="col" style="text-align:center">Evaluated</th>
                     {{-- <th scope="col" style="">Evaluated by</th> --}}
                     {{-- <th scope="col" style="">Region Evaluated</th> --}}
-                    <th scope="col" style="text-align:center">Inspected</th>
-                    <th scope="col" style="text-align:center">Approved</th>
-                    <th scope="col" style="text-align:center">Status</th>
+                    <th scope="col" style="text-align: center; width:auto">Inspected</th>
+                    <th scope="col" style="text-align: center; width:auto">Approved</th>
+                    <th scope="col" style="text-align: center; width:auto">Status</   th>
                     {{-- <th scope="col" style="">Current Status</th> --}}
-                    <th scope="col" style="text-align:center">Options</th>
+                    <th scope="col" style="text-align: center; width:auto">Options</th>
                 </tr>
                 </thead>
                 <tbody id="FilterdBody">
                  @if (isset($LotsOfDatas))
                   @foreach ($LotsOfDatas as $data)
                   @php
-                    $status = '';
-                          $paid = $data->appid_payment;
-                          $reco = $data->isrecommended;
-                          $color = '';
+                    // $status = '';
+                          // $paid = $data->appid_payment;
+                          // $reco = $data->isrecommended;
+                          // $color = '';
                           // if ($data->isrecommended == null) {
                           //     $status = 'For Evaluation';$color = 'black';
                           // }else if ($data->isrecommended == 1) {
@@ -95,7 +95,7 @@
                       <td><center> {{-- EVALUATION --}}
                         <h5>
                           @if($data->isrecommended == 1) 
-                          <span class="badge  badge-success" title="Click for more info" data-toggle="modal" data-target="#ShowEvalInfo" onclick="showEvalInfo('{{$data->formattedTimeEval}}', '{{$data->formattedDateEval}}', '{{$data->formattedTimePropEval}}', '{{$data->formattedDatePropEval}}', '{{$data->recommendedbyName}}', '{{$data->RgnEvaluated}}', '{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}', {{$data->appid}})">Yes</span> 
+                          <span class="badge  badge-success" title="Click for more info" style="cursor:pointer;" data-toggle="modal" data-target="#ShowEvalInfo" onclick="showEvalInfo('{{$data->formattedTimeEval}}', '{{$data->formattedDateEval}}', '{{$data->formattedTimePropEval}}', '{{$data->formattedDatePropEval}}', '{{$data->recommendedbyName}}', '{{$data->RgnEvaluated}}', '{{$data->hfser_id}}R{{$data->rgnid}}-{{$data->appid}}', {{$data->appid}})">Yes</span> 
                           @elseif($data->isrecommended == null) 
                             <span class="badge badge-warning">Pending</span> 
                           @else 
@@ -124,7 +124,7 @@
                       </center></td>
                       <td style="color:black;font-weight:bolder;text-decoration: underline;">{{$data->trns_desc}}</td>
                       <td>
-                        <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', '{{$data->status}}', '{{$data->uid}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>
+                        <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', '{{$data->status}}', '{{$data->uid}}', '{{$data->trns_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>
                       </td>
                    </tr>
                   @endforeach
@@ -227,9 +227,11 @@
 
         if (testAppType < 0 ) { // Not Found
             console.log('APPLICATION TYPE NOT FOUND');
+            $('#filterer').focus();
             ok = 0;
         } else if (facid == '') { // Not Found
             console.log('FACILITY/SERVICE NOT FOUND');
+            $('#fa_list').focus();
             ok = 0;
         }else {
 
@@ -241,6 +243,7 @@
               var test = $.inArray(selected,names); // Check 
               if (test < 0) {
                 console.log('REGION NOT FOUND');
+                $('#filtererReg').focus();
                 ok = 0;
               } else {
                 rgnid = id[test];
@@ -258,32 +261,27 @@
               success : function(data){
                 // console.log(data);
                   if (data != 'NONE') {
+                    var test = data.data;
+                    console.log(test);
+                    // var lengthData = Object.keys(data).length;
                       $('#FilterdBody').empty();
-                      for (var i = 0; i < data.length; i++) {
-                          var status = '';
-                          var paid = data[i].appid_payment;
-                          var reco = data[i].isrecommended;
-                          if (data[i].isrecommended == null) {
-                              status = '<span style="font-weight:bold;">For Evaluation</span>';
-                          }else if (data[i].isrecommended == 1) {
-                            status = '<span style="color:green;font-weight:bold;">Application Approved</span>';
-                          }
-                          if (paid == null) {
-                              status = '<span style="color:red;font-weight:bold;">For Evaluation (Not Paid)</span>';
-                          }
-                          // var app = data[i].approved
+                      for (var i = 0; i < test.length; i++) {
+                          
                           $('#FilterdBody').append(
                                 '<tr>'+
                                 /// 'R'+data[i].rgnid+'
-                                  '<td>' + data[i].hfser_id +'</td>' + 
-                                  '<td>' + data[i].hfser_id + 'R'+data[i].rgnid+'-' + data[i].appid + '</td>' +
-                                  '<td><strong>'+data[i].facilityname+'</strong></td>' +
-                                  '<td>'+data[i].facname+'</td>'+
-                                  '<td>'+data[i].formattedDate+'</td>'+
-                                  '<td>'+data[i].aptdesc+'</td>' +
-                                  '<td>'+status+'</td>'+
+                                  '<td style="text-align:center">' + test[i].hfser_id +'</td>' + 
+                                  '<td style="text-align:center">' + test[i].hfser_id + 'R'+test[i].rgnid+'-' + test[i].appid + '</td>' +
+                                  '<td style="text-align:center"><strong>'+test[i].facilityname+'</strong></td>' +
+                                  '<td style="text-align:center">'+test[i].facname+'</td>'+
+                                  '<td style="text-align:center">'+test[i].formattedDate+'</td>'+
+                                  '<td style="text-align:center">'+test[i].aptdesc+'</td>' +
+                                  '<td></td>' + 
+                                  '<td></td>' + 
+                                  '<td></td>' + 
+                                  '<td style="text-align:center">'+test[i].trns_desc+'</td>'+
                                   '<td>'+
-                                        '<button type="button" title="View detailed information for '+data[i].facilityname+'" class="btn-defaults" onclick="showData('+data[i].appid+',\''+data[i].aptdesc+'\', \''+data[i].authorizedsignature+'\',\''+data[i].brgyname+'\', \''+data[i].classname+'\' ,\''+data[i].cmname+'\', \''+data[i].email+ '\', \''+data[i].facilityname+'\',\''+data[i].facname+'\', \''+data[i].formattedDate+'\', \''+data[i].formattedTime+'\', \''+data[i].hfser_desc+'\',\''+data[i].ocdesc+'\', \''+data[i].provname+'\',\''+data[i].rgn_desc+'\', \''+data[i].streetname+'\', \''+data[i].zipcode+'\', \''+data[i].isrecommended +'\', \''+data[i].hfser_id+'\', '+data[i].appid_payment+', \''+data[i].status+'\', \''+data[i].uid+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>'+
+                                        '<button type="button" title="View detailed information for '+test[i].facilityname+'" class="btn-defaults" onclick="showData('+test[i].appid+',\''+test[i].aptdesc+'\', \''+test[i].authorizedsignature+'\',\''+test[i].brgyname+'\', \''+test[i].classname+'\' ,\''+test[i].cmname+'\', \''+test[i].email+ '\', \''+test[i].facilityname+'\',\''+test[i].facname+'\', \''+test[i].formattedDate+'\', \''+test[i].formattedTime+'\', \''+test[i].hfser_desc+'\',\''+test[i].ocdesc+'\', \''+test[i].provname+'\',\''+test[i].rgn_desc+'\', \''+test[i].streetname+'\', \''+test[i].zipcode+'\', \''+test[i].isrecommended +'\', \''+test[i].hfser_id+'\', '+test[i].appid_payment+', \''+test[i].status+'\', \''+test[i].uid+'\');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>'+
                                   '</td>'+
                                 '</tr>'
                             );
@@ -296,13 +294,12 @@
 
         }        
     }
-    /// showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}','{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', '{{$data->status}}', '{{$data->uid}}
-    function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, statusX, uid){
+    function showData(appid, aptdesc, authorizedsignature, brgyname, classname, cmname, email, facilityname, facname, formattedDate, formattedTime, hfser_desc, ocdesc, provname, rgn_desc, streetname, zipcode, isrecommended, hfser_id, statusX, uid, trns_status){
         var status = '';
         // var paid = appid_payment;
-        if (statusX == 'P') {
-            status = '<span style="color:orange">Pending</span>';
-        } 
+        // if (statusX == 'P') {
+        //     status = '<span style="color:orange">Pending</span>';
+        // } 
         $('#PreAssessButton').attr('onclick', '');
         $('#PreAssessButton').attr('onclick', "location.href='{{ asset('/employee/dashboard/lps/preassessment') }}/"+uid+"'");
         $('#ViewBody').empty();
@@ -341,7 +338,7 @@
             '<div class="row">'+
                 '<div class="col-sm-4">Status:' +
                 '</div>' +
-                '<div class="col-sm-8">' +status +
+                '<div class="col-sm-8">' +trns_status +
                 '</div>' +
             '</div>'
           );

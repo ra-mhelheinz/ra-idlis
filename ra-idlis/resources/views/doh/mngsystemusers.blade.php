@@ -43,16 +43,16 @@
           <span id="success_add">
             
           </span>
-          <table class="table" id="example" style="overflow-x: scroll;" >
+          <table class="table table-responsive" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 10%">User ID</th>
-                  <th style="width: 20%">Name</th>
-                  <th style="width: 15%">Type</th>
-                  <th style="width: 10%;" class="text-center">Position</th>
-                  <th style="width: 20%"><center>Region</center></th>
-                  <th style="width: 10%"><center>Status</center></th>
-                  <th style="width: 15%"><center>Options</center></th>
+                  <th >User ID</th>
+                  <th >Name</th>
+                  <th >Type</th>
+                  <th  class="text-center">Position</th>
+                  <th ><center>Region</center></th>
+                  <th ><center>Status</center></th>
+                  <th ><center>Options</center></th>
                 </tr>
               </thead>
               <tbody>
@@ -76,15 +76,16 @@
                   </td>
                 <td>
                         <center>
-                        <a href="#" ><button data-toggle="modal" data-target="#ViewModal" onclick="showData('{{$user->uid}}','{{$user->fname}}','{{$user->mname}}','{{$user->lname}}','{{$user->contact}}','{{$user->rgn_desc}}', '{{$user->email}}', '{{$user->grp_desc}}', '{{$user->position}}')" class="btn btn-primary" title="View Account">&nbsp;<i class="fa fa-eye"></i>&nbsp;</button></a>
+                          <div class="btn-group" role="group" aria-label="Basic example">
+                        <a href="#" ><button type="button" data-toggle="modal" data-target="#ViewModal" onclick="showData('{{$user->uid}}','{{$user->fname}}','{{$user->mname}}','{{$user->lname}}','{{$user->contact}}','{{$user->rgn_desc}}', '{{$user->email}}', '{{$user->grp_desc}}', '{{$user->position}}', '{{$user->teamdesc}}', '{{$user->facidesc}}')" class="btn btn-primary" title="View Account">&nbsp;<i class="fa fa-eye"></i>&nbsp;</button></a>
                         @if ($user->isActive == 1)
                           <a href="#"><button data-toggle="modal" onclick="showIfActive({{$user->isActive}},'{{$user->uid}}','{{$user->fname}}','{{$user->mname}}','{{$user->lname}}')" data-target="#IfActiveModal" class="btn btn-danger" title="Deactivate Account">&nbsp;<i class="fa fa-toggle-off"></i>&nbsp;</button></a>
                         @else
-                          <a href="#"><button data-toggle="modal" onclick="showIfActive({{$user->isActive}},'{{$user->uid}}','{{$user->fname}}','{{$user->mname}}','{{$user->lname}}')" data-target="#IfActiveModal" class="btn btn-success" title="Reactivate Account">&nbsp;<i class="fa fa-toggle-on"></i>&nbsp;</button></a>
+                          <a href="#"><button type="button" data-toggle="modal" onclick="showIfActive({{$user->isActive}},'{{$user->uid}}','{{$user->fname}}','{{$user->mname}}','{{$user->lname}}')" data-target="#IfActiveModal" class="btn btn-success" title="Reactivate Account">&nbsp;<i class="fa fa-toggle-on"></i>&nbsp;</button></a>
                       @endif
-                        {{-- <a href="#"><button class="btn btn-warning" title="Edit Account">&nbsp;<i class="fa fa-edit"></i>&nbsp;</button></a>&nbsp; --}}
-                      </center>
-                    
+                        <a href="#"><button type="button" data-target="#editMODAL" onclick="ShowEdit('{{$user->uid}}','{{$user->fname}}','{{$user->mname}}','{{$user->lname}}','{{$user->contact}}','{{$user->rgn_desc}}', '{{$user->email}}', '{{$user->grp_desc}}', '{{$user->position}}', '{{$user->teamdesc}}', '{{$user->rgnid}}', '{{$user->grpid}}', '{{$user->team}}',  '{{$user->facidesc}}')"; data-toggle="modal" class="btn btn-warning" title="Edit Account">&nbsp;<i class="fa fa-edit"></i>&nbsp;</button></a>&nbsp;
+                      </div>
+                    </center>                    
                   </td>
                 </tr>
               @endforeach
@@ -101,141 +102,154 @@
     </div>
         </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content" style="border-radius: 0px;border: none;">
-      <div class="modal-body" style=" background-color: #272b30;
-    color: white;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="border-radius: 0px;border: none;">
+        <div class="modal-body" style=" background-color: #272b30;color: white;">
         <h5 class="modal-title text-center"><strong>System Users Registration</strong></h5>
         <hr>
+        
         <div class="container">
-          <form id="RAdmin" class="" data-parsley-validate>
-          	<div class="row">
-          		<div class="col-sm-12" id="ACCError"></div>
-          	</div>
-            {{ csrf_field() }}
-            <div class="row">
-            	<div class="col-sm-12 alert alert-danger alert-dismissible fade show text-left" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
-                    <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
-                        <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-             </div>
-            </div>
-            <div class="row">
-            	<div class="col-sm-4">First Name:</div>
-	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	            <input type="text" name="fname" class="form-control" data-parsley-required-message="*<strong>First name</strong> required"  required>
-	            </div>
-            </div>	
-            <div class="row">
-            	<div class="col-sm-4" >Middle Name:</div>
-	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	            <input type="text" name="mname" class="form-control">
-	            </div>
-            </div>	
-            <div class="row">
-            	<div class="col-sm-4">Last Name:</div>
-	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	            <input type="text" name="lname" class="form-control" data-parsley-required-message="*<strong>Last name</strong> required"  required>
-	            </div>
-            </div>
-            <div class="row">
-            	<div class="col-sm-4" >Region:</div>
-	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	            <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="" onchange="getTeams();">
-	            <option value=""></option>  
-	                @if (isset($region))
-	                  @foreach ($region as $regions)
-	                    <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
-	                  @endforeach
-	                @endif
-	            </select> 
-	            </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-4">Type:</div>
-              <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                <select class="form-control" name="typ" data-parsley-required-message="*<strong>Type</strong> required" onchange="getTeams(); getDefFaci();" required="">
-                  <option value=""></option>
-                @if (isset($types))
-                  @foreach ($types as $type123)
-                  <option value="{{$type123->grp_id}}">{{$type123->grp_desc}}</option>
-                  @endforeach   
-                @endif  
-                </select>
-              </div>
-            </div>              	
-            <div class="row">
-            	<div class="col-sm-4">Position:</div>
-	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	            <input type="text" name="position" class="form-control" data-parsley-required-message="*<strong>Position</strong> required" required>
-	            </div>
-            </div>
-            <div id="TeamDiv" class="row" style="display: none">
-              <div class="col-sm-4">Team:</div>
-              <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                 <select class="form-control" name="team">
-                    
-                 </select>
-              </div> 
-            </div>
-            <div id="DefFaciDiv" class="row" style="display: none">
-              <div class="col-sm-4">Default Facility Assignment:</div>
-              <div class="col-sm-8" style="margin:0 0 .8em 0;">
-                <select class="form-control" name="def_faci">
-                  <option value=""></option>
-                  @isset($facilitys)
-                    @foreach ($facilitys as $dt)
-                      <option value="{{$dt->facid}}">{{$dt->facname}}</option>
-                    @endforeach
-                  @endisset
-                </select>
-              </div>
-            </div>
-            <div class="row">
-            	<div class="col-sm-4">Email Address:</div>
-	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	            <input type="email" name="email" class="form-control" data-parsley-required-message="*<strong>Email</strong> required" required>
-	            </div>
-            </div>	
-            <div class="row">
-            	<div class="col-sm-4">Contact No:</div>
-	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	            <input type="text" name="cntno" class="form-control" data-parsley-required-message="*<strong>Contact no.</strong> required" required>
-	            </div>
-            </div>	
-            <div class="row">
-            	<div class="col-sm-4">
-	              Username:
-	            </div>
-	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	              <input type="text" name="uname" class="form-control" data-parsley-required-message="*<strong>Username</strong> required" required>
-	            </div>
-            </div>		
-            <div class="row">
-            	<div class="col-sm-4">
-	              Password:
-	            </div>
-	            <div class="col-sm-8" style="margin:0 0 .8em 0;">
-	              <input type="password" name="pass" onkeyup="checkPassword()" id="ThePassWord" class="form-control" data-parsley-required-message="*<strong>Password</strong> required" required>
-	            </div>
-            </div>
-            <div class="row">
-            	<div class="col-sm-4">
-	              Password Strength: <input type="text" id="passStr" hidden>
-	            </div>
-	            <div class="col-sm-8 text-center" style="margin:0 0 .8em 0;text-align: center" ><span id="result"></span></div>
-            </div>
-            <div class="col-sm-12">
-              <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New System User</button>
-            </div> 
-          </form>
-       </div>
+            <form id="RAdmin" class="" data-parsley-validate>
+                <div class="row">
+                  <div class="col-sm-12" id="ACCError"></div>
+                </div>
+                {{ csrf_field() }}
+                <div class="row">
+                  <div class="col-sm-12 alert alert-danger alert-dismissible fade show text-left" style="display:none;margin:5px" id="AddErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                            <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                   </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">First Name:</div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                  <input type="text" name="fname" class="form-control" data-parsley-required-message="*<strong>First name</strong> required"  required>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4" >Middle Name:</div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                  <input type="text" name="mname" class="form-control">
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-sm-4">Last Name:</div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                  <input type="text" name="lname" class="form-control" data-parsley-required-message="*<strong>Last name</strong> required"  required>
+                  </div>
+                </div>
+    
+                <div class="row">
+                  <div class="col-sm-4" >Region:</div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                  <select class="form-control" name="rgn" id="pos_val" data-parsley-required-message="*<strong>Region</strong> required" required="" onchange="getTeams();">
+                  <option value=""></option>  
+                      @if (isset($region))
+                        @foreach ($region as $regions)
+                          <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
+                        @endforeach
+                      @endif
+                  </select> 
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">Type:</div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <select class="form-control" name="typ" data-parsley-required-message="*<strong>Type</strong> required" onchange="getTeams(); getDefFaci();" required="">
+                      <option value=""></option>
+                    @if (isset($types))
+                      @foreach ($types as $type123)
+                      <option value="{{$type123->grp_id}}">{{$type123->grp_desc}}</option>
+                      @endforeach   
+                    @endif  
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">Position:</div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                  <input type="text" name="position" class="form-control" data-parsley-required-message="*<strong>Position</strong> required" required>
+                  </div>
+                </div>
+
+                <div id="TeamDiv" class="row" style="display: none">
+                  <div class="col-sm-4">Team:</div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                     <select class="form-control" name="team">
+                     </select>
+                  </div> 
+                </div>
+
+                <div id="DefFaciDiv" class="row" style="display: none">
+                  <div class="col-sm-4">Default Facility Assignment:</div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                     <select class="form-control" name="def_faci">
+                        <option value=""></option>
+                        @isset ($facilitys)
+                            @foreach ($facilitys as $f)
+                              <option value="{{$f->facid}}">{{$f->facname}}</option>
+                            @endforeach
+                        @endisset
+                     </select>
+                  </div> 
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">Email Address:</div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                  <input type="email" name="email" class="form-control" data-parsley-required-message="*<strong>Email</strong> required" required>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">Contact No:</div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                  <input type="text" name="cntno" class="form-control" data-parsley-required-message="*<strong>Contact no.</strong> required" required>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-sm-4">
+                    Username:
+                  </div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <input type="text" name="uname" class="form-control" data-parsley-required-message="*<strong>Username</strong> required" required>
+                  </div>
+                </div>  
+                
+                <div class="row">
+                  <div class="col-sm-4">
+                    Password:
+                  </div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <input type="password" name="pass" onkeyup="checkPassword()" id="ThePassWord" class="form-control" data-parsley-required-message="*<strong>Password</strong> required" required>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">
+                    Password Strength: <input type="text" id="passStr" hidden>
+                  </div>
+                  <div class="col-sm-8 text-center" style="margin:0 0 .8em 0;text-align: center" ><span id="result">&nbsp;</span></div>
+                </div>
+                
+                <div class="col-sm-12">
+                  <button type="submit" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Add New System User</button>
+                </div>
+            </form>
+        </div>
+        </div>
       </div>
     </div>
-  </div>
 </div>
-</div>
+
 <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="border-radius: 0px;border: none;">
@@ -253,7 +267,7 @@
             </div>
             <div class="col-sm-4">Middle Name:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
-              <span id="ViewMname" style="font-weight: bold"></span>
+              <span id="ViewMname" style="font-weight: bold">&nbsp;</span>
             </div>
             <div class="col-sm-4">Last Name:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
@@ -276,6 +290,12 @@
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
               <span id="ViewTeam" style="font-weight: bold"></span>
             </div>
+            
+            <div class="col-sm-4" style="margin:0 0 .8em 0;;text-align: left">Default Facility Assignment:</div>
+            <div class="col-sm-8" style="margin:0 0 .8em 0;">
+              <span id="ViewDefFaci" style="font-weight: bold"></span>
+            </div>
+
             <div class="col-sm-4">Email Address:</div>
             <div class="col-sm-8" style="margin:0 0 .8em 0;">
               <span id="ViewEmail" style="font-weight: bold"></span>
@@ -294,6 +314,153 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="editMODAL" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="border-radius: 0px;border: none;">
+        <div class="modal-body" style=" background-color: #272b30;color: white;">
+        <h5 class="modal-title text-center"><strong>Edit System Users Information</strong></h5>
+        <hr>
+        <div class="container">
+            <form id="EditAdmin" class="" data-parsley-validate>
+                {{ csrf_field() }}
+                <div class="row">
+                  <div class="col-sm-12 alert alert-danger alert-dismissible fade show text-left" style="display:none;margin:5px" id="EditErrorAlert" role="alert">
+                        <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                            <button type="button" class="close" onclick="$('#EditErrorAlert').hide(1000);" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                   </div>
+                </div>
+                <input type="text" id="edit_uid" value="" hidden>
+                {{-- <div class="row"> --}}
+                  <div class="col-sm-4">First Name:</div>
+                  <div class="col-sm-12" style="margin:0 0 .8em 0;">
+                  <input type="text" id="edit_fname"  class="form-control" data-parsley-required-message="*<strong>First name</strong> required"  required>
+                  </div>
+                {{-- </div> --}}
+
+                {{-- <div class="row"> --}}
+                  <div class="col-sm-4" >Middle Name:</div>
+                  <div class="col-sm-12" style="margin:0 0 .8em 0;">
+                  <input type="text" id="edit_mname" class="form-control">
+                  </div>
+                {{-- </div> --}}
+                
+                {{-- <div class="row"> --}}
+                  <div class="col-sm-4">Last Name:</div>
+                  <div class="col-sm-12" style="margin:0 0 .8em 0;">
+                  <input type="text" id="edit_lname" class="form-control" data-parsley-required-message="*<strong>Last name</strong> required"  required>
+                  </div>
+                {{-- </div> --}}
+    
+                {{-- <div class="row"> --}}
+                  <div class="col-sm-12" >Region: (<span id="edit_rgnSPN"></span>)</div>
+                  <div class="col-sm-12" style="margin:0 0 .8em 0;">
+                  <select class="form-control" id="edit_rgn" onchange="getTeams();">
+                  <option value=""></option>  
+                      @if (isset($region))
+                        @foreach ($region as $regions)
+                          <option value="{{$regions->rgnid}}">{{$regions->rgn_desc}}</option>
+                        @endforeach
+                      @endif
+                  </select> 
+                  </div>
+                {{-- </div> --}}
+
+                {{-- <div class="row"> --}}
+                  <div class="col-sm-12">Type: (<span id="edit_typSPN"></span>)</div>
+                  <div class="col-sm-12" style="margin:0 0 .8em 0;">
+                    <select class="form-control" id="edit_typ" onchange="getTeams2(); getDefFaci2();">
+                      <option value=""></option>
+                    @if (isset($types))
+                      @foreach ($types as $type123)
+                      <option value="{{$type123->grp_id}}">{{$type123->grp_desc}}</option>
+                      @endforeach   
+                    @endif  
+                    </select>
+                  </div>
+                {{-- </div> --}}
+
+                {{-- <div class="row"> --}}
+                  <div class="col-sm-4">Position:</div>
+                  <div class="col-sm-12" style="margin:0 0 .8em 0;">
+                  <input type="text" id="edit_pos" class="form-control" data-parsley-required-message="*<strong>Position</strong> required" required>
+                  </div>
+                {{-- </div> --}}
+
+                <div id="TeamDiv2" style="display: none">
+                  <div class="col-sm-12">Team: (<span id="edit_teamSPN"></span>)</div>
+                  <div class="col-sm-12" style="margin:0 0 .8em 0;">
+                     <select class="form-control" id="Team2Select">
+                     </select>
+                  </div> 
+                </div>
+
+                <div id="DefFaciDiv2" style="display: none">
+                  <div class="col-sm-12" style="text-align: left">Default Facility Assignment: (<span id="edit_faciSPN"></span>)</div>
+                  <div class="col-sm-12" style="margin:0 0 .8em 0;">
+                     <select class="form-control" id="def_faci2">
+                        <option value=""></option>
+                        @isset ($facilitys)
+                            @foreach ($facilitys as $f)
+                              <option value="{{$f->facid}}">{{$f->facname}}</option>
+                            @endforeach
+                        @endisset
+                     </select>
+                  </div> 
+                </div>
+
+                {{-- <div class="row"> --}}
+                  <div class="col-sm-4">Email Address:</div>
+                  <div class="col-sm-12" style="margin:0 0 .8em 0;">
+                    <input type="email" id="edit_email" class="form-control" data-parsley-required-message="*<strong>Email</strong> required" required>
+                  </div>
+                {{-- </div> --}}
+
+                {{-- <div class="row"> --}}
+                  <div class="col-sm-4">Contact No:</div>
+                  <div class="col-sm-12" style="margin:0 0 .8em 0;">
+                  <input type="text" id="edit_contno" class="form-control" data-parsley-required-message="*<strong>Contact no.</strong> required" required>
+                  </div>
+                {{-- </div> --}}
+                
+                {{-- <div class="row">
+                  <div class="col-sm-4">
+                    Username:
+                  </div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <input type="text" class="form-control" data-parsley-required-message="*<strong>Username</strong> required" required>
+                  </div>
+                </div>  
+                
+                <div class="row">
+                  <div class="col-sm-4">
+                    Password:
+                  </div>
+                  <div class="col-sm-8" style="margin:0 0 .8em 0;">
+                    <input type="password" name="pass" onkeyup="checkPassword()" id="ThePassWord" class="form-control" data-parsley-required-message="*<strong>Password</strong> required" required>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">
+                    Password Strength: <input type="text" id="passStr" hidden>
+                  </div>
+                  <div class="col-sm-8 text-center" style="margin:0 0 .8em 0;text-align: center" ><span id="result">&nbsp;</span></div>
+                </div> --}}
+                
+                <div class="col-sm-12">
+                  <button type="submit" class="btn btn-outline-warning form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Update System User</button>
+                </div>
+            </form>
+        </div>
+        </div>
+      </div>
+    </div>
+</div>
+
 <div class="modal fade" id="IfActiveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="border-radius: 0px;border: none;">
@@ -303,13 +470,13 @@
         <hr>
         <div class="container">
           <form  class="row" >
-          	<div class="col-sm-12 alert alert-danger alert-dismissible fade show text-left" style="display:none;margin:5px" id="ActiveErrorAlert" role="alert">
-                    <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
-                        <button type="button" class="close" onclick="$('#ActiveErrorAlert').hide(1000);" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+            <div class="col-sm-12 alert alert-danger alert-dismissible fade show text-left" style="display:none;margin:5px" id="ActiveErrorAlert" role="alert">
+                <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                  <button type="button" class="close" onclick="$('#ActiveErrorAlert').hide(1000);" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
              </div>
-            <div class="col-sm-12" id="Error">
+            <div class="col-sm-12" id="Error"></div>
             <div class="col-sm-12" id="IfActiveModalBody">
             </div>
             <div class="col-sm-12">
@@ -329,7 +496,8 @@
     </div>
   </div>
 </div>
-    <script type="text/javascript">
+
+<script type="text/javascript">
       $(document).ready(function() {
          $('#example').DataTable({
          	searchDelay: 350
@@ -337,14 +505,13 @@
       } );
       $(".dataTables_filter input [type='search']").keyup( function (e) {
       		var table = $('#example').DataTable();
-		   table.search( this.value ).draw();
+		      table.search( this.value ).draw();
 		} );
         $('#RAdmin').on('submit', function(e){
           e.preventDefault();
               var form = $(this);
               var passSTR = parseInt($('#passStr').val());
               var passSTRMsg = $('#result').text();
-              console.log(passSTR);
               form.parsley().validate();
               if (form.parsley().isValid()){
                 // $('input[name="fname"]').val() $('#passStr').val()
@@ -409,21 +576,26 @@
           //     </button>
           //   </div>
         }
-        function showData(id,fname,mname,lname,cntno,rgn,email,accType,posi){
+        function showData(id,fname,mname,lname,cntno,rgn,email,accType,posi, team, defaci){
           $('#ViewFname').text(fname.toUpperCase());
-          $('#ViewMname').text(mname.toUpperCase());
+          var MnameText = (mname == '') ? '' : mname;
+          $('#ViewMname').append(MnameText.toUpperCase());
           $('#ViewLname').text(lname.toUpperCase());
           $('#ViewRegion').text(rgn.toUpperCase());
           $('#ViewEmail').text(email);
           $('#ViewCntNo').text(cntno);
           $('#ViewType').text(accType);
+          $('#ViewTeam').text(team);
+          $('#ViewDefFaci').text(defaci);
           var AccPosi = (posi == '') ? 'NONE' : posi;
           $('#ViewPosi').text(AccPosi);
         }
         function showIfActive(state,id,fname,mname,lname){
           var title,name,message;
-          if (mname != "" || mname != null) {
+          if (mname != "") {
               mname = mname.charAt(0)+'.';
+          } else {
+              mname = '';
           }
           name = fname + ' ' + mname + ' ' + lname;
           if (state == 1) {
@@ -558,20 +730,163 @@
           }
         }
         function getDefFaci(){
-          var grp = $('select[name="typ"]').val();
+          var grp = $('#edit_typ').val();
 
-           $('select[name="typ"]').attr('data-parsley-required-message','');
-           $('select[name="typ"]').removeAttr('required');
+           $('select[name="def_faci"]').attr('data-parsley-required-message','');
+           $('select[name="def_faci"]').removeAttr('required');
 
            if (grp == 'LO') {
               $('#DefFaciDiv').show();
-               $('select[name="typ"]').attr('data-parsley-required-message','*<strong>Default Facility Assignment</strong> required');
-               $('select[name="typ"]').attr('required','');
+               $('select[name="def_faci"]').attr('data-parsley-required-message','*<strong>Default Facility Assignment</strong> required');
+               $('select[name="def_faci"]').attr('required','');
            } else {
               $('#DefFaciDiv').hide();
-              $('select[name="typ"]').attr('data-parsley-required-message','');
-              $('select[name="typ"]').removeAttr('required');
+              $('select[name="def_faci"]').attr('data-parsley-required-message','');
+              $('select[name="def_faci"]').removeAttr('required');
            }
         }
+        //// ShowEdit('IMOMAMA123','Imo','','Mama','09090909090','REGION VII (CENTRAL VISAYAS)', 'ra.mhelheinzdebalucos@gmail.com', 'Licensing Officer', 'LO Mama', 'Inspection Team I Region 007', '07', 'LO', 'TR07-001')
+        function ShowEdit(selectedID,fname,mname,lname,cntno,rgndesc,email,grp_desc,position, teamdesc, rgnid, posID, teamid, facidesc){
+            $('#edit_uid').val(selectedID);
+            $('#edit_fname').val(fname);
+            $('#edit_mname').val(mname);
+            $('#edit_lname').val(lname);
+            $('#edit_contno').val(cntno);
+            $('#edit_rgnSPN').text(rgndesc);
+            $('#edit_email').val(email);
+            $('#edit_typSPN').text(grp_desc);
+            $('#edit_pos').val(position);
+            $('#edit_faciSPN').text(facidesc);
+
+            $('#Team2Select').empty();
+
+            if (teamdesc != "NONE") {
+                $('#TeamDiv2').show();
+                $('#edit_teamSPN').text(teamdesc);
+                $('#Team2Select').append('<option value=""></option>');
+                $.ajax({
+                  url : '{{ asset('mf/get_teams') }}',
+                  method : 'GET',
+                  data: {_token:$('input[name="_token"]').val(),rgn:rgnid,grp:posID},
+                  success: function(data){
+                      if (data != 'ERROR') {
+                          for(var i = 0; i < data.length; i++){
+                              $('#Team2Select').append('<option value="'+data[i].teamid+'">'+data[i].teamdesc+'</option>');
+                          }
+                      }
+                  }
+                });
+
+            } else {
+                $('#Team2Select').empty();
+                $('#TeamDiv2').hide();
+            }
+
+            if (facidesc != 'NONE') {
+              $('#DefFaciDiv2').show();
+            } else {
+              $('#DefFaciDiv2').hide();
+            }
+        }
+        function getTeams2() {
+          var rgn = $('#edit_rgn').val();
+          var grp = $('#edit_typ').val();
+          // TeamDiv2
+
+          $('#Team2Select').attr('data-parsley-required-message','');
+          $('#Team2Select').removeAttr('required');
+
+          $('#TeamDiv2').hide();
+
+          if (rgn != '' && grp == 'LO') {
+              $('#TeamDiv2').show();
+               $('#Team2Select').attr('data-parsley-required-message','*<strong>Team</strong> required');
+               $('#Team2Select').attr('required','');
+               
+               $('#Team2Select').empty();
+               $('#Team2Select').append('<option value=""></option>');
+
+               $.ajax({
+                url : '{{ asset('mf/get_teams') }}',
+                method : 'GET',
+                data: {_token:$('input[name="_token"]').val(),rgn:rgn,grp:grp},
+                success: function(data){
+                if (data == 'ERROR') {
+                  $('#EditErrorAlert').show(100);
+                } else {
+                  $('#Team2Select').empty();
+                  $('#Team2Select').append('<option value=""></option>');
+
+                    for(var i = 0; i < data.length; i++){
+                        $('#Team2Select').append('<option value="'+data[i].teamid+'">'+data[i].teamdesc+'</option>');
+                    }
+                }
+              }, error : function(XMLHttpRequest, textStatus, errorThrown){
+                  $('#EditErrorAlert').show(100);
+              }
+             });
+
+          } else {
+            $('#Team2Select').attr('data-parsley-required-message','');
+            $('#Team2Select').removeAttr('required');
+
+            $('#TeamDiv2').hide();
+          }
+        }
+        function getDefFaci2(){
+          var grp = $('select[name="typ"]').val();
+
+            // DefFaciDiv2 def_faci2
+          $('#def_faci2').hide();
+          $('#def_faci2').attr('data-parsley-required-message','');
+          $('#def_faci2').removeAttr('required');
+
+           if (grp == 'LO') {
+              $('#def_faci2').show();
+               $('#def_faci2').attr('data-parsley-required-message','*<strong>Default Facility Assignment</strong> required');
+               $('#def_faci2').attr('required','');
+           } else {
+              $('#DefFaciDiv2').hide();
+              $('#def_faci2').attr('data-parsley-required-message','');
+              $('#def_faci2').removeAttr('required');
+           }
+        }
+        $('#EditAdmin').on('submit', function(event){
+            event.preventDefault();
+            var form = $(this);
+            form.parsley().validate();
+            if (form.parsley().isValid()){
+                $.ajax({
+                  url : '{{asset('/mf/save_user')}}',
+                  method : 'POST',
+                  data : {
+                      _token:$('input[name="_token"]').val(),
+                      fname : $('#edit_fname').val(),
+                      mname : $('#edit_mname').val(),
+                      lname : $('#edit_lname').val(),
+                      rgn : $('#edit_rgn').val(),
+                      typ : $('#edit_typ').val(),
+                      posi : $('#edit_pos').val(),
+                      team : $('#Team2Select').val(),
+                      email : $('#edit_email').val(),
+                      contno : $('#edit_contno').val(),
+                      id :  $('#edit_uid').val(),
+                      deffaci :$('#def_faci2').val(),
+                  },
+                  success : function(data){
+                    if (data == 'DONE') {
+                        alert('Successfully Edited Data');
+                        window.location.href = '{{ asset('employee/dashboard/manage/system_users') }}';
+                    } else if (data == 'ERROR'){
+                        $('#EditErrorAlert').show(100);
+                    }
+                  },
+                  error : function(a,b,c){
+                      console.log(c);
+                      $('#EditErrorAlert').show(100);
+                  }
+                });
+            }
+        });
     </script>
 @endsection

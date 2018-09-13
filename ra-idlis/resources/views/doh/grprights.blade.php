@@ -6,7 +6,12 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Group Rights <a href="" title="Add New" data-toggle="modal" data-target="#myModal"><button class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a>  
+           <form class="form-inline">
+             Group Rights &nbsp;
+             <a href="#" title="Add New" data-toggle="modal" data-target="#myModal"><button type="button" class="btn-primarys"><i class="fa fa-plus-circle"></i>&nbsp;Add new</button></a> &nbsp;
+             <a href="{{ asset('employee/dashboard/grouprights/mng_grps') }}" title="Manage Groups"><button type="button" class="btn btn-outline-secondary"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Manage Groups</button></a>&nbsp;
+             <a href="{{ asset('employee/dashboard/grouprights/mng_mods') }}" title="Manage Modules"><button type="button" class="btn btn-outline-secondary"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Manage Modules</button></a>
+           </form>  
         </div>
         <div class="card-body">
           <div style="float:left;margin-bottom: 5px">
@@ -14,14 +19,18 @@
               <label>Filter : &nbsp;</label>
               <input type="text" class="form-control" id="filterer" list="grp_list" onchange="filterGroup()" placeholder="Group List">
               <datalist id="grp_list">
-                @foreach ($groups as $group)
-                  <option value="{{$group->grp_id}}">{{$group->grp_desc}}</option>
-                @endforeach
+                @isset($groups)
+                  @foreach ($groups as $group)
+                    <option value="{{$group->grp_id}}">{{$group->grp_desc}}</option>
+                  @endforeach
+                @endisset
               </datalist>
               <datalist id="mod_list">
-                @foreach ($modules as $module)
-                  <option value="{{$module->mod_id}}">{{$module->mod_desc}}</option>
-                @endforeach
+                @isset($modules)
+                  @foreach ($modules as $module)
+                    <option value="{{$module->mod_id}}">{{$module->mod_desc}}</option>
+                  @endforeach
+                @endisset
               </datalist>
               &nbsp;
               <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="chckIn()">Save</button>
@@ -35,14 +44,14 @@
             <table class="table table-hover" id="example" style="overflow-x: scroll;" >
               <thead>
                 <tr>
-                  <th style="width: 30%">Module</th>
-                  <th style="width: 10%"><center>Allow</center></th>
-                  <th style="width: 10%"><center>Add</center></th>
-                  <th style="width: 10%"><center>Update</center></th>
-                  <th style="width: 10%"><center>Cancel</center></th>
-                  <th style="width: 10%"><center>Print</center></th>
-                  <th style="width: 10%"><center>View</center></th>
-                  <th style="width: 10%"><center>Option</center></th>
+                  <th style="width: auto">Module</th>
+                  <th style="width: auto"><center>Allow</center></th>
+                  <th style="width: auto"><center>Add</center></th>
+                  <th style="width: auto"><center>Update</center></th>
+                  <th style="width: auto"><center>Cancel</center></th>
+                  <th style="width: auto"><center>Print</center></th>
+                  <th style="width: auto;display: none"><center>View</center></th>
+                  <th style="width: auto"><center>Option</center></th>
                 </tr>
               </thead>
               <tbody id="FilterdBody">
@@ -174,7 +183,7 @@
                               '<td><center><input type="checkbox" class="checkbox disabled" '+upd+' disabled=""></center></td>' +
                               '<td><center><input type="checkbox" class="checkbox disabled" '+cnl+' disabled=""></center></td>' +
                               '<td><center><input type="checkbox" class="checkbox disabled" '+prt+' disabled=""></center></td>' +
-                              '<td><center><input type="checkbox" class="checkbox disabled" '+vw+' disabled=""></center></td>' +
+                              '<td style="display:none"><center><input type="checkbox" class="checkbox disabled" '+vw+' disabled=""></center></td>' +
                               '<td><center><button type="button" class="btn-defaults" onclick="getData('+data[i].x06_id+', \''+data[i].grp_id+'\', \''+data[i].mod_id+'\',\''+data[i].grp_desc+'\',\''+data[i].mod_desc+'\', '+data[i].allow+', '+data[i].ad_d+', '+data[i].upd+', '+data[i].cancel+', '+data[i].print+', '+data[i].view+');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-edit"></i></button></center></td>' +
                           '<tr>'
                         );
@@ -203,7 +212,7 @@
                   '</div>' +
                   '<hr>' +
                   '<div class="row">' +
-                    '<div class="col-sm-6"> <div class="form-check"><label class="form-check-label"><input id="chkAlw" type="checkbox" class="form-check-input" '+alw2+'>Allow</label></div></div>' +
+                    '<div class="col-sm-6"> <div class="form-check"><label class="form-check-label"><input id="chkAlw" onchange="allowChange()"; type="checkbox" class="form-check-input" '+alw2+'>Allow</label></div></div>' +
                     '<div class="col-sm-6"> <div class="form-check"><label class="form-check-label"><input id="chkAdd" type="checkbox" class="form-check-input" '+add2+'>Add</label></div></div>' +
                   '</div>' +
                   '<div class="row">' +
@@ -212,7 +221,7 @@
                   '</div>' +
                   '<div class="row">' + 
                     '<div class="col-sm-6"><div class="form-check"><label class="form-check-label"><input id="chkPrt" type="checkbox" class="form-check-input" '+prt2+'>Print</label></div></div>' +
-                    '<div class="col-sm-6"><div class="form-check"><label class="form-check-label"><input id="chkVw" type="checkbox" class="form-check-input" '+vw2+'>View</label></div></div>' +
+                    '<div class="col-sm-6" style="display:none"><div class="form-check"><label class="form-check-label"><input id="chkVw" type="checkbox" class="form-check-input" '+vw2+'>View</label></div></div>' +
                   '</div><hr>' +
                   '<div class="row">' +
                     '<div class="col-sm-6">' +
@@ -360,5 +369,28 @@
 
         }
       });
+      function allowChange(){
+        var alwChk = $('#chkAlw').prop('checked') == true ? 1 : 0;
+        $('#chkAdd').removeAttr('checked');
+        $('#chkUpd').removeAttr('checked');
+        $('#chkCnl').removeAttr('checked');
+        $('#chkPrt').removeAttr('checked');
+        $('#chkVw').removeAttr('checked');
+
+        if (alwChk == 1) { // checka;;
+            $('#chkAdd').attr('checked','');
+            $('#chkUpd').attr('checked','');
+            $('#chkCnl').attr('checked','');
+            $('#chkPrt').attr('checked','');
+            $('#chkVw').attr('checked', '');
+        } else if (alwChk == 0) { // uncheck allow
+            $('#chkAdd').removeAttr('checked');
+            $('#chkUpd').removeAttr('checked');
+            $('#chkCnl').removeAttr('checked');
+            $('#chkPrt').removeAttr('checked');
+            $('#chkVw').removeAttr('checked');
+        }
+
+      }
     </script>
 @endsection

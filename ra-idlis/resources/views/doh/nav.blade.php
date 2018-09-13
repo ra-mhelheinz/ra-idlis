@@ -82,7 +82,7 @@
                         <li><a href="#Tean" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-users"></i>&nbsp;Team</a>
                             <ul id="Tean" class="list-unstyled collapse">
                                 <li class="#"><a href="{{ asset('/employee/dashboard/mf/team') }}">&nbsp;&nbsp;&nbsp;&nbsp;Team</a></li>
-                                <li class="#"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Team Assignment</a></li>
+                                <li class="#"><a href="{{ asset('/employee/dashboard/mf/team_assignment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Team Assignment</a></li>
                             </ul>
                         </li>
                         <li><a href="#AppMenu" data-toggle="collapse">&nbsp;&nbsp;<i class="fa fa-clipboard-list"></i>&nbsp;Application</a>
@@ -152,7 +152,7 @@
                         <li class=""><a href="{{asset('/employee/dashboard/lps')}}">&nbsp;&nbsp;&nbsp;&nbsp;View Application Status</a></li>
                         @if ($employeeData->grpid == 'NA' || $employeeData->grpid == "RA")
                         <li class=""><a href="{{asset('/employee/dashboard/lps/evaluate')}}">&nbsp;&nbsp;&nbsp;&nbsp;Evaluate Application</a></li>
-                        <li class=""><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Order of Payment</a></li>
+                        <li class=""><a href="{{ asset('employee/dashboard/lps/orderofpayment') }}">&nbsp;&nbsp;&nbsp;&nbsp;Order of Payment</a></li>
                         <li class=""><a href="{{asset('/employee/dashboard/lps/cashier')}}">&nbsp;&nbsp;&nbsp;&nbsp;Cashiering</a></li>
                         <li class=""><a href="{{asset('/employee/dashboard/lps/assign')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assignment of Team</a></li>
                         @endif

@@ -397,13 +397,30 @@
 									->orderBy('grp_id','desc')
 									->get();
 					}
+
+					if (isset($data1)) {
+						for ($i=0; $i < count($data1); $i++) { 
+							if (isset($data1[$i]->team)) {
+									$test = DB::table('team')->where('teamid', '=', $data1[$i]->team)->first();
+									$data1[$i]->teamdesc = $test->teamdesc;
+							} else {
+									$data1[$i]->teamdesc = 'NONE';
+							}
+							if (isset($data1[$i]->def_faci)) {
+									$test2 = DB::table('facilitytyp')->where('facid', '=', $data1[$i]->def_faci)->first();
+									$data1[$i]->facidesc = $test2->facname;
+							} else {
+								$data1[$i]->facidesc = 'NONE';
+							}
+						}
+					}
 					
 					$data2 = DB::table('region')->get();
 					
 					$data4 = DB::table('facilitytyp')->get();
 
 					$data5 = DB::table('team')->get();
-					// return dd($data3);
+					// return dd($data1);
 					return view('doh.mngsystemusers', ['users'=>$data1,'region'=>$data2, 'types'=>$data3, 'facilitys' => $data4, 'team' => $data5]);
 				} catch (Exception $e) {
 					$TestError = $this->SystemLogs($e->getMessage());
@@ -532,7 +549,9 @@
 			if ($request->isMethod('get')) {
 				// $d = "";
 				// INSERT INTO facility_requirements (`typ_id`,`upid`,`fr_alw`) 
-				// SELECT (SELECT tyf_id FROM type_facility WHERE tyf_id = '21'), upid, COALESCE(0) 
+				///////////////////////////////////////////////////////////////////////////////////////
+				// SELECT (SELECT tyf_id FROM type_facility WHERE tyf_id = '21'), upid, COALESCE(0)  //
+				///////////////////////////////////////////////////////////////////////////////////////
 				// FROM upload;
 				
 				///////////////////////// DO NOT DELETE PLEASE!!! - MHEL
@@ -584,19 +603,25 @@
 			}
 		}
 		public function groupRights(Request $request){ // GROUP RIGHTS PAGE
-			if ($request->isMethod('get')) {
-				$group = DB::table('x07')->select('*')->get();
-				$module = DB::table('x05')->select('*')->get();
-				$groupRights = DB::table('x06')
-				// ->join('orders', 'users.id', '=', 'orders.user_id')
-								->join('x05', 'x06.mod_id','=','x05.mod_id')
-								->join('x07', 'x06.grp_id', '=', 'x07.grp_id')
-								->select('x06.*', 'x05.*', 'x07.*')
-								->get()
-								;
-				// return response()->json(['rights'=>$groupRights]);
-				return view('doh.grprights',['rights'=>$groupRights, 'groups'=>$group, 'modules'=>$module]); 
-					// ['groups'=>$group], ['modules'=>$module]);
+			try {
+					if ($request->isMethod('get')) {
+					$group = DB::table('x07')->select('*')->get();
+					$module = DB::table('x05')->select('*')->get();
+					$groupRights = DB::table('x06')
+					// ->join('orders', 'users.id', '=', 'orders.user_id')
+									->join('x05', 'x06.mod_id','=','x05.mod_id')
+									->join('x07', 'x06.grp_id', '=', 'x07.grp_id')
+									->select('x06.*', 'x05.*', 'x07.*')
+									->get()
+									;
+					// return response()->json(['rights'=>$groupRights]);
+					return view('doh.grprights',['rights'=>$groupRights, 'groups'=>$group, 'modules'=>$module]); 
+						// ['groups'=>$group], ['modules'=>$module]);
+				}
+			} catch (Exception $e) {
+				$TestError = $this->SystemLogs($e->getMessage());
+					session()->flash('system_error','ERROR');
+				return view('doh.grprights');
 			}
 		}
 		public function regions(Request $request){ // Places/Regions Page
@@ -672,26 +697,26 @@
 						->get()
 						;
 						return view('doh.persolo',['region'=>$regions,'users'=>$users]);
-				} 
-			}else {
-					$users = DB::table('x08')
-						->where('grpid', '=', 'LO')
-						->where('rgnid', '=', $testX->rgnid)
-						->select('*')
-						->first()
-						;
-					if ($users) {
+					} 
+				}	else {
 						$users = DB::table('x08')
-							->join('region', 'x08.rgnid', '=', 'region.rgnid')
-							->where('x08.grpid', '=', 'LO')
-							->where('region.rgnid', '=', $testX->rgnid)
-							->select('x08.*','region.*')
-							->get()
+							->where('grpid', '=', 'LO')
+							->where('rgnid', '=', $testX->rgnid)
+							->select('*')
+							->first()
 							;
+						if ($users) {
+							$users = DB::table('x08')
+								->join('region', 'x08.rgnid', '=', 'region.rgnid')
+								->where('x08.grpid', '=', 'LO')
+								->where('region.rgnid', '=', $testX->rgnid)
+								->select('x08.*','region.*')
+								->get()
+								;
+					}
+				return view('doh.persolo',['region'=>$regions,'users'=>$users]);
 				}
-			return view('doh.persolo',['region'=>$regions,'users'=>$users]);
 			}
-		}
 			if($request->isMethod('post')){
 				$dt = Carbon::now();
 	          	$dateNow = $dt->toDateString();
@@ -740,11 +765,11 @@
 		public function chckgr(Request $request){
 			try {
 					DB::table('x07')->insert(
-				[
+						[
 						'grp_id' => $request->id,
 						'grp_desc' => $request->name, 
-					]
-				);
+							]
+					);
 				// DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 				$test = DB::insert('INSERT INTO x06 (`grp_id`, `mod_id`, `allow`, `ad_d`, `upd`, `cancel`, `print`, `view`) 
 							SELECT COALESCE(?), mod_id, COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1)
@@ -892,7 +917,9 @@
 								// $anotherData[$i]->formattedDateEval = ($anotherData[$i]->recommendeddate === null)? null : $newD->toFormattedDateString();
 								/////  Inspection
 
-
+							    ///// Status
+							   	
+							    ///// Status
 							}
 						
 					}
@@ -1311,25 +1338,25 @@
 					return view('doh.fda',['region'=>$regions,'users'=>$users]);
 				} 
 				return view('doh.fda',['region'=>$regions,'users'=>$users]);
-			}else {
-					$users = DB::table('x08')
-						->where('grpid', '=', 'FDA')
-						->where('rgnid', '=', $testX->rgnid)
-						->select('*')
-						->first()
-						;
-					if ($users) {
+				}	else {
 						$users = DB::table('x08')
-							->join('region', 'x08.rgnid', '=', 'region.rgnid')
-							->where('x08.grpid', '=', 'FDA')
-							->where('region.rgnid', '=', $testX->rgnid)
-							->select('x08.*','region.*')
-							->get()
+							->where('grpid', '=', 'FDA')
+							->where('rgnid', '=', $testX->rgnid)
+							->select('*')
+							->first()
 							;
+						if ($users) {
+							$users = DB::table('x08')
+								->join('region', 'x08.rgnid', '=', 'region.rgnid')
+								->where('x08.grpid', '=', 'FDA')
+								->where('region.rgnid', '=', $testX->rgnid)
+								->select('x08.*','region.*')
+								->get()
+								;
+					}
+				return view('doh.fda',['region'=>$regions,'users'=>$users]);
 				}
-			return view('doh.fda',['region'=>$regions,'users'=>$users]);
 			}
-		}
 			if($request->isMethod('post')){
 				$dt = Carbon::now();
 	          	$dateNow = $dt->toDateString();
@@ -2026,6 +2053,16 @@
 								$anotherData[$i]->formattedLOName = $temp->fname.' '.$mid.$temp->lname;
 								} 
 								
+								//// CHECK IF THEY HAS Assigned Members
+								$data = DB::table('app_team')->where('appid', '=', $anotherData[$i]->appid)->get();
+								if (count($data) != 0) {
+									$anotherData[$i]->hasAssessors = 'T';
+								} else {
+									$anotherData[$i]->hasAssessors = 'F';
+								}
+								// $anotherData[$i]->hasAssessors = (isset($data) ? 'true' : 'false');
+								//// CHECK IF THEY HAS Assigned Members
+
 							}
 					}
 					// return dd($anotherData);
@@ -2035,7 +2072,7 @@
 				session()->flash('system_error','ERROR');
 				return view('doh.lpsAssign');
 			}
-;		}
+		}
 		public function PreAsMent(Request $request){
 			if ($request->isMethod('get')) {
 				$asMent = DB::table('assessment')->get();
@@ -3208,6 +3245,172 @@
 					$TestError = $this->SystemLogs($e->getMessage());
 					return 'ERROR';
 				}
+			}
+		}
+		public function lpsOOP(Request $request) {
+			if ($request->isMethod('get')) {
+				try {
+						$Cur_useData = $this->getCurrentUserAllData();
+						$employeeData = session('employee_login');
+						$region = DB::table('region')->get();
+						$type = DB::table('hfaci_serv_type')->get();
+						$facility = DB::table('facilitytyp')->get();
+						$getData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname' )
+										->where('appform.draft', '=', 0)
+										->first();
+						if (!$getData) {
+							return view('doh.lpsOOP', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
+						} else {
+
+							if ($Cur_useData['grpid'] == 'NA') {
+								$anotherData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+										->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+										->join('class', 'appform.classid', '=', 'class.classid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
+										->where('appform.draft', '=', 0)
+										->get();
+							} else if ($Cur_useData['grpid'] == 'FDA' || $Cur_useData['grpid'] == 'LO') {
+								$anotherData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+										->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+										->join('class', 'appform.classid', '=', 'class.classid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
+										->where('appform.assignedLO', '=', $Cur_useData['cur_user'])
+										->where('appform.draft', '=', 0)
+										->get();
+							} else {
+								$anotherData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+										->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+										->join('class', 'appform.classid', '=', 'class.classid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
+										->where('appform.assignedRgn', '=', $Cur_useData['rgnid'])
+										->where('appform.draft', '=', 0)
+										->get();
+							}
+								for ($i=0; $i < count($anotherData); $i++) {
+									$time = $anotherData[$i]->t_time;
+									$newT = Carbon::parse($time);
+									$anotherData[$i]->formattedTime = $newT->format('g:i A');
+
+									$date = $anotherData[$i]->t_date;
+									$newD = Carbon::parse($date);
+									$anotherData[$i]->formattedDate = $newD->toFormattedDateString();
+									// ->diffForHumans()
+								}
+						
+					}
+						// return view('doh.lpsevaluate', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region, 'BigData'=>$anotherData]);
+						return view('doh.lpsOOP', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region, 'BigData'=>$anotherData]);
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					session()->flash('system_error','ERROR');
+					return view('doh.lpsOOP');	
+				}
+			}
+		}
+		public function MngGroupRights(Request $request) {
+			if ($request->isMethod('get')) {
+				try {
+						$data = DB::table('x07')->get();
+						return view('doh.mnggrouprights', ['GR' => $data]);
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					session()->flash('system_error','ERROR');
+					return view('doh.mnggrouprights');
+				}
+			}
+		}
+		public function MngModules(Request $request) {
+			if ($request->isMethod('get')) {
+				try {
+						$data = DB::table('x05')->get();
+						// return dd($data);
+						return view('doh.mngmodules', ['Mods'=>$data]);
+				} catch (Exception $e) {
+						$TestError = $this->SystemLogs($e->getMessage());
+						session()->flash('system_error','ERROR');
+						return view('doh.mngmodules');	
+				}
+			}
+			if ($request->isMethod('post')) {
+				try {
+						DB::table('x05')->insert([
+								'mod_id' => $request->id,
+								'mod_desc' => $request->name
+							]);
+						$data = DB::table('x07')->get();
+						// return dd($data);
+						if ($data) {
+							for ($i=0; $i < count($data) ; $i++) { 
+								DB::table('x06')->insert([
+										'grp_id' => $data[$i]->grp_id,
+										'mod_id' => $request->id,
+										'allow' => 1,
+										'ad_d' => 1,
+										'upd' => 1,
+										'cancel' => 1,
+										'print' => 1,
+										'view' => 1
+									]);
+							}
+						}
+
+						//// (_id, (SELECT coalesce(max(value), default_value)) FROM b WHERE b.id = _id))
+						// $test = DB::insert('INSERT INTO x06 (`grp_id`, `mod_id`, `allow`, `ad_d`, `upd`, `cancel`, `print`, `view`)  VALUES 
+						// 	((SELECT grp_id FROM ))', [$request->id]);
+						/// INSERT INTO x06 (`grp_id`, `mod_id`, `allow`, `ad_d`, `upd`, `cancel`, `print`, `view`) SELECT grp_id, COALESCE("MA09"), COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1) FROM x07
+						/// SELECT grp_id, COALESCE(?), COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1), COALESCE(1) FROM x07
+						
+						return 'DONE';
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					return 'ERROR';
+				}
+			}
+		}
+		public function TeamAssignment(Request $request){
+			if ($request->isMethod('get')) {
+				try {
+						return view('doh.mfTestAsgn');
+				} catch (Exception $e) {
+					return view('doh.mfTestAsgn');	
+				}
+			}
+			if ($request->isMethod('post')) {
+				
 			}
 		}
 	}

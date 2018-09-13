@@ -200,7 +200,12 @@
 										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
 										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
 										->join('province', 'x08.province', '=', 'province.provid')
-										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'x08.uid' )
+										->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+										->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+										->join('class', 'appform.classid', '=', 'class.classid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
 										->where('appform.hfser_id', '=', $request->hfser_ID)
 										->where('appform.facid', '=', $request->facID)
 										->where('appform.assignedRgn', '=', $request->rgnID)
@@ -223,7 +228,7 @@
 										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
 										->join('class', 'appform.classid', '=', 'class.classid')
 										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
-										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'appform.status', 'x08.uid', 'trans_status.trns_desc')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
 										->where('appform.hfser_id', '=', $request->hfser_ID)
 										->where('appform.facid', '=', $request->facID)
 										->where('appform.assignedRgn', '=', $request->rgnID)
@@ -242,7 +247,7 @@
 										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
 										->join('class', 'appform.classid', '=', 'class.classid')
 										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
-										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'appform.status', 'x08.uid', 'trans_status.trns_desc')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
 										->where('appform.hfser_id', '=', $request->hfser_ID)
 										->where('appform.facid', '=', $request->facID)
 										->where('appform.assignedRgn', '=', $request->rgnID)
@@ -510,6 +515,60 @@
 				return 'ERROR';
 			}
 		}
+		public function getMembers(Request $request) {
+			try {
+					$data = DB::table('x08')->where('team', '=', $request->teamid)
+								->select('uid', 'fname', 'mname', 'lname', 'position', 'team')
+								->get();
+					if ($data) {
+						for ($i=0; $i < count($data) ; $i++) { 
+							$x = $data[$i]->mname;
+						      	if ($x != "") {
+							    	$mid = strtoupper($x[0]);
+							    	$mid = $mid.'. ';
+					       		 } else {
+							    	$mid = ' ';
+							 		}
+							$data[$i]->wholename = $data[$i]->fname.' '.$mid.''.$data[$i]->lname;
+							if (!isset($data[$i]->position)) {
+								$data[$i]->position = 'Not Available';
+							}
+						}
+					} 
+					return $data;
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function getTeamMembers(Request $request){
+			try {
+					$data = DB::table('app_team')
+							->join('x08', 'app_team.uid', '=' , 'x08.uid' )
+							->select('app_team.*', 'x08.fname', 'x08.mname', 'x08.lname')
+							->where('app_team.appid', '=', $request->appid)->get();
+
+					if (count($data) != 0) {
+						for ($i=0; $i < count($data) ; $i++) { 
+							$x = $data[$i]->mname;
+						      	if ($x != "") {
+							    	$mid = strtoupper($x[0]);
+							    	$mid = $mid.'. ';
+					       		 } else {
+							    	$mid = ' ';
+							 		}
+							$data[$i]->wholename = $data[$i]->fname.' '.$mid.''.$data[$i]->lname;
+						}
+						return $data;
+					} else {
+						return 'NONE';
+					}
+					
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
 		// -------------------- SELECT --------------------
 		// -------------------- ADD --------------------
 		public function addCM(Request $request){ // Add New City/ Municipality
@@ -536,6 +595,24 @@
 					} else {
 						return 'SAME';
 					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function addteam(Request $request){
+			try {
+					for ($i=0; $i < count($request->ids) ; $i++) { 
+						
+						DB::table('app_team')->insert([
+								'appid' => $request->SelectedID,
+								'teamid' => $request->teams[$i],
+								'uid' => $request->ids[$i],
+								'remarks' => $request->rmks[$i],
+
+						]);
+					}
+					return 'DONE';
 			} catch (Exception $e) {
 				$data = $this->SystemLogs($e->getMessage());
 				return 'ERROR';
@@ -1070,7 +1147,7 @@
 								'assignedRgnBy' =>$Cur_useData['cur_user']
 							);
 			} else {
-				$data = array (
+				$data = array ( // With LO
 								'assignedRgn' => $request->rgnid,
 								'assignedRgnTime' => $Cur_useData['time'],
 								'assignedRgnDate' => $Cur_useData['date'],
@@ -1238,6 +1315,82 @@
 					}
 			} catch (Exception $e) {
 				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function save_user(Request $request){
+			try {
+					$data = array (
+								'fname' => $request->fname,
+								'mname' => $request->mname,
+								'lname' => $request->lname,
+								'position' => $request->posi,
+								'email' => $request->email,
+								'contact' => $request->contno,
+							);
+					if (isset($request->rgn)) {
+						$data['rgnid'] = $request->rgn;
+					}
+
+					if (isset($request->typ)) {
+						$data['grpid'] = $request->typ;
+					}
+
+
+					// return $data['rgnid'];
+					$test = DB::table('x08')->where('uid', '=', $request->id)->update($data);
+					// email, rgnid, grpid, fname, mname, lname,contact, position 
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been updated in x08 table.');
+						return 'ERROR';
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function save_GrpRights(Request $request){
+			try {
+					$data = array('grp_desc' => $request->name);
+					$test = DB::table('x07')->where('grp_id', '=', $request->id)->update($data);
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data1 = $this->SystemLogs('No data has been updated in x07 table.');
+						return 'ERROR';
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function save_Mods(Request $request){
+			try {
+					$data = array('mod_desc'=> $request->name);
+					$test = DB::table('x05')->where('mod_id', '=', $request->id)->update($data);
+					if ($test) {
+						return 'DONE';
+					} else{
+						$data1 = $this->SystemLogs('No data has been updated in x05 table.');
+						return 'ERROR';
+					}
+			} catch (Exception $e) {
+					$data1 = $this->SystemLogs($e->getMessage());
+					return 'ERROR';
+			}
+		}
+		public function saveTeamMember(Request $request){
+			try {
+					for ($i=0; $i < count($request->ids); $i++) { 
+						$data = array('remarks'=>$request->rmk[$i]);
+						$test = DB::table('app_team')->where('apptid', '=', $request->ids[$i])->update($data);
+					}
+				return 'DONE';
+					
+			} catch (Exception $e) {
+				$data1 = $this->SystemLogs($e->getMessage());
 				return 'ERROR';
 			}
 		}
@@ -1588,7 +1741,52 @@
 					return 'ERROR';
 				}
 			} catch (Exception $e) {
-				
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function del_GrpRights(Request $request){
+			try {
+					$test = DB::table('x07')->where('grp_id', '=', $request->id)->delete();
+					$test2 = DB::table('x06')->where('grp_id', '=', $request->id)->delete();
+					if ($test && $test2) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been deleted in x07 and x06 tables.');
+						return 'ERROR';		
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function del_Mods(Request $request){
+			try {
+				  $test = DB::table('x05')->where('mod_id', '=', $request->id)->delete();
+				  $test2 = DB::table('x06')->where('mod_id', '=', $request->id)->delete();
+				  if ($test && $test2) {
+				  		return 'DONE';
+				  } else {
+				  		$data = $this->SystemLogs('No data has been deleted in x05 and x06 tables.');
+						return 'ERROR';	
+				  }
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
+			}
+		}
+		public function delTeamMember(Request $request) {
+			try {
+					$test = DB::table('app_team')->where('apptid', '=', $request->id)->delete();
+					if ($test) {
+						return 'DONE';
+					} else {
+						$data = $this->SystemLogs('No data has been deleted in app_team table.');
+						return 'ERROR';	
+					}
+			} catch (Exception $e) {
+				$data = $this->SystemLogs($e->getMessage());
+				return 'ERROR';
 			}
 		}
 		// -------------------- DELETE --------------------

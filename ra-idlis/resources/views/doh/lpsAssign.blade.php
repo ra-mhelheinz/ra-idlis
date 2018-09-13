@@ -10,7 +10,7 @@
 <div class="content p-4">
     <div class="card">
         <div class="card-header bg-white font-weight-bold">
-           Assign Applicants
+           Assignment of Teams
         </div>
         <div class="card-body table-responsive">
             <div style="float:left;margin-bottom: 5px">
@@ -38,20 +38,20 @@
                 @endforeach
               </datalist>
               &nbsp;
-              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});">Filter</button>
+              <button type="button" class="btn-defaults" style="background-color: #28a745;color: #fff" {{-- onclick="FilterData('{{$employeeGRP}}',{{$employeeREGION}});" --}}>Filter</button>
               <input type="" id="token" value="{{ Session::token() }}" hidden>
               </form>
            </div>
             <table class="table table-hover" style="font-size:13px;">
                 <thead>
                 <tr>
-                    <th scope="col" width="10%" style="text-align:center">Type</th>
-                    <th scope="col" width="10%" style="text-align:center">Application Code</th>
-                    <th scope="col" width="20%" style="text-align:center">Name of Health Facility</th>
-                    <th scope="col" width="20%" style="text-align:center">Current Assigned Region - LO/FDA</th>
+                    <th scope="col" width="auto" style="text-align:center">Type</th>
+                    <th scope="col" width="auto" style="text-align:center">Application Code</th>
+                    <th scope="col" width="auto" style="text-align:center">Name of Health Facility</th>
+                    <th scope="col" width="auto" style="text-align:center">Current Assigned Team</th>
                     {{-- <th scope="col" style="text-align:center">Current Assigned </th> --}}
-                    <th scope="col" width="10%" style="text-align:center">Current Status</th>
-                    <th scope="col" width="30%" style="text-align:center">Options</th>
+                    <th scope="col" width="auto" style="text-align:center">Current Status</th>
+                    <th scope="col" width="auto" style="text-align:center">Options</th>
                 </tr>
                 </thead>
                 <tbody id="FilterdBody">
@@ -80,17 +80,32 @@
                       <td style="text-align:center">{{$data->hfser_id}}</td>
                       <td style="text-align:center">{{$data->hfser_id}}R{{$data->assignedRgn}}-{{$data->appid}}</td>
                       <td style="text-align:center"><strong>{{$data->facilityname}}</strong></td>
-                      <td style="text-align:center">{{$data->rgn_desc}} - <strong>{{$data->formattedLOName}}</strong></td>
+                      <td style="text-align:center">
+                        <strong>
+                          @isset($data->hasAssessors) 
+                            @if($data->hasAssessors == 'F') 
+                              <span style="color:red;">Not Yet Assigned</span> 
+                            @else
+                               <button class="btn btn-info" data-toggle="modal" data-target="#GoddestModal" onclick="getAllMembers({{$data->appid}});"><i class="fa fa-fw fa-eye"></i> Show Team</button>
+                            @endif 
+                          @endisset
+                        </strong></td>
                       <td style="text-align:center;font-weight:bold;">{{$data->trns_desc}}</td>
                       <td style="text-align:center">
-                        @if($employeeData->grpid == 'NA'))
-                        <button style="background-color: #ffbc00f7" title="Change Assigned Region" type="button" class="btn-defaults" data-toggle="modal" data-target="#GoddessModal" onclick="showChangeRgnLO({{$data->appid}}, '{{$employeeGRP}}', {{$employeeREGION}});"><i class="fa fa-fw fa-edit"></i></button>&nbsp;
-                        @endif
-                          @if ($employeeData->grpid == 'RA')
-                            <button style="background-color: #00ff1ff7" title="Assign LO" data-target="#GoderModal" data-toggle="modal" type="button" class="btn-defaults" onclick="PutAppID({{$data->appid}}, '{{$data->assignedRgn}}', '{{$employeeGRP}}')"><i class="fa fa-fw fa-plus" ></i></button>&nbsp;
-                          @endif
+                        @isset($data->hasAssessors) 
+                          @if($data->hasAssessors == 'F')
+                              @if($employeeData->grpid == 'NA')
+                                <button style="background-color: #28a745;color: #FFFFFFFF" title="Add Assessors" type="button" class="btn-defaults" data-toggle="modal" data-target="#GoddessModal" onclick="showChangeRgnLO({{$data->appid}}, '{{$employeeGRP}}', {{$employeeREGION}});"><i class="fa fa-fw fa-plus"></i></button>&nbsp;
+                              @endif
+                              @if ($employeeData->grpid == 'RA')
+                                <button style="background-color: #00ff1ff7" title="Assign LO" data-target="#GoderModal" data-toggle="modal" type="button" class="btn-defaults" onclick="PutAppID({{$data->appid}}, '{{$data->assignedRgn}}', '{{$employeeGRP}}')"><i class="fa fa-fw fa-plus" ></i></button>&nbsp;
+                              @endif
+                          @else
+                          @endif 
+                        @endisset
+                        
                         <button type="button" title="View detailed information for {{$data->facilityname}}" class="btn-defaults" onclick="showData({{$data->appid}},'{{$data->aptdesc}}', '{{$data->authorizedsignature}}','{{$data->brgyname}}', '{{$data->classname}}' ,'{{$data->cmname}}', '{{$data->email}}', '{{$data->facilityname}}','{{$data->facname}}', '{{$data->formattedDate}}', '{{$data->formattedTime}}', '{{$data->hfser_desc}}', '{{$data->ocdesc}}', '{{$data->provname}}','{{$data->rgn_desc}}', '{{$data->streetname}}', '{{$data->zipcode}}', '{{$data->isrecommended}}', '{{$data->hfser_id}}', '{{$data->appid_payment}}', '{{$data->trns_desc}}');" data-toggle="modal" data-target="#GodModal"><i class="fa fa-fw fa-eye"></i></button>&nbsp;
-                      <button style="background-color: #00f9f9" title="View Change Region and LO History" type="button" class="btn-defaults" data-toggle="modal" data-target="#ShowHistory" onclick="ShowHistoryDetailsNow('{{$data->facilityname}}', {{$data->appid}})"><i class="fa fa-fw fa-history"></i></button>&nbsp;
+                      {{-- <button style="background-color: #00f9f9" title="View Change Region and LO History" type="button" class="btn-defaults" data-toggle="modal" data-target="#ShowHistory" onclick="ShowHistoryDetailsNow('{{$data->facilityname}}', {{$data->appid}})"><i class="fa fa-fw fa-history"></i></button>&nbsp; --}}
                       </td>
                     </tr>
                   @endforeach
@@ -162,32 +177,47 @@
   <div class="modal fade" id="GoddessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog {{-- modal-lg --}}" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
-            <div class="modal-body text-justify" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Changed Assigned Region @if ($employeeData->grpid != 'RA') and LO @endif</strong></h5>
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
+              <h5 class="modal-title text-center"><strong>Assign Assessors{{-- Changed Assigned Region @if ($employeeData->grpid != 'RA') and LO  @endif --}}</strong></h5>
               <hr>
               <div class="container">
                     <form id="ChangeRegLO" data-parsley-validate>
+                      <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="AddErrorAlert" role="alert">
+                            <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                            <button type="button" class="close" onclick="$('#AddErrorAlert').hide(1000);" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div> 
+                    <input type="text" id="appIDHere" hidden="">
                     <div class="col-sm-12">
                       <div class="row">
-                          <div class="col-sm-5"> Region<span style="color:red">*</span> :
+                          <div class="col-sm-5">&nbsp;Region :
                           </div>
                           <input type="text" id="SelectedAppFormID" value="" hidden>
                           <input type="text" id="SelectedEmployeeGrpID" value="" hidden>
                           <input type="text" id="SelectedEmployeeRgnID" value="" hidden>
                           <div class="col-sm-7" id="RgnInputHrere">
-                              
                           </div>
                       </div>
                     </div>
                     @if ($employeeData->grpid != 'RA')<br>@endif
                     <div class="col-sm-12" @if ($employeeData->grpid == 'RA') hidden="" @endif>
                         <div class="row">
-                          <div class="col-sm-5">Licensing Officer:
+                          <div class="col-sm-5">Teams:
                           </div>
                           <div class="col-sm-7" id="LOInputHere">
                           </div>
                       </div>
                     </div>
+                    <hr>
+                    <hr>
+                      <div class="col-sm-12">
+                        <center>Members</center>
+                      </div>
+                      <hr>
+                      <div class="col-sm-12" id="PutTableHERE">
+                        
+                      </div>
                     <hr>
                     <div class="row">
                       <div class="col-sm-6">
@@ -237,7 +267,47 @@
           </div>
         </div>
       </div>
+  <div class="modal fade" id="GoddestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog {{-- modal-lg --}}" role="document">
+          <div class="modal-content" style="border-radius: 0px;border: none;">
+            <div class="modal-body" style=" background-color: #272b30;color: white;">
+              <h5 class="modal-title text-center"><strong>Assessors</strong></h5>
+              <hr>
+              {{-- <div class="container"> --}}
+                    <div class="col-sm-12 table-responsive" >
+                      <form id="" data-parsley-validate>
+                        <input type="text" id="anotherSelectedID4Members" hidden>
+                        <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="TeamAsseErrorAlert" role="alert">
+                            <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
+                            <button type="button" class="close" onclick="$('#TeamAsseErrorAlert').hide(1000);" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div> 
+                       <table class="table">
+                          <thead id="GoderModalTHead">
+                            
+                          </thead>
+                          <tbody id="GoderModalTBody">
+                            
+                          </tbody>
+                       </table> 
+                      </form>
+                    </div>
+                    <hr>
+                    <div class="row" id="GoderModalButtons">
+                      
+                    </div>
+                  </form>
+              {{-- </div> --}}
+            </div>
+          </div>
+        </div>
+      </div>
 <script type="text/javascript">
+  var ToBeAddedMembers = [];
+  $(function () {
+    $('[data-toggle="popover"]').popover()
+  })
   function filterGroup(){
         var id = $('#filterer').val();
         var token = $('#token').val();
@@ -415,16 +485,33 @@
     function showChangeRgnLO(apid,EmployeeGrp,EmployeeRgn){
        //RgnInputHrere   LOInputHere
        $('#RgnInputHrere').empty();
-       $('#RgnInputHrere').append('<input type="text" id="SelectedRgnS" class="form-control" list="rgn_list" data-parsley-required-message="*<strong>Region</strong> required." onchange="SelectedRgn();" required>');
+       $('#RgnInputHrere').append('<input type="text" id="SelectedRgnS" class="form-control" list="rgn_list"  onchange="SelectedRgn();" >');
+       // data-parsley-required-message="*<strong>Region</strong> required." required
        $('#LOInputHere').empty();
-       $('#LOInputHere').append('<select class="form-control" id="ShowLO" ></select>');
+       $('#LOInputHere').append('<select class="form-control" id="ShowLO" onchange="getMembers()"></select>');
        $('#SelectedAppFormID').attr('value','');
        $('#SelectedAppFormID').attr('value',apid);
-       // SelectedEmployeeGrpID SelectedEmployeeRgnID
        $('#SelectedEmployeeGrpID').attr('value', '');
        $('#SelectedEmployeeGrpID').attr('value', EmployeeGrp);
 
        $('#SelectedEmployeeRgnID').attr('value', EmployeeRgn);
+
+       $('#PutTableHERE').empty();
+       $('#PutTableHERE').append(
+          '<table class="table">' + 
+            '<thead>' +
+                '<tr>' + 
+                  '<th style="width: 20%;text-align: center">&nbsp;</th>' +
+                  '<th style="width: 40%;text-align: center">Name</th>' +
+                  '<th style="width: 40%;text-align: center">Remarks</th>' +
+                '</tr>' +
+            '</thead>' +
+            '<tbody id="MembersTable">' +
+            '</tbody>' +
+          '</table>'
+        );
+
+       $('#appIDHere').val(apid);
     }
     function SelectedRgn(){
        var id = $('#SelectedRgnS').val();
@@ -435,21 +522,23 @@
                 if (test != -1) {
                    var selectedID = arr2[test];
                    $.ajax({
-                        url : '{{ asset('mf/getGetLO') }}',
+                        url : '{{ asset('mf/get_teams') }}',  // {{ asset('mf/getGetLO') }}
                         method : 'POST',
-                        data : {_token : $('#token').val(), rgnid : selectedID},
+                        data : {_token : $('#token').val(), rgn : selectedID},
                         success : function(data){
                           $('#ShowLO').empty();
                           if (data != 'NONE') {
                                 $('#ShowLO').append('<option value=""></option>');
                                 for (var i = 0; i < data.length; i++) {
-                                  var d =  data[i], middle = '';
-                                  if (d.mname != "") {
-                                    middle = d.mname;
-                                    middle = middle.charAt(0) + '.'
-                                  }
-                                  var name = d.lname + ', ' + d.fname + ' ' + middle;
-                                  $('#ShowLO').append('<option value="'+d.uid+'">'+name+'</option>');
+                                  var d = data[i];
+                                //   var d =  data[i], middle = '';
+                                //   if (d.mname != "") {
+                                //     middle = d.mname;
+                                //     middle = middle.charAt(0) + '.'
+                                //   }
+                                //   var name = d.lname + ', ' + d.fname + ' ' + middle;
+                                  // $('#ShowLO').append('<option value="'+d.uid+'">'+name+'</option>');
+                                    $('#ShowLO').append('<option value="'+d.teamid+'">'+d.teamdesc+'</option>');
                                 }
                           } else {
                             $('#ShowLO').append('<option value="">Currently no registered Licensing Officer</option>');
@@ -461,30 +550,65 @@
                 }
     }
     function SubmitChangeRgnLO(){
+      var rmks = []; 
       var form = $('#ChangeRegLO');
+      var SelectedId = $('#appIDHere').val();
       form.parsley().validate();
+      // $('#MembersTable  tr[id]').map(function () {return $(this).attr('member')}).get();
+      // $('#MembersTable  tr[class="Checkling"]').map(function () {return this.id}).get();
+      // $('#MembersTable  tr[class="Checkling"]').map(function () {return $(this).attr('member')}).get();
       if (form.parsley().isValid()) {
-        var id = $('#SelectedRgnS').val();
-                var arr2 = $('#rgn_list option[value]').map(function () {return this.text}).get();
-                var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
-                // console.log(arr);
-                var test = $.inArray(id,arr);
-                var selectedID = arr2[test];
-          $.ajax({
-            url : '{{ asset('mf/save_rgnLo') }}',
-            method : 'POST',
-            data : {_token : $('#token').val(), lo : $('#ShowLO').val(), rgnid : selectedID, appid : $('#SelectedAppFormID').val()},
-            success : function(data){
-                if (data == 'DONE') {
-                  var GrpID =  $('#SelectedEmployeeGrpID').attr('value');
-                  var RgnID = $('#SelectedEmployeeRgnID').attr('value');
-                  alert('Successfully Changed Application');
-                  // FilterData(GrpID, RgnID);
-                  // $('#GoddessModal').modal('toggle');
-                  location.reload();
-                }
-            },
-          });
+        var getIds = $('#MembersTable  tr[class="Checkling"]').map(function () {return $(this).attr('member')}).get();
+        var teams = $('#MembersTable  tr[class="Checkling"]').map(function () {return $(this).attr('team')}).get();
+        if (getIds.length == 0) {
+          alert('ERROR');
+        } else {
+          for(var i = 0; i < getIds.length; i++){
+              rmks[i] = $('#rmk_'+getIds[i]).val() ;
+            }
+
+            $.ajax({
+                url : '{{ asset('/mf/add_team') }}',
+                method : 'POST',
+                data : {_token:$('#token').val(),rmks:rmks,ids:getIds,SelectedID : SelectedId, teams: teams},
+                success : function(data){
+                    if (data == 'ERROR') {
+                      $('#AddErrorAlert').show(100);
+                    } else if (data == 'DONE'){
+                      alert('Successfully added assessor/s.')
+                        window.location.href = "{{ asset('employee/dashboard/lps/assign') }}";
+                    }
+                },
+                error : function(a,b,c){
+                  console.log(c);
+                  $('#AddErrorAlert').show(100);
+
+                },
+            });
+
+
+        }
+                // var id = $('#SelectedRgnS').val();
+                // var arr2 = $('#rgn_list option[value]').map(function () {return this.text}).get();
+                // var arr = $('#rgn_list option[value]').map(function () {return this.value}).get();
+                // // console.log(arr);
+                // var test = $.inArray(id,arr);
+                // var selectedID = arr2[test];
+          // $.ajax({
+          //   url : '{{ asset('mf/save_rgnLo') }}',
+          //   method : 'POST',
+          //   data : {_token : $('#token').val(), lo : $('#ShowLO').val(), rgnid : selectedID, appid : $('#SelectedAppFormID').val()},
+          //   success : function(data){
+          //       if (data == 'DONE') {
+          //         var GrpID =  $('#SelectedEmployeeGrpID').attr('value');
+          //         var RgnID = $('#SelectedEmployeeRgnID').attr('value');
+          //         alert('Successfully Changed Application');
+          //         // FilterData(GrpID, RgnID);
+          //         // $('#GoddessModal').modal('toggle');
+          //         location.reload();
+          //       }
+          //   },
+          // });
       }
     }
     function ShowHistoryDetailsNow(facilityname,appid){
@@ -572,5 +696,188 @@
       }
     }
     function AddLONow(){}
+    function getMembers(){
+      var selectedTeam = $('#ShowLO').val();
+      // ToBeAddedMembers
+      if (selectedTeam != '') {
+          $.ajax({
+              url : '{{ asset('/mf/getMember') }}',
+              method : 'POST',
+              data : {_token : $('#token').val(), teamid : selectedTeam},
+              success : function(data){
+                if (data != 'ERROR') {
+                    for (var i = 0; i < data.length; i++) {
+                      var d = data[i];
+                      var rowCount =  $('#MembersTable tr').length;
+                      if (rowCount == 0) {
+                        ToBeAddedMembers = [];
+                      }
+                      var test = $.inArray(d.uid,ToBeAddedMembers);
+
+                      if (test == -1) {
+                        $('#MembersTable').append(
+                          '<tr class="Checkling" id="mem_'+d.uid+'" member="'+d.uid+'" team="'+d.team+'">' +
+                              '<td >'+
+                                '<div class="btn-group" role="group" aria-label="Basic example">' +
+                                    '<button onclick="removeMember(1, \''+d.uid+'\')" title="Add" type="button" class="btn btn-outline-success chk_mem_'+d.uid+'" style="width:36px;display:none"><i class="fa fa-check"></i></button>&nbsp;'+
+                                    '<button onclick="removeMember(0, \''+d.uid+'\')" title="Remove" type="button" class="btn btn-outline-danger wrng_mem_'+d.uid+'" style="width:36px"><i class="fa fa-times"></i></button>&nbsp;'+
+                                    '<button onclick=""  type="button" class="btn btn-outline-info" style="width:36px" data-toggle="popover" data-placement="top" data-content="Position: '+d.position+'"><i class="fa fa-info"></i></button>'+
+                                  '</div>' +
+                              '</td>'+
+                              '<td id="text_'+d.uid+'" style="color:green;font-weight:bold;text-align:center;">'+d.wholename+'</td>' +
+                              '<td><textarea id="rmk_'+d.uid+'" rows="2" class="form-control"></textarea></td>' +
+                          '</tr>'
+                        );
+                        ToBeAddedMembers.push(d.uid);
+                      }
+                      
+                    }
+                } else {
+                    $('#AddErrorAlert').show(100);
+                }
+              },
+              error : function(a,b,c){
+                  console.log(c);
+                  $('#AddErrorAlert').show(100);
+              },
+          });
+      }
+    }
+    function removeMember(stats, uid){
+      if (stats == 0) { // REMOVED
+            $('.wrng_mem_'+uid).hide();
+            $('.chk_mem_'+uid).show();
+            $('#mem_'+uid).removeClass('Checkling');
+            $('#text_'+uid).css('color','red');
+      } else { // ADDED
+          $('.chk_mem_'+uid).hide();
+          $('.wrng_mem_'+uid).show()
+          $('#mem_'+uid).addClass('Checkling');
+          $('#text_'+uid).css('color','green');
+      }
+    }
+    function getAllMembers(appid){
+      $('#GoderModalTBody').empty();
+      $('#anotherSelectedID4Members').val(appid);
+
+      $('#GoderModalTHead').empty();
+      $('#GoderModalTHead').append(
+            '<tr>' +
+            '<th width="auto" class="text-center" scope="col">Name</th>' +
+            '<th width="auto" class="text-center" scope="col">Remarks</th>' +
+            '<th width="auto" class="text-center memberEditMode" style="display:none" scope="col">Options</th>' + 
+          '</tr>'
+        );
+
+      $('#GoderModalButtons').empty();
+        $('#GoderModalButtons').append(
+           ' <div class="col-sm-6">'+ 
+            '<button type="button" class="btn btn-outline-warning form-control memberEditModeNot" style="border-radius:0;" onclick="EditTeamMode(1);">Edit</button>' +
+              '<button type="button" class="btn btn-outline-success memberEditMode form-control" style="border-radius:0;display: none" onclick="saveEditMode()">Save</button>' +
+            '</div>' + 
+            '<div class="col-sm-6">' +
+              '<button type="button" class="btn btn-outline-warning memberEditMode form-control" style="border-radius:0;display: none" onclick="EditTeamMode(0);"><span class="fa fa-sign-up"></span>Cancel</button>' +
+                '<button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control memberEditModeNot" style="border-radius:0;"><span class="fa fa-sign-up"></span>Close</button>'+
+              '</div>'
+          ); 
+
+      $.ajax({
+          url : '{{ asset('mf/getTeamMember') }}',
+          method : 'POST',
+          data : {_token : $('#token').val(), appid : appid},
+          success : function(data){
+            if (data == 'ERROR'){
+                $('#TeamAsseErrorAlert').show(100);
+            } else if(data == 'NONE'){
+              alert('No data to be viewed or to be updated. Page will reload after a few seconds.');
+              window.location.reload();
+            } else {
+                for (var i = 0; i < data.length; i++) {
+                  var rmk  = data[i].remarks;
+                  if (data[i].remarks == null) {
+                      rmk = ' ';
+                  }
+                  $('#GoderModalTBody').append(
+                      '<tr id="editMode_'+data[i].apptid+'" selectedapptId="'+data[i].apptid+'">' +
+                          '<td class="text-center">'+data[i].wholename+'</td>' +
+                          '<td><textarea rows="2" class="form-control editModeTextArea" id="theRMK_'+data[i].apptid+'"  disabled="">'+rmk+'</textarea></td>' +
+                          '<td class="memberEditMode" style="display:none"><center>'+
+                            '<button type="button" class="btn btn-outline-danger" title="Remove" onclick="deleteMemberNow('+data[i].apptid+', \''+data[i].appid+'\', \''+data[i].wholename+'\')"><i class="fa fa-fw fa-trash"></i></button>' + 
+                          '</center></td>' +
+                      '</tr>'
+                    );
+                  
+                }
+            } 
+          },
+          error : function(a,b,c){
+            console.log(c);
+            $('#TeamAsseErrorAlert').show(100);
+          }
+      });
+    }
+    function EditTeamMode(YesNo){
+      if (YesNo == 1) {
+        $('.memberEditMode').show();
+        $('.memberEditModeNot').hide();
+        $('.editModeTextArea').removeAttr('disabled');
+      } else {
+        $('.memberEditMode').hide();
+        $('.memberEditModeNot').show();
+        $('.editModeTextArea').attr('disabled','');
+      }
+    }
+    function deleteMemberNow(apptid, appid, name){
+      if (window.confirm("Do you really want to delete "+name+" from the team?")) { 
+          $.ajax({
+             url : '{{ asset('mf/delTeamMember') }}',
+             method : 'POST',
+             data : {_token: $('#token').val(), id : apptid},
+             success : function(data){
+                if (data == 'DONE') {
+                    alert('Successfully deleted ' + name + ' from the team.');
+                    getAllMembers(appid);
+                } else if (data == 'ERROR') {
+                    $('#TeamAsseErrorAlert').show(100);
+                }
+             },
+             error : function(a, b, c){
+                console.log(c);
+                $('#TeamAsseErrorAlert').show(100);
+             },
+          });
+      }
+    }
+    function saveEditMode(){
+      var getIds = $('#GoderModalTBody tr').map(function () {return $(this).attr('selectedapptId')}).get();
+      var SelectedAppId = $('#anotherSelectedID4Members').val();
+      var theGodRmk = [];
+      if (getIds.length != 0) {
+          for (var i = 0; i < getIds.length; i++) {
+            theGodRmk[i] = $('#theRMK_'+getIds[i]).val();
+          }
+
+          $.ajax({
+              url : '{{ asset('mf/save_TeamMember') }}',
+              method : 'POST',
+              data : {_token:$('#token').val(),rmk : theGodRmk, ids : getIds},
+              success : function(data){
+                  if (data == 'DONE') {
+                      alert('Successfully edited');
+                      getAllMembers(SelectedAppId);
+                  } else if (data == 'ERROR'){
+                    $('#TeamAsseErrorAlert').show(100);
+                  }
+              },
+              error : function(a, b, c){
+                  console.log(c);
+                  $('#TeamAsseErrorAlert').show(100);
+              },
+          });
+      } else {
+        alert('No data to be updated. Page will reload after a few seconds.');
+        window.location.reload();
+      }
+    }
 </script>
 @endsection
