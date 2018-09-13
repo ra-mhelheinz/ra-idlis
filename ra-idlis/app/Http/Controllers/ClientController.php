@@ -400,11 +400,12 @@ class ClientController extends Controller
       return view('client.lto', ['fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci]);
     }
     
-    public function FORM(Request $request, $id_type){
+    public function FORM(Request $request, $id_type, $aptid, $notdraft){
       if ($request->isMethod('get')) {
             session()->flash('taeform', $id_type);
             $personnel =DB::table('personnel')->get();
             $selectedType = strtoupper($id_type);
+            $selectedType1 = strtoupper($aptid);
             $position = DB::table('position')->get();
             $plicensetype = DB::table('plicensetype')->get();
             $section = DB::table('section')->get();
