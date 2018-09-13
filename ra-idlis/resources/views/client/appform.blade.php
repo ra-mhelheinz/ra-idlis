@@ -273,7 +273,7 @@
 			</div> --}}
 			</div>
 
-	<form @if($isview == false) action="{{ asset('/client/apply/form/') }}/{{$id_type}}"  data-parsley-validate enctype="multipart/form-data"  method="post" data-parsley-validate id="ApplyFoRm" @endif>
+	<form @if($isview == false) action="{{ asset('/client/apply/form/') }}/{{$id_type}}/{{$aptid}}/{{$notdraft}}"  data-parsley-validate enctype="multipart/form-data"  method="post" data-parsley-validate id="ApplyFoRm" @endif>
 		<input type="" name="_token" value="{{csrf_token()}}" hidden>
 		<div class="col-sm-12"><center><h4>{{$hfaci}}</h4></center></div>
 		<br>
@@ -373,7 +373,7 @@
 						<div class="col-sm-3" >
 							Health Facility:<span style="color:red">*</span>
 						</div>
-						<div class="col-sm-3" >
+						<div class="col-sm-9" >
 							<select @if($isview == true) disabled @endif class="form-control" id="HFATYPE" name="facid" onchange="{{--getFacilityType();--}}getUploads()" data-parsley-required-message="<strong>Health Facility</strong> required." required>
 								<option value="" hidden></option>
 								@foreach ($fatypes as $fatype)
@@ -382,9 +382,16 @@
 							</select>
 						</div>
 						<div class="col-sm-3" >
+							Bed Capacity<span style="color:red">*</span>
+						</div>
+						<div class="col-sm-9" >
+						<label>{{$clientData->bed_capacity}}</label>
+						</div>
+
+						<div class="col-sm-3" >
 							Ownership:<span style="color:red">*</span>
 						</div>
-						<div class="col-sm-3" >
+						<div class="col-sm-9" >
 							<select @if($isview == true) disabled @endif class="form-control" id="OWNSHP" name="OWNSHP" data-parsley-required-message="<strong>Ownership</strong> required." onchange="getOwnship();" required>>
 								<option value="" hidden></option>
 								@foreach ($ownshs as $ownsh)
@@ -396,11 +403,11 @@
 					<br>
 					<span id="HideLevel1" style="display:none;">
 						<div class="row">
-							<div class="col-sm-3" id="Main1Sub1Name">
-								{{-- Services:<span style="color:red">*</span> --}}
+						{{-- 	<div class="col-sm-3" id="Main1Sub1Name">
+								Services:<span style="color:red">*</span>
 							</div>
 							<div class="col-sm-3" id="Main1Sub1DrpDown">
-								{{-- <select class="form-control">
+								<select class="form-control">
 									<option value=""></option>
 									<option>Colorectal Surgery</option>
 									<option>General Surgery</option>
@@ -414,12 +421,12 @@
 									<option>Reproductive Health Surgery</option>
 									<option>Thoracic Surgery</option>
 									<option>Urologic Surgery</option>
-								</select> --}}
-							</div>
+								</select>
+							</div> --}}
 							<div class="col-sm-3" id="Main1Sub2Name" style="display: none">
 								Class:<span style="color:red">*</span>
 							</div>
-							<div class="col-sm-3" id="Main1Sub2DrpDown" style="display: none">
+							<div class="col-sm-9" id="Main1Sub2DrpDown" style="display: none">
 								<select @if($isview == true) disabled @endif class="form-control" id="CLS" name="CLS" onchange="chckOwnOther();">
 								</select>
 
@@ -429,11 +436,11 @@
 					</span>
 					<span id="HideLevel2" style="display:none;">
 						<div class="row">
-							<div class="col-sm-3" id="Main2Sub1Name">
-								{{-- Services:<span style="color:red">*</span> --}}
+						{{-- 	<div class="col-sm-3" id="Main2Sub1Name">
+								Services:<span style="color:red">*</span>
 							</div>
 							<div class="col-sm-3" id="Main2Sub1DrpDown">
-								{{-- <select class="form-control">
+								<select class="form-control">
 									<option value=""></option>
 									<option>Colorectal Surgery</option>
 									<option>General Surgery</option>
@@ -447,12 +454,12 @@
 									<option>Reproductive Health Surgery</option>
 									<option>Thoracic Surgery</option>
 									<option>Urologic Surgery</option>
-								</select> --}}
-							</div>
+								</select>
+							</div> --}}
 							<div class="col-sm-3" id="Main2Sub2Name" style="display: none">
 								Others (Ownership), Specify<span style="color:red">*</span>
 							</div>
-							<div class="col-sm-3" id="Main2Sub2DrpDown" style="display: none">
+							<div class="col-sm-9" id="Main2Sub2DrpDown" style="display: none">
 								<input type="text" id="SelectedisOthers" data-parsley-required-message="<strong>Others</strong> required." class="form-control" name="OthersSelected">
 							</div>
 						</div>
@@ -460,15 +467,9 @@
 					</span>
 					<div class="row">
 						<div class="col-sm-3" >
-							
-						</div>
-						<div class="col-sm-3" >
-							
-						</div>
-						<div class="col-sm-3" >
 							Status of Application:<span style="color:red">*</span>
 						</div>
-						<div class="col-sm-3" >
+						<div class="col-sm-9" >
 							<select @if($isview == true) disabled @endif class="form-control" id="STATS_APP" name="strateMap" data-parsley-required-message="<strong>Status of Application</strong> required." required >
 								<option value="" hidden></option>
 								@foreach ($aptyps as $aptyp)
