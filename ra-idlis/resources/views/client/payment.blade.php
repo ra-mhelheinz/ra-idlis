@@ -55,7 +55,7 @@
 }
 
 .paymentWrap .paymentBtnGroup .paymentMethod .method.ez-cash {
-  background-image: url("{{asset('ra-idlis/public/img/paypal.png')}}");
+  background-image: url("{{asset('ra-idlis/public/img/walkin.png')}}");
 }
 
 
@@ -110,7 +110,7 @@
                 </div>        
             </div>
             <div class="row" style="border: 1px solid rgba(0,0,0,.125);padding: 5%;border-radius: 5px;">
-              <div class="col-sm-8">
+              <div class="col-sm-7">
                 <div class="card">
                 <div class="card-header">
                   <h3 class="text-center">Payment Summary</h3>
@@ -123,6 +123,7 @@
                     </tr>
                     @php
                       $appform_id = $_POST['appform_id']; $desc = $_POST['desc']; $amount = $_POST['amount']; $total = 0; $hfser_id = $_POST['hfser_id']; $chgapp_id = $_POST['chgapp_id']; $hfser_desc = []; if(isset($hfser_id)) { $hfser_desc = DB::select("SELECT hfser_desc FROM `hfaci_serv_type` WHERE hfser_id = '$hfser_id'"); } else { $hfser_id = [['hfser_desc'=>"No data"]]; }
+                      $pmt_chg = '';
                     @endphp
                     @for($i = 0; $i < count($amount); $i++)
                       <?php $total = $total + intval($amount[$i]); ?>
@@ -136,7 +137,7 @@
                       <td class="text-center">&#8369; {{$total}}</td>
                     </tr>
                     @php
-                      array_push($desc, 'PAYMENT'); array_push($amount, ($total*-1)); array_push($chgapp_id, '292');
+                      array_push($desc, 'PAYMENT'); array_push($amount, ($total*-1)); array_push($chgapp_id, $pmt_chg);
                       Session::put('desc', $desc); Session::put('amount', $amount); Session::put('chgapp_id', $chgapp_id); Session::put('hfser_desc', $hfser_desc); Session::put('hfser_id', $hfser_id); Session::put('appform_id', $appform_id); 
                     @endphp
                   </table>
@@ -145,7 +146,7 @@
                 @endif
               </div>
               </div>
-              <div class="col-sm-4 text-center" id="asdf1" class="">
+              <div class="col-sm-5 text-center" id="asdf1" class="">
                 <div>
                 @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
                   <label>Pay using your Paypal Account</label>
@@ -176,39 +177,65 @@
                </div>
               </div>
               <div class="col-sm-4 text-center" id="asdf2" hidden>
-                <label>Pay using your Dragonpay Account</label><br>
-                <a href="https://test.dragonpay.ph/GenPay.aspx?merchantid=SAMPLEGEN"><button class="btn btn-info">Continue with Dragonpay</button></a>
+                @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
+                  <label>Pay using your Dragonpay Account</label><br>
+                  <a href="https://test.dragonpay.ph/GenPay.aspx?merchantid=SAMPLEGEN"><button class="btn btn-info">Continue with Dragonpay</button></a>
+                @endif
               </div>
               <div class="col-sm-4 text-center" id="asdf3" hidden>
                
               </div>
               <div class="col-sm-4 text-center" id="asdf4" hidden>
-                <label>LANDBANK</label><br>
-                <form method="POST" action="{{asset('client/payment')}}/{{csrf_token()}}/294" enctype="multipart/form-data">
-                    {{csrf_field()}}
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-sm-6"><label>Date of Payment:</label></div>
-                      <div class="col-sm-6"><input type="date" class="form-control" name="au_date"></div>
+                @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
+                  <label>LANDBANK</label><br>
+                  <form method="POST" action="{{asset('client/payment')}}/{{csrf_token()}}/294" enctype="multipart/form-data">
+                      {{csrf_field()}}
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-sm-6"><label>Date of Payment:</label></div>
+                        <div class="col-sm-6"><input type="date" class="form-control" name="au_date"></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">Upload Official Receipt:</div>  
+                        <div class="col-sm-6"><input type="file" name="au_file"></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6"><label>Reference Number</label></div>
+                        <div class="col-sm-6"><input type="text" class="form-control" name="au_ref"></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6"><label>Amount:</label></div>
+                        <div class="col-sm-6"><input type="number" class="form-control" name="au_amount"></div>
+                      </div>
                     </div>
-                    <div class="row">
-                      <div class="col-sm-6">Upload Official Receipt:</div>  
-                      <div class="col-sm-6"><input type="file" name="au_file"></div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-6"><label>Reference Number</label></div>
-                      <div class="col-sm-6"><input type="text" class="form-control" name="au_ref"></div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-6"><label>Amount:</label></div>
-                      <div class="col-sm-6"><input type="number" class="form-control" name="au_amount"></div>
-                    </div>
-                  </div>
-                  <button type="submit" class="btn btn-info">Continue payment</button>
-                </form>
+                    <button type="submit" class="btn btn-info">Continue payment</button>
+                  </form>
+                @endif
               </div>
               <div class="col-sm-4 text-center" id="asdf5" hidden>
-                
+                @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
+                  <label>Walk-in</label><br>
+                  <form id="i_wlk" method="GET" action="{{asset('client/payment')}}/{{csrf_token()}}/290">
+                  </form>
+                  <div class="row">
+                    <div class="col-sm-1 text-right">
+                      <input id="s_wlk" type="checkbox" name="chance" onchange="c_wlk()">
+                    </div>
+                    <div class="col-sm-10">
+                      <label for="s_wlk" style="line-height: 1;"><b>CONTINUE PAYMENT AS WALK-IN</b> <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</small></label>
+                    </div>
+                  </div>
+                  <button id="b_wlk" class="btn btn-info">Continue payment</button>
+                  <script type="text/javascript">
+                    function c_wlk() {
+                      if(document.getElementById('s_wlk').checked == true) {
+                        document.getElementById('b_wlk').setAttribute('form', 'i_wlk');
+                      } else {
+                        document.getElementById('b_wlk').removeAttribute('form');
+                      }
+                    }
+                  </script>
+                @endif
               </div>
             </div>
 {{--             <div class="footerNavWrap clearfix">

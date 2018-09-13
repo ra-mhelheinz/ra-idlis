@@ -65,7 +65,7 @@
 			</div>
 			<div name="sorrybread" class="tab-pane fade" id="oop2" role="tabpanel" aria-labelledby="oop2-tab">
 				<div class="row">
-					<div id="getId" class="col-sm-7">
+					<div id="getId" class="col-sm-7" style="min-height: 400px;">
 						<h4>Select Add-ons</h4>
 						<div class="row">
 							<div class="col-md-12">Application Type: <span id="editapp"></span></div>
@@ -172,7 +172,7 @@
 		<hr>
 		<button id="forprev" class="btn btn-info" style="float: left;" onclick="nst(-1)"><i class="fa fa-angle-left"></i> Prev</button>
 		<button id="fornext" class="btn btn-info" style="float: right;" onclick="nst(1)">Next <i class="fa fa-angle-right"></i></button>
-		<button data-toggle="modal" data-target="#myModal" id="forpaymentbtn" class="btn btn-info" style="float: right;">Proceed <i class="fa fa-angle-right"></i></button>
+		<button id="forpaymentbtn" class="btn btn-info" style="float: right;" onclick="gBOM()">Proceed <i class="fa fa-angle-right"></i></button>
 		<div class="modal fade" id="myModal">
 	    <div class="modal-dialog modal-lg">
 	      <div class="modal-content">
@@ -200,7 +200,7 @@
 	        	</table>
 	          <hr>
 	          <div class="row">
-	          	<div class="col-sm-1 text-right"><input type="checkbox" name=""></div>
+	          	<div class="col-sm-1 text-right"><input type="checkbox" id="none_d" name="asdf" onchange="p_sbm()"></div>
 	          	<div class="col-sm-11">
 	          		
 	          		 <p style="line-height: 1;"><b>I HAVE REVIEWED MY PAYMENT SUMMARY.</b> <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</small></p>
@@ -211,7 +211,7 @@
 	        <!-- Modal footer -->
 	        <div class="modal-footer">
 	        	<button data-dismiss="modal" class="btn btn-secondary btn-block"><i class="fa fa-angle-left"></i> Back</button>
-	          	<button class="btn btn-warning btn-block"  form="formSubmit" style="margin-top: 0;">Continue <i class="fa fa-credit-card"></i></button>
+	          	<button id="forSubmitProc" class="btn btn-warning btn-block" style="margin-top: 0;">Continue <i class="fa fa-credit-card"></i></button>
 	        </div>
 	        
 	      </div>
@@ -276,7 +276,7 @@
 	var stickHeight_curr = 0;
 	var reuse = 0;
 
-	function nst(inOf) {
+	function nst(inOf) { 
 		inOf2 = inOf2 + inOf;
 		for(var i = 0; i < document.getElementsByName('sorrybread').length; i++) {
 			document.getElementsByName('sorrybread')[i].classList.remove('show');
@@ -307,7 +307,7 @@
 		var aptid = "";
 		var oop_id = "";
 		var appname = "";
-		var oopname = ""
+		var oopname = "";
  		for(var i = 0; i < document.getElementsByClassName('fighting').length; i++) {
  			document.getElementsByClassName('fighting')[i].setAttribute('hidden', true);
  		}
@@ -342,11 +342,12 @@
 			forArr = []; forCode = []; forBtn = [];
 			curOop = oop_id;
 		}
-
 	 	if(aptid == "") { nst(-1); }
 	 	if(oop_id == "" && inOf2 > 1) { nst(-1); }
 		if(aptid != "" && oop_id != "") {
 			localStorage.setItem('curOop', curOop);
+			document.getElementById('editapp').innerHTML = appname;
+			document.getElementById('editoop').innerHTML = oopname;
 	 		for(var i = 0; i < document.getElementsByName(aptid).length; i++) {
 	 			var id = document.getElementsByName(aptid)[i].id;
  				if(document.getElementById('paramatangtangimongmama'+aptid) != null) {
@@ -360,8 +361,6 @@
 		 					document.getElementById('paramatangtangimongmama'+aptid).getElementsByTagName('input')[0].setAttribute('name', 'desc[]');
 		 					document.getElementById('paramatangtangimongmama'+aptid).getElementsByTagName('input')[1].setAttribute('name', 'amount[]');
 		 				}
-		 				document.getElementById('editapp').innerHTML = appname;
-		 				document.getElementById('editoop').innerHTML = oopname;
 
 						stickHeight_mn = document.getElementById('getId').offsetHeight;
 		 			}
@@ -458,14 +457,18 @@
 	function suwayandaw(stHeight) {
 		stickHeight_aft = stHeight;
 	}
-	// function stickTopGroup() {
-	// 	var downDiv = document.getElementById('myTabContent').offsetTop + document.getElementById('formSubmit').offsetTop;
-	// 	if(window.scrollY < downDiv) {
-
-	// 	} else {
-	// 		document.getElementById('forStick').getElementsByClassName('card')[0].getElementsByClassName('card-body')[0].style.marginTop = document.getElementsByClassName('sticky-top')[0].offsetHeight + (window.scrollY - downDiv)+'px';
-	// 	}
-	// }
+	function gBOM() {
+		if(document.getElementById('paymentrecord').getElementsByTagName('td').length > 1) {
+			$('#myModal').modal('toggle');
+		}
+	}
+	function p_sbm() {
+		if(document.getElementById('none_d').checked == true) {
+			document.getElementById('forSubmitProc').setAttribute('form', 'formSubmit');
+		} else {
+			document.getElementById('forSubmitProc').removeAttribute('form');
+		}	 
+	}
 	window.addEventListener('load', function() {
 		onLoadCheck();
 	});

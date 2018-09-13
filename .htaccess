@@ -2,7 +2,11 @@
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
-
+    <IfModule mod_php5.c>
+        #Session timeout
+        php_value session.cookie_lifetime 1200
+        php_value session.gc_maxlifetime 1200
+    </IfModule>
     RewriteEngine On
 
     # Handle Authorization Header

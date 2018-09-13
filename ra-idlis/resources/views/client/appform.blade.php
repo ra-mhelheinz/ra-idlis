@@ -250,10 +250,12 @@
 					  			<?php $h_desc = explode(',', $h_data[$i]->h_desc); $h_id = explode(',', $h_data[$i]->h_id); $k = ((($i-1) < 0) ? $i : (($h_data[($i-1)]->don == '0') ? $i : ($i-1))); ?>
 					  			@if(count($h_desc) > 1)
 						  			@for($j = 0; $j < count($h_desc); $j++)
-									    <a class="dropdown-item" @if($h_data[$i]->don != '0') @if($h_data[$i]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="{{ asset('/client/view/form') }}/{{strtolower($h_data[$i]->h_id)}}" @endif @else @if($h_data[$k]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="#" @endif @endif style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$h_desc[$j]}} ({{$h_id[$j]}})</small></a>
+									    {{-- <a class="dropdown-item" @if($h_data[$i]->don != '0') @if($h_data[$i]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="{{ asset('/client/view/form') }}/{{strtolower($h_data[$i]->h_id)}}" @endif @else @if($h_data[$k]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="#" @endif @endif style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$h_desc[$j]}} ({{$h_id[$j]}})</small></a> --}}
+									    <a class="dropdown-item" href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" style="border-bottom: 1px solid rgba(0,0,0,.2);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$h_desc[$j]}} ({{$h_id[$j]}})</small></a>
 						  			@endfor
 						  		@else 
-						  			<a class="dropdown-item" @if($h_data[$i]->don != '0') @if($h_data[$i]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="{{ asset('/client/view/form') }}/{{strtolower($h_data[$i]->h_id)}}" @endif @else @if($h_data[$k]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="#" @endif @endif style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>{{$h_data[$i]->h_desc}} ({{$h_data[$i]->h_id}})</small></a>
+						  			{{-- <a class="dropdown-item" @if($h_data[$i]->don != '0') @if($h_data[$i]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="{{ asset('/client/view/form') }}/{{strtolower($h_data[$i]->h_id)}}" @endif @else @if($h_data[$k]->app_stat == 1) href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" @else href="#" @endif @endif style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>{{$h_data[$i]->h_desc}} ({{$h_data[$i]->h_id}})</small></a> --}}
+						  			<a class="dropdown-item" href="{{ asset('/client/apply/form') }}/{{strtolower($h_data[$i]->h_id)}}" style="border-bottom: 1px solid rgba(0,0,0,.2);"><small>{{$h_data[$i]->h_desc}} ({{$h_data[$i]->h_id}})</small></a>
 						  		@endif
 					  		@endfor
 						@else
@@ -1335,14 +1337,7 @@ $(document).ready(function(){
 			          }
 			      });
 	        }
-			get_pform(document.getElementById('appidinc').value);
-		@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
-			function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);
-		@else
-			@if($isview == true)
-				function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);
-			@endif
-		@endif									
+			get_pform(document.getElementById('appidinc').value);			
 													</script>
 @if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
 	<script>function tae(num) { var i = num; if(document.getElementById('HFATYPE').options[i].value == "{{$curr_tbl[0]->facid}}") { document.getElementById('HFATYPE').selectedIndex = i; } else { i++; tae(i); } } tae(0);</script>
@@ -1358,12 +1353,25 @@ $(document).ready(function(){
 	@endif
 @endif
 @if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
-	<script>getUploads(); getOwnship();function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0); console.log("{{asset('ra-idlis/storage/app/public/uploaded')}}/{{$curr_tbl[1]->filepath}}"); get_pform(document.getElementById('appidinc').value)</script>
+	@foreach($curr_tbl[1] AS $sentform)
+		<script>getUploads(); getOwnship();function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0); console.log("{{asset('ra-idlis/storage/app/public/uploaded')}}/{{$sentform->filepath}}"); get_pform(document.getElementById('appidinc').value)</script>
+	@endforeach
 @else
 	@if($isview == true)
-		<script>getUploads(); getOwnship();function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0); console.log("{{asset('ra-idlis/storage/app/public/uploaded')}}/{{$sendform[1]->filepath}}"); get_pform(document.getElementById('appidinc').value)</script>
+		@foreach($sendform[1] AS $sentform)
+			<script>getUploads(); getOwnship();function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0); console.log("{{asset('ra-idlis/storage/app/public/uploaded')}}/{{$sentform->filepath}}"); get_pform(document.getElementById('appidinc').value)</script>
+		@endforeach
 	@endif
 @endif
+<script type="text/javascript">
+@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
+	function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);
+@else
+	@if($isview == true)
+		function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);
+	@endif
+@endif	
+</script>					
 <hr>
 @include('client.sitemap')
 @endsection
