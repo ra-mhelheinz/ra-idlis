@@ -20,14 +20,20 @@ class ClientController extends Controller
         $province = DB::table('province')->get();
         $city_muni = DB::table('city_muni')->get();
          $brgy = DB::table('barangay')->get();
-   			return view('client.login',['regions' => $regions, 'province' => $province, 'citymuni' => $city_muni, 'brgy' => $brgy]);
+         $fatype = DB::table('facilitytyp')->get();
+   			return view('client.login',['regions' => $regions, 'province' => $province, 'citymuni' => $city_muni, 'brgy' => $brgy, 'fatypes'=>$fatype]);
    		} 
         if($request->isMethod('post')){
             session()->flush();
             $uname=strtoupper($request->input('log_uname'));
             $pass= $request->input('log_pass');
             $data = DB::table('x08')->where('uid', '=', $uname)->where('grpid', '=', 'C')->select('*')->first();
+            if($data == null){
+              session()->flash('client_login','Invalid Username/Password');
+               return back();
+            }
             $chkpass = Hash::check($pass, $data->pwd);
+
             // dd([$data, $chkpass, $request->input('log_pass')]);
               if ($chkpass != true){
                   session()->flash('client_login','Invalid Username/Password');
@@ -53,7 +59,7 @@ class ClientController extends Controller
                     return back();
                   } else {
                     session()->put('client_data',$clientUser);
-                    return redirect('/client/home');
+                    return redirect()->route('client.home');
                   }
               }
              }
@@ -138,39 +144,43 @@ class ClientController extends Controller
         }    
     }
     public function home(Request $request){
-      $result = [];
-      $draft_ok = 0;
-      $draft_not = 0;
-    	if($request->isMethod('get')){
-        $employeeData = session('client_data');
-        $result = DB::table('app_assessment')->where('uid', '=', $employeeData->uid )->where('draft', '=', '0')->get();
-        $clientAppyInformation = "SELECT hf.hfser_desc, ap.hfser_id, ap.t_date, ap.proposedInspectiondate, ap.proposedInspectiondate, ts.canapply FROM appform ap LEFT JOIN hfaci_serv_type hf ON ap.hfser_id = hf.hfser_id LEFT JOIN trans_status ts ON ts.trns_id = ap.status WHERE ap.uid = '$employeeData->uid'";
-        $getApp = DB::select($clientAppyInformation);
+      $employeeData = session('client_data');
+      if($employeeData != null) {
+        $result = [];
         $draft_ok = 0;
         $draft_not = 0;
-        if(count($result) > 0) {
-          foreach ($result as $ind_res) {
-            switch ($ind_res->complied) {
-              case $ind_res=='0':
-                $draft_not++;
-                break;
-              case $ind_res!='0':
-                $draft_ok++;
-                break;
-              
-              default:
-                $draft_not++;
-                break;
-            }
+      	if($request->isMethod('get')){
+          $result = DB::table('app_assessment')->where('uid', '=', $employeeData->uid )->where('draft', '=', '0')->get();
+          $clientAppyInformation = "SELECT hf.hfser_desc, ap.hfser_id, ap.t_date, ap.proposedInspectiondate, ap.proposedInspectiondate, ts.canapply FROM appform ap LEFT JOIN hfaci_serv_type hf ON ap.hfser_id = hf.hfser_id LEFT JOIN trans_status ts ON ts.trns_id = ap.status WHERE ap.uid = '$employeeData->uid'";
+          $getApp = DB::select($clientAppyInformation);
+          $draft_ok = 0;
+          $draft_not = 0;
+          if(count($result) > 0) {
+            foreach ($result as $ind_res) {
+              switch ($ind_res->complied) {
+                case $ind_res=='0':
+                  $draft_not++;
+                  break;
+                case $ind_res!='0':
+                  $draft_ok++;
+                  break;
+                
+                default:
+                  $draft_not++;
+                  break;
+              }
 
+            }
+          } else {
+            $result = [];
+            $draft_ok = -1;
+            $draft_not = -1;
           }
-        } else {
-          $result = [];
-          $draft_ok = -1;
-          $draft_not = -1;
-        }
-    		return view('client.index', compact(['result'],['draft_ok'],['draft_not'],['getApp']));
-    	}
+      		return view('client.index', compact(['result'],['draft_ok'],['draft_not'],['getApp']));
+      	}
+      } else {
+        return redirect()->route('client');
+      }
     }
     public function apply(Request $request){
     	if($request->isMethod('get')){
@@ -249,12 +259,18 @@ class ClientController extends Controller
     }
     public function inspection(Request $request){
       $employeeData = session('client_data');
-    	if($request->isMethod('get')){
+      if ($employeeData != null) {
+            if($request->isMethod('get')){
         $sql = "SELECT asmt.asmt_id, asmt.asmt_name, aa.isapproved, aa.remarks, pp.partid, pp.partdesc FROM assessment asmt INNER JOIN app_assessment aa ON asmt.asmt_id = aa.asmt_id LEFT JOIN part pp ON pp.partid = asmt.partid WHERE aa.uid = '$employeeData->uid'";
         $insql = DB::select($sql);
         $part = DB::table('part')->get();
-    		return view('client.inspection', ['inspect' => $insql, 'part'=>$part], compact(['insql']));
-    	}
+        return view('client.inspection', ['inspect' => $insql, 'part'=>$part], compact(['insql']));
+      }
+      }
+      else{
+         return redirect()->route('client');
+      }
+
     }
       public function inspection2(Request $request){
     	if($request->isMethod('get')){
@@ -268,11 +284,17 @@ class ClientController extends Controller
     }
      public function issuance(Request $request){
       $data = session('client_data');
+      if ($data != null) {
+        # code...
+    
       $sql = "SELECT x8.facilityname, ft.facname, CONCAT(x8.streetname, ', ', bg.brgyname, ', ', cm.cmname, ', ', rg.rgn_desc) AS loc, cl.classname, CONCAT(UPPER(x8.rgnid), '-', UPPER(LPAD(ap.appid, 4, '0')), '-', UPPER(ap.facid), '-', UPPER(ap.ocid)) AS license, CONCAT('1 January – 31 December ', (CASE WHEN EXTRACT(MONTH FROM x8.t_date) < (SELECT mtny FROM m99 LIMIT 1) THEN EXTRACT(YEAR FROM x8.t_date) ELSE (EXTRACT(YEAR FROM x8.t_date) - 1) END)) AS validity, x8.t_date, (SELECT sec_name FROM m99) AS sec_name, hs.hfser_desc FROM appform ap LEFT JOIN x08 x8 ON ap.uid = x8.uid LEFT JOIN facilitytyp ft ON ft.facid = ap.facid LEFT JOIN region rg ON rg.rgnid = x8.rgnid LEFT JOIN city_muni cm ON cm.cmid = x8.city_muni LEFT JOIN barangay bg ON bg.brgyid = x8.barangay LEFT JOIN class cl ON cl.classid = ap.classid LEFT JOIN hfaci_serv_type hs ON hs.hfser_id = ap.hfser_id WHERE ap.uid = '$data->uid' AND ap.status = 'A'";
       $issuance = DB::select($sql);
     	if($request->isMethod('get')){
     		return view('client.issuance', ['issuance'=>$issuance]);
     	}
+        }else{
+          return redirect()->route('client');
+        }
       if($request->isMethod('post')) {
         dd($request->all());
       }
@@ -849,7 +871,7 @@ class ClientController extends Controller
 
   public function goToken(Request $req, $token, $pmt) {
     $desc = Session::get('desc'); $amount = Session::get('amount'); $hfser_id = Session::get('hfser_id'); $chgapp_id = Session::get('chgapp_id'); $appform_id = Session::get('appform_id'); $hfser_desc = Session::get('hfser_desc'); $client_save = session('client_data'); $dt = Carbon::now(); $employeeData = session('client_data'); $FileUploaded = ""; $reqdate = "";
-    if(($desc != null || count($desc) > 0) && ($amount != null || count($amount) > 0) && ($hfser_id != null || count($hfser_id) > 0) && ($chgapp_id != null || count($chgapp_id) > 0) && ($appform_id != null || count($appform_id) > 0) && ($hfser_desc != null || count($hfser_desc) > 0)) {
+    if(($desc != null) && ($amount != null) && ($hfser_id != null) && ($chgapp_id != null) && ($appform_id != null) && ($hfser_desc != null)) {
       if($req->isMethod('post')) {
         if(isset($req->au_file)) {
           $FileUploaded = $req->au_file;
@@ -1105,6 +1127,7 @@ class ClientController extends Controller
   }
   public function evaluate1(Request $req) {
     $data = session('client_data');
+    if ($data != null) {
     $uploadSql = "SELECT hf.* FROM hfaci_serv_type hf INNER JOIN appform ap ON hf.hfser_id = ap.hfser_id WHERE ap.uid = '$data->uid'";
     $upload = DB::select($uploadSql);
     $uploadSql1 = "SELECT hf.*, au.* FROM app_upload au LEFT JOIN appform ap ON au.app_id = ap.appid INNER JOIN hfaci_serv_type hf ON hf.hfser_id = ap.hfser_id WHERE ap.uid = '$data->uid'";
@@ -1121,6 +1144,9 @@ class ClientController extends Controller
     } else { 
 
     }
+        }else{
+          return redirect()->route('client');
+        }
   }
   public function modifiers(Request $request){
     if($request->isMethod('get')) {
@@ -1158,7 +1184,11 @@ class ClientController extends Controller
       $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();            
       // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
       $sendform = DB::table('appform')->where('uid', '=', $asd->uid)->where('hfser_id', '=', $selectedType)->orderBy('t_date', 'desc')->limit(1)->select("*")->first();
-      $sendform1 = DB::table('app_upload')->where('app_id', '=', $sendform->appid)->orderBy('t_date', 'desc')->limit(1)->select("*")->get();
+      if($sendform == null || empty($sendform)) {
+        $sendform1 = [];
+      } else {
+        $sendform1 = DB::table('app_upload')->where('app_id', '=', $sendform->appid)->select("*")->get();       
+      }
       $imongmama = "SELECT ap.uid FROM (SELECT * FROM appform WHERE uid = '$asd->uid' AND hfser_id = '$selectedType' ORDER BY t_date DESC LIMIT 1) ap INNER JOIN trans_status ts ON ap.status = ts.trns_id WHERE ts.canapply IN (2)";
       $tothemagical = DB::select($imongmama);
       if(count($tothemagical) > 0) {

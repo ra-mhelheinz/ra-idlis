@@ -257,6 +257,18 @@ html, body, #canvasMap{
 							<input type="text" class="input form-control" autocomplete="off" name="facility_name" placeholder="Name of Facility (Complete Name)" data-parsley-required-message="<strong>*</strong>Facility name <strong>Required</strong>"  value="{{ old('facility_name') }}" required="">
 
 						</div>
+						<div class="col-sm-12" style="margin: 0 0 .8em 0;">
+							<select class="form-control" name="facility_type" id="selectfac" onchange="facbed(this)">
+								<option value="" disabled selected>Select Facility Type</option>
+								@foreach($fatypes as $fatypess)
+									<option value="{{$fatypess->facid}}" >{{$fatypess->facname}}</option>
+								@endforeach
+							</select>
+
+						</div>
+						<div class="col-sm-12" id="bedcap" hidden>
+							
+						</div>
 
 					<hr>
 					
@@ -493,7 +505,7 @@ html, body, #canvasMap{
 			Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
 			<div class="row">
 				<div class="col-sm-12">
-					<input type="checkbox" id="tcheck" name="" required> <label>I agree to Terms and Service</label>
+					<input type="checkbox" id="tcheck" name="" required> <label for="tcheck">I agree to Terms and Service</label>
 				</div>
 			</div>
       </div>
@@ -541,6 +553,16 @@ html, body, #canvasMap{
 }
 </script>
 <script type="text/javascript">
+	function facbed(sel) {
+      var text = sel.options[sel.selectedIndex].text;
+      if (text == 'Hospital Level 1' || text == 'Hospital Level 2' || text == 'Hospital Level 3') {
+      	document.getElementById('bedcap').innerHTML = '<input class="form-control" name="bedcapacity" placeholder="Bed Capacity" type="number">';
+      	document.getElementById('bedcap').removeAttribute('hidden');
+      }
+      else{
+      	document.getElementById('bedcap').setAttribute('hidden', 'true');
+      }
+}
 	function loadTbl(tbl, dtlist, data, dcid) {
 		chgLd1(dcid[0], true);
 		var xhttp = new XMLHttpRequest();
@@ -578,6 +600,8 @@ html, body, #canvasMap{
 	            if (form.parsley().isValid()){
 	                var token = $("#reg_csrf-token").val();
 	                var facility_name = $('input[name="facility_name"]').val();
+	                var facility_type = $('select[name="facility_type"] option:selected').text();
+	                var bedcap = $('input[name="bedcapacity"]').val();
 	                var region = getDataTbl("rgnID");
 	                var province = getDataTbl("provID");
 	                var brgy = getDataTbl("brgyID");
@@ -599,6 +623,8 @@ html, body, #canvasMap{
 			          data: {
 			          	_token : token,
 			          	facility_name : facility_name,
+			          	facility_type : facility_type,
+			          	bedcapacity : bedcap,
 			          	region : region,
 			          	province : province,
 			          	brgy : brgy,

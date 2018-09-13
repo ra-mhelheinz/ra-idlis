@@ -1,17 +1,17 @@
 <?php 
-	namespace App\Http\Controllers;
-	use Illuminate\Http\Request;
-	use Mail;
+  namespace App\Http\Controllers;
+  use Illuminate\Http\Request;
+  use Mail;
 
-	use App\Http\Requests;
-	use App\Http\Controllers\Controller;
+  use App\Http\Requests;
+  use App\Http\Controllers\Controller;
    use Carbon\Carbon;
    use Illuminate\Support\Str;
    use Hash;
    use DB;
       
-	class MailController extends Controller
-	{
+  class MailController extends Controller
+  {
    public function auto_mailer(Request $request){
       if($request->isMethod('get')){
          return view('client.register');
@@ -21,6 +21,8 @@
           $dateNow = $dt->toDateString();
           $timeNow = $dt->toTimeString();
           $data['facility_name'] = $request->facility_name;
+           $data['facility_type'] = $request->facility_type;
+            $data['bedcapacity'] = $request->bedcapacity;
           $data['region'] = $request->region;
           $data['province'] = $request->province;
           $data['brgy'] = $request->brgy;
@@ -64,6 +66,8 @@
                     'uid' => $data['uname'],
                     'pwd' => $data['pass'],
                     'facilityname' => $data['facility_name'],
+                     'facility_type' => $data['facility_type'],
+                      'bed_capacity' => $data['bedcapacity'],
                     // 'rgnid_address' => $data['regionadd'],
                     'rgnid' => $data['region'],
                     'province' => $data['province'],

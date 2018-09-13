@@ -31,19 +31,23 @@
 			return 'DONE';
 		}
 		public function getCurrentUserAllData(){
-			$dt = Carbon::now();
-	        $dateNow = $dt->toDateString();
-	        $timeNow = $dt->toTimeString();
-	        $ip =  request()->ip();
-	        $employeeData = session('employee_login');
-			$uname  = $employeeData->uid;
-			$data['time'] = $timeNow;
-			$data['date'] = $dateNow;
-			$data['ip'] = $ip;
-			$data['cur_user'] = $uname;
-			$data['grpid'] = $employeeData->grpid;
-			$data['rgnid'] = $employeeData->rgnid;
-			return $data;
+			if(Session::has('employee_login')){
+				$dt = Carbon::now();
+		        $dateNow = $dt->toDateString();
+		        $timeNow = $dt->toTimeString();
+		        $ip =  request()->ip();
+		        $employeeData = session('employee_login');
+				$uname  = $employeeData->uid;
+				$data['time'] = $timeNow;
+				$data['date'] = $dateNow;
+				$data['ip'] = $ip;
+				$data['cur_user'] = $uname;
+				$data['grpid'] = $employeeData->grpid;
+				$data['rgnid'] = $employeeData->rgnid;
+				return $data;
+			} else {
+				return redirect()->route('employee');
+			}
 		}
 		public function SystemLogs($message){
 			$Cur_useData = $this->getCurrentUserAllData();
@@ -2645,7 +2649,7 @@
 						for ($i=0; $i < count($data5); $i++) { 
 							$data5[$i]->formattedAmt = 'PHP '.number_format($data5[$i]->amt,2);
 						}
-						// return dd($data1);
+						// return dd($appid);
 						return view('doh.lpsCashierOne',['AppData'=>$data0, 'Payments' => $data1, 'Sum' => $data2, 'OOPs' =>$data4, 'Chrges' =>$data5, 'APPID' => $appid]);
 				} catch (Exception $e) {
 					$TestError = $this->SystemLogs($e->getMessage());

@@ -32,7 +32,7 @@ return [
     'lifetime' => 696969,
     //env('SESSION_LIFETIME', 500)
     'expire_on_close' => false,
-
+    // 'expired-session-redirect' => url(env('APP_URL'))
     /*
     |--------------------------------------------------------------------------
     | Session Encryption

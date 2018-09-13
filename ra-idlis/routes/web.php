@@ -24,8 +24,8 @@ Route::match(['get', 'post'], '/register', 'MailController@auto_mailer');
 
 Route::get('client/home', 'ClientController@home')->name('client.home');
 Route::get('client/apply/lop','ClientController@LOP');
-Route::match(['get', 'post'], '/client/apply/form/{id_type}', 'ClientController@FORM');
-Route::match(['get', 'post'], '/client/view/form/{id_type}', 'ClientController@viewapply');
+Route::match(['get', 'post'], '/client/apply/form/{id_type}/{aptid}/{notdraft}', 'ClientController@FORM');
+Route::match(['get', 'post'], '/client/view/form/{id_type}/{aptid}/{notdraft}', 'ClientController@viewapply');
 Route::match(['get', 'post'], '/client/personnel/form/{id_type}', 'ClientController@addpersonnel');
 Route::match(['get', 'post'], '/client/personnel/form/{id_type}', 'ClientController@addpersonnel');
 Route::match(['get', 'post'], '/client/personnel/delete/{id_type}', 'ClientController@delete_pform');
