@@ -401,6 +401,7 @@ class ClientController extends Controller
     }
     
     public function FORM(Request $request, $id_type, $aptid, $notdraft){
+      $asd = session('client_data');
       if ($request->isMethod('get')) {
             session()->flash('taeform', $id_type);
             $personnel =DB::table('personnel')->get();
@@ -411,7 +412,6 @@ class ClientController extends Controller
             $section = DB::table('section')->get();
             $department = DB::table('department')->get();
             $traintype = DB::table('ptrainings_trainingtype')->get();
-            $asd = session('client_data');
             $appform = DB::table('appform')->where("uid", "=", $asd->uid)->where([["draft", "!=", "0"], ["hfser_id", "=", $selectedType]])->get();
             $fatype = DB::table('type_facility')
                               ->join('facilitytyp','type_facility.facid', '=', 'facilitytyp.facid')
@@ -431,7 +431,7 @@ class ClientController extends Controller
                               ->get();
             $appidinc = DB::table("appform")->orderBy('appid', 'desc')->limit(1)->select("appid")->first();            
             // $upld = DB::table('upload')->where('hfser_id','=',$id_type)->get();
-            $imongmama = "SELECT ap.uid FROM (SELECT * FROM appform WHERE uid = '$asd->uid' AND hfser_id = '$selectedType' ORDER BY t_date DESC LIMIT 1) ap INNER JOIN trans_status ts ON ap.status = ts.trns_id WHERE ts.canapply IN (2, 0)";
+            $imongmama = "SELECT ap.uid FROM (SELECT * FROM appform WHERE uid = '$asd->uid' AND hfser_id = '$selectedType' AND aptid = '$selectedType1' ORDER BY t_date DESC LIMIT 1) ap INNER JOIN trans_status ts ON ap.status = ts.trns_id WHERE ts.canapply IN (2, 0)";
             $tothemagical = DB::select($imongmama);
           if(count($tothemagical) > 0) {
             return redirect()->route('client.home');
@@ -1154,11 +1154,12 @@ class ClientController extends Controller
       return view('client.modifiers');
     }
   }
-  public function viewapply(Request $req, $appform1) {
+  public function viewapply(Request $req, $appform1, $aptid, $notdraft) {
     if($req->isMethod("get")) {
       // session()->flash('taeform', $appform);
       $personnel =DB::table('personnel')->get();
       $selectedType = strtoupper($appform1);
+      $selectedType1 = strtoupper($aptid);
       $position = DB::table('position')->get();
       $plicensetype = DB::table('plicensetype')->get();
       $section = DB::table('section')->get();
@@ -1190,7 +1191,7 @@ class ClientController extends Controller
       } else {
         $sendform1 = DB::table('app_upload')->where('app_id', '=', $sendform->appid)->select("*")->get();       
       }
-      $imongmama = "SELECT ap.uid FROM (SELECT * FROM appform WHERE uid = '$asd->uid' AND hfser_id = '$selectedType' ORDER BY t_date DESC LIMIT 1) ap INNER JOIN trans_status ts ON ap.status = ts.trns_id WHERE ts.canapply IN (2)";
+      $imongmama = "SELECT ap.uid FROM (SELECT * FROM appform WHERE uid = '$asd->uid' AND hfser_id = '$selectedType' AND aptid = '$selectedType1' ORDER BY t_date DESC LIMIT 1) ap INNER JOIN trans_status ts ON ap.status = ts.trns_id WHERE ts.canapply IN (2, 0)";
       $tothemagical = DB::select($imongmama);
       if(count($tothemagical) > 0) {
         return view('client.appform', ['appform'=>$appform, 'fatypes'=>$fatype,'ownshs'=>$ownsh,'aptyps'=>$aptyp,'clss'=>$clss, 'hfaci'=>$hfaci->hfser_desc,'id_type'=>$appform1,'uploads'=>$upld, 'position'=>$position, 'section'=>$section, 'department'=>$department, 'traintype'=>$traintype, 'plicensetype'=>$plicensetype, 'appidinc'=>$appidinc->appid+1, 'isview'=>true, 'sendform'=>[$sendform, $sendform1]]);
