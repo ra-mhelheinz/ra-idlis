@@ -374,12 +374,13 @@
 							Health Facility:<span style="color:red">*</span>
 						</div>
 						<div class="col-sm-9" >
-							<select @if($isview == true) disabled @endif class="form-control" id="HFATYPE" name="facid" onchange="{{--getFacilityType();--}}getUploads()" data-parsley-required-message="<strong>Health Facility</strong> required." required>
+							<select @if($isview == true) disabled @endif class="form-control" id="HFATYPE" name="facid" onchange="{{--getFacilityType();--}}getUploads()" data-parsley-required-message="<strong>Health Facility</strong> required." required hidden>
 								<option value="" hidden></option>
 								@foreach ($fatypes as $fatype)
 									<option value="{{$fatype->facid}}">{{$fatype->facname}}</option>
 								@endforeach
 							</select>
+							<label id="HFATYPE1"></label>
 						</div>
 						<div class="col-sm-3" >
 							Bed Capacity<span style="color:red">*</span>
@@ -928,11 +929,13 @@ $(document).ready(function(){
 @endif
 </script>
 	<script type="text/javascript">
+		var ___getids, ___sentids = [], ___searchids = [];
 		var Number_of_Files = 0;
 		function getUploads(){
 			var selectedFaType = $('#HFATYPE').val();
 			var GetNames = $('#'+selectedFaType+'_facid option').map(function() {return $(this).val();}).get();
 			var Get_Ids = $('#'+selectedFaType+'_facid option').map(function() {return $(this).text();}).get();
+			___getids = Get_Ids;
 			var GetRequired = $('#'+selectedFaType+'_facid option').map(function() {return $(this).attr('isrequired');}).get();
 			$('#ApplyTable').empty();
 			$('#ApplyTable').append('<tr><td colspan="2"><center><p><strong>Note: </strong>File should be not larger than <strong>5 MB</strong></p></td><center></tr>');
@@ -951,7 +954,6 @@ $(document).ready(function(){
 					Number_of_Files++;
 				}
 			$('input[name="numberOfUploads"]').val(Number_of_Files);
-				
 		}
 		var Main1 = 0, Sub1 = 0, Sub2 = 0;
 		var Main2 = 0, Main2Sub1 = 0, MainSub2 = 0;
@@ -1341,38 +1343,51 @@ $(document).ready(function(){
 			get_pform(document.getElementById('appidinc').value);			
 													</script>
 @if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
-	<script>function tae(num) { var i = num; if(document.getElementById('HFATYPE').options[i].value == "{{$curr_tbl[0]->facid}}") { document.getElementById('HFATYPE').selectedIndex = i; } else { i++; tae(i); } } tae(0);</script>
+	<script>function tae(num) { var i = num; if(document.getElementById('HFATYPE').options[i].value == "{{$curr_tbl[0]->facid}}") { document.getElementById('HFATYPE').selectedIndex = i; document.getElementById('HFATYPE1').innerHTML = document.getElementById('HFATYPE').options[i].text; } else { i++; tae(i); } } tae(0);</script>
 	<script>function tae1(num) { var i = num; if(document.getElementById('OWNSHP').options[i].value == "{{$curr_tbl[0]->ocid}}") { document.getElementById('OWNSHP').selectedIndex = i; getOwnship(); } else { i++; tae1(i); } } tae1(0);</script>
-	<script>function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);</script>
+	<script>function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; getUploads(); } else { i++; tae2(i); } } tae2(0);</script>
 	<script>function tae3(num) { var i = num; if(document.getElementById('STATS_APP').options[i].value == "{{$curr_tbl[0]->aptid}}") { document.getElementById('STATS_APP').selectedIndex = i; } else { i++; tae3(i); } } tae3(0);</script>
-@else
+@elseif(isset($sendform))
 	@if($isview == true)
-		<script>function tae(num) { var i = num; if(document.getElementById('HFATYPE').options[i].value == "{{$sendform[0]->facid}}") { document.getElementById('HFATYPE').selectedIndex = i; } else { i++; tae(i); } } tae(0);</script>
+		<script>function tae(num) { var i = num; if(document.getElementById('HFATYPE').options[i].value == "{{$sendform[0]->facid}}") { document.getElementById('HFATYPE').selectedIndex = i; document.getElementById('HFATYPE1').innerHTML = document.getElementById('HFATYPE').options[i].text; } else { i++; tae(i); } } tae(0);</script>
 		<script>function tae1(num) { var i = num; if(document.getElementById('OWNSHP').options[i].value == "{{$sendform[0]->ocid}}") { document.getElementById('OWNSHP').selectedIndex = i; getOwnship(); } else { i++; tae1(i); } } tae1(0);</script>
-		<script>function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);</script>
+		<script>function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; getUploads(); } else { i++; tae2(i); } } tae2(0);</script>
 		<script>function tae3(num) { var i = num; if(document.getElementById('STATS_APP').options[i].value == "{{$sendform[0]->aptid}}") { document.getElementById('STATS_APP').selectedIndex = i; } else { i++; tae3(i); } } tae3(0);</script>
 	@endif
+@else
+	<script>function tae(num) { var i = num; if(document.getElementById('HFATYPE').options[i].value == "{{$clientData->facility_type}}") { document.getElementById('HFATYPE').selectedIndex = i; document.getElementById('HFATYPE1').innerHTML = document.getElementById('HFATYPE').options[i].text; } else { i++; tae(i); } } tae(0);</script>
+	<script>function tae3(num) { var i = num; if(document.getElementById('STATS_APP').options[i].value == "{{$aptid}}") { document.getElementById('STATS_APP').selectedIndex = i; getUploads(); } else { i++; tae3(i); } } tae3(0);</script>
 @endif
 @if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
 	@foreach($curr_tbl[1] AS $sentform)
-		<script>getUploads(); getOwnship();function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0); console.log("{{asset('ra-idlis/storage/app/public/uploaded')}}/{{$sentform->filepath}}"); get_pform(document.getElementById('appidinc').value)</script>
+		<script>getUploads(); getOwnship(); get_pform(document.getElementById('appidinc').value)</script>
 	@endforeach
 @else
 	@if($isview == true)
 		@foreach($sendform[1] AS $sentform)
-			<script>getUploads(); getOwnship();function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0); console.log("{{asset('ra-idlis/storage/app/public/uploaded')}}/{{$sentform->filepath}}"); get_pform(document.getElementById('appidinc').value)</script>
+			<script> getUploads(); getOwnship(); ___sentids.push("{{$sentform->upid}}"); ___searchids.push("{{$sentform->filepath}}"); get_pform(document.getElementById('appidinc').value)</script>
 		@endforeach
 	@endif
 @endif
 <script type="text/javascript">
-@if(session()->exists('curr_tbl') && session('curr_tbl') != null && $curr_tbl != null)
-	function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$curr_tbl[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);
-@else
-	@if($isview == true)
-		function tae2(num) { var i = num; if(document.getElementById('CLS').options[i].value == "{{$sendform[0]->classid}}") { document.getElementById('CLS').selectedIndex = i; } else { i++; tae2(i); } } tae2(0);
-	@endif
-@endif	
-</script>					
+	var cl_int;
+	function app_idsserarchsdlfj() {
+		if(___sentids.length > 0) {
+			for(var i = 0; i < ___getids.length; i++) {
+				var j = ___sentids.indexOf(___getids[i]);
+				if(j > -1) {
+					document.getElementById('ApplyTable').getElementsByTagName('tr')[(i+1)].getElementsByTagName('td')[1].innerHTML = "File Uploaded";
+				} else {
+					document.getElementById('ApplyTable').getElementsByTagName('tr')[(i+1)].getElementsByTagName('td')[1].innerHTML = "No File Uploaded";
+				}
+			}
+		}
+	}
+	clearInterval(cl_int);
+	cl_int = setInterval(function() {
+		app_idsserarchsdlfj();
+	}, -1);
+</script>
 <hr>
 @include('client.sitemap')
 @endsection
