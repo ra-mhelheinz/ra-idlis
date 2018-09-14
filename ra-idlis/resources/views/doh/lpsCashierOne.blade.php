@@ -373,7 +373,7 @@
                     if (data == 'DONE') {
                       var test = $('#APPID').val();
                       alert('Successfully accepted payment evaluation');
-                      window.location.href = "{{ asset('/employee/dashboard/lps/cashier') }}/" + test;
+                      window.location.href = "{{ asset('/employee/dashboard/lps/orderofpayment') }}/" + test;
                     } else if (data == 'ERROR') {
                       console.log(errorThrown);
                       $('#AccErrorAlert').show(100);

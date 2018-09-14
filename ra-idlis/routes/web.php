@@ -153,6 +153,7 @@ Route::match(['get', 'post'], '/employee/dashboard/lps/orderofpayment', 'DOHCont
 Route::match(['get', 'post'], 'employee/dashboard/lps/orderofpayment/{appid}', 'DOHController@cashierOne');
 Route::match(['get', 'post'], '/employee/dashboard/grouprights/mng_grps', 'DOHController@MngGroupRights');
 Route::match(['get', 'post'], '/employee/dashboard/grouprights/mng_mods', 'DOHController@MngModules');
+Route::match(['get', 'post'], '/employee/dashboard/mf/team_assignment', 'DOHController@TeamAssignment');
 Route::post('/employee/logout','DOHController@logout');
 Route::post('employee/getRights', 'DOHController@getSettings2');
 Route::post('/employee/grprights/check','DOHController@chckgr');
@@ -232,6 +233,7 @@ Route::post('/mf/save_mop', ['as'=>'save_tstatus', 'uses'=> 'ajaxController@save
 Route::post('/lps/acceptPaymentEvaluation', ['as'=>'accept_payeval', 'uses' => 'ajaxController@acceptPayEval']);
 Route::post('mf/save_team', ['as'=>'save_team', 'uses'=>'ajaxController@saveTeam']);
 Route::post('/mf/save_AsmtCat', ['as'=>'save_AsmtCat', 'uses'=>'ajaxController@save_AsmtCat']);
+Route::post('/lps/approvedPaymentEvaluation', ['as'=>'approved_PaymentEval', 'uses'=>'ajaxController@approvedPaymentEvaluation']);
 // -------------------------------------- UPDATE
 // -------------------------------------- DELETE
 Route::post('/mf/del_aptype', ['as'=>'del-AppType','uses'=>'ajaxController@delAppType']);

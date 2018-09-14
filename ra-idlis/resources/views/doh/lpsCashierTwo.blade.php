@@ -38,7 +38,7 @@
               <td width="100%">
                 <h2>@isset($AppData) {{$AppData->facilityname}} @endisset</h2>
                 <h5>@isset($AppData) {{strtoupper($AppData->streetname)}}, {{strtoupper($AppData->brgyname)}}, {{$AppData->cmname}}, {{$AppData->provname}} @endisset</h5>
-                <h6>@isset($AppData) Status: @if ($AppData->isPayEval === null) <span style="color:blue">For Payment Evaluation</span> @elseif($AppData->isPayEval == 1)  <span style="color:green">Payment Evaluated</span> @else <span style="color:red">Rejected Payment</span> @endif @endisset</h6>
+                <h6>{{-- @isset($AppData) Status: @if ($AppData->isPayEval === null) <span style="color:blue">For Payment Evaluation</span> @elseif($AppData->isPayEval == 1)  <span style="color:green">Payment Evaluated</span> @else <span style="color:red">Rejected Payment</span> @endif @endisset --}}</h6>
               </td>
             </tr>
           </thead>
@@ -78,18 +78,18 @@
           </tbody>
         </table>
         @isset($AppData)
-        @if($AppData->isPayEval == null)
+        {{-- @if($AppData->isPayEval == null) --}}
         <br>
         <hr>
         <div class="container">
           <center>
-            <span class="optnTD"><button style="background-color: #82d202" class="btn btn-primarys" data-toggle="modal" data-target="#AccepttGodModal">Accept Payment</button> &nbsp;</span>
-            <span style="display:none" class="optnTD"><button style="background-color: #82d202;" class="btn btn-primarys" onclick="AddPay()" data-toggle="modal" data-target="#AddGodModal">Add Payment</button>&nbsp;</span>
-            <span class="optnTD"><button style="background-color: #3557d2" class="btn btn-primarys" id="OvrBtn" onclick="$('.optnTD').toggle();setData(1);">Overide Payment</button></span>
-            <span style="display:none" class="optnTD">&nbsp;<button style="background-color: #ff8100;" class="btn btn-primarys" id="CnclBtn" onclick="$('.optnTD').toggle();setData(0);" id="">Cancel Overide</button></span>
+            <span class="optnTD"><button style="background-color: #82d202" class="btn btn-primarys" onclick="ShowifApOrReg(1)" data-toggle="modal" data-target="#AccepttGodModal" >Approve Payment</button> &nbsp;</span>
+            <span  class="optnTD"><button style="background-color: #dc3545;" class="btn btn-primarys" onclick="ShowifApOrReg(0)"  data-toggle="modal" data-target="#AccepttGodModal" >Reject Payment</button>&nbsp;</span>
+            {{-- <span class="optnTD"><button style="background-color: #3557d2" class="btn btn-primarys" id="OvrBtn" onclick="$('.optnTD').toggle();setData(1);">Overide Payment</button></span>
+            <span style="display:none" class="optnTD">&nbsp;<button style="background-color: #ff8100;" class="btn btn-primarys" id="CnclBtn" onclick="$('.optnTD').toggle();setData(0);" id="">Cancel Overide</button></span> --}}
           </center>
         </div>
-        @endif
+        {{-- @endif --}}
         @endisset
       </div>
       </div>
@@ -129,7 +129,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content" style="border-radius: 0px;border: none;">
             <div class="modal-body" style=" background-color: #272b30;color: white;">
-              <h5 class="modal-title text-center"><strong>Accept Payment Evaluation</strong></h5>
+              <h5 class="modal-title text-center"><strong> <span id="AppRegTitle">&nbsp;</span> </strong></h5>
               <hr>
               <div class="col-sm-12 alert alert-danger alert-dismissible fade show" style="display: none" id="AccErrorAlert" role="alert">
                         <strong><i class="fas fa-exclamation"></i></strong>&nbsp;An <strong>error</strong> occurred. Please contact the system administrator.
@@ -139,13 +139,13 @@
                     </div>
               <div class="container">
                     <div class="col-sm-12"> 
-                      <p>Are you sure that you want to certify that this payment evaluation to be accepted and it will proceed for approval ?</p>
+                      <p>Are you sure that you want to certify that this payment evaluation is to be <span id="AppRegTest"></span>?</p>
                       <p>Clicking Yes means you reviewed and checked the application.</p>
                     </div>
                 <hr>
                     <div class="row">
                       <div class="col-sm-6">
-                      <button type="button" onclick="AcceptNow();" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Yes</button>
+                      <button type="button" id="AppRegBtn" onclick="" class="btn btn-outline-success form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>Yes</button>
                     </div> 
                     <div class="col-sm-6">
                       <button type="button" data-dismiss="modal" class="btn btn-outline-danger form-control" style="border-radius:0;"><span class="fa fa-sign-up"></span>No</button>
@@ -366,13 +366,13 @@
         }
         function AcceptNow(){
             $.ajax({
-                url : '{{asset('/lps/acceptPaymentEvaluation')}}',
+                url : '{{asset('/lps/approvedPaymentEvaluation')}}',
                 method : 'POST',
                 data: {_token:$('#token').val(), id : $('#APPID').val()},
                 success : function(data){
                     if (data == 'DONE') {
                       var test = $('#APPID').val();
-                      alert('Successfully accepted payment evaluation');
+                      alert('Successfully approved payment evaluation');
                       window.location.href = "{{ asset('/employee/dashboard/lps/cashier') }}/" + test;
                     } else if (data == 'ERROR') {
                       console.log(errorThrown);
@@ -384,6 +384,17 @@
                   $('#AccErrorAlert').show(100);
                 },
             });
+        }
+        function ShowifApOrReg(AppOrReje){
+          if (AppOrReje == 1) { // Appproved
+              $('#AppRegTitle').text('Approve');
+              $('#AppRegBtn').attr('onclick','alert("TESTING6")');
+              $('#AppRegTest').text('approve and it will proceed for assigning of team');
+          } else { // Reject
+              $('#AppRegTitle').text('Reject');
+              $('#AppRegBtn').attr('onclick','alert("9TESTING")');
+              $('#AppRegTest').text('reject and it will not proceed for assigning of team');
+          }
         }
       </script>
 @endsection
