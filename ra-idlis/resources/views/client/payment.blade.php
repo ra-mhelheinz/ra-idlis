@@ -138,7 +138,8 @@
                     </tr>
                     @php
                       array_push($desc, 'PAYMENT'); array_push($amount, ($total*-1)); array_push($chgapp_id, $pmt_chg);
-                      Session::put('desc', $desc); Session::put('amount', $amount); Session::put('chgapp_id', $chgapp_id); Session::put('hfser_desc', $hfser_desc); Session::put('hfser_id', $hfser_id); Session::put('appform_id', $appform_id); 
+                      Session::put('desc', $desc); Session::put('amount', $amount); Session::put('chgapp_id', $chgapp_id); Session::put('hfser_desc', $hfser_desc); Session::put('hfser_id', $hfser_id); Session::put('appform_id', $appform_id);
+                      array_splice($desc, -1); array_splice($amount, -1); array_splice($chgapp_id, -1);
                     @endphp
                   </table>
                 @else
@@ -169,25 +170,25 @@
                      {{-- <input type="hidden" name="return" id="return"> --}}
                      <input type="hidden" name="cancel_return" id="cancel_return" value="{{asset('client/payment')}}/{{csrf_token()}}/292">
 
-                     <input type="submit" class="btn btn-info" value="Continue with Paypal">
+                     <input type="submit" class="btn btn-info btn-block" value="Continue with Paypal">
                  </form>
                 @else
 
                 @endif
                </div>
               </div>
-              <div class="col-sm-4 text-center" id="asdf2" hidden>
+              <div class="col-sm-5 text-center" id="asdf2" hidden>
                 @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
                   <label>Pay using your Dragonpay Account</label><br>
-                  <a href="https://test.dragonpay.ph/GenPay.aspx?merchantid=SAMPLEGEN"><button class="btn btn-info">Continue with Dragonpay</button></a>
+                  <a href="https://test.dragonpay.ph/GenPay.aspx?merchantid=SAMPLEGEN"><button class="btn btn-info btn-block">Continue with Dragonpay</button></a>
                 @endif
               </div>
-              <div class="col-sm-4 text-center" id="asdf3" hidden>
+              <div class="col-sm-5 text-center" id="asdf3" hidden>
                
               </div>
-              <div class="col-sm-4 text-center" id="asdf4" hidden>
+              <div class="col-sm-5" id="asdf4" hidden>
                 @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
-                  <label>LANDBANK</label><br>
+                  <p class="text-center text-uppercase">LANDBANK</p>
                   <form method="POST" action="{{asset('client/payment')}}/{{csrf_token()}}/294" enctype="multipart/form-data">
                       {{csrf_field()}}
                     <div class="container">
@@ -208,13 +209,13 @@
                         <div class="col-sm-6"><input type="number" class="form-control" name="au_amount"></div>
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-info">Continue payment</button>
+                    <button type="submit" class="btn btn-info btn-block mt-2">Continue payment</button>
                   </form>
                 @endif
               </div>
-              <div class="col-sm-4 text-center" id="asdf5" hidden>
+              <div class="col-sm-5" id="asdf5" hidden>
                 @if($_POST && (isset($_POST['desc']) && isset($_POST['amount'])))
-                  <label>Walk-in</label><br>
+                  <p class="text-center text-uppercase">Walk-in</p>
                   <form id="i_wlk" method="GET" action="{{asset('client/payment')}}/{{csrf_token()}}/290">
                   </form>
                   <div class="row">
@@ -222,10 +223,10 @@
                       <input id="s_wlk" type="checkbox" name="chance" onchange="c_wlk()">
                     </div>
                     <div class="col-sm-10">
-                      <label for="s_wlk" style="line-height: 1;"><b>CONTINUE PAYMENT AS WALK-IN</b> <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</small></label>
+                      <p for="s_wlk" style="line-height: 1;" class="text-justify"><b>CONTINUE PAYMENT AS WALK-IN</b> <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</small></p>
                     </div>
                   </div>
-                  <button id="b_wlk" class="btn btn-info">Continue payment</button>
+                  <button id="b_wlk" class="btn btn-info btn-block">Continue payment</button>
                   <script type="text/javascript">
                     function c_wlk() {
                       if(document.getElementById('s_wlk').checked == true) {

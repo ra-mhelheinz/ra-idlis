@@ -304,7 +304,9 @@ class ClientController extends Controller
            $employeeData = session('client_data');
             $charges = DB::table('charges')->orderBy('chg_desc', 'asc')->get();
             // return dd($employeeData);
-            return view('client.orderofpaymentc', ['charges'=> $charges]);
+            $new_sql = "SELECT au.*, ts.trns_desc FROM (SELECT * FROM appform WHERE uid = '$employeeData->uid' AND facid = '$employeeData->facility_type') af LEFT JOIN (SELECT fc.*, ca.amt AS oop_total, op.oop_desc FROM facoop fc LEFT JOIN orderofpayment op ON op.oop_id = fc.oop_id LEFT JOIN chg_app ca ON ca.chgapp_id = fc.chgapp_id) au ON af.facid = au.facid LEFT JOIN trans_status ts ON af.status = ts.trns_id";
+            $facoop = DB::select($new_sql);
+            return view('client.orderofpaymentc', ['charges'=> $charges, 'facoop'=>$facoop]);
         }
         if ($request->isMethod('post')) {
 
@@ -872,6 +874,7 @@ class ClientController extends Controller
 
   public function goToken(Request $req, $token, $pmt) {
     $desc = Session::get('desc'); $amount = Session::get('amount'); $hfser_id = Session::get('hfser_id'); $chgapp_id = Session::get('chgapp_id'); $appform_id = Session::get('appform_id'); $hfser_desc = Session::get('hfser_desc'); $client_save = session('client_data'); $dt = Carbon::now(); $employeeData = session('client_data'); $FileUploaded = ""; $reqdate = "";
+    dd([$amount, $chgapp_id]);
     if(($desc != null) && ($amount != null) && ($hfser_id != null) && ($chgapp_id != null) && ($appform_id != null) && ($hfser_desc != null)) {
       if($req->isMethod('post')) {
         if(isset($req->au_file)) {
@@ -933,16 +936,31 @@ class ClientController extends Controller
         if($chgapp_id[$i] != "") {
           $updChgnum = array('chg_num'=>(intval($chg_num->chg_num) + 1));
           DB::table('chg_app')->where('chgapp_id', '=', $chgapp_id[$i])->update($updChgnum);
-        } else {
-          if($pmt != "") {
-            $updChgnum = array('chg_num'=>(intval($chg_num->chg_num) + 1));
-            DB::table('chg_app')->where('chgapp_id', '=', $pmt)->update($updChgnum);
-          }
         }
       }
       if($pmt != "") {
-        $updAppstat = array('status'=>'PP');
-        DB::table('appform')->where('appid', '=', $appform_id)->update($updAppstat);
+        $updChgnum = array('chg_num'=>(intval($chg_num->chg_num) + 1));
+        DB::table('chg_app')->where('chgapp_id', '=', $pmt)->update($updChgnum);
+      }
+      if($appform_id != "") {
+        $cur_tl = ($amount[(count($amount) - 1)] * -1);
+        $re_oid = DB::table('chg_app')->where('chgapp_id', '=', $pmt)->select('oop_id')->first();
+        $appoop = DB::table('appform_orderofpayment')->where('appid', '=', $appform_id)->where('uid', '=', $client_save->uid)->select('*')->get();
+        $amt_tt = "SELECT af.uid, fc.* FROM (SELECT * FROM appform WHERE appid = '$appform_id') af LEFT JOIN (SELECT fc.facid, fc.aptid, fc.hfser_id, ca.oop_id, ca.amt FROM facoop fc LEFT JOIN chg_app ca ON fc.chgapp_id = ca.chgapp_id) fc ON (af.facid = fc.facid AND af.aptid = fc.aptid AND af.hfser_id = fc.hfser_id)";
+        $amt_tl = DB::select($amt_tt);
+        $arr_sv = ['appid' => $appform_id, 'oop_id' => $re_oid->oop_id, 'oop_total' => ((count($appoop) > 0) ? (($cur_tl < $appoop[0]->oop_total) ? ($appoop[0]->oop_total - $cur_tl) : $cur_tl) : $amt_tl[0]->amt), 'oop_time' => $dt->toTimeString(), 'oop_date' => $dt->toDateString(), 'oop_ip' => request()->ip(), 'uid' => $client_save->uid];
+        $updAppstat = array();
+        if(count($appoop) < 1) {
+          DB::table('appform_orderofpayment')->insert($arr_sv);
+        } else {
+          if(($appoop[0]->oop_total - $cur_tl) > 0) {
+            $updAppstat = array('status'=>'P');
+          } else {
+            $updAppstat = array('status'=>'PP');
+          }
+          DB::table('appform')->where('appid', '=', $appform_id)->update($updAppstat);
+          DB::table('appform_orderofpayment')->update($arr_sv);
+        }
       }
       Session::forget('desc'); Session::forget('amount'); Session::forget('hfser_id'); Session::forget('chgapp_id'); Session::forget('appform_id'); Session::forget('hfser_desc');
       session()->flash('succ_mess', 'Successfully updated payment information.');
