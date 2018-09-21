@@ -25,7 +25,6 @@
 <script type="text/javascript">
 	  	document.getElementById('second').style = "margin:0;border-bottom: 3px solid #f2e20c;";
 </script>
-
 <div class="container">
   	<div class="jumbotron" style="background-color: #fff;box-shadow: -5px 5px 10px rgba(0,0,0,0.25);border:1px solid rgba(0,0,0,.1)">
 		<div class="tab-content" id="myTabContent">
@@ -135,7 +134,7 @@
 										<input type="hidden" name="appform_id" id="appform_id" value="">
 										@if(count($getAppPayment) > 0)
 											@for($i = 0; $i < count($getAppPayment); $i++)
-											<small><div id="paramatangtangimongmama{{$getAppPayment[$i]->aptid}}" name="{{$getAppPayment[$i]->aptid}}" class="fighting {{$getAppPayment[$i]->oop_id}}">
+											<small><div id="paramatangtangimongmama{{$getAppPayment[$i]->aptid}}" name="paramatangtangimongmama{{$getAppPayment[$i]->aptid}}{{$getAppPayment[$i]->oop_id}}" class="fighting paramatangtangimongmama{{$getAppPayment[$i]->aptid}}{{$getAppPayment[$i]->oop_id}}">
 												<p>PAYMENT<span style="float: right; color: red;">{{$getAppPayment[$i]->trns_desc}}</span></p>
 												<p>&#8369;{{$getAppPayment[$i]->oop_total}}</p>
 												<input type="hidden" name="desc[]" value="PAYMENT: {{$getAppPayment[$i]->oop_desc}}">
@@ -144,7 +143,19 @@
 											</div></small>
 											@endfor
 										@else
-											<small>Application form is either payed or not yet evaluated by the LO.</small>
+											@isset($facoop)
+												@foreach($facoop AS $facoops)
+													<small><div id="paramatangtangimongmama{{$facoops->aptid}}" name="paramatangtangimongmama{{$facoops->aptid}}{{$facoops->oop_id}}" class="fighting paramatangtangimongmama{{$facoops->aptid}}{{$facoops->oop_id}}">
+														<p>PAYMENT<span style="float: right; color: red;">{{$facoops->trns_desc}}</span></p>
+														<p>&#8369;{{$facoops->oop_total}}</p>
+														<input type="hidden" name="desc[]" value="PAYMENT: {{$facoops->oop_desc}}">
+														<input type="hidden" name="amount[]" value="{{$facoops->oop_total}}">
+														<input type="hidden" name="chgapp_id[]" value="">
+													</div></small>
+												@endforeach
+											@else
+												<small>Application form is either payed or not yet evaluated by the LO.</small>
+											@endisset
 										@endif
 										<table class="table text-success">
 											<thead>
@@ -195,7 +206,7 @@
 	        			</tr>
 	        		</thead>
 	        		<tbody id="paymentrecorda">
-	        			<tr><td colspan="3">None</td></tr>
+	        			<tr><td colspan="2">None</td></tr>
 	        		</tbody>
 	        	</table>
 	          <hr>
@@ -348,20 +359,24 @@
 			localStorage.setItem('curOop', curOop);
 			document.getElementById('editapp').innerHTML = appname;
 			document.getElementById('editoop').innerHTML = oopname;
+			for(var k = 0; k < document.getElementsByClassName('paramatangtangimongmama'+aptid+oop_id).length; k++) {
+				document.getElementsByClassName('paramatangtangimongmama'+aptid+oop_id)[k].getElementsByTagName('input')[0].setAttribute('name', '');
+				document.getElementsByClassName('paramatangtangimongmama'+aptid+oop_id)[k].getElementsByTagName('input')[1].setAttribute('name', '');
+				document.getElementsByClassName('paramatangtangimongmama'+aptid+oop_id)[k].getElementsByTagName('input')[2].setAttribute('name', '');
+				document.getElementsByClassName('paramatangtangimongmama'+aptid+oop_id)[k].setAttribute('hidden', true);
+			}
 	 		for(var i = 0; i < document.getElementsByName(aptid).length; i++) {
 	 			var id = document.getElementsByName(aptid)[i].id;
- 				if(document.getElementById('paramatangtangimongmama'+aptid) != null) {
- 					document.getElementById('paramatangtangimongmama'+aptid).getElementsByTagName('input')[0].setAttribute('name', '');
-					document.getElementById('paramatangtangimongmama'+aptid).getElementsByTagName('input')[1].setAttribute('name', '');
- 				}
+				document.getElementById(id).setAttribute('hidden', true);
 	 			for(var j = 0; j < document.getElementsByClassName(oop_id).length; j++) {
 		 			if(id == document.getElementsByClassName(oop_id)[j].id) {
 		 				document.getElementById(id).removeAttribute('hidden');
-		 				if(document.getElementById('paramatangtangimongmama'+aptid) != null) {
-		 					document.getElementById('paramatangtangimongmama'+aptid).getElementsByTagName('input')[0].setAttribute('name', 'desc[]');
-		 					document.getElementById('paramatangtangimongmama'+aptid).getElementsByTagName('input')[1].setAttribute('name', 'amount[]');
+		 				for(var k = 0; k < document.getElementsByClassName('paramatangtangimongmama'+aptid+oop_id).length; k++) {
+		 					document.getElementsByClassName('paramatangtangimongmama'+aptid+oop_id)[k].getElementsByTagName('input')[0].setAttribute('name', 'desc[]');
+		 					document.getElementsByClassName('paramatangtangimongmama'+aptid+oop_id)[k].getElementsByTagName('input')[1].setAttribute('name', 'amount[]');
+		 					document.getElementsByClassName('paramatangtangimongmama'+aptid+oop_id)[k].getElementsByTagName('input')[2].setAttribute('name', 'chgapp_id[]');
+		 					document.getElementsByClassName('paramatangtangimongmama'+aptid+oop_id)[k].removeAttribute('hidden');
 		 				}
-
 						stickHeight_mn = document.getElementById('getId').offsetHeight;
 		 			}
 		 		}
@@ -460,6 +475,12 @@
 	function gBOM() {
 		if(document.getElementById('paymentrecord').getElementsByTagName('td').length > 1) {
 			$('#myModal').modal('toggle');
+		} else {
+			document.getElementById('paymentrecorda').innerHTML = '<tr><td colspan="2">None</td></tr>';
+			if(document.getElementsByName('amount[]').length > 0) {
+				document.getElementById('paymentrecorda').innerHTML = '<tr><td>'+document.getElementsByName('desc[]')[0].value+'</td><td>'+document.getElementsByName('amount[]')[0].value+'</td></tr>';
+				$('#myModal').modal('toggle');
+			}
 		}
 	}
 	function p_sbm() {
