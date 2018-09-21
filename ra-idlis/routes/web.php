@@ -154,6 +154,9 @@ Route::match(['get', 'post'], 'employee/dashboard/lps/orderofpayment/{appid}', '
 Route::match(['get', 'post'], '/employee/dashboard/grouprights/mng_grps', 'DOHController@MngGroupRights');
 Route::match(['get', 'post'], '/employee/dashboard/grouprights/mng_mods', 'DOHController@MngModules');
 Route::match(['get', 'post'], '/employee/dashboard/mf/team_assignment', 'DOHController@TeamAssignment');
+Route::match(['get', 'post'], '/employee/dashboard/lps/recommendation', 'DOHController@Reco4Approval');
+Route::match(['get', 'post'], '/employee/dashboard/lps/recommendation/{appid}', 'DOHController@Reco4ApprovalOne');
+Route::match(['get', 'post'], '/employee/dashboard/mf/requirements', 'DOHController@MngRequirements');
 Route::post('/employee/logout','DOHController@logout');
 Route::post('employee/getRights', 'DOHController@getSettings2');
 Route::post('/employee/grprights/check','DOHController@chckgr');
@@ -170,6 +173,7 @@ Route::get('/employee/dashboard/lps/preassessment/{id}', 'DOHController@PreAsses
 // ----------------------------------------------- Ajax Controller
 // -------------------------------------- ADD
 Route::post('/mf/add_typefa', ['as'=>'add-typefa','uses'=>'ajaxController@addTypeFa']);
+Route::post('mf/add_team', ['as'=>'addteam', 'uses'=>'ajaxController@addteam']);
 // -------------------------------------- ADD
 // -------------------------------------- GET
 Route::post('/ph/get_province', ['as'=>'select-province','uses'=>'ajaxController@selectProvince']);
@@ -191,6 +195,8 @@ Route::post('/lps/getAssess', ['as'=>'getAssess', 'uses'=>'ajaxController@getAss
 Route::post('/mf/getCalendarEvents', ['as'=>'getCalendarEvents', 'uses'=>'ajaxController@getCalendarEvents']);
 Route::post('/mf/getCalendarEvents2', ['as'=>'getCalendarEvents2', 'uses'=>'ajaxController@getCalendarEvents2']);
 Route::post('lps/getPayment', ['as'=>'getPaymentData', 'uses'=>'ajaxController@getPaymentData']);
+Route::post('mf/getMember', ['as'=>'getMembers', 'uses'=>'ajaxController@getMembers']);
+Route::post('mf/getTeamMember', ['as'=>'getTeamMember', 'uses'=>'ajaxController@getTeamMembers']);
 Route::match(['get', 'post'],'mf/get_teams', ['as'=>'getTeamsData', 'uses'=>'ajaxController@getTeamsData']);
 //getRequirements
 // -------------------------------------- GET
@@ -233,6 +239,7 @@ Route::post('/mf/save_mop', ['as'=>'save_tstatus', 'uses'=> 'ajaxController@save
 Route::post('/lps/acceptPaymentEvaluation', ['as'=>'accept_payeval', 'uses' => 'ajaxController@acceptPayEval']);
 Route::post('mf/save_team', ['as'=>'save_team', 'uses'=>'ajaxController@saveTeam']);
 Route::post('/mf/save_AsmtCat', ['as'=>'save_AsmtCat', 'uses'=>'ajaxController@save_AsmtCat']);
+Route::post('/mf/save_user', ['as'=>'save_user', 'uses'=>'ajaxController@save_user']);  
 Route::post('/lps/approvedPaymentEvaluation', ['as'=>'approved_PaymentEval', 'uses'=>'ajaxController@approvedPaymentEvaluation']);
 // -------------------------------------- UPDATE
 // -------------------------------------- DELETE
@@ -259,6 +266,7 @@ Route::post('/mf/del_mop', ['as'=>'del_tstatus', 'uses'=>'ajaxController@delMoP'
 Route::post('/lps/deleteCharge', ['as'=>'del_payment', 'uses'=>'ajaxController@del_payment']);
 Route::post('/mf/del_test', ['as'=>'del_test', 'uses'=>'ajaxController@del_test']);
 Route::post('/mf/del_AsmtCat', ['as'=>'del_AsmtCat', 'uses'=>'ajaxController@del_AsmtCat']);
+Route::post('mf/delTeamMember', ['as'=>'del_TeamMember', 'uses'=>'ajaxController@delTeamMember']);
 // -------------------------------------- DELETE
 // ----------------------------------------------- Ajax Controller
 Route::get('sendbasicemail','MailController@basic_email');

@@ -49,6 +49,15 @@
                   <option value="1">Complied</option>
                   <option value="2">Not Complied</option>
                 </select>
+                &nbsp;
+                <select class="form-control" id="CatFilterer" onchange="filterByCategory()">
+                  <option value="">Select Category ...</option>
+                  @isset ($Cats)
+                      @foreach ($Cats as $c)
+                        <option value="{{$c->caid}}">{{$c->categorydesc}}</option>
+                      @endforeach
+                  @endisset
+                </select>
               </div>
             </div>  
           </div>
@@ -76,7 +85,7 @@
                       @for ($j = 0; $j < count($Assments); $j++)
                         @if ($Parts[$i]->partid == $Assments[$j]->partid)
                           @if($Assments[$j]->asmt_id == $BigData[$j]->asmt_id)
-              <span class="@if($BigData[$j]->complied == 1) OKCls @else NotOkCls @endif">  
+              <span class="@if($BigData[$j]->complied == 1) OKCls @else NotOkCls @endif {{$BigData[$j]->caid}}_getCat C2T">  
                         <div class="row {{-- @if($BigData[$j]->complied == 1) OKCls @else NotOkCls @endif --}}" id="app_{{$j}}_div" selectedAppAssId="{{$BigData[$j]->app_assess_id}}" selectedId="{{$Assments[$j]->asmt_id}}">
                             <div class="col-sm-5 text-justify" ><h5>&nbsp;&nbsp;&nbsp;&nbsp;{{$Assments[$j]->asmt_name}}</h5></div> {{-- Assessment --}}
                             <div class="col-sm-2">
@@ -342,6 +351,15 @@
             $('.NotOkCls').show();
             $('.OKCls .NotOkCls').css({'margin':'0 0 0 0'});
             $('.NotOkCls').css({'margin':'0 15 0 15'});
+          }
+      }
+      function filterByCategory(){
+          var selected = $('#CatFilterer').val();
+          if (selected != '') {
+              $('.C2T').hide();
+              $('.'+selected+'_getCat').show();
+          } else {
+            $('.C2T').show();
           }
       }
     </script>

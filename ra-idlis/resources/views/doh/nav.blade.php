@@ -99,6 +99,7 @@
                                 <li class="MA16_allow"><a href="{{ asset('/employee/dashboard/mf/faciserv') }}">&nbsp;&nbsp;&nbsp;&nbsp;Facilities/Services</a>
                                 </li>
                                 <li><a href="{{ asset('/employee/dashboard/mf/typefa') }}">&nbsp;&nbsp;&nbsp;&nbsp;Manage Facilities/Services</a></li>
+                                <li><a href="{{ asset('/employee/dashboard/mf/requirements') }}">&nbsp;&nbsp;&nbsp;&nbsp;Manage Requirements</a></li>
                                 <li class="" ><a href="{{ asset('/employee/dashboard/mf/tstatus') }}#" >&nbsp;&nbsp;&nbsp;&nbsp;Transaction Status</a></li>
                                 <li class="MA11_allow"><a href="{{ asset('/employee/dashboard/mf/uploads') }}">&nbsp;&nbsp;&nbsp;&nbsp;Uploads</a></li>
                                 @endif
@@ -158,7 +159,7 @@
                         @endif
                         <li class=""><a href="{{asset('/employee/dashboard/lps/assess')}}">&nbsp;&nbsp;&nbsp;&nbsp;Assessment</a></li>
                         @if ($employeeData->grpid == 'NA' || $employeeData->grpid == "RA")
-                        <li class=""><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;Recommendation For Approval</a></li>
+                        <li class=""><a href="{{ asset('/employee/dashboard/lps/recommendation') }}">&nbsp;&nbsp;&nbsp;&nbsp;Recommendation For Approval</a></li>
                         <li class=""><a href="{{asset('/employee/dashboard/lps/approval')}}">&nbsp;&nbsp;&nbsp;&nbsp;Approval/Issue Certificate</a></li>
                         @endif
                         <li class=""><a href="{{asset('/employee/dashboard/lps/failed')}}">&nbsp;&nbsp;&nbsp;&nbsp;Failed Applications</a></li>

@@ -28,7 +28,7 @@
         <div class="card-header bg-white font-weight-bold">
           @isset($APPID)<input type="text" id="APPID" value="{{$APPID}}" hidden>@endisset
           <input type="" id="token" value="{{ Session::token() }}" hidden>
-           Payment Evaluation <span class="optnTD" style="display: none;">(Overide Payment Mode)</span>&nbsp;
+           Payment Evaluation (Cashier) <span class="optnTD" style="display: none;">(Overide Payment Mode)</span>&nbsp;
            <button class="btn btn-primary" onclick="window.history.back();">Back</button>
         </div>
         <div class="card-body">
@@ -38,7 +38,7 @@
               <td width="100%">
                 <h2>@isset($AppData) {{$AppData->facilityname}} @endisset</h2>
                 <h5>@isset($AppData) {{strtoupper($AppData->streetname)}}, {{strtoupper($AppData->brgyname)}}, {{$AppData->cmname}}, {{$AppData->provname}} @endisset</h5>
-                <h6>{{-- @isset($AppData) Status: @if ($AppData->isPayEval === null) <span style="color:blue">For Payment Evaluation</span> @elseif($AppData->isPayEval == 1)  <span style="color:green">Payment Evaluated</span> @else <span style="color:red">Rejected Payment</span> @endif @endisset --}}</h6>
+                <h6> Status:@isset($AppData) @if ($AppData->isCashierApprove === null) <span style="color:blue">For Payment Evaluation</span> @elseif($AppData->isCashierApprove == 1)  <span style="color:green">Payment Evaluated</span> @else <span style="color:red">Rejected Payment</span> @endif @endisset</h6>
               </td>
             </tr>
           </thead>
@@ -52,6 +52,8 @@
                 <th scope="col" style="text-align:center">OOP Code</th>
                 <th scope="col" style="text-align:center">Charge Code</th>
                 <th scope="col" style="text-align:left">Description</th>
+                <th scope="col" style="text-align:center">Payment Date/Time</th>
+                <th scope="col" style="text-align:center">Payment Mode</th>
                 <th scope="col" style="text-align:left">Amount</th>
                 <th scope="col" class="optnTD" style="text-align:center;display:none">Option</th>
               </tr>
@@ -63,6 +65,8 @@
                   <th scope="row" style="text-align:center"><span data-toggle="tooltip" title="{{$element->oop_desc}}">{{$element->oop_id}}</span></th>
                   <th scope="row" style="text-align:center">{{$element->chg_code}}</th>
                   <td>{{$element->reference}}</td>
+                  <td class="text-center">@isset($element->cat_type)@if($element->cat_type == "P") {{date("F j, Y", strtotime($element->t_date))}}, {{date("g:i a", strtotime($element->t_time))}} @endif @endisset</td>
+                  <td class="text-center">@isset($element->cat_type)@if($element->cat_type == "P") {{$element->chg_desc}} @endif @endisset</td>
                   <td style="text-align:left">{{'PHP '.number_format($element->amount,2)}}</td>
                   <td class="optnTD" style="display:none"><center><button style="background-color: #d40000" class="btn btn-primarys" onclick="showDelete({{$element->id}}, '{{$element->chg_code}} - {{$element->reference}}')" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-trash" aria-hidden="true"></i></button></center></td>
                 </tr>
@@ -70,7 +74,7 @@
             @endisset
             @isset($Sum)
               <tr style="border-top: double">
-                <th scope="row" colspan="3" style="text-align:center">TOTAL</th>
+                <th scope="row" colspan="5" style="text-align:center">BALANCE</th>
                 <th scope="row" style="text-align:left">{{'PHP '.number_format($Sum,2)}}</th>
                 <th scope="row" class="optnTD" style="display:none">&nbsp;</th>
               </tr>
@@ -78,7 +82,7 @@
           </tbody>
         </table>
         @isset($AppData)
-        {{-- @if($AppData->isPayEval == null) --}}
+        @if($AppData->isCashierApprove == null)
         <br>
         <hr>
         <div class="container">
@@ -89,7 +93,9 @@
             <span style="display:none" class="optnTD">&nbsp;<button style="background-color: #ff8100;" class="btn btn-primarys" id="CnclBtn" onclick="$('.optnTD').toggle();setData(0);" id="">Cancel Overide</button></span> --}}
           </center>
         </div>
-        {{-- @endif --}}
+        @else
+        &nbsp;
+        @endif
         @endisset
       </div>
       </div>
@@ -137,11 +143,20 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-              <div class="container">
-                    <div class="col-sm-12"> 
+              <div class="col-sm-12">
+                    <div class="col-sm-12 text-justify"> 
                       <p>Are you sure that you want to certify that this payment evaluation is to be <span id="AppRegTest"></span>?</p>
                       <p>Clicking Yes means you reviewed and checked the application.</p>
                     </div>
+                    <form id="ApprRejRmk" data-parsley-validate>
+                    @isset($APPID)
+                      <input type="text" id="SelectedAPPID" value="{{$APPID}}" hidden="">
+                    @endisset
+                    <div class="row">
+                        <div class="col-sm-4">Remarks:</div>
+                        <div class="col-sm-8"><textarea rows="3" id="RmkTest" class="form-control"></textarea></div>
+                    </div>
+                  </form>
                 <hr>
                     <div class="row">
                       <div class="col-sm-6">
@@ -210,7 +225,7 @@
   </div>
 </div>
 <script type="text/javascript">
-        var OverideMode = 0;
+        var OverideMode = 0,AprvRejVar = 0;
         $(document).ready(function(){ $('[data-toggle="tooltip"]').tooltip();});
         function setData(data){
           OverideMode = data;
@@ -388,13 +403,48 @@
         function ShowifApOrReg(AppOrReje){
           if (AppOrReje == 1) { // Appproved
               $('#AppRegTitle').text('Approve');
-              $('#AppRegBtn').attr('onclick','alert("TESTING6")');
+              $('#AppRegBtn').attr('onclick','AprvRej(1)');
               $('#AppRegTest').text('approve and it will proceed for assigning of team');
           } else { // Reject
               $('#AppRegTitle').text('Reject');
-              $('#AppRegBtn').attr('onclick','alert("9TESTING")');
+              $('#AppRegBtn').attr('onclick','AprvRej(0)');
               $('#AppRegTest').text('reject and it will not proceed for assigning of team');
           }
         }
+        function AprvRej(ApOrRe){
+          // if (ApOrRe == 0) {
+          //     $('#RmkTest').attr('data-parsley-required-message', '*<strong>Remarks</strong> required.');
+          //     $('#RmkTest').attr('required', '');
+          // } else {
+          //   $('#RmkTest').removeAttr('data-parsley-required-message');
+          //   $('#RmkTest').removeAttr('required');
+          // }
+          AprvRejVar = ApOrRe;
+          $('#ApprRejRmk').submit();
+        }
+        $('#ApprRejRmk').on('submit', function(e){
+          e.preventDefault();
+          var form = $(this);
+          form.parsley().validate();
+          if (form.parsley().isValid()) {
+              $.ajax({
+                url : '',
+                method : 'POST',
+                data : {_token:$('#token').val(), id: $('#SelectedAPPID').val(),  AoR : AprvRejVar},
+                success : function(data){
+                  if (data == 'ERROR') {
+                    $('#AccErrorAlert').show(100);
+                  } else if(data == 'DONE') {
+                      alert('Successfully evaluated application');
+                      window.location.href = "{{ asset('employee/dashboard/lps/cashier') }}";
+                  }
+                },
+                error : function(a,b,c){
+                    console.log(c);
+                    $('#AccErrorAlert').show(100);
+                }
+              });
+          }
+        });
       </script>
 @endsection

@@ -28,7 +28,7 @@
         <div class="card-header bg-white font-weight-bold">
           @isset($APPID)<input type="text" id="APPID" value="{{$APPID}}" hidden>@endisset
           <input type="" id="token" value="{{ Session::token() }}" hidden>
-           Payment Evaluation <span class="optnTD" style="display: none;">(Overide Payment Mode)</span>&nbsp;
+           Order of Payment Evaluation <span class="optnTD" style="display: none;">(Overide Payment Mode)</span>&nbsp;
            <button class="btn btn-primary" onclick="window.history.back();">Back</button>
         </div>
         <div class="card-body">
@@ -52,6 +52,8 @@
                 <th scope="col" style="text-align:center">OOP Code</th>
                 <th scope="col" style="text-align:center">Charge Code</th>
                 <th scope="col" style="text-align:left">Description</th>
+                <th scope="col" style="text-align:center">Payment Date/Time</th>
+                <th scope="col" style="text-align:center">Payment Mode</th>
                 <th scope="col" style="text-align:left">Amount</th>
                 <th scope="col" class="optnTD" style="text-align:center;display:none">Option</th>
               </tr>
@@ -63,6 +65,8 @@
                   <th scope="row" style="text-align:center"><span data-toggle="tooltip" title="{{$element->oop_desc}}">{{$element->oop_id}}</span></th>
                   <th scope="row" style="text-align:center">{{$element->chg_code}}</th>
                   <td>{{$element->reference}}</td>
+                  <td class="text-center">@isset($element->cat_type)@if($element->cat_type == "P") {{date("F j, Y", strtotime($element->t_date))}}, {{date("g:i a", strtotime($element->t_time))}} @endif @endisset</td>
+                  <td class="text-center">@isset($element->cat_type)@if($element->cat_type == "P") {{$element->chg_desc}} @endif @endisset</td>
                   <td style="text-align:left">{{'PHP '.number_format($element->amount,2)}}</td>
                   <td class="optnTD" style="display:none"><center><button style="background-color: #d40000" class="btn btn-primarys" onclick="showDelete({{$element->id}}, '{{$element->chg_code}} - {{$element->reference}}')" data-toggle="modal" data-target="#DelGodModal"><i class="fa fa-trash" aria-hidden="true"></i></button></center></td>
                 </tr>
@@ -70,7 +74,7 @@
             @endisset
             @isset($Sum)
               <tr style="border-top: double">
-                <th scope="row" colspan="3" style="text-align:center">TOTAL</th>
+                <th scope="row" colspan="5" style="text-align:center">BALANCE</th>
                 <th scope="row" style="text-align:left">{{'PHP '.number_format($Sum,2)}}</th>
                 <th scope="row" class="optnTD" style="display:none">&nbsp;</th>
               </tr>

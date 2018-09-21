@@ -113,9 +113,9 @@
                       </center></td>
                       <td><center> {{-- APPROVED --}}
                         <h5>
-                          @if ($data->approvedBy == '1')
+                          @if ($data->isApprove == '1')
                             <span class="badge badge-success">Yes</span>
-                          @elseif($data->approvedBy == '0')
+                          @elseif($data->isApprove == '0')
                             <span class="badge badge-danger">No</span>
                           @else
                             <span class="badge badge-warning">Pending</span>

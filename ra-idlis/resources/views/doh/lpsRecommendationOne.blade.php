@@ -18,7 +18,7 @@
               <td width="100%">
                 <h2>@isset($AppData) {{$AppData->facilityname}} @endisset</h2>
                 <h5>@isset($AppData) {{strtoupper($AppData->streetname)}}, {{strtoupper($AppData->brgyname)}}, {{$AppData->cmname}}, {{$AppData->provname}} @endisset</h5>
-                <h6>@isset($AppData) Status: @if ($AppData->isApprove === null) <span style="color:blue">For Approval</span> @elseif($AppData->isApprove == 1)  <span style="color:green">Approve Application</span> @else <span style="color:red">Rejected Application</span> @endif @endisset</h6>
+                <h6>@isset($AppData) Status: @if ($AppData->isRecoForApproval === null) <span style="color:blue">For Approval</span> @elseif($AppData->isRecoForApproval == 1)  <span style="color:green">Recommended for Approval</span> @else <span style="color:red">Rejected for Approval</span> @endif @endisset</h6>
               </td>
             </tr>
           </thead>
@@ -225,15 +225,15 @@
                           </tr>
                           <tr>
                             <th scope="row">Time :</th>
-                            <td>@isset($AppData->CashierApproveTime) <span style="color:green;font-weight: bolder">{{$AppData->CashierApproveTime}}</span> @else <span style="color:red;font-weight: bolder">Not Available</span> @endisset</td>
+                            <td>@isset($AppData->CashierApproveTime) <span style="color:green;font-weight: bolder">{{$AppData->FCashierApproveTime}}</span> @else <span style="color:red;font-weight: bolder">Not Available</span> @endisset</td>
                           </tr>
                           <tr>
                             <th scope="row">Date :</th>
-                            <td>@isset($AppData->CashierApproveDate) <span style="color:green;font-weight: bolder">{{$AppData->CashierApproveDate}}</span> @else <span style="color:red;font-weight: bolder">Not Available</span> @endisset</td>
+                            <td>@isset($AppData->CashierApproveDate) <span style="color:green;font-weight: bolder">{{$AppData->FCashierApproveDate}}</span> @else <span style="color:red;font-weight: bolder">Not Available</span> @endisset</td>
                           </tr>
                           <tr>
                             <th scope="row">Evaluated by:</th>
-                            <td>@isset($AppData->CashierApproveBy) <span style="color:green;font-weight: bolder">{{$AppData->CashierApproveBy}}</span> @else <span style="color:red;font-weight: bolder">Not Available</span> @endisset</td>
+                            <td>@isset($AppData->CashierApproveBy) <span style="color:green;font-weight: bolder">{{$AppData->CashierEvaluator}}</span> @else <span style="color:red;font-weight: bolder">Not Available</span> @endisset</td>
                           </tr>
                         </tbody>
                       </table>  
@@ -241,7 +241,7 @@
                   <div class="col-sm-7">
                     <center>
                       @isset($AppData)
-                        @if($AppData->isPayEval != null)
+                        @if($AppData->CashierApproveBy != null)
                           <button class="btn btn-primarys" onclick="window.location.href='{{ asset('/employee/dashboard/lps/cashier') }}/{{$AppData->appid}}'"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View Cashier Evaluation</button>
                         @else
                           &nbsp;
@@ -297,7 +297,7 @@
                     <center>
                       @isset($AppData)
                         @if($AppData->isInspected != null)
-                          <button class="btn btn-primarys" onclick="window.location.href='{{asset('/employee/dashboard/lps/assess')}}/{{$AppData->uid}}/{{$AppData->appid}}/view'"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View Assessment</button>
+                          <button class="btn btn-primarys" onclick="window.location.href='{{asset('/employee/dashboard/lps/assess')}}/{{$AppData->appid}}/view'"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View Assessment</button>
                           @else
                           &nbsp;
                         @endif
@@ -305,60 +305,38 @@
                     </center>
                   </div>
                 </div>
-              </div>
-            </div>
-            {{-- END BODY --}}
-          </div>
-          {{-- /////////////////// --}}
-          {{-- /////////////////// --}}
-          <div class="card">
-            {{-- START HEAD --}}
-            <div class="card-header @isset($AppData) @if($AppData->isCashierApprove == null) list-group-item-info @elseif($AppData->isCashierApprove == 1) list-group-item-success  @else list-group-item-danger @endif @endisset" id="headingOne" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseOne" style="">
-              <div class="mb-0">
-                <button class="btn btn-link @isset($AppData) @if($AppData->isCashierApprove == null) list-group-item-info @elseif($AppData->isCashierApprove == 1) list-group-item-success  @else list-group-item-danger @endif @endisset" type="button" style="text-decoration:none">
-                  <h3>Recommendation for Approval</h3>
-                </button>
-              </div>
-            </div>
-             {{-- END HEAD --}}
-             {{-- START BODY --}}
-            <div id="collapseThree"  class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-              <div class="card-body">
                 <div class="row">
-                  <div class="col-sm-7">
-                      <table class="table table-borderless table-sm">
-                        <thead><tr><th width="40%"></th><th width="60%"></th></tr></thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">Status :</th>
-                            <td>@isset($AppData) @if($AppData->isRecoForApproval == null) <span style="color:blue;font-weight: bolder">Not Evaluated for Recommendation</span> @elseif($AppData->isRecoForApproval == 1)<span style="color:green;font-weight: bolder">Recommeded for Approval</span>@else<span style="color:red;font-weight: bolder">Not Recommended for Approval</span>@endif @endisset</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Time :</th>
-                            <td>@isset($AppData->RecoForApprovalTime) <span style="color:green;font-weight: bolder">{{$AppData->fRecoForApprovalTime}}</span> @else <span style="color:red;font-weight: bolder">Not Available</span> @endisset</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Date :</th>
-                            <td>@isset($AppData->RecoForApprovalDate) <span style="color:green;font-weight: bolder">{{$AppData->fRecoForApprovalDate}}</span> @else <span style="color:red;font-weight: bolder">Not Available</span> @endisset</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Recommended by:</th>
-                            <td>@isset($AppData->RecoForApprovalby) <span style="color:green;font-weight: bolder">{{$AppData->RecommedationEvaluator}}</span> @else <span style="color:red;font-weight: bolder">Not Available</span> @endisset</td>
-                          </tr>
-                        </tbody>
-                      </table>  
-                  </div>
-                  <div class="col-sm-5">
-                    <center>
-                      {{-- @isset($AppData)
-                        @if($AppData->isPayEval != null)
-                          <button class="btn btn-primarys" onclick="window.location.href='{{ asset('/employee/dashboard/lps/cashier') }}/{{$AppData->appid}}'"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View Cashier Evaluation</button>
-                        @else
-                          &nbsp;
-                        @endif
-                      @endisset --}}
-                    </center>
-                  </div>
+                	<div class="col-sm-12">
+                		<center><button class="btn btn-primarys" data-toggle="collapse" data-target="#SelectedTeamMembers" aria-expanded="false" aria-controls="SelectedTeamMembers"><i class="fa fa-eye" aria-hidden="true" ></i>&nbsp;View Team</button></center>
+                	</div>
+                	<div class="col-sm-12 collapse table-responsive" id="SelectedTeamMembers">
+                		<div class="card card-body">
+                			<table class="table">
+	                			<thead>
+	                				<tr>
+	                					<td scope="col">Name</td>
+	                					<td scope="col" class="text-center">Remarks</td>
+	                				</tr>
+	                			</thead>
+	                			<tbody>
+	                				@isset ($Teams4theApplication)
+	                					@foreach ($Teams4theApplication as $t)
+	                						<tr>
+	                							<td style="font-weight: bold">{{$t->fullname}}</td>
+	                							<td class="text-center">{{$t->remarks}}</td>
+	                						</tr>
+	                					@endforeach
+									@else
+										<tr>
+											<td colspan="2">
+												<center>NO DATA </center>
+											</td>
+										</tr>
+	                				@endisset
+	                			</tbody>
+	                		</table>
+                		</div>
+                	</div>
                 </div>
               </div>
             </div>
@@ -369,7 +347,7 @@
         </div>
         {{--  --}}
         @isset($AppData)
-          @if($AppData->isApprove == null)  
+          @if($AppData->isRecoForApproval == null)  
           <hr>
           <div class="container">
             <center>
@@ -459,7 +437,7 @@
             event.preventDefault();
             var form = $(this);
             form.parsley().validate();
-            if (form.parsley().isValid()){
+            if (form.parsley().isValid()){	
                 $.ajax({
                   method : 'POST',
                   data : {
@@ -471,7 +449,7 @@
                   }, success : function(data){
                       if (data == 'DONE') {
                           alert('Success');
-                          location.reload();
+                          window.location.href = '{{ asset('employee/dashboard/lps/recommendation') }}';
                       } else if (data == 'ERROR'){
                         $('#AccErrorAlert').show(100);  
                       }

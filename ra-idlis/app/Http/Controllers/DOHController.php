@@ -807,7 +807,7 @@
 										->where('appform.draft', '=', 0)
 										->first();
 					if (!$getData) {
-						return view('doh.lpsevaluate', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
+						return view('doh.lps', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
 					} else {
 
 						if ($Cur_useData['grpid'] == 'NA') {
@@ -2212,9 +2212,27 @@
 					$data1 = DB::table('part')->get();
 					$data2 = DB::table('assessment')->get();					
 
-					$data3 = DB::table('app_assessment')->where('uid', '=', $uid)->get();
-					// return dd($uid);
-					return view('doh.lpsAssessOne',['AppData'=>$data, 'Parts'=>$data1, 'Assments'=>$data2, 'numOfAssMents' => count($data2), 'appId'=> $appid, 'BigData' => $data3]);
+					$data3 = DB::table('app_assessment')
+									->join('assessment', 'app_assessment.asmt_id', '=', 'assessment.asmt_id')
+									->join('cat_assess', 'assessment.caid', '=', 'cat_assess.caid')
+									->where('app_assessment.uid', '=', $uid)->get();
+
+
+					$data4 = DB::table('app_assessment')
+								->join('assessment', 'app_assessment.asmt_id', '=', 'assessment.asmt_id')
+								// ->join('cat_assess', 'assessment.caid', '=', 'cat_assess.caid')
+								->where('uid', '=', $uid)->distinct()->get(['caid']);
+
+					if ($data4) {
+						for($i = 0; $i < count($data4); $i++){
+							$test = DB::table('cat_assess')->where('caid', '=', $data4[$i]->caid)->first();
+							$data4[$i]->categorydesc = $test->categorydesc;
+						}
+					}
+
+
+					// return dd($data5);
+					return view('doh.lpsAssessOne',['AppData'=>$data, 'Parts'=>$data1, 'Assments'=>$data2, 'numOfAssMents' => count($data2), 'appId'=> $appid, 'BigData' => $data3, 'Cats' => $data4]);
 				} catch (Exception $e) {
 					$TestError = $this->SystemLogs($e->getMessage());
 					session()->flash('system_error','ERROR');
@@ -2667,10 +2685,26 @@
 						}
 						$data1 = DB::table('chgfil')
 										->join('chg_app', 'chgfil.chgapp_id', '=', 'chg_app.chgapp_id')
-										->join('orderofpayment', 'chg_app.oop_id', '=', 'orderofpayment.oop_id')
+										->join('charges', 'chg_app.chg_code', '=', 'charges.chg_code')
+										->join('category', 'charges.cat_id', '=', 'category.cat_id')
+										// ->join('orderofpayment', 'chg_app.oop_id', '=', 'orderofpayment.oop_id')
 										->where('chgfil.appform_id', '=', $appid)
-										->orderBy('chg_app.oop_id','asc')
+										// ->orderBy('chg_app.oop_id','asc')
 										->get();
+
+						if (isset($data1)) {
+							for ($i=0; $i < count($data1); $i++) { 
+									$getOOP = DB::table('orderofpayment')
+												->select('oop_desc')
+												->where('oop_id', '=', $data1[$i]->oop_id)->first();
+									if ($getOOP) {
+										$data1[$i]->oop_desc = $getOOP->oop_desc; 
+									} else {
+										$data1[$i]->oop_desc = ''; 
+									}
+							}
+						}
+
 						$data2 = DB::table('chgfil')->where('appform_id', '=', $appid)->sum('amount');
 						$data3 = DB::table('chgfil')
 										->join('chg_app', 'chgfil.chgapp_id', '=', 'chg_app.chgapp_id')
@@ -2686,7 +2720,7 @@
 						for ($i=0; $i < count($data5); $i++) { 
 							$data5[$i]->formattedAmt = 'PHP '.number_format($data5[$i]->amt,2);
 						}
-						// return dd($appid);
+						// return dd($data1);
 						return view('doh.lpsCashierOne',['AppData'=>$data0, 'Payments' => $data1, 'Sum' => $data2, 'OOPs' =>$data4, 'Chrges' =>$data5, 'APPID' => $appid]);
 				} catch (Exception $e) {
 					$TestError = $this->SystemLogs($e->getMessage());
@@ -2747,10 +2781,25 @@
 						}
 						$data1 = DB::table('chgfil')
 										->join('chg_app', 'chgfil.chgapp_id', '=', 'chg_app.chgapp_id')
-										->join('orderofpayment', 'chg_app.oop_id', '=', 'orderofpayment.oop_id')
+										->join('charges', 'chg_app.chg_code', '=', 'charges.chg_code')
+										->join('category', 'charges.cat_id', '=', 'category.cat_id')
+										// ->join('orderofpayment', 'chg_app.oop_id', '=', 'orderofpayment.oop_id')
 										->where('chgfil.appform_id', '=', $appid)
-										->orderBy('chg_app.oop_id','asc')
+										// ->orderBy('chg_app.oop_id','asc')
 										->get();
+
+						if (isset($data1)) {
+							for ($i=0; $i < count($data1); $i++) { 
+									$getOOP = DB::table('orderofpayment')
+												->select('oop_desc')
+												->where('oop_id', '=', $data1[$i]->oop_id)->first();
+									if ($getOOP) {
+										$data1[$i]->oop_desc = $getOOP->oop_desc; 
+									} else {
+										$data1[$i]->oop_desc = ''; 
+									}
+							}
+						}
 						$data2 = DB::table('chgfil')->where('appform_id', '=', $appid)->sum('amount');
 						$data3 = DB::table('chgfil')
 										->join('chg_app', 'chgfil.chgapp_id', '=', 'chg_app.chgapp_id')
@@ -2769,14 +2818,31 @@
 						// return dd($appid);
 						return view('doh.lpsCashierTwo',['AppData'=>$data0, 'Payments' => $data1, 'Sum' => $data2, 'OOPs' =>$data4, 'Chrges' =>$data5, 'APPID' => $appid]);
 				} catch (Exception $e) {
-					
+					$TestError = $this->SystemLogs($e->getMessage());
+					session()->flash('system_error','ERROR');
+					return view('doh.lpsCashierTwo');
 				}
 			}
 			if ($request->isMethod('post')) {
 				try {
-					
+						$Cur_useData = $this->getCurrentUserAllData();
+						$data = array(
+										'isCashierApprove' => $request->AoR,
+										'CashierApproveBy' => $Cur_useData['cur_user'],
+										'CashierApproveDate' => $Cur_useData['date'],
+										'CashierApproveTime' => $Cur_useData['time'],
+										'CashierApproveIp'=> $Cur_useData['ip']
+								);
+						$test = DB::table('appform')->where('appid', '=', $request->id)->update($data);
+						if ($test) {
+							return 'DONE';
+						} else{
+							$data = $this->SystemLogs('No data has been updated in appform table.');
+							return 'ERROR';
+						}	
 				} catch (Exception $e) {
-					
+					$TestError = $this->SystemLogs($e->getMessage());
+					return 'ERROR';
 				}
 			}
 		}
@@ -2993,6 +3059,34 @@
 							}
 						}
 						/////  Payment Evaluation
+						///// 	RECOMMENDATION
+						if ($data0->isRecoForApproval != null) {
+							$time1 = $data0->RecoForApprovalTime;
+							$newT1 = Carbon::parse($time1);
+							$data0->fRecoForApprovalTime = $newT1->format('g:i A');
+
+							$date1 = $data0->RecoForApprovalDate;
+							$newD1 = Carbon::parse($date1);
+							$data0->fRecoForApprovalDate = $newD1->toFormattedDateString();
+
+							$getRecommender = DB::table('x08')->where('uid', '=', $data0->RecoForApprovalby)->first();
+							if ($getRecommender) {
+								if ($getRecommender->grpid == 'NA') {
+									$data0->RecommedationEvaluator = 'System Administrator';
+								} else {
+									if ($getRecommender->mname != "") {
+								    	$mid = strtoupper($getRecommender->mname);
+								    	$mid = $mid.'. ';
+						       		 } else {
+								    	$mid = ' ';
+								 		}
+									$data0->RecommedationEvaluator = $getRecommender->fname.' '.$mid.''.$getRecommender->lname;
+								}
+							} else {
+								$data0->RecommedationEvaluator = 'Not Available' ;
+							}
+						}
+						/////   RECOMMENDATION						
 
 						// $data1 = DB::table()
 
@@ -3474,6 +3568,313 @@
 			}
 			if ($request->isMethod('post')) {
 				
+			}
+		}
+		public function Reco4Approval(Request $request){
+			if ($request->isMethod('get')) {
+				try {	
+						$Cur_useData = $this->getCurrentUserAllData();
+						$employeeData = session('employee_login');
+						$region = DB::table('region')->get();
+						$type = DB::table('hfaci_serv_type')->get();
+						$facility = DB::table('facilitytyp')->get();
+						$getData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname' )
+										->where('appform.draft', '=', 0)
+										->first();
+						if (!$getData) {
+							return view('doh.lpsRecommendation', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region]);
+						} else {
+
+							if ($Cur_useData['grpid'] == 'NA') {
+								$anotherData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+										->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+										->join('class', 'appform.classid', '=', 'class.classid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
+										->where('appform.draft', '=', 0)
+										->get();
+							} else if ($Cur_useData['grpid'] == 'FDA' || $Cur_useData['grpid'] == 'LO') {
+								$anotherData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+										->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+										->join('class', 'appform.classid', '=', 'class.classid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
+										->where('appform.assignedLO', '=', $Cur_useData['cur_user'])
+										->where('appform.draft', '=', 0)
+										->get();
+							} else {
+								$anotherData = DB::table('appform')
+										->join('hfaci_serv_type', 'appform.hfser_id', '=', 'hfaci_serv_type.hfser_id')
+										->join('facilitytyp', 'appform.facid', '=', 'facilitytyp.facid')
+										->join('x08', 'appform.uid', '=', 'x08.uid')
+										->join('region', 'appform.assignedRgn', '=', 'region.rgnid')
+										->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+										->join('province', 'x08.province', '=', 'province.provid')
+										->join('apptype', 'appform.aptid', '=', 'apptype.aptid')
+										->join('barangay', 'x08.barangay', '=' , 'barangay.brgyid')
+										->join('ownership', 'appform.ocid', '=', 'ownership.ocid')
+										->join('class', 'appform.classid', '=', 'class.classid')
+										->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+										->select('appform.*', 'hfaci_serv_type.*','region.rgn_desc', 'x08.facilityname', 'x08.authorizedsignature', 'x08.email', 'x08.streetname', 'x08.barangay', 'x08.city_muni', 'x08.province', 'x08.zipcode', 'x08.rgnid', 'facilitytyp.facname', 'city_muni.cmname', 'apptype.aptdesc', 'province.provname', 'barangay.brgyname', 'ownership.ocdesc', 'class.classname', 'trans_status.trns_desc')
+										->where('appform.assignedRgn', '=', $Cur_useData['rgnid'])
+										->where('appform.draft', '=', 0)
+										->get();
+							}
+								for ($i=0; $i < count($anotherData); $i++) {
+									$time = $anotherData[$i]->t_time;
+									$newT = Carbon::parse($time);
+									$anotherData[$i]->formattedTime = $newT->format('g:i A');
+
+									$date = $anotherData[$i]->t_date;
+									$newD = Carbon::parse($date);
+									$anotherData[$i]->formattedDate = $newD->toFormattedDateString();
+									// ->diffForHumans()
+								}
+						
+					}
+						return view('doh.lpsRecommendation', ['employeeGRP'=>$employeeData->grpid,'employeeREGION'=>$employeeData->rgnid ,'types' => $type, 'facilitys'=>$facility, 'regions'=>$region, 'BigData'=>$anotherData]);
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					session()->flash('system_error','ERROR');
+					return view('doh.lpsRecommendation');
+				}
+			}
+			// if ($request->isMethod('post')) {
+			// 	# code...
+			// }
+		}
+		public function Reco4ApprovalOne(Request $request, $appid){
+			if ($request->isMethod('get')) {
+				try {
+					$Cur_useData = $this->getCurrentUserAllData();
+						$data0 = DB::table('appform')
+												->join('x08', 'appform.uid', '=', 'x08.uid')
+												->join('barangay', 'x08.barangay', '=', 'barangay.brgyid')
+												->join('city_muni', 'x08.city_muni', '=', 'city_muni.cmid')
+												->join('province', 'x08.province', '=', 'province.provid')
+												->join('type_facility', 'appform.hfser_id', '=', 'type_facility.hfser_id') 
+												->join('trans_status', 'appform.status', '=', 'trans_status.trns_id')
+												// ->join('orderofpayment', 'type_facility.oop_id', '=', 'orderofpayment.oop_id')
+												// , 'orderofpayment.*'
+												->select('appform.*',  'x08.*', 'barangay.brgyname', 'city_muni.cmname', 'province.provname', 'type_facility.*', 'trans_status.trns_desc')
+												->where('appform.appid', '=', $appid)
+												// , 'type_facility.*', 'orderofpayment.*'
+												// ->where('type_facility.facid', '=', 'appform.facid')
+												->first();
+						/////  Pre Assessment
+						$data1 = DB::table('app_assessment') // Pre-Assessmment
+							->join('assessment', 'app_assessment.asmt_id', '=', 'assessment.asmt_id')
+							->where([['app_assessment.draft', '=', '0'], ['app_assessment.uid', '=', $data0->uid]])
+							/// ['app_assessment.t_date', '=', null], ['app_assessment.t_time', '=', null]
+							->first();
+						
+							$time = $data1->sa_ttime;
+							$newT = Carbon::parse($time);
+							$data1->formattedTime = $newT->format('g:i A');
+
+							$date = $data1->sa_tdate;
+							$newD = Carbon::parse($date);
+							$data1->formattedDate = $newD->toFormattedDateString();
+							
+						/////  Pre Assessment
+						/////  Evaluation
+						if ($data0->isrecommended != null) {
+							$time1 = $data0->recommendedtime;
+							$newT1 = Carbon::parse($time1);
+							$data0->formmatedEvalTime = $newT1->format('g:i A');
+
+							$date1 = $data0->recommendeddate;
+							$newD1 = Carbon::parse($date1);
+							$data0->formmatedEvalDate = $newD1->toFormattedDateString();
+
+							$getEval = DB::table('x08')->where('uid', '=', $data0->recommendedby)->first();
+							if ($getEval) {
+								if ($getEval->grpid == 'NA') {
+									$data0->Evaluator = 'System Administrator';
+								} else {
+										if ($getEval->mname != "") {
+								    	$mid = strtoupper($getEval->mname);
+								    	$mid = $mid.'. ';
+						       		 } else {
+								    	$mid = ' ';
+								 		}
+									$data0->Evaluator = $getEval->fname.' '.$mid.''.$getEval->lname;
+								}
+							} else {
+								$data0->Evaluator = 'Not Available';
+							}
+
+						}
+						/////  Evaluation
+						/////  Assessment
+						if ($data0->isInspected != null) {
+							$time1 = $data0->inspectedtime;
+							$newT1 = Carbon::parse($time1);
+							$data0->formmatedAssessTime = $newT1->format('g:i A');
+
+							$date1 = $data0->inspecteddate;
+							$newD1 = Carbon::parse($date1);
+							$data0->formmatedAssessDate = $newD1->toFormattedDateString();
+
+							$getAssessor = DB::table('x08')->where('uid', '=', $data0->inspectedby)->first();
+							if ($getAssessor) {
+								if ($getAssessor->grpid == 'NA') {
+									$data0->Assessor = 'System Administrator';
+								} else {
+										if ($getAssessor->mname != "") {
+								    	$mid = strtoupper($getAssessor->mname);
+								    	$mid = $mid.'. ';
+						       		 } else {
+								    	$mid = ' ';
+								 		}
+									$data0->Assessor = $getAssessor->fname.' '.$mid.''.$getAssessor->lname;
+								}
+							} else {
+								$data0->Assessor = 'Not Available';
+							}
+						}
+						/////  Assessment
+						/////  Payment Evaluation
+						if ($data0->isPayEval != null) {
+							$time1 = $data0->payEvaltime;
+							$newT1 = Carbon::parse($time1);
+							$data0->formmatedPayEvalTime = $newT1->format('g:i A');
+
+							$date1 = $data0->payEvaldate;
+							$newD1 = Carbon::parse($date1);
+							$data0->formmatedPayEvalDate = $newD1->toFormattedDateString();
+
+							$getPayEvaluator = DB::table('x08')->where('uid', '=', $data0->payEvalby)->first();
+							if ($getPayEvaluator) {
+								if ($getPayEvaluator->grpid == 'NA') {
+									$data0->PayEvaluator = 'System Administrator';
+								} else {
+										if ($getPayEvaluator->mname != "") {
+								    	$mid = strtoupper($getPayEvaluator->mname);
+								    	$mid = $mid.'. ';
+						       		 } else {
+								    	$mid = ' ';
+								 		}
+									$data0->PayEvaluator = $getPayEvaluator->fname.' '.$mid.''.$getPayEvaluator->lname;
+								}
+							} else {
+								$data0->PayEvaluator = 'Not Available';
+							}
+						}
+						/////  Payment Evaluation
+						/////  Cashier Evaluation
+						if ($data0->isCashierApprove != null) {
+							$time1 = $data0->CashierApproveTime;
+							$newT1 = Carbon::parse($time1);
+							$data0->FCashierApproveTime = $newT1->format('g:i A');
+
+							$date1 = $data0->CashierApproveDate;
+							$newD1 = Carbon::parse($date1);
+							$data0->FCashierApproveDate = $newD1->toFormattedDateString();
+
+							$getCashierEvaluator = DB::table('x08')->where('uid', '=', $data0->CashierApproveBy)->first();
+							if ($getCashierEvaluator) {
+								if ($getCashierEvaluator->grpid == 'NA') {
+									$data0->CashierEvaluator = 'System Administrator';
+								} else {
+									if ($CashierEvaluator->mname != "") {
+								    	$mid = strtoupper($CashierEvaluator->mname);
+								    	$mid = $mid.'. ';
+						       		 } else {
+								    	$mid = ' ';
+								 		}
+									$data0->CashierEvaluator = $CashierEvaluator->fname.' '.$mid.''.$CashierEvaluator->lname;
+								}
+							} else {
+								$data0->CashierEvaluator = 'Not Available';
+							}
+						}
+						/////  Cashier Evaluation
+						///// 	TEAM
+						$data2 = DB::table('app_team')
+								->join('x08', 'app_team.uid', '=', 'x08.uid')
+								->select('app_team.*', 'x08.fname', 'x08.mname', 'x08.lname')
+								->where('app_team.appid', '=' ,$appid)
+								->get();
+
+						if ($data2) {
+									for($i = 0; $i < count($data2); $i++){
+										if ($data2[$i]->mname != "") {
+									    	$mid = strtoupper($data2[$i]->mname);
+									    	$mid = $mid.'. ';
+							       		 } else {
+									    	$mid = ' ';
+									 		}
+										$data2[$i]->fullname = $data2[$i]->fname.' '.$mid.''.$data2[$i]->lname;
+									}
+								}		
+						/////   TEAM
+						// return dd($data0);	
+						return view('doh.lpsRecommendationOne', ['AppData'=>$data0,'PreAss'=>$data1, 'APPID' => $appid, 'Teams4theApplication' => $data2]);
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					session()->flash('system_error','ERROR');
+					return view('doh.lpsRecommendationOne');
+				}
+			}
+			if ($request->isMethod('post')) {
+				try {
+						$Cur_useData = $this->getCurrentUserAllData();
+						$update = array(
+									'isRecoForApproval' => $request->isOk,
+									'RecoForApprovalby' => $Cur_useData['cur_user'],
+									'RecoForApprovalTime' => $Cur_useData['time'],
+									'RecoForApprovalDate' =>$Cur_useData['date'],
+									'RecoForApprovalIpAdd' => $Cur_useData['ip']
+ 								);
+						if ($request->isOk == 1) {
+							# code...
+						}
+						$data = DB::table('appform')->where('appid', '=', $request->id)->update($update);
+						return 'DONE';
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					return 'ERROR';
+				}
+			}
+		}
+		public function MngRequirements(Request $request){
+			if ($request->isMethod('get')) {
+				try {
+					$type = DB::table('hfaci_serv_type')->get();
+					$facility = DB::table('facilitytyp')->get();
+					$uploads = DB::table('upload')->get();
+					$oops = DB::table('orderofpayment')->where('oop_id', '<>', 'N')->get();
+					// return dd($facility);
+					return view('doh.mfmngreq',['types'=>$type,'facilitys'=>$facility,'uploads'=>$uploads, 'oops' => $oops]);
+				} catch (Exception $e) {
+					$TestError = $this->SystemLogs($e->getMessage());
+					session()->flash('system_error','ERROR');
+					return view('doh.mfmngreq');
+				}
 			}
 		}
 	}

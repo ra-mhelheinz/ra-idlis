@@ -1336,6 +1336,10 @@
 						$data['grpid'] = $request->typ;
 					}
 
+					if (isset($request->team)) {
+						$data['team'] = $request->team;
+					}
+
 
 					// return $data['rgnid'];
 					$test = DB::table('x08')->where('uid', '=', $request->id)->update($data);
